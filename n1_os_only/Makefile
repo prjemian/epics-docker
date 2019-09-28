@@ -2,7 +2,7 @@
 ORG=prjemian
 REPO=os_only
 LOGFILE=build-log.txt
-NET=virtualbeam
+NET=host-bridge
 
 FULLNAME=$(ORG)/$(REPO)
 

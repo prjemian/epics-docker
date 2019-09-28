@@ -2,7 +2,7 @@
 ORG=prjemian
 REPO=synapps-6.1
 LOGFILE=build-log.txt
-NET=virtualbeam
+NET=host-bridge
 
 FULLNAME=$(ORG)/$(REPO)
 

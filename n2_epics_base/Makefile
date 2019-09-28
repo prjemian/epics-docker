@@ -2,7 +2,7 @@
 ORG=prjemian
 REPO=epics-base-7.0.3
 LOGFILE=build-log.txt
-NET=virtualbeam
+NET=host-bridge
 
 FULLNAME=$(ORG)/$(REPO)
 
