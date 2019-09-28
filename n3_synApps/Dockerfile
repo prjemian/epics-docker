@@ -123,10 +123,9 @@ RUN cp EXAMPLE_commonPlugins.cmd                                commonPlugins.cm
 # WORKDIR ${AREA_DETECTOR}/ADCore/ADApp/pluginSrc
 # RUN sed -i s:'  DBD += NDPluginPva.dbd':'  DBD += NDPluginPva.dbd\n  DBD += softIocPVA.dbd':g               Makefile
 
+WORKDIR ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
 COPY run_simDetectorIOC ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/run
-RUN cp \
-    ${XXX}/iocBoot/iocxxx/softioc/in-screen.sh \
-    ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector.
+RUN cp ${XXX}/iocBoot/iocxxx/softioc/in-screen.sh .
 # done editing
 
 
@@ -138,7 +137,7 @@ RUN tar czf ${SUPPORT}/../iocSimDetector-3.7.tar.gz iocSimDetector
 WORKDIR ${SUPPORT}
 RUN tar czf ${SUPPORT}/../xxx-R6-1.tar.gz xxx-R6-1 && \
     ln -s ${XXX}/iocBoot/iocxxx/ ./iocxxx && \
-    ln -s ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/ ./iocSimDetector
+    ln -s ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector ./iocSimDetector
 
 # Build it all
 RUN make -j2 all && \
