@@ -13,3 +13,8 @@ see https://www.portainer.io/installation/
         -v portainer_data:/data portainer/portainer
 
     firefox http://localhost:9000 &
+
+----
+
+* moved here from https://github.com/prjemian/virtualbeamline
+* which was forked from https://github.com/KedoKudo/virtualbeamline
