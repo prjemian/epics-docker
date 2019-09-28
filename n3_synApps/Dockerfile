@@ -143,32 +143,16 @@ RUN tar czf ${SUPPORT}/../xxx-R6-1.tar.gz xxx-R6-1 && \
 RUN make -j2 all && \
     make clean
 
-# WORKDIR ${SUPPORT}/iocxxx/
-# # build envPaths
-# RUN make
+WORKDIR ${SUPPORT}/iocxxx/
+# build envPaths
+RUN make
 
-# WORKDIR ${SUPPORT}/iocSimDetector/
-# # build envPaths
-# RUN make
+WORKDIR ${SUPPORT}/iocSimDetector/
+# build envPaths
+RUN make
 
-# WORKDIR ${SUPPORT}
+WORKDIR ${SUPPORT}
 
-# # FIXME: boot error remains
-#     # # Optional: load NDPluginPva plugin
-#     # NDPvaConfigure("PVA1", 20, 0, "SIM1", 0, 13SIM1:Pva1:Image, 0, 0, 0)
-#     # commonPlugins.cmd line 171: Command NDPvaConfigure not found.
-#     # dbLoadRecords("NDPva.template",  "P=13SIM1:,R=Pva1:, PORT=PVA1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=SIM1")
-#     # # Must start PVA server if this is enabled
-#     # startPVAServer
-#     # commonPlugins.cmd line 174: Command startPVAServer not found.
-
-#     # and
-
-#     # 13SIM1:Pva1:ADCoreVersion_RBV devAsynOctet::initCommon connectDevice failed asynManager:connectDevice port PVA1 not found
-#     # 13SIM1:Pva1:DriverVersion_RBV devAsynOctet::initCommon connectDevice failed asynManager:connectDevice port PVA1 not found
-#     # 13SIM1:Pva1:PortName_RBV devAsynOctet::initCommon connectDevice failed asynManager:connectDevice port PVA1 not found
-
-# # startPVAServer comes from EPICS base
-# #   <base>/dbd/softIocPVA.dbd:registrar(registerStartPVAServer)
-# # Something needs to be configured (?in ADCore?) 
-# #    to make sure this is added to the build
+# # FIXME: boot errors remain
+# # * https://github.com/prjemian/epics-docker/issues/1
+# # * https://github.com/prjemian/epics-docker/issues/2
