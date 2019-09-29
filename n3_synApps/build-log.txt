@@ -1,752 +1,929 @@
-Sending build context to Docker daemon  11.26kB
-Step 1/40 : FROM  prjemian/epics-base-7.0.3
+Sending build context to Docker daemon  3.348MB
+Step 1/28 : FROM  prjemian/epics-base-7.0.3
  ---> 2be27ca12f2d
-Step 2/40 : LABEL version="1.0.0"       maintainer="prjemian <prjemian@gmail.com>"       lastupdate="2019-09-28"
+Step 2/28 : LABEL version="1.0.0"       maintainer="prjemian <prjemian@gmail.com>"       lastupdate="2019-09-28"
  ---> Using cache
  ---> b1951e312443
-Step 3/40 : USER  root
+Step 3/28 : USER  root
  ---> Using cache
  ---> 541846f4d195
-Step 4/40 : WORKDIR /home
+Step 4/28 : WORKDIR /home
  ---> Using cache
  ---> 8e62817b597b
-Step 5/40 : RUN     apt-get update  -y &&     apt-get install -y         git        libusb-dev        libusb-1.0-0-dev        libx11-dev        re2c        wget        x11-xserver-utils        xorg-dev        xvfb        &&     rm -rf /var/lib/apt/lists/*
+Step 5/28 : RUN     apt-get update  -y &&     apt-get install -y         git        libusb-dev        libusb-1.0-0-dev        libx11-dev        re2c        wget        x11-xserver-utils        xorg-dev        xvfb        &&     rm -rf /var/lib/apt/lists/*
  ---> Using cache
  ---> 22b6278aa70a
-Step 6/40 : ENV APP_ROOT="/opt"
+Step 6/28 : ENV APP_ROOT="/opt"
  ---> Using cache
  ---> 98b42cbc40af
-Step 7/40 : ENV EDITOR="nano"
+Step 7/28 : ENV EDITOR="nano"
  ---> Using cache
  ---> ecd77a648819
-Step 8/40 : ENV EPICS_HOST_ARCH=linux-x86_64
+Step 8/28 : ENV EPICS_HOST_ARCH=linux-x86_64
  ---> Using cache
  ---> 19993dfafc50
-Step 9/40 : ENV EPICS_ROOT="/${APP_ROOT}/base"
+Step 9/28 : ENV EPICS_ROOT="/${APP_ROOT}/base"
  ---> Using cache
  ---> 4dceedabcb25
-Step 10/40 : ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
+Step 10/28 : ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
  ---> Using cache
  ---> 14abd36186ff
-Step 11/40 : ENV SUPPORT="${APP_ROOT}/synApps/support"
+Step 11/28 : ENV SUPPORT="${APP_ROOT}/synApps/support"
  ---> Using cache
  ---> d46db4e4d391
-Step 12/40 : ENV PATH="${PATH}:${SUPPORT}/utils"
+Step 12/28 : ENV PATH="${PATH}:${SUPPORT}/utils"
  ---> Using cache
  ---> 5e850ce6e8e1
-Step 13/40 : WORKDIR ${APP_ROOT}
+Step 13/28 : WORKDIR ${APP_ROOT}
  ---> Using cache
  ---> 06033268d481
-Step 14/40 : ENV HASH=cc5adba5b8848c9cb98ab96768d668ae927d8859
+Step 14/28 : ENV HASH=cc5adba5b8848c9cb98ab96768d668ae927d8859
  ---> Using cache
  ---> b20c7e241188
-Step 15/40 : ADD https://raw.githubusercontent.com/EPICS-synApps/support/${HASH}/assemble_synApps.sh ./
+Step 15/28 : ADD https://raw.githubusercontent.com/EPICS-synApps/support/${HASH}/assemble_synApps.sh ./
 
  ---> Using cache
  ---> a3e072e24ec4
-Step 16/40 : RUN sed -i s:'/APSshare/epics/base-3.15.6':'/opt/base':g assemble_synApps.sh
+Step 16/28 : RUN sed -i s:'/APSshare/epics/base-3.15.6':'/opt/base':g assemble_synApps.sh
  ---> Using cache
  ---> e38daf83ec31
-Step 17/40 : RUN sed -i s:'ALLENBRADLEY=':'#ALLENBRADLEY=':g assemble_synApps.sh &&     sed -i s:'CAMAC=':'#CAMAC=':g assemble_synApps.sh &&     sed -i s:'DAC128V=':'#DAC128V=':g assemble_synApps.sh &&     sed -i s:'DELAYGEN=':'#DELAYGEN=':g assemble_synApps.sh &&     sed -i s:'DXP=':'#DXP=':g assemble_synApps.sh &&     sed -i s:'DXPSITORO=':'#DXPSITORO=':g assemble_synApps.sh &&     sed -i s:'IP330=':'#IP330=':g assemble_synApps.sh &&     sed -i s:'IPUNIDIG=':'#IPUNIDIG=':g assemble_synApps.sh &&     sed -i s:'LOVE=':'#LOVE=':g assemble_synApps.sh &&     sed -i s:'QUADEM=':'#QUADEM=':g assemble_synApps.sh &&     sed -i s:'SOFTGLUE=':'#SOFTGLUE=':g assemble_synApps.sh &&     sed -i s:'SOFTGLUEZYNQ=':'#SOFTGLUEZYNQ=':g assemble_synApps.sh &&     sed -i s:'VME=':'#VME=':g assemble_synApps.sh &&     sed -i s:'YOKOGAWA_DAS=':'#YOKOGAWA_DAS=':g assemble_synApps.sh
- ---> Using cache
- ---> 765ab3559245
-Step 18/40 : RUN echo # start ------------------- assemble_synApps.sh -------------------
- ---> Using cache
- ---> e4c17f614ea2
-Step 19/40 : RUN cat assemble_synApps.sh
- ---> Using cache
- ---> 7738588437a3
-Step 20/40 : RUN echo # end ------------------- assemble_synApps.sh -------------------
- ---> Using cache
- ---> 442305fabc62
-Step 21/40 : RUN bash assemble_synApps.sh
- ---> Using cache
- ---> 060db79e0517
-Step 22/40 : ENV AREA_DETECTOR=${SUPPORT}/areaDetector-R3-7
- ---> Using cache
- ---> b7b744b19b5e
-Step 23/40 : ENV MOTOR=${SUPPORT}/motor-R7-1
- ---> Using cache
- ---> 34fb5a19a983
-Step 24/40 : ENV XXX=${SUPPORT}/xxx-R6-1
- ---> Using cache
- ---> 3911e17c3720
-Step 25/40 : WORKDIR ${SUPPORT}
- ---> Using cache
- ---> a1d6cae97c54
-Step 26/40 : WORKDIR ${XXX}/iocBoot/iocxxx/
- ---> Using cache
- ---> 3f7833ae2a0a
-Step 27/40 : RUN cp examples/motors.iocsh ./ &&     cp examples/std.iocsh    ./ &&     cp ${MOTOR}/modules/motorMotorSim/iocsh/motorSim.iocsh                 ${MOTOR}/iocsh/ &&     cp ${MOTOR}/modules/motorMotorSim/iocsh/EXAMPLE_motorSim.substitutions ${MOTOR}/iocsh/ &&     sed -i s:'#iocshLoad("$(STD)/iocsh/softScaler':'iocshLoad("$(STD)/iocsh/softScaler':g std.iocsh &&     sed -i s:'#iocshLoad("$(MOTOR)/iocsh/motorSim.iocsh"':'iocshLoad("$(MOTOR)/iocsh/motorSim.iocsh"':g motors.iocsh &&     sed -i s:'dbLoadTemplate("substitutions/motor.substitutions"':'#dbLoadTemplate("substitutions/motor.substitutions"':g motors.iocsh &&     sed -i s:'< common.iocsh':'< common.iocsh\n< std.iocsh\n< motors.iocsh':g st.cmd.Linux
- ---> Using cache
- ---> fbb8b11754d2
-Step 28/40 : WORKDIR ${AREA_DETECTOR}/configure
- ---> Using cache
- ---> 8f1bbf27e87c
-Step 29/40 : RUN cp EXAMPLE_RELEASE.local         RELEASE.local &&     cp EXAMPLE_RELEASE_SUPPORT.local RELEASE_SUPPORT.local &&     cp EXAMPLE_RELEASE_LIBS.local    RELEASE_LIBS.local &&     cp EXAMPLE_RELEASE_PRODS.local   RELEASE_PRODS.local &&     cp EXAMPLE_CONFIG_SITE.local     CONFIG_SITE.local &&     sed -i s:'BUILD_IOCS = NO':'BUILD_IOCS = YES':g CONFIG_SITE.local.${EPICS_HOST_ARCH} &&     sed -i s:'WITH_PVA = NO':'WITH_PVA = YES':g CONFIG_SITE.local.${EPICS_HOST_ARCH} &&     sed -i s:'WITH_QSRV = NO':'WITH_QSRV = YES':g CONFIG_SITE.local.${EPICS_HOST_ARCH} &&     sed -i s:'#ADSIMDETECTOR=':'ADSIMDETECTOR=':g RELEASE.local &&     sed -i s:'#PVADRIVER=':'PVADRIVER=':g RELEASE.local &&     sed -i s:'SUPPORT=/corvette/home/epics/devel':'SUPPORT=/opt/synApps/support':g RELEASE_SUPPORT.local &&     sed -i s:'asyn-4-36':'asyn-R4-36':g RELEASE_LIBS.local &&     sed -i s:'areaDetector-3-7':'areaDetector-R3-7':g RELEASE_LIBS.local &&     sed -i s:'EPICS_BASE=/corvette/usr/local/epics-devel/base-7.0.3':'EPICS_BASE=/opt/base-7.0.3':g RELEASE_LIBS.local &&     sed -i s:'asyn-4-36':'asyn-R4-36':g RELEASE_PRODS.local &&     sed -i s:'areaDetector-3-7':'areaDetector-R3-7':g RELEASE_PRODS.local &&     sed -i s:'autosave-5-10':'autosave-R5-10':g RELEASE_PRODS.local &&     sed -i s:'busy-1-7-2':'busy-R1-7-2':g RELEASE_PRODS.local &&     sed -i s:'calc-3-7-3':'calc-R3-7-3':g RELEASE_PRODS.local &&     sed -i s:'seq-2-2-5':'seq-2-2-6':g RELEASE_PRODS.local &&     sed -i s:'sscan-2-11-3':'sscan-R2-11-3':g RELEASE_PRODS.local &&     sed -i s:'devIocStats-3-1-16':'iocStats-3-1-16':g RELEASE_PRODS.local &&     sed -i s:'EPICS_BASE=/corvette/usr/local/epics-devel/base-7.0.3':'EPICS_BASE=/opt/base-7.0.3':g RELEASE_PRODS.local
- ---> Running in f4e965ed305a
-Removing intermediate container f4e965ed305a
- ---> 0dae8c414835
-Step 30/40 : WORKDIR ${AREA_DETECTOR}/ADCore/iocBoot
- ---> Running in 1922ed0cd8ca
-Removing intermediate container 1922ed0cd8ca
- ---> e6fbef335af2
-Step 31/40 : RUN cp EXAMPLE_commonPlugins.cmd                                commonPlugins.cmd &&     cp EXAMPLE_commonPlugin_settings.req                        commonPlugin_settings.req &&     sed -i s:'#NDPvaConfigure':'NDPvaConfigure':g               commonPlugins.cmd &&     sed -i s:'#dbLoadRecords("NDPva':'dbLoadRecords("NDPva':g   commonPlugins.cmd &&     sed -i s:'#startPVAServer':'startPVAServer':g               commonPlugins.cmd
- ---> Running in 289c7eff0495
-Removing intermediate container 289c7eff0495
- ---> 0ca32a2f3c80
-Step 32/40 : WORKDIR ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
- ---> Running in 267cd3ec0967
-Removing intermediate container 267cd3ec0967
- ---> 787ec23ddba4
-Step 33/40 : COPY run_simDetectorIOC ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/run
- ---> d3b473d07a07
-Step 34/40 : RUN cp ${XXX}/iocBoot/iocxxx/softioc/in-screen.sh .
- ---> Running in cd4381a1b773
-Removing intermediate container cd4381a1b773
- ---> b38fcea8c892
-Step 35/40 : WORKDIR ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot
- ---> Running in 09d51c449ab6
-Removing intermediate container 09d51c449ab6
- ---> 7ef207eb247f
-Step 36/40 : RUN tar czf ${SUPPORT}/../iocSimDetector-3.7.tar.gz iocSimDetector
- ---> Running in f8ef2e2fd535
-Removing intermediate container f8ef2e2fd535
- ---> 8ad62c25f76a
-Step 37/40 : WORKDIR ${SUPPORT}
- ---> Running in 0d5b3272060d
-Removing intermediate container 0d5b3272060d
- ---> fe750d48a9ed
-Step 38/40 : RUN tar czf ${SUPPORT}/../xxx-R6-1.tar.gz xxx-R6-1 &&     ln -s ${XXX}/iocBoot/iocxxx/ ./iocxxx &&     ln -s ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector ./iocSimDetector
- ---> Running in 4abb8c0ac009
-Removing intermediate container 4abb8c0ac009
- ---> 5e05f30c9ac0
-Step 39/40 : RUN make -j2 all
- ---> Running in e140a13b2d80
-make -C ./configure install 
-make -C /opt/synApps/support/alive-R1-1-1 install 
-make[1]: Entering directory '/opt/synApps/support/configure'
-make[1]: Entering directory '/opt/synApps/support/alive-R1-1-1'
-[91mMakefile:40: warning: overriding recipe for target 'cvsclean'
-[0m[91m/opt/base/configure/RULES_COMMON:39: warning: ignoring old recipe for target 'cvsclean'
-[0mperl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../..
-make -C ./configure install 
-mkdir -p O.Common
-make[2]: Entering directory '/opt/synApps/support/alive-R1-1-1/configure'
-make -C O.linux-x86_64 -f ../Makefile TOP=../.. \
-    T_A=linux-x86_64 install
-make[2]: Entering directory '/opt/synApps/support/configure/O.linux-x86_64'
-[91m../Makefile:40: warning: overriding recipe for target 'cvsclean'
-[0m[91m/opt/base/configure/RULES_COMMON:39: warning: ignoring old recipe for target 'cvsclean'
-[0mperl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../.. \
-    T_A=linux-x86_64 install
-make[3]: Entering directory '/opt/synApps/support/alive-R1-1-1/configure/O.linux-x86_64'
-Installing CFG file ../../cfg/CONFIG_REQ
-mkdir ../../cfg
-make[2]: Leaving directory '/opt/synApps/support/configure/O.linux-x86_64'
-make[1]: Leaving directory '/opt/synApps/support/configure'
-make -C /opt/synApps/support/ipac-2-15 install 
-make[1]: Entering directory '/opt/synApps/support/ipac-2-15'
-perl -CSD /opt/base/bin/linux-x86_64/convertRelease.pl checkRelease
-make[3]: Leaving directory '/opt/synApps/support/alive-R1-1-1/configure/O.linux-x86_64'
-make[2]: Leaving directory '/opt/synApps/support/alive-R1-1-1/configure'
-make -C ./aliveApp install 
-make -C ./configure install 
-make[2]: Entering directory '/opt/synApps/support/ipac-2-15/configure'
-make[2]: Entering directory '/opt/synApps/support/alive-R1-1-1/aliveApp'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../..
-make -C ./src install 
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../.. \
-    T_A=linux-x86_64 install
-make[3]: Entering directory '/opt/synApps/support/alive-R1-1-1/aliveApp/src'
-make[3]: Entering directory '/opt/synApps/support/ipac-2-15/configure/O.linux-x86_64'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../../.. \
-    T_A=linux-x86_64 install
-make[4]: Entering directory '/opt/synApps/support/alive-R1-1-1/aliveApp/src/O.linux-x86_64'
-perl -CSD /opt/base/bin/linux-x86_64/convertRelease.pl checkRelease
-make[3]: Leaving directory '/opt/synApps/support/ipac-2-15/configure/O.linux-x86_64'
-make[2]: Leaving directory '/opt/synApps/support/ipac-2-15/configure'
-make -C ./drvIpac install 
-make[2]: Entering directory '/opt/synApps/support/ipac-2-15/drvIpac'
-perl -CSD /opt/base/bin/linux-x86_64/dbdToRecordtypeH.pl   -I. -I.. -I../O.Common -I../../../dbd -I/opt/base/dbd -o aliveRecord.h ../aliveRecord.dbd
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../.. \
-    T_A=linux-x86_64 install
-make[3]: Entering directory '/opt/synApps/support/ipac-2-15/drvIpac/O.linux-x86_64'
-perl -CSD /opt/base/bin/linux-x86_64/dbdExpand.pl   -I. -I.. -I../O.Common -I../../../dbd -I/opt/base/dbd -o aliveEx.dbd base.dbd aliveSupport.dbd
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF drvHy8002.d  ../drvHy8002.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF drvXy9660.d  ../drvXy9660.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF drvTvme200.d  ../drvTvme200.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF drvVipc616.d  ../drvVipc616.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF drvVipc610.d  ../drvVipc610.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF drvVipc310.d  ../drvVipc310.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF drvIpac.d  ../drvIpac.c
-mkdir ../../dbd
-mkdir ../../include
-mkdir ../../html
-mkdir ../../html/.
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../drvIpac.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../drvVipc310.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../drvVipc610.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include    -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF aliveRecord.d  ../aliveRecord.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../drvVipc616.c
-/usr/bin/g++  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include    -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF aliveExMain.d  ../aliveExMain.cpp
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../drvTvme200.c
-perl -CSD /opt/base/bin/linux-x86_64/registerRecordDeviceDriver.pl   -I. -I.. -I../O.Common -I../../../dbd -I/opt/base/dbd    -o aliveEx_registerRecordDeviceDriver.cpp ../O.Common/aliveEx.dbd aliveEx_registerRecordDeviceDriver /opt/synApps/support/alive-R1-1-1
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../drvXy9660.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../drvHy8002.c
-/usr/bin/g++  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include    -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF aliveEx_registerRecordDeviceDriver.d  aliveEx_registerRecordDeviceDriver.cpp
-mkdir ../../../dbd
-/usr/bin/ar -rc    libIpac.a     drvIpac.o drvVipc310.o drvVipc610.o drvVipc616.o drvTvme200.o drvXy9660.o drvHy8002.o
-mkdir ../../../include
-/usr/bin/g++  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include    -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c aliveEx_registerRecordDeviceDriver.cpp
-/usr/bin/ranlib libIpac.a
-/usr/bin/g++ -o libIpac.so -shared -fPIC -Wl,-hlibIpac.so -L/opt/synApps/support/ipac-2-15/lib/linux-x86_64 -L/opt/base-7.0.3/lib/linux-x86_64 -Wl,-rpath,/opt/synApps/support/ipac-2-15/lib/linux-x86_64 -Wl,-rpath,/opt/base-7.0.3/lib/linux-x86_64           -rdynamic -m64          drvIpac.o drvVipc310.o drvVipc610.o drvVipc616.o drvTvme200.o drvXy9660.o drvHy8002.o   -ldbRecStd -ldbCore -lca -lCom   -lpthread   -lreadline -lm -lrt -ldl -lgcc
-/usr/bin/g++  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include    -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../aliveExMain.cpp
-make[3]: Leaving directory '/opt/synApps/support/ipac-2-15/drvIpac/O.linux-x86_64'
-make[2]: Leaving directory '/opt/synApps/support/ipac-2-15/drvIpac'
-make -C ./drvTip810 install 
-make[2]: Entering directory '/opt/synApps/support/ipac-2-15/drvTip810'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../.. \
-    T_A=linux-x86_64 install
-make[3]: Entering directory '/opt/synApps/support/ipac-2-15/drvTip810/O.linux-x86_64'
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include    -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../aliveRecord.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET  -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF drvTip810.d  ../drvTip810.c
-[91mIn file included from /opt/base/include/dbAccess.h:19:0,
-                 from ../aliveRecord.c:39:
-/opt/base/include/dbBase.h:162:5: warning: 'rset' is deprecated [-Wdeprecated-declarations]
-     rset        *prset;
-     ^~~~
-[0m[91mIn file included from /opt/base/include/dbBase.h:21:0,
-                 from /opt/base/include/dbAccess.h:19,
-                 from ../aliveRecord.c:39:
-/opt/base/include/recSup.h:67:8: note: declared here
- struct rset { /* record support entry table */
-        ^~~~
-[0m[91mIn file included from /opt/base/include/dbAccess.h:23:0,
-                 from ../aliveRecord.c:39:
-/opt/base/include/dbAccessDefs.h:210:46: warning: 'rset' is deprecated [-Wdeprecated-declarations]
- epicsShareFunc rset * dbGetRset(const struct dbAddr *paddr);
-                                              ^~~~~~
-[0m[91mIn file included from /opt/base/include/dbBase.h:21:0,
-                 from /opt/base/include/dbAccess.h:19,
-                 from ../aliveRecord.c:39:
-/opt/base/include/recSup.h:67:8: note: declared here
- struct rset { /* record support entry table */
-        ^~~~
-[0m/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET  -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF devBiTip810.d  ../devBiTip810.c
-[91m../aliveRecord.c:90:1: warning: 'rset' is deprecated [-Wdeprecated-declarations]
- rset aliveRSET =
- ^~~~
-[0m[91mIn file included from /opt/base/include/dbBase.h:21:0,
-                 from /opt/base/include/dbAccess.h:19,
-                 from ../aliveRecord.c:39:
-/opt/base/include/recSup.h:67:8: note: declared here
- struct rset { /* record support entry table */
-        ^~~~
-[0m[91m../aliveRecord.c:111:1: warning: 'rset' is deprecated [-Wdeprecated-declarations]
- epicsExportAddress(rset,aliveRSET);
- ^~~~~~~~~~~~~~~~~~
-[0m[91mIn file included from /opt/base/include/dbBase.h:21:0,
-                 from /opt/base/include/dbAccess.h:19,
-                 from ../aliveRecord.c:39:
-/opt/base/include/recSup.h:67:8: note: declared here
- struct rset { /* record support entry table */
-        ^~~~
-[0m[91m../aliveRecord.c:111:1: warning: 'rset' is deprecated [-Wdeprecated-declarations]
- epicsExportAddress(rset,aliveRSET);
- ^~~~~~~~~~~~~~~~~~
-[0m[91mIn file included from /opt/base/include/dbBase.h:21:0,
-                 from /opt/base/include/dbAccess.h:19,
-                 from ../aliveRecord.c:39:
-/opt/base/include/recSup.h:67:8: note: declared here
- struct rset { /* record support entry table */
-        ^~~~
-[0m[91m../aliveRecord.c:111:1: warning: 'rset' is deprecated [-Wdeprecated-declarations]
- epicsExportAddress(rset,aliveRSET);
- ^~~~~~~~~~~~~~~~~~
-[0m[91mIn file included from /opt/base/include/dbBase.h:21:0,
-                 from /opt/base/include/dbAccess.h:19,
-                 from ../aliveRecord.c:39:
-/opt/base/include/recSup.h:67:8: note: declared here
- struct rset { /* record support entry table */
-        ^~~~
-[0m/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET  -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF devSiWiener.d  ../devSiWiener.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET  -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF devMbboDirectCan.d  ../devMbboDirectCan.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET  -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF devMbbiDirectCan.d  ../devMbbiDirectCan.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET  -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF devMbboCan.d  ../devMbboCan.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET  -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF devMbbiCan.d  ../devMbbiCan.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET  -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF devBoCan.d  ../devBoCan.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET  -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF devBiCan.d  ../devBiCan.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET  -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF devAoCan.d  ../devAoCan.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET  -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../include/compiler/gcc -I../../include/os/Linux -I../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF devAiCan.d  ../devAiCan.c
-/usr/bin/ar -rc    libalive.a    aliveRecord.o 
-/usr/bin/ranlib libalive.a
-/usr/bin/g++ -o libalive.so -shared -fPIC -Wl,-hlibalive.so -L/opt/synApps/support/alive-R1-1-1/lib/linux-x86_64 -L/opt/base-7.0.3/lib/linux-x86_64 -Wl,-rpath,/opt/synApps/support/alive-R1-1-1/lib/linux-x86_64 -Wl,-rpath,/opt/base-7.0.3/lib/linux-x86_64           -rdynamic -m64         aliveRecord.o    -ldbRecStd -ldbCore -lca -lCom   -lpthread   -lreadline -lm -lrt -ldl -lgcc
-make[3]: Leaving directory '/opt/synApps/support/ipac-2-15/drvTip810/O.linux-x86_64'
-make[2]: Leaving directory '/opt/synApps/support/ipac-2-15/drvTip810'
-make -C ./tyGSOctal install 
-make[2]: Entering directory '/opt/synApps/support/ipac-2-15/tyGSOctal'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../.. \
-    T_A=linux-x86_64 install
-make[3]: Entering directory '/opt/synApps/support/ipac-2-15/tyGSOctal/O.linux-x86_64'
-make[3]: Leaving directory '/opt/synApps/support/ipac-2-15/tyGSOctal/O.linux-x86_64'
-make[2]: Leaving directory '/opt/synApps/support/ipac-2-15/tyGSOctal'
-make -C ./ip520 install 
-make[2]: Entering directory '/opt/synApps/support/ipac-2-15/ip520'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../.. \
-    T_A=linux-x86_64 install
-make[3]: Entering directory '/opt/synApps/support/ipac-2-15/ip520/O.linux-x86_64'
-/usr/bin/g++ -o aliveEx  -L/opt/synApps/support/alive-R1-1-1/lib/linux-x86_64 -L/opt/base-7.0.3/lib/linux-x86_64 -Wl,-rpath,/opt/synApps/support/alive-R1-1-1/lib/linux-x86_64 -Wl,-rpath,/opt/base-7.0.3/lib/linux-x86_64           -rdynamic -m64         aliveEx_registerRecordDeviceDriver.o aliveExMain.o    -lalive -ldbRecStd -ldbCore -lca -lCom   
-mkdir ../../../bin
-mkdir ../../../bin/linux-x86_64
-make[4]: Leaving directory '/opt/synApps/support/alive-R1-1-1/aliveApp/src/O.linux-x86_64'
-make[3]: Leaving directory '/opt/synApps/support/alive-R1-1-1/aliveApp/src'
-make -C ./Db install 
-make[3]: Leaving directory '/opt/synApps/support/ipac-2-15/ip520/O.linux-x86_64'
-make[2]: Leaving directory '/opt/synApps/support/ipac-2-15/ip520'
-make[1]: Leaving directory '/opt/synApps/support/ipac-2-15'
-make -C /opt/synApps/support/seq-2-2-6 install 
-make[1]: Entering directory '/opt/synApps/support/seq-2-2-6'
-make[3]: Entering directory '/opt/synApps/support/alive-R1-1-1/aliveApp/Db'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../../.. \
-    T_A=linux-x86_64 install
-make -C ./configure install 
-make[2]: Entering directory '/opt/synApps/support/seq-2-2-6/configure'
-make[4]: Entering directory '/opt/synApps/support/alive-R1-1-1/aliveApp/Db/O.linux-x86_64'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../.. \
-    T_A=linux-x86_64 install
-make[3]: Entering directory '/opt/synApps/support/seq-2-2-6/configure/O.linux-x86_64'
-mkdir ../../../db
-perl -CSD /opt/base/bin/linux-x86_64/convertRelease.pl checkRelease
-make[3]: Leaving directory '/opt/synApps/support/seq-2-2-6/configure/O.linux-x86_64'
-make[2]: Leaving directory '/opt/synApps/support/seq-2-2-6/configure'
-make -C ./src install 
-make[4]: Leaving directory '/opt/synApps/support/alive-R1-1-1/aliveApp/Db/O.linux-x86_64'
-make[3]: Leaving directory '/opt/synApps/support/alive-R1-1-1/aliveApp/Db'
-make[2]: Leaving directory '/opt/synApps/support/alive-R1-1-1/aliveApp'
-make -C ./iocBoot install 
-make[2]: Entering directory '/opt/synApps/support/seq-2-2-6/src'
-make[2]: Entering directory '/opt/synApps/support/alive-R1-1-1/iocBoot'
-make -C ./iocaliveEx install 
-make[3]: Entering directory '/opt/synApps/support/alive-R1-1-1/iocBoot/iocaliveEx'
-make -C ./pv install 
-make[3]: Entering directory '/opt/synApps/support/seq-2-2-6/src/pv'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../../.. \
-    T_A=linux-x86_64 install
-make[4]: Entering directory '/opt/synApps/support/seq-2-2-6/src/pv/O.linux-x86_64'
-perl -CSD /opt/base/bin/linux-x86_64/convertRelease.pl -t /opt/synApps/support/alive-R1-1-1 envPaths
-make[3]: Leaving directory '/opt/synApps/support/alive-R1-1-1/iocBoot/iocaliveEx'
-make[2]: Leaving directory '/opt/synApps/support/alive-R1-1-1/iocBoot'
-make -C ./tests install 
-make[2]: Entering directory '/opt/synApps/support/alive-R1-1-1/tests'
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF pv.d  ../pv.c
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../.. \
-    T_A=linux-x86_64 install
-make[3]: Entering directory '/opt/synApps/support/alive-R1-1-1/tests/O.linux-x86_64'
-perl -CSD /opt/base/bin/linux-x86_64/dbdExpand.pl   -I. -I.. -I../O.Common -I../../aliveApp/src -I../../dbd -I/opt/base/dbd -o aliveTest.dbd base.dbd aliveRecord.dbd
-Installing generic include file ../../../include/pv.h
-mkdir ../../../include
-Installing generic include file ../../../include/pvAlarm.h
-Installing generic include file ../../../include/pvType.h
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../pv.c
-/usr/bin/ar -rc    libpv.a    pv.o 
-/usr/bin/ranlib libpv.a
-/usr/bin/g++  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../aliveApp/src -I../../include/compiler/gcc -I../../include/os/Linux -I../../include    -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF aliveTest.d  ../aliveTest.cpp
-/usr/bin/g++ -o libpv.so -shared -fPIC -Wl,-hlibpv.so -L/opt/synApps/support/seq-2-2-6/lib/linux-x86_64 -L/opt/base-7.0.3/lib/linux-x86_64 -Wl,-rpath,/opt/synApps/support/seq-2-2-6/lib/linux-x86_64 -Wl,-rpath,/opt/base-7.0.3/lib/linux-x86_64           -rdynamic -m64         pv.o    -lca -lCom   -lpthread   -lreadline -lm -lrt -ldl -lgcc
-Installing shared library ../../../lib/linux-x86_64/libpv.so
-Installing library ../../../lib/linux-x86_64/libpv.a
-make[4]: Leaving directory '/opt/synApps/support/seq-2-2-6/src/pv/O.linux-x86_64'
-make[3]: Leaving directory '/opt/synApps/support/seq-2-2-6/src/pv'
-make -C ./common install 
-make[3]: Entering directory '/opt/synApps/support/seq-2-2-6/src/common'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../../.. \
-    T_A=linux-x86_64 install
-make[4]: Entering directory '/opt/synApps/support/seq-2-2-6/src/common/O.linux-x86_64'
-perl -CSD ../seq_release.pl 2.2.6 > ../O.Common/seq_release.h
-Installing generic include file ../../../include/seq_mask.h
-Installing generic include file ../../../include/seq_prim_types.h
-Installing generated generic include file ../../../include/seq_release.h
-make[4]: Leaving directory '/opt/synApps/support/seq-2-2-6/src/common/O.linux-x86_64'
-make[3]: Leaving directory '/opt/synApps/support/seq-2-2-6/src/common'
-make -C ./lemon install 
-make[3]: Entering directory '/opt/synApps/support/seq-2-2-6/src/lemon'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../../.. \
-    T_A=linux-x86_64 install
-make[4]: Entering directory '/opt/synApps/support/seq-2-2-6/src/lemon/O.linux-x86_64'
-perl -CSD /opt/base/bin/linux-x86_64/registerRecordDeviceDriver.pl   -I. -I.. -I../O.Common -I../../aliveApp/src -I../../dbd -I/opt/base/dbd    -o aliveTest_registerRecordDeviceDriver.cpp ../O.Common/aliveTest.dbd aliveTest_registerRecordDeviceDriver /opt/synApps/support/alive-R1-1-1
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF lemon.d  ../lemon.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../lemon.c
-/usr/bin/g++  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../aliveApp/src -I../../include/compiler/gcc -I../../include/os/Linux -I../../include    -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF aliveTest_registerRecordDeviceDriver.d  aliveTest_registerRecordDeviceDriver.cpp
-/usr/bin/g++  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../aliveApp/src -I../../include/compiler/gcc -I../../include/os/Linux -I../../include    -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../aliveTest.cpp
-[91mIn file included from /opt/base/include/dbAccess.h:19:0,
-                 from ../aliveTest.cpp:4:
-/opt/base/include/dbBase.h:162:18: warning: 'rset' is deprecated [-Wdeprecated-declarations]
-     rset        *prset;
-                  ^~~~~
-[0m[91mIn file included from /opt/base/include/dbBase.h:21:0,
-                 from /opt/base/include/dbAccess.h:19,
-                 from ../aliveTest.cpp:4:
-/opt/base/include/recSup.h:88:21: note: declared here
- typedef struct rset rset EPICS_DEPRECATED;
-                     ^~~~
-[0m[91mIn file included from /opt/base/include/dbAccess.h:23:0,
-                 from ../aliveTest.cpp:4:
-/opt/base/include/dbAccessDefs.h:210:59: warning: 'rset' is deprecated [-Wdeprecated-declarations]
- epicsShareFunc rset * dbGetRset(const struct dbAddr *paddr);
-                                                           ^
-[0m[91mIn file included from /opt/base/include/dbBase.h:21:0,
-                 from /opt/base/include/dbAccess.h:19,
-                 from ../aliveTest.cpp:4:
-/opt/base/include/recSup.h:88:21: note: declared here
- typedef struct rset rset EPICS_DEPRECATED;
-                     ^~~~
-[0m[91m../aliveTest.cpp: In function 'void testRecv(SOCKET&, char*)':
-../aliveTest.cpp:88:21: warning: format not a string literal and no format arguments [-Wformat-security]
-   testFail(test_name);
-                     ^
-[0m[91m../aliveTest.cpp:102:21: warning: format not a string literal and no format arguments [-Wformat-security]
-   testFail(test_name);
-                     ^
-[0m[91m../aliveTest.cpp:117:21: warning: format not a string literal and no format arguments [-Wformat-security]
-   testFail(test_name);
-                     ^
-[0m[91m../aliveTest.cpp:127:37: warning: format not a string literal and no format arguments [-Wformat-security]
-  if (! testOk(status >= 0, test_name))
-                                     ^
-[0m/usr/bin/g++  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../aliveApp/src -I../../include/compiler/gcc -I../../include/os/Linux -I../../include    -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c aliveTest_registerRecordDeviceDriver.cpp
-/usr/bin/g++ -o aliveTest  -L/opt/synApps/support/alive-R1-1-1/lib/linux-x86_64 -L/opt/base-7.0.3/lib/linux-x86_64 -Wl,-rpath,/opt/synApps/support/alive-R1-1-1/lib/linux-x86_64 -Wl,-rpath,/opt/base-7.0.3/lib/linux-x86_64           -rdynamic -m64         aliveTest.o aliveTest_registerRecordDeviceDriver.o    -lalive -ldbRecStd -ldbCore -lca -lCom   
-perl -CSD /opt/base/bin/linux-x86_64/makeTestfile.pl linux-x86_64 linux-x86_64 aliveTest.t aliveTest
-make[3]: Leaving directory '/opt/synApps/support/alive-R1-1-1/tests/O.linux-x86_64'
-make[2]: Leaving directory '/opt/synApps/support/alive-R1-1-1/tests'
-make[1]: Leaving directory '/opt/synApps/support/alive-R1-1-1'
-make -C /opt/synApps/support/autosave-R5-10 install 
-make[1]: Entering directory '/opt/synApps/support/autosave-R5-10'
-make -C ./configure install 
-make[2]: Entering directory '/opt/synApps/support/autosave-R5-10/configure'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../.. \
-    T_A=linux-x86_64 install
-make[3]: Entering directory '/opt/synApps/support/autosave-R5-10/configure/O.linux-x86_64'
-perl -CSD /opt/base/bin/linux-x86_64/convertRelease.pl checkRelease
-make[3]: Leaving directory '/opt/synApps/support/autosave-R5-10/configure/O.linux-x86_64'
-make[2]: Leaving directory '/opt/synApps/support/autosave-R5-10/configure'
-make -C ./asApp install 
-make[2]: Entering directory '/opt/synApps/support/autosave-R5-10/asApp'
-make -C ./src install 
-make[3]: Entering directory '/opt/synApps/support/autosave-R5-10/asApp/src'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../../.. \
-    T_A=linux-x86_64 install
-make[4]: Entering directory '/opt/synApps/support/autosave-R5-10/asApp/src/O.linux-x86_64'
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET -DDBLOADRECORDSHOOKREGISTER  -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF osdNfs.d  ../os/Linux/osdNfs.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET -DDBLOADRECORDSHOOKREGISTER  -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF verify.d  ../verify.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET -DDBLOADRECORDSHOOKREGISTER  -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF configMenuSub.d  ../configMenuSub.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET -DDBLOADRECORDSHOOKREGISTER  -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF fGetDateStr.d  ../fGetDateStr.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET -DDBLOADRECORDSHOOKREGISTER  -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF initHooks.d  ../initHooks.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET -DDBLOADRECORDSHOOKREGISTER  -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF save_restore.d  ../save_restore.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET -DDBLOADRECORDSHOOKREGISTER  -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF dbrestore.d  ../dbrestore.c
-/usr/bin/g++  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF asMain.d  ../asMain.cpp
-perl -CSD /opt/base/bin/linux-x86_64/dbdExpand.pl   -I. -I.. -I../O.Common -I../../../dbd -I/opt/base/dbd -o as.dbd ../asInclude.dbd
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET -DDBLOADRECORDSHOOKREGISTER  -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF asVerify.d  ../asVerify.c
-perl -CSD /opt/base/bin/linux-x86_64/registerRecordDeviceDriver.pl   -I. -I.. -I../O.Common -I../../../dbd -I/opt/base/dbd    -o as_registerRecordDeviceDriver.cpp ../O.Common/as.dbd as_registerRecordDeviceDriver /opt/synApps/support/autosave-R5-10
-/usr/bin/g++ -o lemon  -L/opt/synApps/support/seq-2-2-6/lib/linux-x86_64 -Wl,-rpath,/opt/synApps/support/seq-2-2-6/lib/linux-x86_64           -rdynamic -m64         lemon.o       
-Installing created executable ../../../bin/linux-x86_64/lemon
-/usr/bin/g++  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF as_registerRecordDeviceDriver.d  as_registerRecordDeviceDriver.cpp
-mkdir ../../../bin
-mkdir ../../../bin/linux-x86_64
-make[4]: Leaving directory '/opt/synApps/support/seq-2-2-6/src/lemon/O.linux-x86_64'
-make[3]: Leaving directory '/opt/synApps/support/seq-2-2-6/src/lemon'
-make -C ./seq install 
-make[3]: Entering directory '/opt/synApps/support/seq-2-2-6/src/seq'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../../.. \
-    T_A=linux-x86_64 install
-make[4]: Entering directory '/opt/synApps/support/seq-2-2-6/src/seq/O.linux-x86_64'
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF seq_queue.d  ../seq_queue.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF seq_cmd.d  ../seq_cmd.c
-mkdir ../../../dbd
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF seq_qry.d  ../seq_qry.c
-mkdir ../../../include
-mkdir ../../../include/os
-mkdir ../../../include/os/Linux
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF seq_prog.d  ../seq_prog.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET -DDBLOADRECORDSHOOKREGISTER  -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../asVerify.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF seq_mac.d  ../seq_mac.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF seq_if.d  ../seq_if.c
-[91mIn file included from ../asVerify.c:15:0:
-../save_restore.h:42:13: warning: 'SR_STATUS_STR' defined but not used [-Wunused-variable]
- static char SR_STATUS_STR[5][10] =
-             ^~~~~~~~~~~~~
-[0m/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF seq_ca.d  ../seq_ca.c
-/usr/bin/g++  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c as_registerRecordDeviceDriver.cpp
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF seq_task.d  ../seq_task.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF seq_main.d  ../seq_main.c
-Installing generic include file ../../../include/seqCom.h
-Installing generic include file ../../../include/seqStats.h
-/usr/bin/g++  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../asMain.cpp
-Installing generic include file ../../../include/seq_snc.h
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../seq_main.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET -DDBLOADRECORDSHOOKREGISTER  -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../dbrestore.c
-[91m../dbrestore.c: In function 'reboot_restore':
-[0m[91m../dbrestore.c:871:2: warning: ignoring return value of 'fgets', declared with attribute warn_unused_result [-Wunused-result]
-  (void)fgets(buffer, BUF_SIZE, inp_fd); /* discard header line */
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-[0m[91m../dbrestore.c: In function 'checkFile':
-[0m[91m../dbrestore.c:1169:2: warning: ignoring return value of 'fgets', declared with attribute warn_unused_result [-Wunused-result]
-  fgets(tmpstr, 29, inp_fd);
-  ^~~~~~~~~~~~~~~~~~~~~~~~~
-[0m[91m../dbrestore.c:1193:2: warning: ignoring return value of 'fgets', declared with attribute warn_unused_result [-Wunused-result]
-  fgets(tmpstr, 6, inp_fd);
-  ^~~~~~~~~~~~~~~~~~~~~~~~
-[0m[91m../dbrestore.c:1203:2: warning: ignoring return value of 'fgets', declared with attribute warn_unused_result [-Wunused-result]
-  fgets(tmpstr, 7, inp_fd);
-  ^~~~~~~~~~~~~~~~~~~~~~~~
-[0m/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../seq_task.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../seq_ca.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../seq_if.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET -DDBLOADRECORDSHOOKREGISTER  -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../save_restore.c
-[91m../save_restore.c: In function 'do_manual_restore':
-[0m[91m../save_restore.c:3352:3: warning: ignoring return value of 'fgets', declared with attribute warn_unused_result [-Wunused-result]
-   (void)fgets(buffer, BUF_SIZE, inp_fd); /* discard header line */
-   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-[0m[91m../save_restore.c:3410:39: warning: ignoring return value of 'fgets', declared with attribute warn_unused_result [-Wunused-result]
-      while (bp[strlen(bp)-1] != '\n') fgets(buffer, BUF_SIZE, inp_fd);
-                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-[0m/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../seq_mac.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../seq_prog.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../seq_qry.c
-[91m../seq_qry.c: In function 'seqShowSP':
-[0m[91m../seq_qry.c:408:2: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
-  if ((*pprogCount)++ == 0)
-  ^~
-[0m[91m../seq_qry.c:410:3: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
-   printf("------------        ---------           -----------         -------\n");
-   ^~~~~~
-[0m/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../seq_cmd.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../seq_queue.c
-/usr/bin/ar -rc    libseq.a    seq_main.o seq_task.o seq_ca.o seq_if.o seq_mac.o seq_prog.o seq_qry.o seq_cmd.o seq_queue.o 
-/usr/bin/ranlib libseq.a
-/usr/bin/g++ -o libseq.so -shared -fPIC -Wl,-hlibseq.so -L/opt/synApps/support/seq-2-2-6/lib/linux-x86_64 -L/opt/base-7.0.3/lib/linux-x86_64 -Wl,-rpath,/opt/synApps/support/seq-2-2-6/lib/linux-x86_64 -Wl,-rpath,/opt/base-7.0.3/lib/linux-x86_64           -rdynamic -m64         seq_main.o seq_task.o seq_ca.o seq_if.o seq_mac.o seq_prog.o seq_qry.o seq_cmd.o seq_queue.o    -lpv -lCom   -lpthread   -lreadline -lm -lrt -ldl -lgcc
-Installing shared library ../../../lib/linux-x86_64/libseq.so
-Installing library ../../../lib/linux-x86_64/libseq.a
-make[4]: Leaving directory '/opt/synApps/support/seq-2-2-6/src/seq/O.linux-x86_64'
-make[3]: Leaving directory '/opt/synApps/support/seq-2-2-6/src/seq'
-make -C ./snc install 
-make[3]: Entering directory '/opt/synApps/support/seq-2-2-6/src/snc'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../../.. \
-    T_A=linux-x86_64 install
-make[4]: Entering directory '/opt/synApps/support/seq-2-2-6/src/snc/O.linux-x86_64'
-/opt/synApps/support/seq-2-2-6/bin/linux-x86_64/lemon o=. ../snl.lem
-[91m2 parsing conflicts.
-[0mre2c -s -b -o lexer.c ../snl.re
-perl -CSD /opt/base/bin/linux-x86_64/mkmf.pl  -m type_check.d -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        type_check.o ../type_check.c
-perl -CSD /opt/base/bin/linux-x86_64/mkmf.pl  -m builtin.d -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        builtin.o ../builtin.c
-perl -CSD /opt/base/bin/linux-x86_64/mkmf.pl  -m sym_table.d -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        sym_table.o ../sym_table.c
-perl -CSD /opt/base/bin/linux-x86_64/mkmf.pl  -m gen_tables.d -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        gen_tables.o ../gen_tables.c
-perl -CSD /opt/base/bin/linux-x86_64/mkmf.pl  -m gen_ss_code.d -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        gen_ss_code.o ../gen_ss_code.c
-perl -CSD /opt/base/bin/linux-x86_64/mkmf.pl  -m gen_code.d -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        gen_code.o ../gen_code.c
-perl -CSD /opt/base/bin/linux-x86_64/mkmf.pl  -m analysis.d -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        analysis.o ../analysis.c
-perl -CSD /opt/base/bin/linux-x86_64/mkmf.pl  -m var_types.d -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        var_types.o ../var_types.c
-perl -CSD /opt/base/bin/linux-x86_64/mkmf.pl  -m node.d -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        node.o ../node.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET -DDBLOADRECORDSHOOKREGISTER  -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../initHooks.c
-perl -CSD /opt/base/bin/linux-x86_64/mkmf.pl  -m main.d -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        main.o ../main.c
-[91mIn file included from ../initHooks.c:40:0:
-../save_restore.h:42:13: warning: 'SR_STATUS_STR' defined but not used [-Wunused-variable]
- static char SR_STATUS_STR[5][10] =
-             ^~~~~~~~~~~~~
-[0m/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET -DDBLOADRECORDSHOOKREGISTER  -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../fGetDateStr.c
-perl -CSD /opt/base/bin/linux-x86_64/mkmf.pl  -m snl.d -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        snl.o snl.c
-perl -CSD /opt/base/bin/linux-x86_64/mkmf.pl  -m lexer.d -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        lexer.o lexer.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET -DDBLOADRECORDSHOOKREGISTER  -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../configMenuSub.c
-Installing generic include file ../../../include/seqMain.c
-/opt/synApps/support/seq-2-2-6/bin/linux-x86_64/lemon o=. -g ../snl.lem > snl.bnf.tmp
-mv snl.bnf.tmp ../O.Common/snl.bnf
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c lexer.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET -DDBLOADRECORDSHOOKREGISTER  -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../verify.c
-[91m../verify.c: In function 'do_asVerify':
-[0m[91m../verify.c:156:5: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
-     if (write_restore_file) fclose(fr); fr = NULL;
-     ^~
-[0m[91m../verify.c:156:41: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
-     if (write_restore_file) fclose(fr); fr = NULL;
-                                         ^~
-[0m[91m../verify.c:69:2: warning: ignoring return value of 'fgets', declared with attribute warn_unused_result [-Wunused-result]
-  fgets(s, 6, fp);
-  ^~~~~~~~~~~~~~~
-[0m[91m../verify.c:73:3: warning: ignoring return value of 'fgets', declared with attribute warn_unused_result [-Wunused-result]
-   fgets(s, 7, fp);
-   ^~~~~~~~~~~~~~~
-[0m[91m../verify.c:307:39: warning: ignoring return value of 'fgets', declared with attribute warn_unused_result [-Wunused-result]
-      while (bp[strlen(bp)-1] != '\n') fgets(s, BUF_SIZE, fp);
-                                       ^~~~~~~~~~~~~~~~~~~~~~
-[0m[91mIn file included from ../verify.c:17:0:
-At top level:
-[0m[91m../save_restore.h:42:13: warning: 'SR_STATUS_STR' defined but not used [-Wunused-variable]
- static char SR_STATUS_STR[5][10] =
-             ^~~~~~~~~~~~~
-[0m/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall     -DUSE_TYPED_RSET -DDBLOADRECORDSHOOKREGISTER  -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I../os/Linux -I../os/default -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../os/Linux/osdNfs.c
-/usr/bin/ar -rc    libautosave.a    dbrestore.o save_restore.o initHooks.o fGetDateStr.o configMenuSub.o verify.o osdNfs.o 
-/usr/bin/ranlib libautosave.a
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c snl.c
-/usr/bin/g++ -o libautosave.so -shared -fPIC -Wl,-hlibautosave.so -L/opt/synApps/support/autosave-R5-10/lib/linux-x86_64 -L/opt/base-7.0.3/lib/linux-x86_64 -Wl,-rpath,/opt/synApps/support/autosave-R5-10/lib/linux-x86_64 -Wl,-rpath,/opt/base-7.0.3/lib/linux-x86_64           -rdynamic -m64         dbrestore.o save_restore.o initHooks.o fGetDateStr.o configMenuSub.o verify.o osdNfs.o    -ldbRecStd -ldbCore -lca -lCom   -lpthread   -lreadline -lm -lrt -ldl -lgcc
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../main.c
-/usr/bin/g++ -o asVerify  -L/opt/synApps/support/autosave-R5-10/lib/linux-x86_64 -L/opt/base-7.0.3/lib/linux-x86_64 -Wl,-rpath,/opt/synApps/support/autosave-R5-10/lib/linux-x86_64 -Wl,-rpath,/opt/base-7.0.3/lib/linux-x86_64           -rdynamic -m64         asVerify.o verify.o    -lca -lCom   
-[91masVerify.o[0m[91m:[0m[91m [0m[91mIn[0m[91m [0m[91mfunction[0m[91m [0m[91m`[0m[91mmain[0m[91m'[0m[91m:[0m[91m
-[0m[91m/[0m[91mopt[0m[91m/[0m[91msynApps[0m[91m/[0m[91msupport[0m[91m/[0m[91mautosave[0m[91m-[0m[91mR5[0m[91m-[0m[91m10[0m[91m/[0m[91masApp[0m[91m/[0m[91msrc[0m[91m/[0m[91mO.linux[0m[91m-[0m[91mx86_64[0m[91m/[0m[91m.[0m[91m.[0m[91m/[0m[91masVerify.c[0m[91m:[0m[91m85[0m[91m:[0m[91m [0m[91mwarning[0m[91m:[0m[91m [0m[91mthe[0m[91m [0m[91muse[0m[91m [0m[91mof[0m[91m [0m[91m`[0m[91mtmpnam[0m[91m'[0m[91m [0m[91mis[0m[91m [0m[91mdangerous[0m[91m,[0m[91m [0m[91mbetter[0m[91m [0m[91muse[0m[91m [0m[91m`[0m[91mmkstemp[0m[91m'[0m[91m
-[0m/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../node.c
-/usr/bin/g++ -o asApp  -L/opt/synApps/support/autosave-R5-10/lib/linux-x86_64 -L/opt/base-7.0.3/lib/linux-x86_64 -Wl,-rpath,/opt/synApps/support/autosave-R5-10/lib/linux-x86_64 -Wl,-rpath,/opt/base-7.0.3/lib/linux-x86_64           -rdynamic -m64         as_registerRecordDeviceDriver.o asMain.o    -lautosave -ldbRecStd -ldbCore -lca -lCom   
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../var_types.c
-mkdir ../../../bin
-mkdir ../../../bin/linux-x86_64
-make[4]: Leaving directory '/opt/synApps/support/autosave-R5-10/asApp/src/O.linux-x86_64'
-make[3]: Leaving directory '/opt/synApps/support/autosave-R5-10/asApp/src'
-make -C ./Db install 
-make[3]: Entering directory '/opt/synApps/support/autosave-R5-10/asApp/Db'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../../.. \
-    T_A=linux-x86_64 install
-make[4]: Entering directory '/opt/synApps/support/autosave-R5-10/asApp/Db/O.linux-x86_64'
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../analysis.c
-mkdir ../../../db
-make[4]: Leaving directory '/opt/synApps/support/autosave-R5-10/asApp/Db/O.linux-x86_64'
-make[3]: Leaving directory '/opt/synApps/support/autosave-R5-10/asApp/Db'
-make[2]: Leaving directory '/opt/synApps/support/autosave-R5-10/asApp'
-make -C ./iocBoot install 
-make[2]: Entering directory '/opt/synApps/support/autosave-R5-10/iocBoot'
-make -C ./iocas install 
-make[3]: Entering directory '/opt/synApps/support/autosave-R5-10/iocBoot/iocas'
-make[3]: Nothing to be done for 'install'.
-make[3]: Leaving directory '/opt/synApps/support/autosave-R5-10/iocBoot/iocas'
-make[2]: Leaving directory '/opt/synApps/support/autosave-R5-10/iocBoot'
-make[1]: Leaving directory '/opt/synApps/support/autosave-R5-10'
-make -C /opt/synApps/support/caputRecorder-R1-7-2 install 
-make[1]: Entering directory '/opt/synApps/support/caputRecorder-R1-7-2'
-make -C ./configure install 
-make[2]: Entering directory '/opt/synApps/support/caputRecorder-R1-7-2/configure'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../.. \
-    T_A=linux-x86_64 install
-make[3]: Entering directory '/opt/synApps/support/caputRecorder-R1-7-2/configure/O.linux-x86_64'
-perl -CSD /opt/base/bin/linux-x86_64/convertRelease.pl checkRelease
-make[3]: Leaving directory '/opt/synApps/support/caputRecorder-R1-7-2/configure/O.linux-x86_64'
-make[2]: Leaving directory '/opt/synApps/support/caputRecorder-R1-7-2/configure'
-make -C ./caputRecorderApp install 
-make[2]: Entering directory '/opt/synApps/support/caputRecorder-R1-7-2/caputRecorderApp'
-make -C ./src install 
-make[3]: Entering directory '/opt/synApps/support/caputRecorder-R1-7-2/caputRecorderApp/src'
-perl -CSD /opt/base/bin/linux-x86_64/makeMakefile.pl O.linux-x86_64 ../../..
-mkdir -p O.Common
-make -C O.linux-x86_64 -f ../Makefile TOP=../../.. \
-    T_A=linux-x86_64 install
-make[4]: Entering directory '/opt/synApps/support/caputRecorder-R1-7-2/caputRecorderApp/src/O.linux-x86_64'
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include    -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF subMLIS.d  ../subMLIS.c
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include    -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -MM -MF caputRecorder.d  ../caputRecorder.c
-mkdir ../../../dbd
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include    -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../caputRecorder.c
-[91mIn file included from /opt/base/include/dbAccess.h:19:0,
-                 from ../caputRecorder.c:6:
-/opt/base/include/dbBase.h:162:5: warning: 'rset' is deprecated [-Wdeprecated-declarations]
-     rset        *prset;
-     ^~~~
-[0m[91mIn file included from /opt/base/include/dbBase.h:21:0,
-                 from /opt/base/include/dbAccess.h:19,
-                 from ../caputRecorder.c:6:
-/opt/base/include/recSup.h:67:8: note: declared here
- struct rset { /* record support entry table */
-        ^~~~
-[0m[91mIn file included from /opt/base/include/dbAccess.h:23:0,
-                 from ../caputRecorder.c:6:
-/opt/base/include/dbAccessDefs.h:210:46: warning: 'rset' is deprecated [-Wdeprecated-declarations]
- epicsShareFunc rset * dbGetRset(const struct dbAddr *paddr);
-                                              ^~~~~~
-[0m[91mIn file included from /opt/base/include/dbBase.h:21:0,
-                 from /opt/base/include/dbAccess.h:19,
-                 from ../caputRecorder.c:6:
-/opt/base/include/recSup.h:67:8: note: declared here
- struct rset { /* record support entry table */
-        ^~~~
-[0m[91m../caputRecorder.c: In function 'getEnumString':
-[0m[91m../caputRecorder.c:78:9: warning: 'rset' is deprecated [-Wdeprecated-declarations]
-  struct rset *prset = 0;
-         ^~~~
-[0m[91mIn file included from /opt/base/include/dbBase.h:21:0,
-                 from /opt/base/include/dbAccess.h:19,
-                 from ../caputRecorder.c:6:
-/opt/base/include/recSup.h:67:8: note: declared here
- struct rset { /* record support entry table */
-        ^~~~
-[0m[91m../caputRecorder.c: In function 'myAsDataListener':
-[0m[91m../caputRecorder.c:284:15: warning: variable 'numChar' set but not used [-Wunused-but-set-variable]
-  unsigned int numChar;
-               ^~~~~~~
-[0m[91m../caputRecorder.c: In function 'registerCaputRecorderTrapListener':
-[0m[91m../caputRecorder.c:391:16: warning: variable 'id' set but not used [-Wunused-but-set-variable]
-  asTrapWriteId id;
-                ^~
-[0m[91mAt top level:
-[0m[91m../caputRecorder.c:264:17: warning: 'my_dbNameOfPV' defined but not used [-Wunused-function]
- static unsigned my_dbNameOfPV(const dbAddr *paddr, char *pBuf, unsigned bufLen) {
-                 ^~~~~~~~~~~~~
-[0m/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE           -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64 -fPIC -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include    -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../subMLIS.c
-[91mIn file included from /opt/base/include/dbAccess.h:19:0,
-                 from ../subMLIS.c:8:
-/opt/base/include/dbBase.h:162:5: warning: 'rset' is deprecated [-Wdeprecated-declarations]
-     rset        *prset;
-     ^~~~
-[0m[91mIn file included from /opt/base/include/dbBase.h:21:0,
-                 from /opt/base/include/dbAccess.h:19,
-                 from ../subMLIS.c:8:
-/opt/base/include/recSup.h:67:8: note: declared here
- struct rset { /* record support entry table */
-        ^~~~
-[0m[91mIn file included from /opt/base/include/dbAccess.h:23:0,
-                 from ../subMLIS.c:8:
-/opt/base/include/dbAccessDefs.h:210:46: warning: 'rset' is deprecated [-Wdeprecated-declarations]
- epicsShareFunc rset * dbGetRset(const struct dbAddr *paddr);
-                                              ^~~~~~
-[0m[91mIn file included from /opt/base/include/dbBase.h:21:0,
-                 from /opt/base/include/dbAccess.h:19,
-                 from ../subMLIS.c:8:
-/opt/base/include/recSup.h:67:8: note: declared here
- struct rset { /* record support entry table */
-        ^~~~
-[0m/usr/bin/ar -rc    libcaputRecorder.a    caputRecorder.o subMLIS.o 
-/usr/bin/ranlib libcaputRecorder.a
-/usr/bin/g++ -o libcaputRecorder.so -shared -fPIC -Wl,-hlibcaputRecorder.so -L/opt/synApps/support/caputRecorder-R1-7-2/lib/linux-x86_64 -L/opt/base-7.0.3/lib/linux-x86_64 -Wl,-rpath,/opt/synApps/support/caputRecorder-R1-7-2/lib/linux-x86_64 -Wl,-rpath,/opt/base-7.0.3/lib/linux-x86_64           -rdynamic -m64         caputRecorder.o subMLIS.o    -ldbRecStd -ldbCore -lca -lCom   -lpthread   -lreadline -lm -lrt -ldl -lgcc
-/usr/bin/gcc  -D_GNU_SOURCE -D_DEFAULT_SOURCE         -DUSE_TYPED_RSET   -D_X86_64_  -DUNIX  -Dlinux     -O3 -g   -Wall      -mtune=generic      -m64  -I. -I../O.Common -I. -I. -I.. -I../../../include/compiler/gcc -I../../../include/os/Linux -I../../../include -I/opt/base/include/compiler/gcc -I/opt/base/include/os/Linux -I/opt/base/include        -c ../gen_code.c
-make[4]: Leaving directory '/opt/synApps/support/caputRecorder-R1-7-2/caputRecorderApp/src/O.linux-x86_64'
-make[3]: Leaving directory '/opt/synApps/support/caputRecorder-R1-7-2/caputRecorderApp/src'
-make -C ./Db install 
-make[3]: Entering directory '/opt/synApps/support/caputRecorder-R1-7-2/caputRecorderApp/Db'
+Step 17/28 : RUN sed -i s:'ALLENBRADLEY=':'#ALLENBRADLEY=':g         assemble_synApps.sh &&     sed -i s:'AREA_DETECTOR=':'#AREA_DETECTOR=':g       assemble_synApps.sh &&     sed -i s:'CAMAC=':'#CAMAC=':g                       assemble_synApps.sh &&     sed -i s:'DAC128V=':'#DAC128V=':g                   assemble_synApps.sh &&     sed -i s:'DELAYGEN=':'#DELAYGEN=':g                 assemble_synApps.sh &&     sed -i s:'DXP=':'#DXP=':g                           assemble_synApps.sh &&     sed -i s:'DXPSITORO=':'#DXPSITORO=':g               assemble_synApps.sh &&     sed -i s:'IP330=':'#IP330=':g                       assemble_synApps.sh &&     sed -i s:'IPUNIDIG=':'#IPUNIDIG=':g                 assemble_synApps.sh &&     sed -i s:'LOVE=':'#LOVE=':g                         assemble_synApps.sh &&     sed -i s:'QUADEM=':'#QUADEM=':g                     assemble_synApps.sh &&     sed -i s:'SOFTGLUE=':'#SOFTGLUE=':g                 assemble_synApps.sh &&     sed -i s:'SOFTGLUEZYNQ=':'#SOFTGLUEZYNQ=':g         assemble_synApps.sh &&     sed -i s:'VME=':'#VME=':g                           assemble_synApps.sh &&     sed -i s:'YOKOGAWA_DAS=':'#YOKOGAWA_DAS=':g         assemble_synApps.sh
+ ---> Running in 4157a4c83a5f
+Removing intermediate container 4157a4c83a5f
+ ---> 34f49f594a7f
+Step 18/28 : RUN echo # start ------------------- assemble_synApps.sh -------------------
+ ---> Running in 9f12a39d94cd
+
+Removing intermediate container 9f12a39d94cd
+ ---> 7bd58efaa739
+Step 19/28 : RUN cat assemble_synApps.sh
+ ---> Running in a6c96a424d0b
+#!/bin/bash
+shopt -s expand_aliases
+
+EPICS_BASE=/opt/base
+
+SUPPORT=R6-1
+CONFIGURE=R6-1
+UTILS=R6-1
+DOCUMENTATION=R6-1
+
+#ALLENBRADLEY=2.3
+ALIVE=R1-1-1
+#AREA_DETECTOR=R3-7
+ASYN=R4-36
+AUTOSAVE=R5-10
+BUSY=R1-7-2
+CALC=R3-7-3
+#CAMAC=R2-7-1
+CAPUTRECORDER=R1-7-2
+#DAC128V=R2-9
+#DELAYGEN=R1-2-1
+#DXP=R6-0
+#DXPSITORO=R1-2
+DEVIOCSTATS=3.1.16
+#ETHERIP=ether_ip-3-1
+#GALIL=V3-6
+IP=R2-20-1
+IPAC=2.15
+#IP330=R2-9
+#IPUNIDIG=R2-11
+#LOVE=R3-2-7
+LUA=R2-0
+MCA=R7-8
+MEASCOMP=R2-3
+MODBUS=R3-0
+MOTOR=R7-1
+OPTICS=R2-13-3
+#QUADEM=R9-2-1
+SNCSEQ=2.2.6
+#SOFTGLUE=R2-8-2
+#SOFTGLUEZYNQ=R2-0-2
+SSCAN=R2-11-3
+STD=R3-6
+STREAM=2.8.9
+VAC=R1-9
+#VME=R2-9-2
+#YOKOGAWA_DAS=R2-0-1
+XXX=R6-1
+
+
+
+shallow_repo()
+{
+	PROJECT=$1
+	MODULE_NAME=$2
+	RELEASE_NAME=$3
+	TAG=$4
+	
+	FOLDER_NAME=$MODULE_NAME-${TAG//./-}
+	
+	echo
+	echo "Grabbing $MODULE_NAME at tag: $TAG"
+	echo
+	
+	git clone -q --branch $TAG --depth 1 https://github.com/$PROJECT/$MODULE_NAME.git $FOLDER_NAME
+	
+	echo "$RELEASE_NAME=\$(SUPPORT)/$FOLDER_NAME" >> ./configure/RELEASE
+	
+	echo
+}
+
+full_repo()
+{
+	PROJECT=$1
+	MODULE_NAME=$2
+	RELEASE_NAME=$3
+	TAG=$4
+	
+	FOLDER_NAME=$MODULE_NAME-${TAG//./-}
+	
+	echo
+	echo "Grabbing $MODULE_NAME at tag: $TAG"
+	echo
+	
+	git clone -q https://github.com/$PROJECT/$MODULE_NAME.git $FOLDER_NAME
+	
+	CURR=$(pwd)
+	
+	cd $FOLDER_NAME
+	git checkout -q $TAG
+	cd "$CURR"
+	echo "$RELEASE_NAME=\$(SUPPORT)/$FOLDER_NAME" >> ./configure/RELEASE
+	
+	echo
+}
+
+
+shallow_support()
+{
+	git clone -q --branch $2 --depth 1 https://github.com/EPICS-synApps/$1.git
+}
+
+
+full_support()
+{
+	git clone -q https://github.com/EPICS-synApps/$1.git
+	cd $1
+	git checkout -q $2
+	cd ..
+}
+
+alias get_support='shallow_support'
+alias get_repo='shallow_repo'
+
+if [ "$1" == "full" ]; then
+	alias get_support='full_support'
+	alias get_repo='full_repo'
+fi
+
+
+# Assume user has nothing but this file, just in case that's true.
+mkdir synApps
+cd synApps
+
+get_support support $SUPPORT
+cd support
+
+get_support configure      $CONFIGURE
+get_support utils          $UTILS
+get_support documentation  $DOCUMENTATION
+
+SUPPORT=$(pwd)
+
+echo "SUPPORT=$SUPPORT" > configure/RELEASE
+echo '-include $(TOP)/configure/SUPPORT.$(EPICS_HOST_ARCH)' >> configure/RELEASE
+echo "EPICS_BASE=$EPICS_BASE" >> configure/RELEASE
+echo '-include $(TOP)/configure/EPICS_BASE' >> configure/RELEASE
+echo '-include $(TOP)/configure/EPICS_BASE.$(EPICS_HOST_ARCH)' >> configure/RELEASE
+echo "" >> configure/RELEASE
+echo "" >> configure/RELEASE
+
+# modules ##################################################################
+
+#                               get_repo Git Project            Git Repo       RELEASE Name   Tag
+if [[ $ALIVE ]];         then   get_repo epics-modules          alive          ALIVE          $ALIVE         ; fi
+if [[ $ASYN ]];          then   get_repo epics-modules          asyn           ASYN           $ASYN          ; fi
+if [[ $AUTOSAVE ]];      then   get_repo epics-modules          autosave       AUTOSAVE       $AUTOSAVE      ; fi
+if [[ $BUSY ]];          then   get_repo epics-modules          busy           BUSY           $BUSY          ; fi
+if [[ $CALC ]];          then   get_repo epics-modules          calc           CALC           $CALC          ; fi
+if [[ $CAMAC ]];         then   get_repo epics-modules          camac          CAMAC          $CAMAC         ; fi
+if [[ $CAPUTRECORDER ]]; then   get_repo epics-modules          caputRecorder  CAPUTRECORDER  $CAPUTRECORDER ; fi
+if [[ $DAC128V ]];       then   get_repo epics-modules          dac128V        DAC128V        $DAC128V       ; fi
+if [[ $DELAYGEN ]];      then   get_repo epics-modules          delaygen       DELAYGEN       $DELAYGEN      ; fi
+if [[ $DXP ]];           then   get_repo epics-modules          dxp            DXP            $DXP           ; fi
+if [[ $DXPSITORO ]];     then   get_repo epics-modules          dxpSITORO      DXPSITORO      $DXPSITORO     ; fi
+if [[ $DEVIOCSTATS ]];   then   get_repo epics-modules          iocStats       DEVIOCSTATS    $DEVIOCSTATS   ; fi
+if [[ $ETHERIP ]];       then   get_repo EPICSTools             ether_ip       ETHERIP        $ETHERIP       ; fi
+if [[ $GALIL ]];         then   get_repo motorapp               Galil-3-0      GALIL          $GALIL         ; fi
+if [[ $IP ]];            then   get_repo epics-modules          ip             IP             $IP            ; fi
+if [[ $IPAC ]];          then   get_repo epics-modules          ipac           IPAC           $IPAC          ; fi
+if [[ $IP330 ]];         then   get_repo epics-modules          ip330          IP330          $IP330         ; fi
+if [[ $IPUNIDIG ]];      then   get_repo epics-modules          ipUnidig       IPUNIDIG       $IPUNIDIG      ; fi
+if [[ $LOVE ]];          then   get_repo epics-modules          love           LOVE           $LOVE          ; fi
+if [[ $LUA ]];           then   get_repo epics-modules          lua            LUA            $LUA           ; fi
+if [[ $MCA ]];           then   get_repo epics-modules          mca            MCA            $MCA           ; fi
+if [[ $MEASCOMP ]];      then   get_repo epics-modules          measComp       MEASCOMP       $MEASCOMP      ; fi
+if [[ $MODBUS ]];        then   get_repo epics-modules          modbus         MODBUS         $MODBUS        ; fi
+if [[ $MOTOR ]];         then   get_repo epics-modules          motor          MOTOR          $MOTOR         ; fi
+if [[ $OPTICS ]];        then   get_repo epics-modules          optics         OPTICS         $OPTICS        ; fi
+if [[ $QUADEM ]];        then   get_repo epics-modules          quadEM         QUADEM         $QUADEM        ; fi
+if [[ $SOFTGLUE ]];      then   get_repo epics-modules          softGlue       SOFTGLUE       $SOFTGLUE      ; fi
+if [[ $SOFTGLUEZYNQ ]];  then   get_repo epics-modules          softGlueZynq   SOFTGLUEZYNQ   $SOFTGLUEZYNQ  ; fi
+if [[ $SSCAN ]];         then   get_repo epics-modules          sscan          SSCAN          $SSCAN         ; fi
+if [[ $STD ]];           then   get_repo epics-modules          std            STD            $STD           ; fi
+if [[ $STREAM ]];        then   get_repo paulscherrerinstitute  StreamDevice   STREAM         $STREAM        ; fi
+if [[ $VAC ]];           then   get_repo epics-modules          vac            VAC            $VAC           ; fi
+if [[ $VME ]];           then   get_repo epics-modules          vme            VME            $VME           ; fi
+if [[ $YOKOGAWA_DAS ]];  then   get_repo epics-modules          Yokogawa_DAS   YOKOGAWA_DAS   $YOKOGAWA_DAS  ; fi
+if [[ $XXX ]];           then   get_repo epics-modules          xxx            XXX            $XXX           ; fi
+
+
+if [[ $AREA_DETECTOR ]]
+then 
+
+get_repo  areaDetector  areaDetector  AREA_DETECTOR  $AREA_DETECTOR
+
+cd areaDetector-$AREA_DETECTOR
+git submodule init
+git submodule update ADCore
+git submodule update ADSupport
+git submodule update ADSimDetector
+
+cd ADCore/iocBoot
+
+cp EXAMPLE_commonPlugins.cmd commonPlugins.cmd
+cp EXAMPLE_commonPlugin_settings.req commonPlugin_settings.req
+
+cd ../..
+
+cd configure
+cp EXAMPLE_CONFIG_SITE.local CONFIG_SITE.local
+
+# vxWorks has pthread and other issues
+echo 'WITH_GRAPHICSMAGICK = NO' >> CONFIG_SITE.local.vxWorks
+echo 'WITH_BLOSC = NO' >> CONFIG_SITE.local.vxWorks
+echo 'WITH_BITSHUFFLE = NO' >> CONFIG_SITE.local.vxWorks
+
+
+# linux-arm has X11 and other issues
+echo 'WITH_BITSHUFFLE = NO' >> CONFIG_SITE.local.linux-x86_64.linux-arm
+echo 'WITH_GRAPHICSMAGICK = NO' >> CONFIG_SITE.local.linux-x86_64.linux-arm
+
+# We are still using Epics v3
+echo 'WITH_PVA = NO' >> CONFIG_SITE.local.linux-x86_64
+echo 'WITH_PVA = NO' >> CONFIG_SITE.local.linux-x86_64.linux-arm
+echo 'WITH_PVA = NO' >> CONFIG_SITE.local.vxWorks
+echo 'WITH_PVA = NO' >> CONFIG_SITE.local.win32-x86
+echo 'WITH_PVA = NO' >> CONFIG_SITE.local.windows-x64
+echo 'WITH_PVA = NO' >> CONFIG_SITE.local.win32-x86-static
+echo 'WITH_PVA = NO' >> CONFIG_SITE.local.windows-x64-static
+
+# We are still using Epics v3
+echo 'WITH_QSRV = NO' >> CONFIG_SITE.local.linux-x86_64
+echo 'WITH_QSRV = NO' >> CONFIG_SITE.local.vxWorks
+echo 'WITH_QSRV = NO' >> CONFIG_SITE.local.win32-x86
+echo 'WITH_QSRV = NO' >> CONFIG_SITE.local.windows-x64
+echo 'WITH_QSRV = NO' >> CONFIG_SITE.local.win32-x86-static
+echo 'WITH_QSRV = NO' >> CONFIG_SITE.local.windows-x64-static
+
+# DBD files aren't separated between architectures, so there are issues building
+echo 'BUILD_IOCS = NO' >> CONFIG_SITE.local.linux-x86_64
+echo 'BUILD_IOCS = NO' >> CONFIG_SITE.local.vxWorks
+echo 'BUILD_IOCS = NO' >> CONFIG_SITE.local.win32-x86
+echo 'BUILD_IOCS = NO' >> CONFIG_SITE.local.windows-x64
+echo 'BUILD_IOCS = NO' >> CONFIG_SITE.local.win32-x86-static
+echo 'BUILD_IOCS = NO' >> CONFIG_SITE.local.windows-x64-static
+
+#HDF5 flag for windows
+echo 'HDF5_STATIC_BUILD=$(STATIC_BUILD)' >> CONFIG_SITE.local.win32-x86
+echo 'HDF5_STATIC_BUILD=$(STATIC_BUILD)' >> CONFIG_SITE.local.win32-x86-static
+echo 'HDF5_STATIC_BUILD=$(STATIC_BUILD)' >> CONFIG_SITE.local.windows-x64
+echo 'HDF5_STATIC_BUILD=$(STATIC_BUILD)' >> CONFIG_SITE.local.windows-x64-static
+
+#Can't just use default RELEASE.local because it has simDetector commented out
+echo 'ADSIMDETECTOR=$(AREA_DETECTOR)/ADSimDetector' >> RELEASE.local
+echo 'ADSUPPORT=$(AREA_DETECTOR)/ADSupport' >> RELEASE.local
+echo '-include $(TOP)/configure/RELEASE_PRODS.local' >> RELEASE.local
+echo '-include $(TOP)/configure/RELEASE.local.$(EPICS_HOST_ARCH)' >> RELEASE.local
+
+echo "SUPPORT=$SUPPORT" >> RELEASE_SUPPORT.local
+echo "EPICS_BASE=$EPICS_BASE" >> RELEASE_BASE.local
+
+# make release will give the correct paths for these files, so we just need to rename them
+cp EXAMPLE_RELEASE_PRODS.local RELEASE_PRODS.local
+cp EXAMPLE_RELEASE_LIBS.local RELEASE_LIBS.local
+
+cd ../..
+
+echo 'ADCORE=$(AREA_DETECTOR)/ADCore' >> ./configure/RELEASE
+echo 'ADSUPPORT=$(AREA_DETECTOR)/ADSupport' >> ./configure/RELEASE
+echo 'ADSIMDETECTOR=$(AREA_DETECTOR)/ADSimDetector' >> ./configure/RELEASE
+
+fi
+
+if [[ $DXP ]]
+then
+	cd dxp-$DXP
+	echo "LINUX_USB_INSTALLED = NO" >> ./configure/CONFIG_SITE.linux-x86_64.linux-arm
+	cd ..
+fi
+
+if [[ $MCA ]]
+then
+	cd mca-$MCA
+	echo "LINUX_LIBUSB-1.0_INSTALLED = NO" >> ./configure/CONFIG_SITE.linux-x86_64.linux-arm
+	cd ..
+fi
+
+if [[ $MOTOR ]]
+then
+	cd motor-$MOTOR
+	
+	git submodule init
+	git submodule update
+	
+	cd ..
+fi
+
+if [[ $STREAM ]]
+then
+	cd StreamDevice-${STREAM//./-}
+	
+	# Use the EPICS makefile, rather than PSI's
+	rm GNUmakefile
+	
+	# Don't install to synApps/support
+	sed -i 's/TOP = ../TOP = ./g' ./Makefile
+	sed -i 's/TOP = ..\/../TOP = ../g' ./streamApp/Makefile
+	sed -i 's/TOP = ..\/../TOP = ../g' ./src/Makefile
+	
+	# Comment out PCRE
+	sed -i 's/PCRE=/#PCRE=/g' ./configure/RELEASE
+	
+	echo "SSCAN=" >> ./configure/RELEASE
+	echo "STREAM=" >> ./configure/RELEASE
+	sed -i 's/#PROD_LIBS += sscan/PROD_LIBS += sscan/g' ./streamApp/Makefile
+	cd ..
+fi
+
+
+if [[ $SNCSEQ ]]
+then
+
+# seq
+wget http://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-$SNCSEQ.tar.gz
+tar zxf seq-$SNCSEQ.tar.gz
+# The synApps build can't handle '.'
+mv seq-$SNCSEQ seq-${SNCSEQ//./-}
+rm -f seq-$SNCSEQ.tar.gz
+echo "SNCSEQ=\$(SUPPORT)/seq-${SNCSEQ//./-}" >> ./configure/RELEASE
+
+fi
+
+
+if [[ $ALLENBRADLEY ]]
+then
+
+# get allenBradley-2-3
+wget http://www.aps.anl.gov/epics/download/modules/allenBradley-$ALLENBRADLEY.tar.gz
+tar xf allenBradley-$ALLENBRADLEY.tar.gz
+mv allenBradley-$ALLENBRADLEY allenBradley-${ALLENBRADLEY//./-}
+rm -f allenBradley-$ALLENBRADLEY.tar.gz
+echo "ALLEN_BRADLEY=\$(SUPPORT)/allenBradley-${ALLENBRADLEY//./-}" >> ./configure/RELEASE
+
+fi
+
+if [[ $GALIL ]]
+then
+
+mv Galil-3-0-$GALIL/3-6 galil-3-6
+rm -Rf Galil-3-0-$GALIL
+cp galil-3-6/config/GALILRELEASE galil-3-6/configure/RELEASE
+echo 'GALIL=$(SUPPORT)/galil-3-6' >> ./configure/RELEASE
+sed -i 's/MODULE_LIST[ ]*=[ ]*MEASCOMP/MODULE_LIST = MEASCOMP GALIL/g' Makefile
+sed -i '/\$(MEASCOMP)_DEPEND_DIRS/a \$(GALIL)_DEPEND_DIRS = \$(AUTOSAVE) \$(SNCSEQ) \$(SSCAN) \$(CALC) \$(ASYN) \$(BUSY) \$(MOTOR) \$(IPAC)' Makefile
+
+fi
+
+make release
+Removing intermediate container a6c96a424d0b
+ ---> 6f015837a79f
+Step 20/28 : RUN echo # end ------------------- assemble_synApps.sh -------------------
+ ---> Running in d37e750dfb63
+
+Removing intermediate container d37e750dfb63
+ ---> d26bf0e2cec7
+Step 21/28 : RUN bash assemble_synApps.sh
+ ---> Running in 0b078958db38
+[91mNote: checking out 'cc5adba5b8848c9cb98ab96768d668ae927d8859'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m[91mNote: checking out 'a1dd723740f9329429e53255373556ab3f0cc59e'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m[91mNote: checking out '91a07979b9679ab92dc088862c17426df8f6dde1'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m[91mNote: checking out '4983b71f1fdbb2d897c73dcab02946aed40a9219'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+Grabbing alive at tag: R1-1-1
+
+[91mNote: checking out '07209ac5b8b6c597654d3ea08ee6aed84a7edd24'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing asyn at tag: R4-36
+
+[91mNote: checking out '89c2b93d14cdb7fe48d490785cd7780c1b997277'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing autosave at tag: R5-10
+
+[91mNote: checking out '9133a8b56b1881901d48ccf9d4bde738a36ad2b9'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing busy at tag: R1-7-2
+
+[91mNote: checking out '7074c6e9ecdad0a68a3c4cd9a9f95bcc4ceb0e67'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing calc at tag: R3-7-3
+
+[91mNote: checking out '2a3ceff7afee73fd82a2c60d637611020cb65bca'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing caputRecorder at tag: R1-7-2
+
+[91mNote: checking out '06215864ccd6544ce4f89a7adf6fb5c0c609835b'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing iocStats at tag: 3.1.16
+
+[91mNote: checking out '4df9e87815f6a9432955a3ddb45fafa9fe4a4d40'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing ip at tag: R2-20-1
+
+[91mNote: checking out '21e3948e8c23de5d7cf6d53c8f9d1caa0aa13dd2'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing ipac at tag: 2.15
+
+[91mNote: checking out '12c50309e79cb305cb313a9892c853e07388167b'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing lua at tag: R2-0
+
+[91mNote: checking out '4235fb7922640578a21a651f00e68f4fa2b45e41'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing mca at tag: R7-8
+
+[91mNote: checking out 'c7d4facfa5d018fb7840f710d1d297aa1f200d68'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing measComp at tag: R2-3
+
+[91mNote: checking out '32101a10224eabab38934be3947269665b15d0c9'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing modbus at tag: R3-0
+
+[91mNote: checking out '0de4e191adc76b4000ee62f24ea1f9e2456759df'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing motor at tag: R7-1
+
+[91mNote: checking out '5189abaf68c0449751fdc4d6f50e1c42d000ca2e'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing optics at tag: R2-13-3
+
+[91mNote: checking out '91f2931870c5022a838157da956b961c79d6f8ad'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing sscan at tag: R2-11-3
+
+[91mNote: checking out 'ab8a36c218a6bd6089ad28463d29ae6d8369fedb'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing std at tag: R3-6
+
+[91mNote: checking out '74ac60bc75799b328faf5958be204faa16b5f610'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing StreamDevice at tag: 2.8.9
+
+[91mNote: checking out '880a399e4e92d6e52b33c40f21f564493d3ef7b0'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing vac at tag: R1-9
+
+[91mNote: checking out '65b16d598bc343462be212f9db1b88393b7438ba'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+
+Grabbing xxx at tag: R6-1
+
+[91mNote: checking out 'e798cbdecc3d394436dd2f9b504d27f59f6b6d32'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+[0m
+[91mSubmodule 'modules/motorAMCI' (https://github.com/epics-motor/motorAMCI.git) registered for path 'modules/motorAMCI'
+[0m[91mSubmodule 'modules/motorAcs' (https://github.com/epics-motor/motorAcs.git) registered for path 'modules/motorAcs'
+[0m[91mSubmodule 'modules/motorAcsTech80' (https://github.com/epics-motor/motorAcsTech80.git) registered for path 'modules/motorAcsTech80'
+[0m[91mSubmodule 'modules/motorAerotech' (https://github.com/epics-motor/motorAerotech.git) registered for path 'modules/motorAerotech'
+[0m[91mSubmodule 'modules/motorAttocube' (https://github.com/epics-motor/motorAttocube.git) registered for path 'modules/motorAttocube'
+[0m[91mSubmodule 'modules/motorDeltaTau' (https://github.com/epics-motor/motorDeltaTau.git) registered for path 'modules/motorDeltaTau'
+[0m[91mSubmodule 'modules/motorFaulhaber' (https://github.com/epics-motor/motorFaulhaber.git) registered for path 'modules/motorFaulhaber'
+[0m[91mSubmodule 'modules/motorHytec' (https://github.com/epics-motor/motorHytec.git) registered for path 'modules/motorHytec'
+[0m[91mSubmodule 'modules/motorIms' (https://github.com/epics-motor/motorIms.git) registered for path 'modules/motorIms'
+[0m[91mSubmodule 'modules/motorKohzu' (https://github.com/epics-motor/motorKohzu.git) registered for path 'modules/motorKohzu'
+[0m[91mSubmodule 'modules/motorMXmotor' (https://github.com/epics-motor/motorMXmotor.git) registered for path 'modules/motorMXmotor'
+[0m[91mSubmodule 'modules/motorMclennan' (https://github.com/epics-motor/motorMclennan.git) registered for path 'modules/motorMclennan'
+[0m[91mSubmodule 'modules/motorMicos' (https://github.com/epics-motor/motorMicos.git) registered for path 'modules/motorMicos'
+[0m[91mSubmodule 'modules/motorMicroMo' (https://github.com/epics-motor/motorMicroMo.git) registered for path 'modules/motorMicroMo'
+[0m[91mSubmodule 'modules/motorMicronix' (https://github.com/epics-motor/motorMicronix.git) registered for path 'modules/motorMicronix'
+[0m[91mSubmodule 'modules/motorMotorSim' (https://github.com/epics-motor/motorMotorSim.git) registered for path 'modules/motorMotorSim'
+[0m[91mSubmodule 'modules/motorNPoint' (https://github.com/epics-motor/motorNPoint.git) registered for path 'modules/motorNPoint'
+[0m[91mSubmodule 'modules/motorNewFocus' (https://github.com/epics-motor/motorNewFocus.git) registered for path 'modules/motorNewFocus'
+[0m[91mSubmodule 'modules/motorNewport' (https://github.com/epics-motor/motorNewport.git) registered for path 'modules/motorNewport'
+[0m[91mSubmodule 'modules/motorOms' (https://github.com/epics-motor/motorOms.git) registered for path 'modules/motorOms'
+[0m[91mSubmodule 'modules/motorOmsAsyn' (https://github.com/epics-motor/motorOmsAsyn.git) registered for path 'modules/motorOmsAsyn'
+Submodule 'modules/motorOriel' (https://github.com/epics-motor/motorOriel.git) registered for path 'modules/motorOriel'
+Submodule 'modules/motorPI' (https://github.com/epics-motor/motorPI.git) registered for path 'modules/motorPI'
+Submodule 'modules/motorPIGCS2' (https://github.com/epics-motor/motorPIGCS2.git) registered for path 'modules/motorPIGCS2'
+Submodule 'modules/motorParker' (https://github.com/epics-motor/motorParker.git) registered for path 'modules/motorParker'
+[0m[91mSubmodule 'modules/motorPhytron' (https://github.com/epics-motor/motorPhytron.git) registered for path 'modules/motorPhytron'
+Submodule 'modules/motorPiJena' (https://github.com/epics-motor/motorPiJena.git) registered for path 'modules/motorPiJena'
+[0m[91mSubmodule 'modules/motorScriptMotor' (https://github.com/epics-motor/motorScriptMotor.git) registered for path 'modules/motorScriptMotor'
+[0m[91mSubmodule 'modules/motorSmarAct' (https://github.com/epics-motor/motorSmarAct.git) registered for path 'modules/motorSmarAct'
+[0m[91mSubmodule 'modules/motorSmartMotor' (https://github.com/epics-motor/motorSmartMotor.git) registered for path 'modules/motorSmartMotor'
+[0m[91mSubmodule 'modules/motorThorLabs' (https://github.com/epics-motor/motorThorLabs.git) registered for path 'modules/motorThorLabs'
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorAMCI'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorAcs'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorAcsTech80'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorAerotech'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorAttocube'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorDeltaTau'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorFaulhaber'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorHytec'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorIms'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorKohzu'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorMXmotor'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorMclennan'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorMicos'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorMicroMo'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorMicronix'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorMotorSim'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorNPoint'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorNewFocus'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorNewport'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorOms'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorOmsAsyn'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorOriel'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorPI'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorPIGCS2'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorParker'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorPhytron'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorPiJena'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorScriptMotor'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorSmarAct'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorSmartMotor'...
+[0m[91mCloning into '/opt/synApps/support/motor-R7-1/modules/motorThorLabs'...
+[0mSubmodule path 'modules/motorAMCI': checked out 'cfd32e400cf9033219b514e0e874f5fa8c1ab31f'
+Submodule path 'modules/motorAcs': checked out '577fbcb73e4ba3736a2e7cf88c0df388dfc9dea5'
+Submodule path 'modules/motorAcsTech80': checked out 'c00e94140330148e49d8b84eefd62c3f998f57f3'
+Submodule path 'modules/motorAerotech': checked out 'd3f02c5f9a914e9566d1be20511951b98001826e'
+Submodule path 'modules/motorAttocube': checked out '8f1a9aa444bb9a58b3bf0105272105f545b83c60'
+Submodule path 'modules/motorDeltaTau': checked out '9b49dd5f232acae3af1faa2e6d3259c9faf57d8f'
+Submodule path 'modules/motorFaulhaber': checked out 'f7b018822ea7e3ccb7207cd5b75025bea8d7c4ae'
+Submodule path 'modules/motorHytec': checked out 'e5f3932222152e16c3dea8fef205b7f1724dbc42'
+Submodule path 'modules/motorIms': checked out '3f95ae51a382e05938105c42962eb1e41514d816'
+Submodule path 'modules/motorKohzu': checked out '5b72942e168d0109e82d332ef3e81a74d7db5194'
+Submodule path 'modules/motorMXmotor': checked out '5fa12214260d0c13a297340f8f4be109c4005b69'
+Submodule path 'modules/motorMclennan': checked out '89fe35d107c3946089493c1b8d11311ba0122e42'
+Submodule path 'modules/motorMicos': checked out '1f341b271d29d6711457c27c0ebb4449d43eac48'
+Submodule path 'modules/motorMicroMo': checked out 'ba3e575aec69ca764b436f8a0b86449bc56920af'
+Submodule path 'modules/motorMicronix': checked out '59a7f06fbf4c70dd5af439f6bec6d45fe4c4335a'
+Submodule path 'modules/motorMotorSim': checked out '20bd29c8eaee6ccd236fec1d542472e0e5dc643f'
+Submodule path 'modules/motorNPoint': checked out '4d2f297414e62eceb267541a975694dbad1374b5'
+Submodule path 'modules/motorNewFocus': checked out '1ec6839b0eb100f1e071cbf75585d7b35cf38a77'
+Submodule path 'modules/motorNewport': checked out '374a93708602ba25ad2716f2fc009dff73dfb4a6'
+Submodule path 'modules/motorOms': checked out '85cde67e5c785d1dfc1f46c35105f5ef796b579e'
+Submodule path 'modules/motorOmsAsyn': checked out '1b4c794c24c8794b4cb6efb07c024fa9c1bb7d76'
+Submodule path 'modules/motorOriel': checked out '6f151eabf53e9e5f9f0c51dff662147524beb5e2'
+Submodule path 'modules/motorPI': checked out '13c2b1c75b3f49090bcc718c04e2c364c650ee44'
+Submodule path 'modules/motorPIGCS2': checked out '59b31e0cec8eb0db037b13f1f2936d0fcd5ae059'
+Submodule path 'modules/motorParker': checked out '1f978b4fd8ae50608c6b2d71ecb8f06c78d98d81'
+Submodule path 'modules/motorPhytron': checked out '4c2140414e54d0565b5afd43b2be1ca3bf7b3601'
+Submodule path 'modules/motorPiJena': checked out 'b1c586075f31cdce13085c7fcabadedcc22a95c1'
+Submodule path 'modules/motorScriptMotor': checked out '495b57a61c196c1440c7ae6b228984d5e6e9ee76'
+Submodule path 'modules/motorSmarAct': checked out '66015236bd1bf44176bf6dc5cdb99761b43dee31'
+Submodule path 'modules/motorSmartMotor': checked out 'ee30ba9cc44761a0cd28e22c9b48903368417096'
+Submodule path 'modules/motorThorLabs': checked out '0a9ec8f1184f0b37e12f79b2746303f9fbbbe9c2'
+[91m--2019-09-29 04:22:33--  http://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-2.2.6.tar.gz
+Resolving www-csr.bessy.de (www-csr.bessy.de)... [0m[91m193.149.12.250
+Connecting to www-csr.bessy.de (www-csr.bessy.de)|193.149.12.250|:80... [0m[91mconnected.
+HTTP request sent, awaiting response... [0m[91m302 Found
+Location: https://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-2.2.6.tar.gz [following]
+--2019-09-29 04:22:34--  https://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-2.2.6.tar.gz
+[0m[91mConnecting to www-csr.bessy.de (www-csr.bessy.de)|193.149.12.250|:443... [0m[91mconnected.
+[0m[91mHTTP request sent, awaiting response... [0m[91m200 OK
+Length: 306984 (300K) [application/x-gzip]
+Saving to: 'seq-2.2.6.tar.gz'
+[0m[91m
+     0K .......... ......[0m[91m.... .......... ..[0m[91m........ ........[0m[91m.. 16%  185K 1s
+    50K .......... ....[0m[91m...... ..........[0m[91m .......... ......[0m[91m.... 33% 3.85M 1s
+   100K .......... ..[0m[91m........ ........[0m[91m.. .......... ....[0m[91m...... 50%  389K 0s
+   150K ..........[0m[91m .......... ......[0m[91m.... .......... ..[0m[91m........ 66% 3.42M 0s
+   200K ........[0m[91m.. .......... ....[0m[91m...... .......... .......... 83%  345K 0s
+   250K .......... .......... .......... .......... ......... 100%  173M=0.6s
+
+2019-09-29 04:22:35 (524 KB/s) - 'seq-2.2.6.tar.gz' saved [306984/306984]
+
+[0mecho SUPPORT=/opt/synApps/support
+SUPPORT=/opt/synApps/support
+echo ' '
+ 
+echo EPICS_BASE=/opt/base
+EPICS_BASE=/opt/base
+echo ' '
+ 
+echo MASTER_FILE=./configure/RELEASE
+MASTER_FILE=./configure/RELEASE
+echo ' '
+ 
+echo DIRS= configure /opt/synApps/support/alive-R1-1-1 /opt/synApps/support/asyn-R4-36 /opt/synApps/support/autosave-R5-10 /opt/synApps/support/busy-R1-7-2 /opt/synApps/support/calc-R3-7-3 /opt/synApps/support/caputRecorder-R1-7-2 /opt/synApps/support/iocStats-3-1-16 /opt/synApps/support/ipac-2-15 /opt/synApps/support/ip-R2-20-1 /opt/synApps/support/lua-R2-0 /opt/synApps/support/mca-R7-8 /opt/synApps/support/measComp-R2-3 /opt/synApps/support/modbus-R3-0 /opt/synApps/support/motor-R7-1 /opt/synApps/support/optics-R2-13-3 /opt/synApps/support/seq-2-2-6 /opt/synApps/support/sscan-R2-11-3 /opt/synApps/support/std-R3-6 /opt/synApps/support/StreamDevice-2-8-9 /opt/synApps/support/vac-R1-9 /opt/synApps/support/xxx-R6-1
+DIRS= configure /opt/synApps/support/alive-R1-1-1 /opt/synApps/support/asyn-R4-36 /opt/synApps/support/autosave-R5-10 /opt/synApps/support/busy-R1-7-2 /opt/synApps/support/calc-R3-7-3 /opt/synApps/support/caputRecorder-R1-7-2 /opt/synApps/support/iocStats-3-1-16 /opt/synApps/support/ipac-2-15 /opt/synApps/support/ip-R2-20-1 /opt/synApps/support/lua-R2-0 /opt/synApps/support/mca-R7-8 /opt/synApps/support/measComp-R2-3 /opt/synApps/support/modbus-R3-0 /opt/synApps/support/motor-R7-1 /opt/synApps/support/optics-R2-13-3 /opt/synApps/support/seq-2-2-6 /opt/synApps/support/sscan-R2-11-3 /opt/synApps/support/std-R3-6 /opt/synApps/support/StreamDevice-2-8-9 /opt/synApps/support/vac-R1-9 /opt/synApps/support/xxx-R6-1
+echo ' '
+ 
+echo RELEASE_FILES=/opt/synApps/support/alive-R1-1-1/configure/RELEASE                   /opt/synApps/support/asyn-R4-36/configure/RELEASE                   /opt/synApps/support/autosave-R5-10/configure/RELEASE                   /opt/synApps/support/busy-R1-7-2/configure/RELEASE                   /opt/synApps/support/calc-R3-7-3/configure/RELEASE                   /opt/synApps/support/caputRecorder-R1-7-2/configure/RELEASE                   /opt/synApps/support/iocStats-3-1-16/configure/RELEASE                   /opt/synApps/support/ipac-2-15/configure/RELEASE                   /opt/synApps/support/ip-R2-20-1/configure/RELEASE                   /opt/synApps/support/lua-R2-0/configure/RELEASE                   /opt/synApps/support/mca-R7-8/configure/RELEASE                   /opt/synApps/support/measComp-R2-3/configure/RELEASE                   /opt/synApps/support/modbus-R3-0/configure/RELEASE                   /opt/synApps/support/motor-R7-1/configure/RELEASE                   /opt/synApps/support/optics-R2-13-3/configure/RELEASE                   /opt/synApps/support/seq-2-2-6/configure/RELEASE                   /opt/synApps/support/sscan-R2-11-3/configure/RELEASE                   /opt/synApps/support/std-R3-6/configure/RELEASE                   /opt/synApps/support/StreamDevice-2-8-9/configure/RELEASE                   /opt/synApps/support/vac-R1-9/configure/RELEASE                   /opt/synApps/support/xxx-R6-1/configure/RELEASE                  
+RELEASE_FILES=/opt/synApps/support/alive-R1-1-1/configure/RELEASE /opt/synApps/support/asyn-R4-36/configure/RELEASE /opt/synApps/support/autosave-R5-10/configure/RELEASE /opt/synApps/support/busy-R1-7-2/configure/RELEASE /opt/synApps/support/calc-R3-7-3/configure/RELEASE /opt/synApps/support/caputRecorder-R1-7-2/configure/RELEASE /opt/synApps/support/iocStats-3-1-16/configure/RELEASE /opt/synApps/support/ipac-2-15/configure/RELEASE /opt/synApps/support/ip-R2-20-1/configure/RELEASE /opt/synApps/support/lua-R2-0/configure/RELEASE /opt/synApps/support/mca-R7-8/configure/RELEASE /opt/synApps/support/measComp-R2-3/configure/RELEASE /opt/synApps/support/modbus-R3-0/configure/RELEASE /opt/synApps/support/motor-R7-1/configure/RELEASE /opt/synApps/support/optics-R2-13-3/configure/RELEASE /opt/synApps/support/seq-2-2-6/configure/RELEASE /opt/synApps/support/sscan-R2-11-3/configure/RELEASE /opt/synApps/support/std-R3-6/configure/RELEASE /opt/synApps/support/StreamDevice-2-8-9/configure/RELEASE /opt/synApps/support/vac-R1-9/configure/RELEASE /opt/synApps/support/xxx-R6-1/configure/RELEASE
+echo ' '
+ 
+perl -CSD ./configure/makeReleaseConsistent.pl /opt/synApps/support /opt/base ./configure/RELEASE /opt/synApps/support/alive-R1-1-1/configure/RELEASE                   /opt/synApps/support/asyn-R4-36/configure/RELEASE                   /opt/synApps/support/autosave-R5-10/configure/RELEASE                   /opt/synApps/support/busy-R1-7-2/configure/RELEASE                   /opt/synApps/support/calc-R3-7-3/configure/RELEASE                   /opt/synApps/support/caputRecorder-R1-7-2/configure/RELEASE                   /opt/synApps/support/iocStats-3-1-16/configure/RELEASE                   /opt/synApps/support/ipac-2-15/configure/RELEASE                   /opt/synApps/support/ip-R2-20-1/configure/RELEASE                   /opt/synApps/support/lua-R2-0/configure/RELEASE                   /opt/synApps/support/mca-R7-8/configure/RELEASE                   /opt/synApps/support/measComp-R2-3/configure/RELEASE                   /opt/synApps/support/modbus-R3-0/configure/RELEASE                   /opt/synApps/support/motor-R7-1/configure/RELEASE                   /opt/synApps/support/optics-R2-13-3/configure/RELEASE                   /opt/synApps/support/seq-2-2-6/configure/RELEASE                   /opt/synApps/support/sscan-R2-11-3/configure/RELEASE                   /opt/synApps/support/std-R3-6/configure/RELEASE                   /opt/synApps/support/StreamDevice-2-8-9/configure/RELEASE                   /opt/synApps/support/vac-R1-9/configure/RELEASE                   /opt/synApps/support/xxx-R6-1/configure/RELEASE                  
+Removing intermediate container 0b078958db38
+ ---> bb46e14bf75b
+Step 22/28 : ENV MOTOR=${SUPPORT}/motor-R7-1
+ ---> Running in 28f58e45c731
+Removing intermediate container 28f58e45c731
+ ---> 5ff9f8199a15
+Step 23/28 : ENV XXX=${SUPPORT}/xxx-R6-1
+ ---> Running in b0fa069fbfb0
+Removing intermediate container b0fa069fbfb0
+ ---> fc1d757595bd
+Step 24/28 : WORKDIR ${SUPPORT}
+ ---> Running in e5d1f6e38748
+Removing intermediate container e5d1f6e38748
+ ---> cd396c19c9c2
+Step 25/28 : WORKDIR ${XXX}/iocBoot/iocxxx/
+ ---> Running in 01086eaa5285
+Removing intermediate container 01086eaa5285
+ ---> a647c6e56c74
+Step 26/28 : RUN cp examples/motors.iocsh ./ &&     cp examples/std.iocsh    ./ &&     cp ${MOTOR}/modules/motorMotorSim/iocsh/motorSim.iocsh                 ${MOTOR}/iocsh/ &&     cp ${MOTOR}/modules/motorMotorSim/iocsh/EXAMPLE_motorSim.substitutions ${MOTOR}/iocsh/ &&     sed -i s:'#iocshLoad("$(STD)/iocsh/softScaler':'iocshLoad("$(STD)/iocsh/softScaler':g std.iocsh &&     sed -i s:'#iocshLoad("$(MOTOR)/iocsh/motorSim.iocsh"':'iocshLoad("$(MOTOR)/iocsh/motorSim.iocsh"':g motors.iocsh &&     sed -i s:'dbLoadTemplate("substitutions/motor.substitutions"':'#dbLoadTemplate("substitutions/motor.substitutions"':g motors.iocsh &&     sed -i s:'< common.iocsh':'< common.iocsh\n< std.iocsh\n< motors.iocsh':g st.cmd.Linux
+ ---> Running in 0e06f3abe370
+Removing intermediate container 0e06f3abe370
+ ---> d1a2e7f76e33
+Step 27/28 : RUN make -j2 all
+ ---> Running in 20f944a3ba38
+perl -CSD /opt/base/bin/linux-x86_64/convertRelease.pl -t /opt/synApps/support/xxx-R6-1 envPaths
+Removing intermediate container 20f944a3ba38
+ ---> 41ceb227f085
+Step 28/28 : WORKDIR ${SUPPORT}
+ ---> Running in 8d4f84770a5f
+Removing intermediate container 8d4f84770a5f
+ ---> 6581c234879d
+Successfully built 6581c234879d
+Successfully tagged prjemian/synapps-6.1:latest
