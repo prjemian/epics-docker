@@ -2,35 +2,38 @@ Sending build context to Docker daemon  4.096kB
 Step 1/7 : FROM  ubuntu:latest
  ---> 2ca708c1c9cc
 Step 2/7 : LABEL version="1.0.0"       maintainer="prjemian <prjemian@gmail.com>"       lastupdate="2019-09-28"
- ---> Using cache
- ---> c00d02eeb586
+ ---> Running in ec4017553275
+Removing intermediate container ec4017553275
+ ---> 4f37a192aee3
 Step 3/7 : USER  root
- ---> Using cache
- ---> ae3c72ecf3cd
+ ---> Running in 14a71bea74b7
+Removing intermediate container 14a71bea74b7
+ ---> cf5e257bd1e4
 Step 4/7 : WORKDIR /home
- ---> Using cache
- ---> 4b5891706b83
-Step 5/7 : RUN apt-get update  -y &&     apt-get upgrade -y &&     apt-get install -y          build-essential          nano          libreadline-dev          screen         vim         &&     rm -rf /var/lib/apt/lists/*
- ---> Running in 6f667e8c8733
+ ---> Running in 81251f76bcff
+Removing intermediate container 81251f76bcff
+ ---> 9ed61e410e5b
+Step 5/7 : RUN apt-get update  -y &&     apt-get upgrade -y &&     apt-get install -y          build-essential          libreadline-dev          nano          screen         vim         &&     rm -rf /var/lib/apt/lists/*
+ ---> Running in 51a4a020fa45
 Get:1 http://security.ubuntu.com/ubuntu bionic-security InRelease [88.7 kB]
 Get:2 http://archive.ubuntu.com/ubuntu bionic InRelease [242 kB]
 Get:3 http://security.ubuntu.com/ubuntu bionic-security/restricted amd64 Packages [9585 B]
 Get:4 http://archive.ubuntu.com/ubuntu bionic-updates InRelease [88.7 kB]
 Get:5 http://security.ubuntu.com/ubuntu bionic-security/main amd64 Packages [663 kB]
 Get:6 http://archive.ubuntu.com/ubuntu bionic-backports InRelease [74.6 kB]
-Get:7 http://archive.ubuntu.com/ubuntu bionic/restricted amd64 Packages [13.5 kB]
-Get:8 http://archive.ubuntu.com/ubuntu bionic/universe amd64 Packages [11.3 MB]
+Get:7 http://archive.ubuntu.com/ubuntu bionic/universe amd64 Packages [11.3 MB]
+Get:8 http://security.ubuntu.com/ubuntu bionic-security/multiverse amd64 Packages [5230 B]
 Get:9 http://security.ubuntu.com/ubuntu bionic-security/universe amd64 Packages [769 kB]
-Get:10 http://archive.ubuntu.com/ubuntu bionic/main amd64 Packages [1344 kB]
+Get:10 http://archive.ubuntu.com/ubuntu bionic/restricted amd64 Packages [13.5 kB]
 Get:11 http://archive.ubuntu.com/ubuntu bionic/multiverse amd64 Packages [186 kB]
-Get:12 http://security.ubuntu.com/ubuntu bionic-security/multiverse amd64 Packages [5230 B]
-Get:13 http://archive.ubuntu.com/ubuntu bionic-updates/restricted amd64 Packages [20.3 kB]
-Get:14 http://archive.ubuntu.com/ubuntu bionic-updates/multiverse amd64 Packages [8284 B]
-Get:15 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 Packages [960 kB]
-Get:16 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 Packages [1288 kB]
+Get:12 http://archive.ubuntu.com/ubuntu bionic/main amd64 Packages [1344 kB]
+Get:13 http://archive.ubuntu.com/ubuntu bionic-updates/multiverse amd64 Packages [8284 B]
+Get:14 http://archive.ubuntu.com/ubuntu bionic-updates/restricted amd64 Packages [20.3 kB]
+Get:15 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 Packages [1288 kB]
+Get:16 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 Packages [960 kB]
 Get:17 http://archive.ubuntu.com/ubuntu bionic-backports/universe amd64 Packages [4227 B]
 Get:18 http://archive.ubuntu.com/ubuntu bionic-backports/main amd64 Packages [2496 B]
-Fetched 17.1 MB in 14s (1214 kB/s)
+Fetched 17.1 MB in 31s (546 kB/s)
 Reading package lists...
 Reading package lists...
 Building dependency tree...
@@ -44,7 +47,7 @@ After this operation, 4096 B of additional disk space will be used.
 Get:1 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 dpkg amd64 1.19.0.5ubuntu2.3 [1136 kB]
 Get:2 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 grep amd64 3.1-2build1 [159 kB]
 [91mdebconf: delaying package configuration, since apt-utils is not installed
-[0mFetched 1295 kB in 3s (429 kB/s)
+[0mFetched 1295 kB in 3s (433 kB/s)
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4046 files and directories currently installed.)
 Preparing to unpack .../dpkg_1.19.0.5ubuntu2.3_amd64.deb ...
 Unpacking dpkg (1.19.0.5ubuntu2.3) over (1.19.0.5ubuntu2.2) ...
@@ -212,7 +215,7 @@ Get:100 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 screen amd64 
 Get:101 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 vim-runtime all 2:8.0.1453-1ubuntu1.1 [5435 kB]
 Get:102 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 vim amd64 2:8.0.1453-1ubuntu1.1 [1152 kB]
 [91mdebconf: delaying package configuration, since apt-utils is not installed
-[0mFetched 62.5 MB in 1min 54s (549 kB/s)
+[0mFetched 62.5 MB in 2min 15s (465 kB/s)
 Selecting previously unselected package liblocale-gettext-perl.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4046 files and directories currently installed.)
 Preparing to unpack .../000-liblocale-gettext-perl_1.07-3build2_amd64.deb ...
@@ -682,15 +685,15 @@ Setting up build-essential (12.4ubuntu1) ...
 Setting up gpg-wks-client (2.2.4-1ubuntu1.2) ...
 Setting up gnupg (2.2.4-1ubuntu1.2) ...
 Processing triggers for libc-bin (2.27-3ubuntu1) ...
-Removing intermediate container 6f667e8c8733
- ---> ddc3295b5954
+Removing intermediate container 51a4a020fa45
+ ---> 9c60920e0aae
 Step 6/7 : ENV APP_ROOT="/opt"
- ---> Running in ce9ff10f28c7
-Removing intermediate container ce9ff10f28c7
- ---> 365005e0b56c
+ ---> Running in c1986e2734ba
+Removing intermediate container c1986e2734ba
+ ---> d215aa5840e1
 Step 7/7 : ENV EDITOR="nano"
- ---> Running in 7efbc86ba798
-Removing intermediate container 7efbc86ba798
- ---> 030ac97aecb5
-Successfully built 030ac97aecb5
+ ---> Running in 5622a1368a98
+Removing intermediate container 5622a1368a98
+ ---> 9eb2f4d22fa4
+Successfully built 9eb2f4d22fa4
 Successfully tagged prjemian/os_only:latest
