@@ -100,6 +100,8 @@ RUN cp EXAMPLE_RELEASE.local         RELEASE.local && \
     cp EXAMPLE_RELEASE_PRODS.local   RELEASE_PRODS.local && \
     cp EXAMPLE_CONFIG_SITE.local     CONFIG_SITE.local && \
     sed -i s:'BUILD_IOCS = NO':'BUILD_IOCS = YES':g CONFIG_SITE.local.${EPICS_HOST_ARCH} && \
+    sed -i s:'WITH_PVA = NO':'WITH_PVA = YES':g CONFIG_SITE.local.${EPICS_HOST_ARCH} && \
+    sed -i s:'WITH_QSRV = NO':'WITH_QSRV = YES':g CONFIG_SITE.local.${EPICS_HOST_ARCH} && \
     sed -i s:'#ADSIMDETECTOR=':'ADSIMDETECTOR=':g RELEASE.local && \
     sed -i s:'#PVADRIVER=':'PVADRIVER=':g RELEASE.local && \
     sed -i s:'SUPPORT=/corvette/home/epics/devel':'SUPPORT=/opt/synApps/support':g RELEASE_SUPPORT.local && \
@@ -141,16 +143,15 @@ RUN tar czf ${SUPPORT}/../xxx-R6-1.tar.gz xxx-R6-1 && \
     ln -s ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector ./iocSimDetector
 
 # Build it all
-RUN make -j2 all && \
-    make clean
+RUN make -j2 all
 
-WORKDIR ${SUPPORT}/iocxxx/
-# build envPaths
-RUN make
+# WORKDIR ${SUPPORT}/iocxxx/
+# # build envPaths
+# RUN make
 
-WORKDIR ${SUPPORT}/iocSimDetector/
-# build envPaths
-RUN make
+# WORKDIR ${SUPPORT}/iocSimDetector/
+# # build envPaths
+# RUN make
 
 WORKDIR ${SUPPORT}
 
