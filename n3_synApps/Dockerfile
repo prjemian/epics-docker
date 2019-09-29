@@ -99,6 +99,7 @@ RUN cp EXAMPLE_RELEASE.local         RELEASE.local && \
     cp EXAMPLE_RELEASE_LIBS.local    RELEASE_LIBS.local && \
     cp EXAMPLE_RELEASE_PRODS.local   RELEASE_PRODS.local && \
     cp EXAMPLE_CONFIG_SITE.local     CONFIG_SITE.local && \
+    sed -i s:'BUILD_IOCS = NO':'BUILD_IOCS = YES':g CONFIG_SITE.local.${EPICS_HOST_ARCH} && \
     sed -i s:'#ADSIMDETECTOR=':'ADSIMDETECTOR=':g RELEASE.local && \
     sed -i s:'#PVADRIVER=':'PVADRIVER=':g RELEASE.local && \
     sed -i s:'SUPPORT=/corvette/home/epics/devel':'SUPPORT=/opt/synApps/support':g RELEASE_SUPPORT.local && \
