@@ -1,12 +1,13 @@
-# build all subdirectories
-# https://stackoverflow.com/questions/17834582/run-make-in-each-subdirectory
+# build (or push) subdirectories
 
-TOPTARGETS := build push
+build ::
+	make -C n1_os_only      $@
+	make -C n2_epics_base   $@
+	make -C n3_synApps      $@
+	# make -C n4_areaDetector $@
 
-SUBDIRS := $(wildcard */.)
-
-$(TOPTARGETS): $(SUBDIRS)
-$(SUBDIRS):
-	$(MAKE) -C $@ $(MAKECMDGOALS)
-
-.PHONY: $(TOPTARGETS) $(SUBDIRS)
+push ::
+	# make -C n1_os_only      $@
+	make -C n2_epics_base   $@
+	make -C n3_synApps      $@
+	# make -C n4_areaDetector $@
