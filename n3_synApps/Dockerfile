@@ -8,7 +8,7 @@ WORKDIR /home
 # Install libraries from offical repo needed by synApps
 # * wget & git needed by assemble_synApps.sh
 # * re2c needed overall
-# * area detector needs:
+# * mca needs:
 #    * libusb (newer faster usb support)
 #    * X11 (for GraphicsMagick)
 # * run IOCs in screen sessions (base-os provides)
@@ -20,11 +20,8 @@ RUN \
        git \
        libusb-dev \
        libusb-1.0-0-dev \
-       libx11-dev \
        re2c \
        wget \
-       x11-xserver-utils \
-       xorg-dev \
        xvfb \
        && \
     rm -rf /var/lib/apt/lists/*
@@ -35,7 +32,7 @@ ENV APP_ROOT="/opt"
 # for use with `crontab -e`
 ENV EDITOR="nano"
 ENV EPICS_HOST_ARCH=linux-x86_64
-ENV EPICS_ROOT="/${APP_ROOT}/base"
+ENV EPICS_ROOT="${APP_ROOT}/base"
 ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
 
 # ============ EPICS synApps ============
@@ -75,13 +72,10 @@ RUN echo # end ------------------- assemble_synApps.sh -------------------
 # run the script now
 RUN bash assemble_synApps.sh
 
-# ENV AREA_DETECTOR=${SUPPORT}/areaDetector-R3-7
 ENV MOTOR=${SUPPORT}/motor-R7-1
 ENV XXX=${SUPPORT}/xxx-R6-1
 
-WORKDIR ${SUPPORT}
-# RUN ls -lAFgh
-
+# enable 16 motors and the scaler
 WORKDIR ${XXX}/iocBoot/iocxxx/
 RUN cp examples/motors.iocsh ./ && \
     cp examples/std.iocsh    ./ && \
@@ -89,8 +83,13 @@ RUN cp examples/motors.iocsh ./ && \
     cp ${MOTOR}/modules/motorMotorSim/iocsh/EXAMPLE_motorSim.substitutions ${MOTOR}/iocsh/ && \
     sed -i s:'#iocshLoad("$(STD)/iocsh/softScaler':'iocshLoad("$(STD)/iocsh/softScaler':g std.iocsh && \
     sed -i s:'#iocshLoad("$(MOTOR)/iocsh/motorSim.iocsh"':'iocshLoad("$(MOTOR)/iocsh/motorSim.iocsh"':g motors.iocsh && \
-    sed -i s:'dbLoadTemplate("substitutions/motor.substitutions"':'#dbLoadTemplate("substitutions/motor.substitutions"':g motors.iocsh && \
-    sed -i s:'< common.iocsh':'< common.iocsh\n< std.iocsh\n< motors.iocsh':g st.cmd.Linux
+    sed -i s:'dbLoadTemplate("substitutions/motor.substitutions"':'#dbLoadTemplate("substitutions/motor.substitutions"':g motors.iocsh
+# remove when https://github.com/epics-modules/xxx/pull/27 is merged and released in new synApps version
+RUN sed -i s:'< common.iocsh':'< common.iocsh\n< std.iocsh\n< motors.iocsh':g st.cmd.Linux
+# remove when https://github.com/epics-modules/xxx/pull/25 is merged and released in new synApps version
+RUN \
+    sed -i s:'if [[ ${s_pid} -eq ${P_PID} ]] ; then':'if [ ${s_pid} -eq ${P_PID} ] ; then':g    softioc/xxx.sh && \
+    sed -i s:'if [[ ${s_pid} -eq ${GP_PID} ]] ; then':'if [ ${s_pid} -eq ${GP_PID} ] ; then':g  softioc/xxx.sh
 
 # archive the template IOC, for making new XXX IOCs
 WORKDIR ${SUPPORT}
@@ -98,10 +97,10 @@ RUN tar czf ${SUPPORT}/../xxx-R6-1.tar.gz xxx-R6-1 && \
     ln -s ${XXX}/iocBoot/iocxxx/ ./iocxxx
 
 # Build it all
-RUN make -j2 all
+RUN make -j4 all
 
-# WORKDIR ${SUPPORT}/iocxxx/
-# # build envPaths
-# RUN make
+# build envPaths
+WORKDIR ${SUPPORT}/iocxxx/
+RUN make
 
 WORKDIR ${SUPPORT}
