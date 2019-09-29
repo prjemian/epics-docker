@@ -92,56 +92,10 @@ RUN cp examples/motors.iocsh ./ && \
     sed -i s:'dbLoadTemplate("substitutions/motor.substitutions"':'#dbLoadTemplate("substitutions/motor.substitutions"':g motors.iocsh && \
     sed -i s:'< common.iocsh':'< common.iocsh\n< std.iocsh\n< motors.iocsh':g st.cmd.Linux
 
-
-# # recommended edits: https://areadetector.github.io/master/install_guide.html
-# WORKDIR ${AREA_DETECTOR}/configure
-# RUN cp EXAMPLE_RELEASE.local         RELEASE.local && \
-#     cp EXAMPLE_RELEASE_SUPPORT.local RELEASE_SUPPORT.local && \
-#     cp EXAMPLE_RELEASE_LIBS.local    RELEASE_LIBS.local && \
-#     cp EXAMPLE_RELEASE_PRODS.local   RELEASE_PRODS.local && \
-#     cp EXAMPLE_CONFIG_SITE.local     CONFIG_SITE.local && \
-#     sed -i s:'BUILD_IOCS = NO':'BUILD_IOCS = YES':g CONFIG_SITE.local.${EPICS_HOST_ARCH} && \
-#     sed -i s:'WITH_PVA = NO':'WITH_PVA = YES':g CONFIG_SITE.local.${EPICS_HOST_ARCH} && \
-#     sed -i s:'WITH_QSRV = NO':'WITH_QSRV = YES':g CONFIG_SITE.local.${EPICS_HOST_ARCH} && \
-#     sed -i s:'#ADSIMDETECTOR=':'ADSIMDETECTOR=':g RELEASE.local && \
-#     sed -i s:'#PVADRIVER=':'PVADRIVER=':g RELEASE.local && \
-#     sed -i s:'SUPPORT=/corvette/home/epics/devel':'SUPPORT=/opt/synApps/support':g RELEASE_SUPPORT.local && \
-#     sed -i s:'asyn-4-36':'asyn-R4-36':g RELEASE_LIBS.local && \
-#     sed -i s:'areaDetector-3-7':'areaDetector-R3-7':g RELEASE_LIBS.local && \
-#     sed -i s:'EPICS_BASE=/corvette/usr/local/epics-devel/base-7.0.3':'EPICS_BASE=/opt/base-7.0.3':g RELEASE_LIBS.local && \
-#     sed -i s:'asyn-4-36':'asyn-R4-36':g RELEASE_PRODS.local && \
-#     sed -i s:'areaDetector-3-7':'areaDetector-R3-7':g RELEASE_PRODS.local && \
-#     sed -i s:'autosave-5-10':'autosave-R5-10':g RELEASE_PRODS.local && \
-#     sed -i s:'busy-1-7-2':'busy-R1-7-2':g RELEASE_PRODS.local && \
-#     sed -i s:'calc-3-7-3':'calc-R3-7-3':g RELEASE_PRODS.local && \
-#     sed -i s:'seq-2-2-5':'seq-2-2-6':g RELEASE_PRODS.local && \
-#     sed -i s:'sscan-2-11-3':'sscan-R2-11-3':g RELEASE_PRODS.local && \
-#     sed -i s:'devIocStats-3-1-16':'iocStats-3-1-16':g RELEASE_PRODS.local && \
-#     sed -i s:'EPICS_BASE=/corvette/usr/local/epics-devel/base-7.0.3':'EPICS_BASE=/opt/base-7.0.3':g RELEASE_PRODS.local
-# WORKDIR ${AREA_DETECTOR}/ADCore/iocBoot
-# RUN cp EXAMPLE_commonPlugins.cmd                                commonPlugins.cmd && \
-#     cp EXAMPLE_commonPlugin_settings.req                        commonPlugin_settings.req && \
-#     sed -i s:'#NDPvaConfigure':'NDPvaConfigure':g               commonPlugins.cmd && \
-#     sed -i s:'#dbLoadRecords("NDPva':'dbLoadRecords("NDPva':g   commonPlugins.cmd && \
-#     sed -i s:'#startPVAServer':'startPVAServer':g               commonPlugins.cmd
-# # WORKDIR ${AREA_DETECTOR}/ADCore/ADApp/pluginSrc
-# # RUN sed -i s:'  DBD += NDPluginPva.dbd':'  DBD += NDPluginPva.dbd\n  DBD += softIocPVA.dbd':g               Makefile
-
-# WORKDIR ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
-# COPY run_simDetectorIOC ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/run
-# RUN cp ${XXX}/iocBoot/iocxxx/softioc/in-screen.sh .
-# # done editing
-
-
-# # archive the template IOC, for making new SimDetector IOCs
-# WORKDIR ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot
-# RUN tar czf ${SUPPORT}/../iocSimDetector-3.7.tar.gz iocSimDetector
-
-# # archive the template IOC, for making new XXX IOCs
-# WORKDIR ${SUPPORT}
-# RUN tar czf ${SUPPORT}/../xxx-R6-1.tar.gz xxx-R6-1 && \
-#     ln -s ${XXX}/iocBoot/iocxxx/ ./iocxxx && \
-#     ln -s ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector ./iocSimDetector
+# archive the template IOC, for making new XXX IOCs
+WORKDIR ${SUPPORT}
+RUN tar czf ${SUPPORT}/../xxx-R6-1.tar.gz xxx-R6-1 && \
+    ln -s ${XXX}/iocBoot/iocxxx/ ./iocxxx
 
 # Build it all
 RUN make -j2 all
@@ -150,12 +104,4 @@ RUN make -j2 all
 # # build envPaths
 # RUN make
 
-# WORKDIR ${SUPPORT}/iocSimDetector/
-# # build envPaths
-# RUN make
-
 WORKDIR ${SUPPORT}
-
-# # FIXME: boot errors remain
-# # * https://github.com/prjemian/epics-docker/issues/1
-# # * https://github.com/prjemian/epics-docker/issues/2
