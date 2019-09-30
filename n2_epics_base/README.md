@@ -1,6 +1,7 @@
 # README.md
 
-The `prjemian/epics-base-7.0.3` image provides 
+The [`epics-base-7.0.3`](https://hub.docker.com/r/prjemian/epics-base-7.0.3/tags)
+image provides 
 [EPICS base release 7.0.3](https://epics.anl.gov/base/R7-0/3.php),
 the Experimental Physics and Industrial Control System in docker images.
 Tools for compiling EPICS software including compilers and
