@@ -1,6 +1,13 @@
 # epics-docker
 Build EPICS docker images
 
+### Authors
+
+* Pete Jemian
+* Chen Zhang
+* Jeff Hoffman
+* Quan Zhou
+
 ### images available
 
 * [`prjemian/epics-base-7.0.3`](https://hub.docker.com/r/prjemian/epics-base-7.0.3/tags)
