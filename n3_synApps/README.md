@@ -32,35 +32,35 @@ The default working directory is `${SUPPORT}`
 
 ## example use
 
-To start this image in a container at the bash shell, first create
-a bridge network (using name `host-bridge` here) so any EPICS Process 
-Variables created by an EPICS IOC will
-be visible to the host operating system:
+Start the IOC in a container and keep it running 
+with a never-ending, trivial script:
 
-    docker network create --driver bridge host-bridge
-
-Next, start the container and attach to its bash shell:
-
-    docker run \
-        -it \
-        --rm \
-        --net=host-bridge \
-        --name=synapps-6.1 \
+    docker run -d --net=host --name iocxxx \
         prjemian/synapps-6.1 \
-        /bin/bash
+        bash -c "while true; do date; sleep 10; done"
 
-The XXX IOC is ready to run from the bash shell:
+Start the XXX IOC:
 
-    ./iocxxx/softioc/xxx.sh start
+    docker exec iocxxx iocxxx/softioc/xxx.sh start
 
-After starting the IOC, the full list of PVs provided 
+Once the IOC has started, the full list of PVs provided 
 will be available in file: `iocxxx/dbl-all.txt`.
+
+    docker exec iocxxx cat iocxxx/dbl-all.txt
+
+You can interact with the iocxxx container by attaching 
+to the container and running the bash shell:
+
+    docker attach iocxxx
 
 From the bash shell in the container, you may use EPICS 
 commands such as `caget` to view the content of a PV:
 
     root@345225848f10:/opt/synApps/support# caget xxx:datetime
     xxx:datetime                   2019-09-30 03:59:24
+
+Detach with the keyboard combination `^P ^Q` (<control>+p <control>+q).
+If you `exit` the container, it will stop.
 
 
 ### use a custom IOC prefix
@@ -73,20 +73,17 @@ and ending with a `:` (colon).  (A colon is used as a visual separator
 in many of the PVs created in a synApps IOC.)
 
 To create PVs with a different prefix, set the `PREFIX` 
-variable in the container, such as::
+variable in the container before you start the IOC, such as::
 
-    export PREFIX=bc1:
+    export PREFIX=vm7:
+    iocxxx/softioc/xxx.sh start
 
 or specify the PREFIX variable as you start the container:
 
-    docker run \
-        -it \
-        --rm \
-        --net=host-bridge \
-        --name=synapps-6.1 \
-        -e "PREFIX=bc1:"
+    docker run -d --net=host --name iocvm7 \
+        -e "PREFIX=vm7:"
         prjemian/synapps-6.1 \
-        /bin/bash
+        bash -c "while true; do date; sleep 10; done"
 
 *This* synApps image has been modified to allow setting a custom IOC prefix.
 
