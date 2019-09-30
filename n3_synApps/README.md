@@ -73,7 +73,7 @@ and ending with a `:` (colon).  (A colon is used as a visual separator
 in many of the PVs created in a synApps IOC.)
 
 To create PVs with a different prefix, set the `PREFIX` 
-variable in the container before you start the IOC, such as::
+variable (say `vm7:`) in the container before you start the IOC, such as::
 
     export PREFIX=vm7:
     iocxxx/softioc/xxx.sh start
@@ -81,7 +81,14 @@ variable in the container before you start the IOC, such as::
 or specify the PREFIX variable as you start the container:
 
     docker run -d --net=host --name iocvm7 \
-        -e "PREFIX=vm7:"
+        -e "PREFIX=vm7:" \
+        prjemian/synapps-6.1 \
+        bash -c "while true; do date; sleep 10; done"
+
+While you are at it, create yet another IOC (say `bc1`):
+
+    docker run -d --net=host --name iocbc1 \
+        -e "PREFIX=bc1:" \
         prjemian/synapps-6.1 \
         bash -c "while true; do date; sleep 10; done"
 
