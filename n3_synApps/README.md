@@ -10,7 +10,7 @@ screen-oriented text editors (nano, vim, and vi) are included.
 The screen program is also included for running detached console
 sessions such as IOCs.
 
-This image was build using the 
+This synApps modules in this image were gathered using the 
 [`assemble_synApps.sh`](https://github.com/EPICS-synApps/support/blob/master/assemble_synApps.sh) 
 script.  The script was edited to remove the EPICS area detector (module) and other 
 modules that are not used with a linux operating system.  It is intended
