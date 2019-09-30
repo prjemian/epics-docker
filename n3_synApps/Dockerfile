@@ -74,6 +74,7 @@ RUN bash assemble_synApps.sh
 
 ENV MOTOR=${SUPPORT}/motor-R7-1
 ENV XXX=${SUPPORT}/xxx-R6-1
+ENV PREFIX=xxx:
 
 # enable 16 motors and the scaler
 WORKDIR ${XXX}/iocBoot/iocxxx/
@@ -85,11 +86,16 @@ RUN cp examples/motors.iocsh ./ && \
     sed -i s:'#iocshLoad("$(MOTOR)/iocsh/motorSim.iocsh"':'iocshLoad("$(MOTOR)/iocsh/motorSim.iocsh"':g motors.iocsh && \
     sed -i s:'dbLoadTemplate("substitutions/motor.substitutions"':'#dbLoadTemplate("substitutions/motor.substitutions"':g motors.iocsh
 # remove when https://github.com/epics-modules/xxx/pull/27 is merged and released in new synApps version
-RUN sed -i s:'< common.iocsh':'< common.iocsh\n< std.iocsh\n< motors.iocsh':g st.cmd.Linux
+RUN sed -i s:'< common.iocsh':'< common.iocsh\n< std.iocsh\n< motors.iocsh':g    ${XXX}/iocBoot/iocxxx/st.cmd.Linux
 # remove when https://github.com/epics-modules/xxx/pull/25 is merged and released in new synApps version
 RUN \
-    sed -i s:'if [[ ${s_pid} -eq ${P_PID} ]] ; then':'if [ ${s_pid} -eq ${P_PID} ] ; then':g    softioc/xxx.sh && \
-    sed -i s:'if [[ ${s_pid} -eq ${GP_PID} ]] ; then':'if [ ${s_pid} -eq ${GP_PID} ] ; then':g  softioc/xxx.sh
+    sed -i s:'if \[\[ ${s_pid} -eq ${P_PID} ]] ; then':'if \[ ${s_pid} -eq ${P_PID} ] ; then':g     ${XXX}/iocBoot/iocxxx/softioc/xxx.sh && \
+    sed -i s:'if \[\[ ${s_pid} -eq ${GP_PID} ]] ; then':'if \[ ${s_pid} -eq ${GP_PID} ] ; then':g   ${XXX}/iocBoot/iocxxx/softioc/xxx.sh
+RUN \
+    sed -i s/'epicsEnvSet("PREFIX", "xxx:")'/'epicsEnvSet("PREFIX", $(PREFIX))'/g   ${XXX}/iocBoot/iocxxx/common.iocsh && \
+    sed -i s:'IOC=xxx':'IOC=$(PREFIX)':g                                            ${XXX}/iocBoot/iocxxx/st.cmd.Linux
+# not needed since defined above, that's the default
+# RUN sed -i s/'"xxx:"'/'"$(PREFIX:-xxx:)"'/g                                         ${XXX}/iocBoot/iocxxx/common.iocsh
 
 # archive the template IOC, for making new XXX IOCs
 WORKDIR ${SUPPORT}
@@ -97,10 +103,8 @@ RUN tar czf ${SUPPORT}/../xxx-R6-1.tar.gz xxx-R6-1 && \
     ln -s ${XXX}/iocBoot/iocxxx/ ./iocxxx
 
 # Build it all
-RUN make -j4 all
-
-# build envPaths
-WORKDIR ${SUPPORT}/iocxxx/
-RUN make
+RUN \
+    make -j4 all && \
+    make -C ${SUPPORT}/iocxxx/
 
 WORKDIR ${SUPPORT}
