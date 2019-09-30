@@ -10,8 +10,8 @@ Build EPICS docker images
 
 ### images available
 
-* [`prjemian/epics-base-7.0.3`](https://hub.docker.com/r/prjemian/epics-base-7.0.3/tags)
-* [`prjemian/synApps-6.1`](https://hub.docker.com/r/prjemian/synapps-6.1/tags) (no areaDetector in this image)
+* [`prjemian/epics-base-7.0.3`](https://hub.docker.com/r/prjemian/epics-base-7.0.3/tags) ([docs](n2_epics_base/README.md))
+* [`prjemian/synApps-6.1`](https://hub.docker.com/r/prjemian/synapps-6.1/tags) (no areaDetector in this image) ([docs](n3_synApps/README.md))
 
 ### portainer to manage docker locally
 using portainer (from [portainer.io](https://portainer.io)), 
