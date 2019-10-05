@@ -36,7 +36,7 @@ SUPPORT=$1
 
 OP_DIR=${2:-/tmp/synApps_screens}
 # note: we don't have any pydm files, yet
-GUI_LIST="adl opi ui pydm"
+GUI_LIST="adl opi ui"
 
 function contents
 {
@@ -63,27 +63,46 @@ function contents
     fi
 }
 
-for module in `find ${SUPPORT} -wholename "*/op"`; do
-    if [ -d $module ]; then
-        for gui in $GUI_LIST; do
-            # build the list of files to copy
-            filelist=
-            # first: copy autoconvert subdirectory (if it exists)
-            contents ${module}/${gui}/autoconvert
-            filelist+=" ${files}"
-            # then: allow autoconvert/.. directory to override
-            contents ${module}/${gui}
-            filelist+=" ${files}"
-            
-            # copy all files to OP_DIR
-            mkdir -p ${OP_DIR}/${gui}
-            for item in ${filelist}; do
-                # separate by GUI manager
-                cmd="cp ${item}  ${OP_DIR}/${gui}/$(basename -- $item)"
-                # echo ${cmd}
-                echo "$(basename -- $item)"
-                ${cmd}                
-            done
-        done
-    fi
+EXTENSIONS=
+EXTENSIONS+=" adl"
+EXTENSIONS+=" opi"
+EXTENSIONS+=" ui"
+# NOTE: this will fail once PyDM screens are added.
+# PyDM screens use .ui as extension.
+
+for ext in $EXTENSIONS; do
+    # find directories containing files with extension
+    dirlist=
+    for item in `find ${SUPPORT} -name "*.${ext}"`; do 
+        if [[ *"/documentation/"* != "${item}" ]]; then
+            if [[ *"/example"* != "${item}" ]]; then
+                if [[ *"/test"* != "${item}" ]]; then
+                    dirlist+=" $(dirname -- $item)"
+                fi
+            fi
+        fi
+    done
+
+    # reverse sort places autoconvert BEFORE autoconvert/.. in dirlist
+    dirlist=`echo $dirlist | tr ' ' '\n' | sort -ru`
+    # echo $dirlist | tr ' ' '\n'
+
+    # build the list of files to copy
+    # (screens plus related such as images)
+    filelist=
+    for dir in $dirlist; do
+        contents ${dir}
+        filelist+=" ${files}"
+    done
+    # echo $filelist | tr ' ' '\n'
+
+    # copy all files to OP_DIR
+    mkdir -p ${OP_DIR}/${ext}
+    for item in ${filelist}; do
+        # separate by GUI manager
+        cmd="cp ${item}  ${OP_DIR}/${ext}/$(basename -- $item)"
+        # echo ${cmd}
+        # echo "$(basename -- $item)"
+        ${cmd}                
+    done
 done
