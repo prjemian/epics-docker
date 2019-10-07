@@ -94,8 +94,10 @@ RUN \
 RUN \
     sed -i s/'epicsEnvSet("PREFIX", "xxx:")'/'epicsEnvSet("PREFIX", $(PREFIX))'/g   ${XXX}/iocBoot/iocxxx/common.iocsh && \
     sed -i s:'IOC=xxx':'IOC=$(PREFIX)':g                                            ${XXX}/iocBoot/iocxxx/st.cmd.Linux
-# not needed since defined above, that's the default
-# RUN sed -i s/'"xxx:"'/'"$(PREFIX:-xxx:)"'/g                                         ${XXX}/iocBoot/iocxxx/common.iocsh
+# fix for https://github.com/epics-modules/xxx/issues/30                                     ${XXX}/iocBoot/iocxxx/common.iocsh
+COPY iocAdminSoft_aliases.db ${XXX}/xxxApp/Db
+COPY iocAdminSoft_aliases.iocsh ${XXX}/iocBoot/iocxxx
+RUN sed -i s+"IOC=\$(PREFIX)\")"+"IOC=\$(PREFIX)\")\n< iocAdminSoft_aliases.iocsh"+g ${XXX}/iocBoot/iocxxx/st.cmd.Linux
 
 # grab all GUI screens (et al) into a top-level directory
 WORKDIR ${SUPPORT}

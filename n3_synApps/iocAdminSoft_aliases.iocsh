@@ -1,0 +1,5 @@
+# fix for IOC stats
+
+# PV aliases to remove ::
+# see https://github.com/epics-modules/xxx/issues/30
+dbLoadRecords("$(XXX)/xxxApp/Db/iocAdminSoft_aliases.db","P=$(PREFIX)")
