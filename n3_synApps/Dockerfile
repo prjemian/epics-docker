@@ -1,7 +1,8 @@
 FROM  prjemian/epics-base-7.0.3
 LABEL version="1.0.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2019-09-28"
+      lastupdate="2019-10-07" \
+      Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n3_synApps/README.md"
 USER  root
 WORKDIR /home
 
@@ -10,9 +11,7 @@ WORKDIR /home
 # * re2c needed overall
 # * mca needs:
 #    * libusb (newer faster usb support)
-#    * X11 (for GraphicsMagick)
 # * run IOCs in screen sessions (base-os provides)
-# * xvfb for remote GUI viewing
 
 RUN \
     apt-get update  -y && \
@@ -22,7 +21,6 @@ RUN \
        libusb-1.0-0-dev \
        re2c \
        wget \
-       xvfb \
        && \
     rm -rf /var/lib/apt/lists/*
 

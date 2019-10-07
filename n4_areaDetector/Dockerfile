@@ -1,7 +1,7 @@
 FROM  prjemian/synapps-6.1
 LABEL version="1.0.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2019-09-30" \
+      lastupdate="2019-10-07" \
       Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n4_areaDetector/README.md"
 USER  root
 WORKDIR /home
@@ -9,6 +9,7 @@ WORKDIR /home
 # Install libraries from offical repo needed by area detector
 #    * libusb (newer faster usb support)
 #    * X11 (for GraphicsMagick)
+# * xvfb for remote GUI viewing
 # * run IOCs in screen sessions (base-os provides)
 
 RUN \
@@ -17,6 +18,7 @@ RUN \
        libx11-dev \
        x11-xserver-utils \
        xorg-dev \
+       xvfb \
        && \
     rm -rf /var/lib/apt/lists/*
 
@@ -113,12 +115,16 @@ RUN \
     echo "dbl > dbl-all.txt" > ./iocSimDetector/st_base.cmd
 # done editing
 
+WORKDIR ${SUPPORT}
+RUN make release
+
+# grab all GUI screens (et al) into a top-level directory
+WORKDIR ${SUPPORT}
+RUN bash ./copy_screens.sh ${SUPPORT} ${SUPPORT}/screens
+
 # archive the unbuilt template IOC, for making new SimDetector IOCs
 WORKDIR ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot
 RUN tar czf ${SUPPORT}/../iocSimDetector-3.7.tar.gz iocSimDetector
-
-WORKDIR ${SUPPORT}
-RUN make release
 
 # Build it all
 WORKDIR ${AREA_DETECTOR}
