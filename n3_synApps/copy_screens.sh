@@ -100,7 +100,7 @@ for ext in $EXTENSIONS; do
     mkdir -p ${OP_DIR}/${ext}
     for item in ${filelist}; do
         # separate by GUI manager
-        cmd="cp ${item}  ${OP_DIR}/${ext}/$(basename -- $item)"
+        cmd="cp -u ${item}  ${OP_DIR}/${ext}/$(basename -- $item)"
         # echo ${cmd}
         # echo "$(basename -- $item)"
         ${cmd}                
