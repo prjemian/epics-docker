@@ -97,9 +97,15 @@ RUN \
 # not needed since defined above, that's the default
 # RUN sed -i s/'"xxx:"'/'"$(PREFIX:-xxx:)"'/g                                         ${XXX}/iocBoot/iocxxx/common.iocsh
 
+# grab all GUI screens (et al) into a top-level directory
+WORKDIR ${SUPPORT}
+COPY copy_screens.sh .
+RUN bash ./copy_screens.sh ${SUPPORT} ${SUPPORT}/screens
+
 # archive the template IOC, for making new XXX IOCs
 WORKDIR ${SUPPORT}
-RUN tar czf ${SUPPORT}/../xxx-R6-1.tar.gz xxx-R6-1 && \
+RUN \
+    tar czf ${SUPPORT}/../xxx-R6-1.tar.gz xxx-R6-1 && \
     ln -s ${XXX}/iocBoot/iocxxx/ ./iocxxx
 
 # Build it all
