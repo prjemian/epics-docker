@@ -23,7 +23,7 @@ IOC_MANAGER=iocxxx/softioc/xxx.sh
 
 # container will quit unless it has something to run
 # this is trivial but shows that container is running
-# prints dat/time every 10 seconds
+# prints date/time every 10 seconds
 KEEP_ALIVE_COMMAND="while true; do date; sleep 10; done"
 
 # pass the IOC PREFIX to the container ar boot time
@@ -33,9 +33,11 @@ ENVIRONMENT="PREFIX=${PREFIX}"
 RUN="docker exec ${CONTAINER}"
 TMP_ROOT=/tmp/docker_ioc
 HOST_IOC_ROOT=${TMP_ROOT}/${CONTAINER}
+IOC_TOP=${HOST_IOC_ROOT}/xxx-R6-1
+OP_DIR=${TMP_ROOT}/synapps-6.1
 # -------------------------------------------
 
-# stop and remove container if ti exists
+# stop and remove container if it exists
 remove_container.sh ${CONTAINER}
 
 echo -n "starting container ${CONTAINER} ... "
@@ -47,14 +49,13 @@ docker run -d --net=host \
 
 sleep 1
 
-# edit files in IOC for use with GUI software
+# edit files in docker IOC for use with GUI software
 echo "changing xxx: to ${PREFIX} in ${CONTAINER}"
 CMD="${RUN} sed -i s:/APSshare/bin/caQtDM:caQtDM:g iocxxx/../../start_caQtDM_xxx"; ${CMD}
 CMD="${RUN} sed -i s/xxx:/${PREFIX}/g iocxxx/../../xxxApp/op/adl/xxx.adl"; ${CMD}
 CMD="${RUN} sed -i s/ioc=xxx/ioc=${PRE}/g iocxxx/../../xxxApp/op/adl/xxx.adl"; ${CMD}
 CMD="${RUN} sed -i s/xxx:/${PREFIX}/g iocxxx/../../xxxApp/op/ui/xxx.ui"; ${CMD}
 CMD="${RUN} sed -i s/ioc=xxx/ioc=${PRE}/g iocxxx/../../xxxApp/op/ui/xxx.ui"; ${CMD}
-# TODO: need the synApps GUI files, too
 
 echo -n "starting IOC ${CONTAINER} ... "
 CMD="${RUN} ${IOC_MANAGER} start"
@@ -66,3 +67,17 @@ sleep 2
 echo "copy IOC ${CONTAINER} to ${HOST_IOC_ROOT}"
 mkdir -p ${HOST_IOC_ROOT}
 docker cp ${CONTAINER}:/opt/synApps/support/xxx-R6-1/  ${HOST_IOC_ROOT}
+mkdir -p ${OP_DIR}
+docker cp ${CONTAINER}:/opt/synApps/support/screens/   ${OP_DIR}
+
+# best to define these find/replace steps in pieces
+# adjust the starter for caQtDM
+FIND="source \${EPICS_APP}/setup_epics_common caqtdm"
+# interpret the macros in the next string
+REPLACE=`echo "export CAQTDM_DISPLAY_PATH=${IOC_TOP}/xxxApp/op/ui:${OP_DIR}/screens/ui"`
+sed -i s+"${FIND}"+"${REPLACE}"+g ${IOC_TOP}/start_caQtDM_xxx
+
+# adjust the starter for MEDM
+FIND="source \${EPICS_APP}/setup_epics_common medm"
+REPLACE=`echo "export EPICS_DISPLAY_PATH=${IOC_TOP}/xxxApp/op/adl:${OP_DIR}/screens/adl"`
+sed -i s+"${FIND}"+"${REPLACE}"+g ${IOC_TOP}/start_MEDM_xxx
