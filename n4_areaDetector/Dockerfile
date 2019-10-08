@@ -112,7 +112,7 @@ RUN \
     sed -i s:'IOC_STARTUP_DIR=`dirname ${SNAME}`/..':'IOC_STARTUP_DIR=`dirname ${SNAME}`':g   ./iocSimDetector/simDetector.sh && \
     sed -i s:'IOC_STARTUP_FILE="st.cmd.Linux"':'IOC_STARTUP_FILE="st.cmd"':g   ./iocSimDetector/simDetector.sh && \
     sed -i s/'epicsEnvSet("PREFIX", "13SIM1:")'/'epicsEnvSet("PREFIX", \$\{AD_PREFIX})'/g   ./iocSimDetector/st_base.cmd && \
-    echo "dbl > dbl-all.txt" > ./iocSimDetector/st_base.cmd
+    echo "\ndbl > dbl-all.txt" >> ./iocSimDetector/st_base.cmd
 # done editing
 
 WORKDIR ${SUPPORT}
