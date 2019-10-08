@@ -26,7 +26,7 @@ IOC_MANAGER=iocxxx/softioc/xxx.sh
 # prints date/time every 10 seconds
 KEEP_ALIVE_COMMAND="while true; do date; sleep 10; done"
 
-# pass the IOC PREFIX to the container ar boot time
+# pass the IOC PREFIX to the container at boot time
 ENVIRONMENT="PREFIX=${PREFIX}"
 
 # convenience definitions
