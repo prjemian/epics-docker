@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# starts caQtDM
+export PREFIX=${PREFIX:-13SIM1:}
+
+export EPICS_HOST_ARCH=linux-x86_64
+export EPICS_CA_MAX_ARRAY_BYTES=10000000
+
+CAQTDM_DISPLAY_PATH=.
+# CAQTDM_DISPLAY_PATH+=:_IOC_SCREEN_DIR_
+# CAQTDM_DISPLAY_PATH+=:_AD_SCREENS_DIR_
+export CAQTDM_DISPLAY_PATH
+
+export APP=caQtDM
+export MACRO="P=${PREFIX},R=cam1:" 
+export UI_FILE=$(1:-ad_cam_image.ui}
+
+${APP} -macro ${MACRO} ${UI_FILE} &
