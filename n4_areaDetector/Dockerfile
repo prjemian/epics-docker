@@ -97,8 +97,10 @@ RUN cp EXAMPLE_commonPlugins.cmd                                commonPlugins.cm
     sed -i s:'#dbLoadRecords("NDPva':'dbLoadRecords("NDPva':g   commonPlugins.cmd && \
     sed -i s:'#startPVAServer':'startPVAServer':g               commonPlugins.cmd
 
-WORKDIR ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
-COPY run_simDetectorIOC ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/run
+ENV IMAGE_IOC_BOOT_DIR=${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
+WORKDIR ${IMAGE_IOC_BOOT_DIR}
+COPY run_simDetectorIOC ${IMAGE_IOC_BOOT_DIR}/run
+COPY start_caQtDM_adsim ${IMAGE_IOC_BOOT_DIR}/
 RUN cp ${XXX}/iocBoot/iocxxx/softioc/in-screen.sh .
 
 WORKDIR ${SUPPORT}
