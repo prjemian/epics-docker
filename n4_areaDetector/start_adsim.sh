@@ -27,7 +27,7 @@ IOC_MANAGER=iocSimDetector/simDetector.sh
 KEEP_ALIVE_COMMAND="while true; do date; sleep 10; done"
 
 # pass the IOC PREFIX to the container at boot time
-ENVIRONMENT="PREFIX=${PREFIX}"
+ENVIRONMENT="AD_PREFIX=${PREFIX}"
 
 # convenience definitions
 RUN="docker exec ${CONTAINER}"
@@ -64,6 +64,7 @@ docker cp ${CONTAINER}:/opt/synApps/support/screens/   ${OP_DIR}
 
 # edit files in docker container IOC for use with GUI software
 echo "changing 13SIM1: to ${PREFIX} in ${CONTAINER}"
+sed -i s+13SIM1+`echo ${PRE}`+g ${IOC_TOP}/start_caQtDM_adsim
 sed -i s+_IOC_SCREEN_DIR_+`echo ${IOC_TOP}`+g ${IOC_TOP}/start_caQtDM_adsim
 sed -i s+_AD_SCREENS_DIR_+`echo ${OP_DIR}/screens/ui`+g ${IOC_TOP}/start_caQtDM_adsim
 sed -i s+"# CAQTDM_DISPLAY_PATH"+CAQTDM_DISPLAY_PATH+g ${IOC_TOP}/start_caQtDM_adsim
