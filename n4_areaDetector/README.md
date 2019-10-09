@@ -11,4 +11,7 @@ a01da74176d01d07720defec81d87554432bd9a8742c3853cf91e6a71164e1da
 Starting simDetector
 (base) mintadmin@mint-vm:~/.../epics-docker/n4_areaDetector$ caget adsky:cam1:Acquire
 adsky:cam1:Acquire             Done
+
+start_adsim.sh adsim
+remove_container.sh iocadsim
 ```
