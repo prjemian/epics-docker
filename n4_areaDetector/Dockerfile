@@ -1,7 +1,7 @@
 FROM  prjemian/synapps-6.1
-LABEL version="1.0.0" \
+LABEL version="1.0.1" \
       maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2019-10-07" \
+      lastupdate="2019-10-08" \
       Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n4_areaDetector/README.md"
 USER  root
 WORKDIR /home
