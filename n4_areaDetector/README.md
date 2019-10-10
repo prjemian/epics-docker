@@ -18,7 +18,7 @@ and stop the images (and load screen files for use by your GUI programs).
      wget https://raw.githubusercontent.com/prjemian/epics-docker/master/n3_synApps/remove_container.sh
 
 The `start_adsim.sh` script runs the docker image in a container.  The default IOC prefix 
-is `13SIM1:` as defined in ADSimDetector.  If you supply an IOC prefix to be uses instead of the default, 
+is `13SIM1:` as defined in ADSimDetector.  If you supply an IOC prefix to be used instead of the default, 
 do not add the trailing colon, it will be added by the script.  Additionally, the script copies
 GUI screen file definitions from both synApps and areaDetector to the subdirectory 
 `/tmp/docker_ioc/synapps-6.1-ad-3.7/`.  The script also copies the IOC's boot directory to
