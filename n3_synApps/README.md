@@ -34,6 +34,7 @@ The default working directory is `${SUPPORT}`
 
 Bash shell scripts (for linux-x86_64 host architecture) to help you start 
 and stop the images (and load screen files for use by your GUI programs).
+You need both these scripts.
 
      cd ~/bin
      wget https://raw.githubusercontent.com/prjemian/epics-docker/master/n3_synApps/start_xxx.sh
