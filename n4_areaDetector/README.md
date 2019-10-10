@@ -1,17 +1,120 @@
 # README.md
 
--tba-
+# one-time setup
 
-### Wahoo!
+Bash shell scripts (for linux-x86_64 host architecture) to help you start 
+and stop the images (and load screen files for use by your GUI programs).
+
+     cd ~/bin
+     wget https://raw.githubusercontent.com/prjemian/epics-docker/master/n3_synApps/remove_container.sh
+     wget https://raw.githubusercontent.com/prjemian/epics-docker/master/n4_areaDetector/start_adsim.sh
+
+
+# create a Sim Detector IOC using prefix: "adsky:"
+
+     start_adsim.sh adsky
+
+## test that IOC iocadsky is running and accessible from host
+
+(Presumes the host has a working [`caget`](https://epics.anl.gov/base/R3-14/12-docs/CAref.html#caget) executable.)
+
+    user@localhost:~ $ caget adsky:cam1:Acquire
+    adsky:cam1:Acquire             Done
+
+## test that IOC iocadsky is running and accessible within the container
+
+(IOC iocadsky has a working [`caget`](https://epics.anl.gov/base/R3-14/12-docs/CAref.html#caget) executable.)
+
+    user@localhost:~ $ docker exec iocadsky caget adsky:cam1:Acquire
+    adsky:cam1:Acquire             Done
+
+## start caQtDM GUI for iocadsky:
+
+This is a bash shell script engineered for a Linux host architecture.
+(Presumes the host has a working [`caQtDM`](http://caqtdm.github.io/) executable.)
+
+     /tmp/docker_ioc/iocadsky/iocSimDetector/start_caQtDM_adsim
+
+This sets CAQTDM_DISPLAY_PATH as follows:
+
+     CAQTDM_DISPLAY_PATH=.
+     CAQTDM_DISPLAY_PATH=${CAQTDM_DISPLAY_PATH}:/tmp/docker_ioc/iocadsky/iocSimDetector
+     CAQTDM_DISPLAY_PATH=${CAQTDM_DISPLAY_PATH}:/tmp/docker_ioc/synapps-6.1-ad-3.7/screens/ui
+
+# remove iocadsky container (and first, stop the IOC)
+
+    remove_container.sh iocadsky
+
+----
+
+# docker commands
+
+# Run the image without starting the IOC
+
+1. Create docker container from the latest docker image
+1. Give the container a name [consistent](https://epics.anl.gov/bcda/aps/IOCnaming.php) with the prefix.
+1. Set the desired [IOC prefix](https://www.aps.anl.gov/BCDA/EPICS-Process-Variable-Naming-Conventions) (`AD_PREFIX` for this docker image).
+1. Give the container something to do so it will not quit.  Here, it reports the time every ten seconds.  Basically, *IOC is (still) alive*.
 
 ```
-(base) mintadmin@mint-vm:~/.../epics-docker/n4_areaDetector$ docker run -d --net=host --name iocadsky -e "AD_PREFIX=adsky:" prjemian/synapps-6.1-ad-3.7 bash -c "while true; do date; sleep 10; done" 
-a01da74176d01d07720defec81d87554432bd9a8742c3853cf91e6a71164e1da
-(base) mintadmin@mint-vm:~/.../epics-docker/n4_areaDetector$ docker exec iocadsky iocSimDetector/simDetector.sh start
-Starting simDetector
-(base) mintadmin@mint-vm:~/.../epics-docker/n4_areaDetector$ caget adsky:cam1:Acquire
-adsky:cam1:Acquire             Done
-
-start_adsim.sh adsim
-remove_container.sh iocadsim
+docker run \
+    -d \
+    --net=host \
+    --name iocadsky \
+    -e "AD_PREFIX=adsky:" \
+    prjemian/synapps-6.1-ad-3.7:latest \
+    bash -c "while true; do date; sleep 10; done"
 ```
+
+## start the ADSimDetector IOC (in the running container)
+
+Use the container's name:
+
+    docker exec iocadsky iocSimDetector/simDetector.sh start
+
+## Is iocadsky running? (in the running container)
+
+Use the container's name:
+
+    docker exec iocadsky iocSimDetector/simDetector.sh status
+
+## Restart iocadsky (in the running container)
+
+Use the container's name:
+
+    docker exec iocadsky iocSimDetector/simDetector.sh restart
+
+## Stop iocadsky (without stopping the container)
+
+Use the container's name:
+
+    docker exec iocadsky iocSimDetector/simDetector.sh stop
+
+## Access bash shell of iocadsky container
+
+Use the container's name:
+
+    docker exec -it iocadsky bash
+
+You can `exit` from this shell with confidence 
+that it will not stop the IOC or the container.
+
+## Access iocsh of iocadsky EPICS IOC (in the container)
+
+Use the container's name:
+
+    docker exec -it iocadsky iocSimDetector/simDetector.sh console
+
+The IOC runs in a [`screen`]() session.  Type `^a^d` 
+(<control>A, then <control>d) to leave the screen 
+session with the IOC still running.
+If you type `exit`, you will stop the IOC (even though
+the container continues running).
+See above for how to restart the IOC in the container.
+
+## View the console log of the container
+
+    docker logs iocadsky
+
+This will show the output of the timestamps 
+(or output of whatever keep-alive process you are using.)
