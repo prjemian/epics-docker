@@ -6,11 +6,28 @@ Bash shell scripts (for linux-x86_64 host architecture) to help you start
 and stop the images (and load screen files for use by your GUI programs).
 
      cd ~/bin
-     wget https://raw.githubusercontent.com/prjemian/epics-docker/master/n3_synApps/remove_container.sh
      wget https://raw.githubusercontent.com/prjemian/epics-docker/master/n4_areaDetector/start_adsim.sh
+     wget https://raw.githubusercontent.com/prjemian/epics-docker/master/n3_synApps/remove_container.sh
 
+The `start_adsim.sh` script runs the docker image in a container.  The default IOC prefix 
+is `13SIM1:` as defined in ADSimDetector.  If you supply an IOC prefix to be uses instead of the default, 
+do not add the trailing colon, it will be added by the script.  Additionally, the script copies
+GUI screen file definitions from both synApps and areaDetector to the subdirectory 
+`/tmp/docker_ioc/synapps-6.1-ad-3.7/`.  The script also copies the IOC's boot directory to
+`/tmp/docker_ioc/CONTAINER_NAME/iocSimDetector/`.  This is a one-time copy as the IOC starts.  
+It does not contain live updates from autosave/restore or other such.
+
+| directory | contents |
+| ---- | ---- |
+| `/tmp/docker_ioc/synapps-6.1-ad-3.7/screens/adl/` | MEDM `.adl` screens and related files |
+| `/tmp/docker_ioc/synapps-6.1-ad-3.7/screens/opi/` | CSS BOY `.opi` screens and related files |
+| `/tmp/docker_ioc/synapps-6.1-ad-3.7/screens/ui/` | caQtDM `.ui` screens and related files |
+
+The `remove_container.sh` script stops the IOC in the container, then stops and removes the container.
 
 # create a Sim Detector IOC using prefix: "adsky:"
+
+Note you do not include the trailing `:` character.
 
      start_adsim.sh adsky
 
