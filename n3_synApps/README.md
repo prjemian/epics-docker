@@ -63,7 +63,7 @@ Start the IOC in a container and keep it running
 with a never-ending, trivial script:
 
     docker run -d --net=host --name iocxxx \
-        prjemian/synapps-6.1 \
+        prjemian/synapps-6.1:latest \
         bash -c "while true; do date; sleep 10; done"
 
 Start the XXX IOC:
