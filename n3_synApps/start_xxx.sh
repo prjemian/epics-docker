@@ -16,7 +16,7 @@ PREFIX=${PRE}:
 CONTAINER=ioc${PRE}
 
 # name of docker image
-IMAGE=prjemian/synapps-6.1
+IMAGE=prjemian/synapps-6.1:latest
 
 # name of IOC manager (start, stop, status, ...)
 IOC_MANAGER=iocxxx/softioc/xxx.sh
