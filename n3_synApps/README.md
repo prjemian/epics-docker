@@ -30,6 +30,32 @@ By default, no application is run.
 
 The default working directory is `${SUPPORT}`
 
+# one-time setup
+
+Bash shell scripts (for linux-x86_64 host architecture) to help you start 
+and stop the images (and load screen files for use by your GUI programs).
+
+     cd ~/bin
+     wget https://raw.githubusercontent.com/prjemian/epics-docker/master/n3_synApps/start_xxx.sh
+     wget https://raw.githubusercontent.com/prjemian/epics-docker/master/n3_synApps/remove_container.sh
+
+The `start_xxx.sh` script runs the docker image in a container.  The default IOC prefix 
+is `xxx:` as defined in the synApps [XXX](https://github.com/epics-modules/xxx) module.  
+If you supply an IOC prefix to be used instead of the default, 
+do not add the trailing colon, it will be added by the script.  Additionally, the script copies
+GUI screen file definitions from all installed synApps modules to the subdirectory 
+`/tmp/docker_ioc/synapps-6.1/`.  The script also copies the IOC's boot directory to
+`/tmp/docker_ioc/CONTAINER_NAME/xxx-R6-1/`.  This is a one-time copy as the IOC starts.  
+It does not contain live updates from autosave/restore or other such.
+
+| directory | contents |
+| ---- | ---- |
+| `/tmp/docker_ioc/synapps-6.1/screens/adl/` | MEDM `.adl` screens and related files |
+| `/tmp/docker_ioc/synapps-6.1/screens/opi/` | CSS BOY `.opi` screens and related files |
+| `/tmp/docker_ioc/synapps-6.1/screens/ui/` | caQtDM `.ui` screens and related files |
+
+The `remove_container.sh` script stops the IOC in the container, then stops and removes the container.
+
 ## example use
 
 Start the IOC in a container and keep it running 
