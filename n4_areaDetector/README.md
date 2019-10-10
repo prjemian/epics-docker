@@ -1,5 +1,13 @@
 # README.md
 
+The [`prjemian/synapps-6.1-ad-3.7`](https://hub.docker.com/r/prjemian/synapps-6.1-ad-3.7/tags) 
+image provides EPICS [areaDetector release 3.7](https://github.com/areaDetector) in addition to
+[synApps release 6.1](https://www.aps.anl.gov/BCDA/synApps),
+EPICS software tools that help to create a control system for beamlines.
+
+Specifically, this image includes [ADSimDetector](https://github.com/areaDetector/ADSimDetector),
+a simulation of an area detector, with a working IOC.
+
 # one-time setup
 
 Bash shell scripts (for linux-x86_64 host architecture) to help you start 
