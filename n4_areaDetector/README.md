@@ -142,4 +142,12 @@ See above for how to restart the IOC in the container.
     docker logs iocadsky
 
 This will show the output of the timestamps 
-(or output of whatever keep-alive process you are using.)
+(or output of whatever keep-alive process you are using.)``
+
+
+## background
+
+* docker source: `prjemian/synapps-6.1-ad-3.7:latest`
+* `prjemian/epics-base-7.0.3:latest`
+* `prjemian/os_only:latest`
+* `ubuntu:latest` (Ubuntu 18.04)
