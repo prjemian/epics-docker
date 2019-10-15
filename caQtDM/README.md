@@ -35,7 +35,7 @@ caQtDM -macro "MOTOR=sky:,AD=adsky:" motor_adsim.ui  &
 This last command should start a view like this:
 ![screenshot](./motor_adsim.jpg)
 
-CAUTION!!! 
+**CAUTION!!!**
 Watch out for the `Less` and `More` buttons at the bottom of the motor controls.
 They come from the `topMotors8_more.ui` file and will cause
 this screen to be deleted and replaced with the next screen.
