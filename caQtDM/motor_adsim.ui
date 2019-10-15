@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>778</width>
+    <height>405</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="caInclude" name="cainclude">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>10</y>
+     <width>510</width>
+     <height>385</height>
+    </rect>
+   </property>
+   <property name="macro">
+    <string>P=$(AD),R=cam1:</string>
+   </property>
+   <property name="filename" stdset="0">
+    <string notr="true">ad_cam_image.ui</string>
+   </property>
+  </widget>
+  <widget class="caInclude" name="cainclude_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>184</y>
+     <width>245</width>
+     <height>205</height>
+    </rect>
+   </property>
+   <property name="macro">
+    <string>P=$(MOTOR),M1=m1,M2=m2,M3=m3,M4=m4,M5=m5,M6=m6,M7=m7,M8=m8</string>
+   </property>
+   <property name="filename" stdset="0">
+    <string notr="true">topMotors8_more.ui</string>
+   </property>
+  </widget>
+  <widget class="caRelatedDisplay" name="carelateddisplay">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>50</y>
+     <width>241</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="label">
+    <string notr="true">$(MOTOR) IOC</string>
+   </property>
+   <property name="labels">
+    <string>$(MOTOR) IOC;$(MOTOR) motors;$(AD) image</string>
+   </property>
+   <property name="files">
+    <string>xxx.ui;topMotors8_more.ui;ad_cam_image.ui</string>
+   </property>
+   <property name="args">
+    <string>P=$(MOTOR);P=$(MOTOR),M1=m1,M2=m2,M3=m3,M4=m4,M5=m5,M6=m6,M7=m7,M8=m8;P=$(AD),R=cam1:</string>
+   </property>
+  </widget>
+  <widget class="caLabel" name="calabel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>160</y>
+     <width>241</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>$(MOTOR)m1 ... $(MOTOR)m8</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="caLabel" name="calabel_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>241</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>MOTOR=$(MOTOR), AD=$(AD)</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>caRelatedDisplay</class>
+   <extends>QWidget</extends>
+   <header>caRelatedDisplay</header>
+  </customwidget>
+  <customwidget>
+   <class>caLabel</class>
+   <extends>QLabel</extends>
+   <header>caLabel</header>
+  </customwidget>
+  <customwidget>
+   <class>caInclude</class>
+   <extends>QWidget</extends>
+   <header>caInclude</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
