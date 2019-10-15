@@ -38,5 +38,5 @@ This last command should start a view like this:
 **CAUTION!!!**
 Watch out for the `Less` and `More` buttons at the bottom of the motor controls.
 They come from the `topMotors8_more.ui` file and will cause
-this screen to be deleted and replaced with the next screen.
-No coming back from that.
+this screen (`motor_adsim.ui`) to be deleted and replaced 
+with the next screen.  *No coming back from that.*
