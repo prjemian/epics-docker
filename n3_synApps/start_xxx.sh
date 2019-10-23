@@ -82,3 +82,16 @@ sed -i s+"${FIND}"+"${REPLACE}"+g ${IOC_TOP}/start_caQtDM_xxx
 FIND="source \${EPICS_APP}/setup_epics_common medm"
 REPLACE=`echo "export EPICS_DISPLAY_PATH=${IOC_TOP}/xxxApp/op/adl:${OP_DIR}/screens/adl"`
 sed -i s+"${FIND}"+"${REPLACE}"+g ${IOC_TOP}/start_MEDM_xxx
+
+# TODO: make these changes so the entire iocxxx directory can be moved
+#
+# (base) bash-4.2$ diff /the_old_way/start_caQtDM_xxx /the_new_way/start_caQtDM_xxx 
+# 7c7,10
+# < export CAQTDM_DISPLAY_PATH=/tmp/docker_ioc/iocTHING/xxx-R6-1/xxxApp/op/ui:/tmp/docker_ioc/synapps-6.1/screens/ui
+# ---
+# > export IOC_ROOT=${EPICS_APP}/../..
+# > export EPICS_SYNAPPS_UI_DIR=${IOC_ROOT}/synapps-6.1/screens/ui
+# > 
+# > export CAQTDM_DISPLAY_PATH=${EPICS_APP_UI_DIR}:${EPICS_SYNAPPS_UI_DIR}
+#
+# TODO: similar for MEDM
