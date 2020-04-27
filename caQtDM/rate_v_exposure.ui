@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="caCartesianPlot" name="cacartesianplot">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>381</width>
+     <height>271</height>
+    </rect>
+   </property>
+   <property name="TitleX">
+    <string notr="true">exposure, s</string>
+   </property>
+   <property name="TitleY">
+    <string notr="true">frame rate, fps</string>
+   </property>
+   <property name="channels_1" stdset="0">
+    <string>adsky:cam1:AcquireTime_RBV;adsky:cam1:ArrayRate_RBV</string>
+   </property>
+   <property name="Style_1">
+    <enum>caCartesianPlot::NoCurve</enum>
+   </property>
+   <property name="symbol_1">
+    <enum>caCartesianPlot::Ellipse</enum>
+   </property>
+   <property name="color_1">
+    <color>
+     <red>3</red>
+     <green>19</green>
+     <blue>255</blue>
+    </color>
+   </property>
+   <property name="plotMode">
+    <enum>caCartesianPlot::PlotLastNPoints</enum>
+   </property>
+   <property name="countNumOrChannel" stdset="0">
+    <string notr="true">100</string>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>caCartesianPlot</class>
+   <extends>QFrame</extends>
+   <header>caCartesianPlot</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
