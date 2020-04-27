@@ -1,8 +1,10 @@
 #!/bin/bash
 
 # install EPICS base, synApps, and areaDetector on Linux
+#
+# usage ./install-epics.sh [EPICS_ROOT_DIRECTORY]
 
-export EPICS_ROOT=/usr/local/epics
+export EPICS_ROOT=${1:-/usr/local/epics}
 # export EPICS_ROOT=/opt/epics
 
 export BASE_VERSION=base-7.0.3.1
@@ -15,7 +17,7 @@ if [ "Linux" != "`uname -s`" ]; then
     exit 1
 fi
 
-export _distro=`grep ID_LIKE /etc/os-release | sed s:'ID_LIKE=':'':g`
+export _distro=`grep ID_LIKE /etc/os-release | sed s:'ID_LIKE=':'':g | sed s:'\"':'':g`
 echo "Identified Linux distribution type: ${_distro}"
 
 #- prep ---------------------------------------------------
@@ -68,14 +70,37 @@ function check_ubuntu_packages {
     fi
 }
 
+function check_fedora_packages {
+    # On RHEL7, these packages (at least) must be installed:
+    #_packages+=" git"
+    #?_packages+=" g++"
+    #_packages+=" re2c"
+    _packages+=" libnet-devel"
+    #?_packages+=" libpcap-devel"
+    #?_packages+=" libusb-1.0-0-devel"
+    #?_packages+=" libx11-devel"
+    #?_packages+=" libxext-devel"
+    export _result=`rpm -q ${_packages} 2>&1`
+    # echo "${_result}"
+    if [ "" == "${_result}" ]; then
+        echo "Required RHEL/fedora packages are installed: ${_packages}"
+    else
+        echo "${_result}"
+        echo "These packages must be installed first.  This command is suggested:"
+        echo "sudo yum install -y ${_packages}"
+        exit 1
+    fi
+}
+
 function unknown_distro {
-    echo "This installer is not (yet) configured for this Linux distribution: ${_distro}"
+    echo "This installer is not (yet) configured for ${_distro} Linux" 
     cat /etc/os-release
     exit 1
 }
 
 case "${_distro}" in
     ubuntu) check_ubuntu_packages ;;
+    "fedora" ) check_fedora_packages ;;
     *) unknown_distro ;;
 esac
 
