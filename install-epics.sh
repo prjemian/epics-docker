@@ -58,6 +58,8 @@ function check_ubuntu_packages {
     _packages+=" libusb-1.0-0-dev"
     _packages+=" libx11-dev"
     _packages+=" libxext-dev"
+    # screen is used to run synApps IOCs in detached sessions
+    _packages+=" screen"
     export _result=`dpkg -V ${_packages} 2>&1`
     # echo "${_result}"
     if [ "" == "${_result}" ]; then
@@ -80,6 +82,8 @@ function check_fedora_packages {
     #?_packages+=" libusb-1.0-0-devel"
     #?_packages+=" libx11-devel"
     #?_packages+=" libxext-devel"
+    # screen is used to run synApps IOCs in detached sessions
+    _packages+=" screen"
     export _result=`rpm -q ${_packages} 2>&1`
     # echo "${_result}"
     if [ "" == "${_result}" ]; then
