@@ -40,10 +40,14 @@ OP_DIR=${TMP_ROOT}/synapps-6.1-ad-3.7
 # stop and remove container if it exists
 remove_container.sh ${CONTAINER}
 
+# make a shared mount point on host for container
+mkdir /tmp/${PRE}
+
 echo -n "starting container ${CONTAINER} ... "
 docker run -d --net=host \
     --name ${CONTAINER} \
     -e "${ENVIRONMENT}" \
+    -v /tmp/${PRE}:/tmp \
     ${IMAGE} \
     bash -c "${KEEP_ALIVE_COMMAND}"
 
