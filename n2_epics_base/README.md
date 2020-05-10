@@ -1,8 +1,8 @@
 # README.md
 
-The [`prjemian/epics-base-7.0.3`](https://hub.docker.com/r/prjemian/epics-base-7.0.3/tags)
+The [`prjemian/epics-base-7.0.3.1`](https://hub.docker.com/r/prjemian/epics-base-7.0.3.1/tags)
 image provides 
-[EPICS base release 7.0.3](https://epics.anl.gov/base/R7-0/3.php),
+[EPICS base release 7.0.3.1](https://epics.anl.gov/base/R7-0/3.php),
 the Experimental Physics and Industrial Control System in docker images.
 Tools for compiling EPICS software including compilers and
 screen-oriented text editors (nano, vim, and vi) are included.
@@ -13,7 +13,7 @@ This image will serve as the starting point for images
 that provide other EPICS components.
 
 The EPICS base is installed (and compiled) in directory: 
-`/opt/base-7.0.3` which is soft-linked to `/opt/base`.
+`/opt/base-7.0.3.1` which is soft-linked to `/opt/base`.
 
 ## default application
 
@@ -38,9 +38,23 @@ Next, start the container and attach to its bash shell:
         -it \
         --rm \
         --net=host-bridge \
-        --name=epics-base-7.0.3 \
-        prjemian/epics-base-7.0.3 \
+        --name=epics-base-7.0.3.1 \
+        prjemian/epics-base-7.0.3.1 \
         /bin/bash
+
+Print the version of EPICS base by starting a soft IOC:
+
+    (base) user@host:~/.../epics-docker/n2_epics_base$ docker run prjemian/epics-base-7.0.3.1 /opt/base/bin/linux-x86_64/softIoc -m IOC=ioc -d /opt/base/db/softIocExit.db
+    Starting iocInit
+    iocRun: All initialization complete
+    dbLoadDatabase("/opt/base-7.0.3.1/bin/linux-x86_64/../../dbd/softIoc.dbd")
+    softIoc_registerRecordDeviceDriver(pdbbase)
+    dbLoadRecords("/opt/base/db/softIocExit.db", "IOC=ioc")
+    iocInit()
+    ############################################################################
+    ## EPICS R7.0.3.1
+    ## EPICS Base built May 10 2020
+    ############################################################################
 
 
 ## Environment variables
@@ -57,4 +71,4 @@ ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
 ## background
 
 * docker source: `prjemian/os_only`
-* ubuntu:latest (Ubuntu 18.04)
+* ubuntu:latest (Ubuntu 20.04)

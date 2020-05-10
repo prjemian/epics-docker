@@ -1,7 +1,7 @@
 FROM  prjemian/os_only
 LABEL version="1.0.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2019-09-28"
+      lastupdate="2020-05-10"
 USER  root
 WORKDIR /home
 
@@ -17,12 +17,14 @@ ENV EPICS_HOST_ARCH=linux-x86_64
 ENV EPICS_ROOT="${APP_ROOT}/base"
 ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
 
-WORKDIR ${APP_ROOT}
-ADD https://epics.anl.gov/download/base/base-7.0.3.tar.gz ./
+ENV EPICS_BASE_NAME=base-7.0.3.1
 
-RUN tar xzf base-7.0.3.tar.gz &&\
-    rm  base-7.0.3.tar.gz &&\
-    ln -s base-7.0.3 base
+WORKDIR ${APP_ROOT}
+ADD https://epics.anl.gov/download/base/${EPICS_BASE_NAME}.tar.gz ./
+
+RUN tar xzf ${EPICS_BASE_NAME}.tar.gz &&\
+    rm  ${EPICS_BASE_NAME}.tar.gz &&\
+    ln -s ${EPICS_BASE_NAME} base
 
 WORKDIR ${EPICS_ROOT}
 RUN make -j4 CFLAGS="-fPIC" CXXFLAGS="-fPIC" &&\

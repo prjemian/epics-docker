@@ -1,16 +1,18 @@
 
 ORG=prjemian
-REPO=epics-base-7.0.3
+REPO=epics-base-7.0.3.1
 LOGFILE=build-log.txt
 NET=host-bridge
 
 FULLNAME=$(ORG)/$(REPO)
 
 build ::
+	echo "# started: " `date --iso-8601="seconds"` | tee $(LOGFILE)
 	docker build \
 		-t $(FULLNAME)  \
 		./  \
-		2>&1 | tee $(LOGFILE)
+		2>&1 | tee -a $(LOGFILE)
+	echo "# finished: " `date --iso-8601="seconds"` | tee -a $(LOGFILE)
 
 shell ::
 	docker run \
