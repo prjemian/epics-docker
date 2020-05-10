@@ -1,7 +1,7 @@
 FROM  ubuntu:latest
 LABEL version="1.0.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2019-09-28"
+      lastupdate="2020-05-10"
 USER  root
 WORKDIR /home
 
