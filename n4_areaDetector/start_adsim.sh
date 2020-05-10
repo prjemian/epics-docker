@@ -16,7 +16,8 @@ PREFIX=${PRE}:
 CONTAINER=ioc${PRE}
 
 # name of docker image
-IMAGE=prjemian/synapps-6.1-ad-3.7:latest
+SHORT_NAME=synapps-6.1-ad-3.7
+IMAGE=prjemian/${SHORT_NAME}:latest
 
 # name of IOC manager (start, stop, status, ...)
 IOC_MANAGER=iocSimDetector/simDetector.sh
@@ -34,16 +35,20 @@ RUN="docker exec ${CONTAINER}"
 TMP_ROOT=/tmp/docker_ioc
 HOST_IOC_ROOT=${TMP_ROOT}/${CONTAINER}
 IOC_TOP=${HOST_IOC_ROOT}/iocSimDetector
-OP_DIR=${TMP_ROOT}/synapps-6.1-ad-3.7
+OP_DIR=${TMP_ROOT}/${SHORT_NAME}
+HOST_TMP_SHARE=${HOST_IOC_ROOT}/tmp
 # -------------------------------------------
 
 # stop and remove container if it exists
 remove_container.sh ${CONTAINER}
 
+mkdir -p ${HOST_TMP_SHARE}
+
 echo -n "starting container ${CONTAINER} ... "
 docker run -d --net=host \
     --name ${CONTAINER} \
     -e "${ENVIRONMENT}" \
+    -v "${HOST_TMP_SHARE}":/tmp \
     ${IMAGE} \
     bash -c "${KEEP_ALIVE_COMMAND}"
 
@@ -57,7 +62,6 @@ sleep 2
 
 # copy container's files to /tmp for medm & caQtDM
 echo "copy IOC ${CONTAINER} to ${HOST_IOC_ROOT}"
-mkdir -p ${HOST_IOC_ROOT}
 docker cp ${CONTAINER}:/opt/synApps/support/areaDetector-R3-7/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/  ${HOST_IOC_ROOT}
 mkdir -p ${OP_DIR}
 docker cp ${CONTAINER}:/opt/synApps/support/screens/   ${OP_DIR}

@@ -16,7 +16,8 @@ PREFIX=${PRE}:
 CONTAINER=ioc${PRE}
 
 # name of docker image
-IMAGE=prjemian/synapps-6.1:latest
+SHORT_NAME=synapps-6.1
+IMAGE=prjemian/${SHORT_NAME}:latest
 
 # name of IOC manager (start, stop, status, ...)
 IOC_MANAGER=iocxxx/softioc/xxx.sh
@@ -34,16 +35,20 @@ RUN="docker exec ${CONTAINER}"
 TMP_ROOT=/tmp/docker_ioc
 HOST_IOC_ROOT=${TMP_ROOT}/${CONTAINER}
 IOC_TOP=${HOST_IOC_ROOT}/xxx-R6-1
-OP_DIR=${TMP_ROOT}/synapps-6.1
+OP_DIR=${TMP_ROOT}/${SHORT_NAME}
+HOST_TMP_SHARE=${HOST_IOC_ROOT}/tmp
 # -------------------------------------------
 
 # stop and remove container if it exists
 remove_container.sh ${CONTAINER}
 
+mkdir -p ${HOST_TMP_SHARE}
+
 echo -n "starting container ${CONTAINER} ... "
 docker run -d --net=host \
     --name ${CONTAINER} \
     -e "${ENVIRONMENT}" \
+    -v "${HOST_TMP_SHARE}":/tmp \
     ${IMAGE} \
     bash -c "${KEEP_ALIVE_COMMAND}"
 
@@ -66,7 +71,6 @@ sleep 2
 
 # copy container's files to /tmp for medm & caQtDM
 echo "copy IOC ${CONTAINER} to ${HOST_IOC_ROOT}"
-mkdir -p ${HOST_IOC_ROOT}
 docker cp ${CONTAINER}:/opt/synApps/support/xxx-R6-1/  ${HOST_IOC_ROOT}
 mkdir -p ${OP_DIR}
 docker cp ${CONTAINER}:/opt/synApps/support/screens/   ${OP_DIR}
@@ -87,10 +91,10 @@ sed -i s+"${FIND}"+"${REPLACE}"+g ${IOC_TOP}/start_MEDM_xxx
 #
 # (base) bash-4.2$ diff /the_old_way/start_caQtDM_xxx /the_new_way/start_caQtDM_xxx 
 # 7c7,10
-# < export CAQTDM_DISPLAY_PATH=/tmp/docker_ioc/iocTHING/xxx-R6-1/xxxApp/op/ui:/tmp/docker_ioc/synapps-6.1/screens/ui
+# < export CAQTDM_DISPLAY_PATH=/tmp/docker_ioc/iocTHING/xxx-R6-1/xxxApp/op/ui:/tmp/docker_ioc/${SHORT_NAME}/screens/ui
 # ---
 # > export IOC_ROOT=${EPICS_APP}/../..
-# > export EPICS_SYNAPPS_UI_DIR=${IOC_ROOT}/synapps-6.1/screens/ui
+# > export EPICS_SYNAPPS_UI_DIR=${IOC_ROOT}/${SHORT_NAME}/screens/ui
 # > 
 # > export CAQTDM_DISPLAY_PATH=${EPICS_APP_UI_DIR}:${EPICS_SYNAPPS_UI_DIR}
 #
