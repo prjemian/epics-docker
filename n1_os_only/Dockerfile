@@ -1,7 +1,7 @@
 FROM  ubuntu:latest
-LABEL version="1.0.0" \
+LABEL version="1.1.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2020-05-10"
+      lastupdate="2020-05-11"
 USER  root
 WORKDIR /home
 
@@ -9,6 +9,7 @@ WORKDIR /home
 RUN apt-get update  -y && \
     apt-get upgrade -y && \
     apt-get install -y  \
+        apt-utils \
         build-essential  \
         libreadline-dev  \
         nano  \

@@ -1,7 +1,7 @@
 FROM  prjemian/os_only
-LABEL version="1.0.0" \
+LABEL version="1.0.1" \
       maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2020-05-10"
+      lastupdate="2020-05-11"
 USER  root
 WORKDIR /home
 
