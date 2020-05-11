@@ -37,83 +37,30 @@ ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
 ENV SUPPORT="${APP_ROOT}/synApps/support"
 ENV PATH="${PATH}:${SUPPORT}/utils"
 
+RUN echo # start ------------------- assemble_synApps.sh -------------------
 WORKDIR ${APP_ROOT}
+# download the installer script
 # synApps 6.1 release
 # ENV HASH=cc5adba5b8848c9cb98ab96768d668ae927d8859
 # latest
 ENV HASH=master
 ADD https://raw.githubusercontent.com/EPICS-synApps/support/${HASH}/assemble_synApps.sh ./
-
 # edit the script first!
-RUN sed -i s:'/APSshare/epics/base-3.15.6':'/opt/base':g assemble_synApps.sh
+COPY edit_assemble_synApps.sh .
+RUN bash edit_assemble_synApps.sh
+# done editing
+# review
+RUN cat assemble_synApps.sh
+# run the script now
+RUN bash assemble_synApps.sh
+RUN echo # end ------------------- assemble_synApps.sh -------------------
 
-ENV _MODULES_=ALLENBRADLEY
-ENV _MODULES_+=" CAMAC"
+# --- configure and build synApps ---
+ENV MOTOR=${SUPPORT}/motor-R7-1
+ENV XXX=${SUPPORT}/xxx-R6-1
+ENV PREFIX=xxx:
 
-# do NOT build these for linux-x86_64
-RUN sed -i s:'ALLENBRADLEY=':'#ALLENBRADLEY=':g         assemble_synApps.sh && \
-    sed -i s:'CAMAC=':'#CAMAC=':g                       assemble_synApps.sh && \
-    sed -i s:'DAC128V=':'#DAC128V=':g                   assemble_synApps.sh && \
-    sed -i s:'DELAYGEN=':'#DELAYGEN=':g                 assemble_synApps.sh && \
-    sed -i s:'DXP=':'#DXP=':g                           assemble_synApps.sh && \
-    sed -i s:'DXPSITORO=':'#DXPSITORO=':g               assemble_synApps.sh && \
-    sed -i s:'GALIL=':'#GALIL=':g                       assemble_synApps.sh && \
-    sed -i s:'IP330=':'#IP330=':g                       assemble_synApps.sh && \
-    sed -i s:'IPUNIDIG=':'#IPUNIDIG=':g                 assemble_synApps.sh && \
-    sed -i s:'LOVE=':'#LOVE=':g                         assemble_synApps.sh && \
-    sed -i s:'MEASCOMP=':'#MEASCOMP=':g                 assemble_synApps.sh && \
-    sed -i s:'QUADEM=':'#QUADEM=':g                     assemble_synApps.sh && \
-    sed -i s:'SOFTGLUE=':'#SOFTGLUE=':g                 assemble_synApps.sh && \
-    sed -i s:'SOFTGLUEZYNQ=':'#SOFTGLUEZYNQ=':g         assemble_synApps.sh && \
-    sed -i s:'VAC=':'#VAC=':g                           assemble_synApps.sh && \
-    sed -i s:'VME=':'#VME=':g                           assemble_synApps.sh && \
-    sed -i s:'YOKOGAWA_DAS=':'#YOKOGAWA_DAS=':g         assemble_synApps.sh
-    # for i in x y z; do echo "$i"; done
-# TODO: install "master" for the other modules
-#  grep for line that starts with module= and replace whole line with module=master
-#  example:   sed -i s:'^MOTOR=\S*$':'MOTOR=master':g 
-#  implement with a for loop and list of modules
-# Q: for loop in Dockerfile?
-# A: YES --  https://stackoverflow.com/questions/39496017/iterate-in-run-command-in-dockerfile
-
-# ALIVE
-# AREA_DETECTOR
-# ASYN
-# AUTOSAVE
-# BUSY
-# CALC
-# CAMAC
-# CAPUTRECORDER
-# DEVIOCSTATS
-# IP
-# IPAC
-# LUA
-# MCA
-# MODBUS
-# MOTOR
-# OPTICS
-# SNCSEQ
-# SSCAN
-# STD
-# STREAM
-# XXX
-
-# FIXME: stop the build at this point
-
-# # done editing
-
-# # review
-# RUN echo # start ------------------- assemble_synApps.sh -------------------
-# RUN cat assemble_synApps.sh
-# RUN echo # end ------------------- assemble_synApps.sh -------------------
-
-# # run the script now
-# RUN bash assemble_synApps.sh
-
-# ENV MOTOR=${SUPPORT}/motor-R7-1
-# ENV XXX=${SUPPORT}/xxx-R6-1
-# ENV PREFIX=xxx:
-
+# # TODO: convert these lines into a bash script
 # # enable 16 motors and the scaler
 # WORKDIR ${XXX}/iocBoot/iocxxx/
 # RUN cp examples/motors.iocsh ./ && \
@@ -137,7 +84,9 @@ RUN sed -i s:'ALLENBRADLEY=':'#ALLENBRADLEY=':g         assemble_synApps.sh && \
 # COPY iocAdminSoft_aliases.iocsh ${XXX}/iocBoot/iocxxx
 # RUN sed -i s+"IOC=\$(PREFIX)\")"+"IOC=\$(PREFIX)\")\n< iocAdminSoft_aliases.iocsh"+g ${XXX}/iocBoot/iocxxx/st.cmd.Linux
 
+# # TODO: convert these lines into a bash script
 # # grab all GUI screens (et al) into a top-level directory
+# # TODO: soft link to directory in /tmp
 # WORKDIR ${SUPPORT}
 # COPY copy_screens.sh .
 # RUN bash ./copy_screens.sh ${SUPPORT} ${SUPPORT}/screens
@@ -152,5 +101,7 @@ RUN sed -i s:'ALLENBRADLEY=':'#ALLENBRADLEY=':g         assemble_synApps.sh && \
 # RUN \
 #     make -j4 all && \
 #     make -C ${SUPPORT}/iocxxx/
+
+# # TODO: add components from start_xxx.sh here
 
 # WORKDIR ${SUPPORT}
