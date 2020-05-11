@@ -1,329 +1,824 @@
-# started:  2020-05-11T12:05:01-05:00
+# started:  2020-05-11T14:40:21-05:00
 Sending build context to Docker daemon  31.74kB
-Step 1/19 : FROM  prjemian/epics-base-7.0.3.1
- ---> f0c0c1d06034
-Step 2/19 : LABEL version="1.0.1"       maintainer="prjemian <prjemian@gmail.com>"       lastupdate="2020-05-10"       Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n3_synApps/README.md"
- ---> Running in 6a532532d42f
-Removing intermediate container 6a532532d42f
- ---> f09097eb9613
-Step 3/19 : USER  root
- ---> Running in 0247f1e07f1f
-Removing intermediate container 0247f1e07f1f
- ---> fb524dfbac95
-Step 4/19 : WORKDIR /home
- ---> Running in 39919ac19f10
-Removing intermediate container 39919ac19f10
- ---> f91d58ddb9f4
-Step 5/19 : RUN     apt-get update  -y &&     apt-get install -y         git        libusb-dev        libusb-1.0-0-dev        re2c        wget        &&     rm -rf /var/lib/apt/lists/*
- ---> Running in 49439eac1b88
-Get:1 http://security.ubuntu.com/ubuntu focal-security InRelease [107 kB]
-Get:2 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
-Get:3 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [60.9 kB]
-Get:4 http://archive.ubuntu.com/ubuntu focal-updates InRelease [107 kB]
-Get:5 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [4673 B]
-Get:6 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [8273 B]
-Get:7 http://archive.ubuntu.com/ubuntu focal-backports InRelease [98.3 kB]
-Get:8 http://archive.ubuntu.com/ubuntu focal/multiverse amd64 Packages [177 kB]
-Get:9 http://archive.ubuntu.com/ubuntu focal/main amd64 Packages [1275 kB]
-Get:10 http://archive.ubuntu.com/ubuntu focal/restricted amd64 Packages [33.4 kB]
-Get:11 http://archive.ubuntu.com/ubuntu focal/universe amd64 Packages [11.3 MB]
-Get:12 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [104 kB]
-Get:13 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [32.3 kB]
-Get:14 http://archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [4673 B]
-Get:15 http://archive.ubuntu.com/ubuntu focal-backports/universe amd64 Packages [2903 B]
-Fetched 13.6 MB in 29s (478 kB/s)
-Reading package lists...
-Reading package lists...
-Building dependency tree...
-Reading state information...
-The following additional packages will be installed:
-  ca-certificates git-man krb5-locales less libbrotli1 libbsd0 libcbor0.6
-  libcurl3-gnutls libedit2 liberror-perl libfido2-1 libgssapi-krb5-2
-  libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0 libnghttp2-14 libpsl5
-  librtmp1 libssh-4 libusb-0.1-4 libusb-1.0-0 libusb-1.0-doc libx11-6
-  libx11-data libxau6 libxcb1 libxdmcp6 libxext6 libxmuu1 openssh-client
-  openssl publicsuffix xauth
-Suggested packages:
-  gettext-base git-daemon-run | git-daemon-sysvinit git-doc git-el git-email
-  git-gui gitk gitweb git-cvs git-mediawiki git-svn krb5-doc krb5-user
-  keychain libpam-ssh monkeysphere ssh-askpass
-The following NEW packages will be installed:
-  ca-certificates git git-man krb5-locales less libbrotli1 libbsd0 libcbor0.6
-  libcurl3-gnutls libedit2 liberror-perl libfido2-1 libgssapi-krb5-2
-  libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0 libnghttp2-14 libpsl5
-  librtmp1 libssh-4 libusb-0.1-4 libusb-1.0-0 libusb-1.0-0-dev libusb-1.0-doc
-  libusb-dev libx11-6 libx11-data libxau6 libxcb1 libxdmcp6 libxext6 libxmuu1
-  openssh-client openssl publicsuffix re2c wget xauth
-0 upgraded, 39 newly installed, 0 to remove and 0 not upgraded.
-Need to get 10.5 MB of archives.
-After this operation, 58.4 MB of additional disk space will be used.
-Get:1 http://archive.ubuntu.com/ubuntu focal/main amd64 openssl amd64 1.1.1f-1ubuntu2 [621 kB]
-Get:2 http://archive.ubuntu.com/ubuntu focal/main amd64 ca-certificates all 20190110ubuntu1 [146 kB]
-Get:3 http://archive.ubuntu.com/ubuntu focal/main amd64 less amd64 551-1 [126 kB]
-Get:4 http://archive.ubuntu.com/ubuntu focal/main amd64 libbsd0 amd64 0.10.0-1 [45.4 kB]
-Get:5 http://archive.ubuntu.com/ubuntu focal/main amd64 krb5-locales all 1.17-6ubuntu4 [11.4 kB]
-Get:6 http://archive.ubuntu.com/ubuntu focal/main amd64 libcbor0.6 amd64 0.6.0-0ubuntu1 [21.1 kB]
-Get:7 http://archive.ubuntu.com/ubuntu focal/main amd64 libedit2 amd64 3.1-20191231-1 [87.0 kB]
-Get:8 http://archive.ubuntu.com/ubuntu focal/main amd64 libfido2-1 amd64 1.3.1-1ubuntu2 [47.9 kB]
-Get:9 http://archive.ubuntu.com/ubuntu focal/main amd64 libkrb5support0 amd64 1.17-6ubuntu4 [30.9 kB]
-Get:10 http://archive.ubuntu.com/ubuntu focal/main amd64 libk5crypto3 amd64 1.17-6ubuntu4 [80.2 kB]
-Get:11 http://archive.ubuntu.com/ubuntu focal/main amd64 libkeyutils1 amd64 1.6-6ubuntu1 [10.2 kB]
-Get:12 http://archive.ubuntu.com/ubuntu focal/main amd64 libkrb5-3 amd64 1.17-6ubuntu4 [330 kB]
-Get:13 http://archive.ubuntu.com/ubuntu focal/main amd64 libgssapi-krb5-2 amd64 1.17-6ubuntu4 [121 kB]
-Get:14 http://archive.ubuntu.com/ubuntu focal/main amd64 libpsl5 amd64 0.21.0-1ubuntu1 [51.5 kB]
-Get:15 http://archive.ubuntu.com/ubuntu focal/main amd64 libusb-1.0-0 amd64 2:1.0.23-2build1 [46.5 kB]
-Get:16 http://archive.ubuntu.com/ubuntu focal/main amd64 libxau6 amd64 1:1.0.9-0ubuntu1 [7488 B]
-Get:17 http://archive.ubuntu.com/ubuntu focal/main amd64 libxdmcp6 amd64 1:1.1.3-0ubuntu1 [10.6 kB]
-Get:18 http://archive.ubuntu.com/ubuntu focal/main amd64 libxcb1 amd64 1.14-2 [44.7 kB]
-Get:19 http://archive.ubuntu.com/ubuntu focal/main amd64 libx11-data all 2:1.6.9-2ubuntu1 [113 kB]
-Get:20 http://archive.ubuntu.com/ubuntu focal/main amd64 libx11-6 amd64 2:1.6.9-2ubuntu1 [573 kB]
-Get:21 http://archive.ubuntu.com/ubuntu focal/main amd64 libxext6 amd64 2:1.3.4-0ubuntu1 [29.1 kB]
-Get:22 http://archive.ubuntu.com/ubuntu focal/main amd64 libxmuu1 amd64 2:1.1.3-0ubuntu1 [9728 B]
-Get:23 http://archive.ubuntu.com/ubuntu focal/main amd64 openssh-client amd64 1:8.2p1-4 [674 kB]
-Get:24 http://archive.ubuntu.com/ubuntu focal/main amd64 publicsuffix all 20200303.0012-1 [111 kB]
-Get:25 http://archive.ubuntu.com/ubuntu focal/main amd64 wget amd64 1.20.3-1ubuntu1 [349 kB]
-Get:26 http://archive.ubuntu.com/ubuntu focal/main amd64 xauth amd64 1:1.1-0ubuntu1 [25.0 kB]
-Get:27 http://archive.ubuntu.com/ubuntu focal/main amd64 libbrotli1 amd64 1.0.7-6build1 [270 kB]
-Get:28 http://archive.ubuntu.com/ubuntu focal/main amd64 libnghttp2-14 amd64 1.40.0-1build1 [78.7 kB]
-Get:29 http://archive.ubuntu.com/ubuntu focal/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2build1 [54.9 kB]
-Get:30 http://archive.ubuntu.com/ubuntu focal/main amd64 libssh-4 amd64 0.9.3-2ubuntu2 [170 kB]
-Get:31 http://archive.ubuntu.com/ubuntu focal/main amd64 libcurl3-gnutls amd64 7.68.0-1ubuntu2 [231 kB]
-Get:32 http://archive.ubuntu.com/ubuntu focal/main amd64 liberror-perl all 0.17029-1 [26.5 kB]
-Get:33 http://archive.ubuntu.com/ubuntu focal/main amd64 git-man all 1:2.25.1-1ubuntu3 [884 kB]
-Get:34 http://archive.ubuntu.com/ubuntu focal/main amd64 git amd64 1:2.25.1-1ubuntu3 [4554 kB]
-Get:35 http://archive.ubuntu.com/ubuntu focal/main amd64 libusb-0.1-4 amd64 2:0.1.12-32 [17.4 kB]
-Get:36 http://archive.ubuntu.com/ubuntu focal/main amd64 libusb-1.0-0-dev amd64 2:1.0.23-2build1 [64.4 kB]
-Get:37 http://archive.ubuntu.com/ubuntu focal/main amd64 libusb-1.0-doc all 2:1.0.23-2build1 [172 kB]
-Get:38 http://archive.ubuntu.com/ubuntu focal/main amd64 libusb-dev amd64 2:0.1.12-32 [30.3 kB]
-Get:39 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 re2c amd64 1.3-1ubuntu0.1 [259 kB]
-[91mdebconf: delaying package configuration, since apt-utils is not installed
-[0mFetched 10.5 MB in 19s (544 kB/s)
-Selecting previously unselected package openssl.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 15634 files and directories currently installed.)
-Preparing to unpack .../00-openssl_1.1.1f-1ubuntu2_amd64.deb ...
-Unpacking openssl (1.1.1f-1ubuntu2) ...
-Selecting previously unselected package ca-certificates.
-Preparing to unpack .../01-ca-certificates_20190110ubuntu1_all.deb ...
-Unpacking ca-certificates (20190110ubuntu1) ...
-Selecting previously unselected package less.
-Preparing to unpack .../02-less_551-1_amd64.deb ...
-Unpacking less (551-1) ...
-Selecting previously unselected package libbsd0:amd64.
-Preparing to unpack .../03-libbsd0_0.10.0-1_amd64.deb ...
-Unpacking libbsd0:amd64 (0.10.0-1) ...
-Selecting previously unselected package krb5-locales.
-Preparing to unpack .../04-krb5-locales_1.17-6ubuntu4_all.deb ...
-Unpacking krb5-locales (1.17-6ubuntu4) ...
-Selecting previously unselected package libcbor0.6:amd64.
-Preparing to unpack .../05-libcbor0.6_0.6.0-0ubuntu1_amd64.deb ...
-Unpacking libcbor0.6:amd64 (0.6.0-0ubuntu1) ...
-Selecting previously unselected package libedit2:amd64.
-Preparing to unpack .../06-libedit2_3.1-20191231-1_amd64.deb ...
-Unpacking libedit2:amd64 (3.1-20191231-1) ...
-Selecting previously unselected package libfido2-1:amd64.
-Preparing to unpack .../07-libfido2-1_1.3.1-1ubuntu2_amd64.deb ...
-Unpacking libfido2-1:amd64 (1.3.1-1ubuntu2) ...
-Selecting previously unselected package libkrb5support0:amd64.
-Preparing to unpack .../08-libkrb5support0_1.17-6ubuntu4_amd64.deb ...
-Unpacking libkrb5support0:amd64 (1.17-6ubuntu4) ...
-Selecting previously unselected package libk5crypto3:amd64.
-Preparing to unpack .../09-libk5crypto3_1.17-6ubuntu4_amd64.deb ...
-Unpacking libk5crypto3:amd64 (1.17-6ubuntu4) ...
-Selecting previously unselected package libkeyutils1:amd64.
-Preparing to unpack .../10-libkeyutils1_1.6-6ubuntu1_amd64.deb ...
-Unpacking libkeyutils1:amd64 (1.6-6ubuntu1) ...
-Selecting previously unselected package libkrb5-3:amd64.
-Preparing to unpack .../11-libkrb5-3_1.17-6ubuntu4_amd64.deb ...
-Unpacking libkrb5-3:amd64 (1.17-6ubuntu4) ...
-Selecting previously unselected package libgssapi-krb5-2:amd64.
-Preparing to unpack .../12-libgssapi-krb5-2_1.17-6ubuntu4_amd64.deb ...
-Unpacking libgssapi-krb5-2:amd64 (1.17-6ubuntu4) ...
-Selecting previously unselected package libpsl5:amd64.
-Preparing to unpack .../13-libpsl5_0.21.0-1ubuntu1_amd64.deb ...
-Unpacking libpsl5:amd64 (0.21.0-1ubuntu1) ...
-Selecting previously unselected package libusb-1.0-0:amd64.
-Preparing to unpack .../14-libusb-1.0-0_2%3a1.0.23-2build1_amd64.deb ...
-Unpacking libusb-1.0-0:amd64 (2:1.0.23-2build1) ...
-Selecting previously unselected package libxau6:amd64.
-Preparing to unpack .../15-libxau6_1%3a1.0.9-0ubuntu1_amd64.deb ...
-Unpacking libxau6:amd64 (1:1.0.9-0ubuntu1) ...
-Selecting previously unselected package libxdmcp6:amd64.
-Preparing to unpack .../16-libxdmcp6_1%3a1.1.3-0ubuntu1_amd64.deb ...
-Unpacking libxdmcp6:amd64 (1:1.1.3-0ubuntu1) ...
-Selecting previously unselected package libxcb1:amd64.
-Preparing to unpack .../17-libxcb1_1.14-2_amd64.deb ...
-Unpacking libxcb1:amd64 (1.14-2) ...
-Selecting previously unselected package libx11-data.
-Preparing to unpack .../18-libx11-data_2%3a1.6.9-2ubuntu1_all.deb ...
-Unpacking libx11-data (2:1.6.9-2ubuntu1) ...
-Selecting previously unselected package libx11-6:amd64.
-Preparing to unpack .../19-libx11-6_2%3a1.6.9-2ubuntu1_amd64.deb ...
-Unpacking libx11-6:amd64 (2:1.6.9-2ubuntu1) ...
-Selecting previously unselected package libxext6:amd64.
-Preparing to unpack .../20-libxext6_2%3a1.3.4-0ubuntu1_amd64.deb ...
-Unpacking libxext6:amd64 (2:1.3.4-0ubuntu1) ...
-Selecting previously unselected package libxmuu1:amd64.
-Preparing to unpack .../21-libxmuu1_2%3a1.1.3-0ubuntu1_amd64.deb ...
-Unpacking libxmuu1:amd64 (2:1.1.3-0ubuntu1) ...
-Selecting previously unselected package openssh-client.
-Preparing to unpack .../22-openssh-client_1%3a8.2p1-4_amd64.deb ...
-Unpacking openssh-client (1:8.2p1-4) ...
-Selecting previously unselected package publicsuffix.
-Preparing to unpack .../23-publicsuffix_20200303.0012-1_all.deb ...
-Unpacking publicsuffix (20200303.0012-1) ...
-Selecting previously unselected package wget.
-Preparing to unpack .../24-wget_1.20.3-1ubuntu1_amd64.deb ...
-Unpacking wget (1.20.3-1ubuntu1) ...
-Selecting previously unselected package xauth.
-Preparing to unpack .../25-xauth_1%3a1.1-0ubuntu1_amd64.deb ...
-Unpacking xauth (1:1.1-0ubuntu1) ...
-Selecting previously unselected package libbrotli1:amd64.
-Preparing to unpack .../26-libbrotli1_1.0.7-6build1_amd64.deb ...
-Unpacking libbrotli1:amd64 (1.0.7-6build1) ...
-Selecting previously unselected package libnghttp2-14:amd64.
-Preparing to unpack .../27-libnghttp2-14_1.40.0-1build1_amd64.deb ...
-Unpacking libnghttp2-14:amd64 (1.40.0-1build1) ...
-Selecting previously unselected package librtmp1:amd64.
-Preparing to unpack .../28-librtmp1_2.4+20151223.gitfa8646d.1-2build1_amd64.deb ...
-Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2build1) ...
-Selecting previously unselected package libssh-4:amd64.
-Preparing to unpack .../29-libssh-4_0.9.3-2ubuntu2_amd64.deb ...
-Unpacking libssh-4:amd64 (0.9.3-2ubuntu2) ...
-Selecting previously unselected package libcurl3-gnutls:amd64.
-Preparing to unpack .../30-libcurl3-gnutls_7.68.0-1ubuntu2_amd64.deb ...
-Unpacking libcurl3-gnutls:amd64 (7.68.0-1ubuntu2) ...
-Selecting previously unselected package liberror-perl.
-Preparing to unpack .../31-liberror-perl_0.17029-1_all.deb ...
-Unpacking liberror-perl (0.17029-1) ...
-Selecting previously unselected package git-man.
-Preparing to unpack .../32-git-man_1%3a2.25.1-1ubuntu3_all.deb ...
-Unpacking git-man (1:2.25.1-1ubuntu3) ...
-Selecting previously unselected package git.
-Preparing to unpack .../33-git_1%3a2.25.1-1ubuntu3_amd64.deb ...
-Unpacking git (1:2.25.1-1ubuntu3) ...
-Selecting previously unselected package libusb-0.1-4:amd64.
-Preparing to unpack .../34-libusb-0.1-4_2%3a0.1.12-32_amd64.deb ...
-Unpacking libusb-0.1-4:amd64 (2:0.1.12-32) ...
-Selecting previously unselected package libusb-1.0-0-dev:amd64.
-Preparing to unpack .../35-libusb-1.0-0-dev_2%3a1.0.23-2build1_amd64.deb ...
-Unpacking libusb-1.0-0-dev:amd64 (2:1.0.23-2build1) ...
-Selecting previously unselected package libusb-1.0-doc.
-Preparing to unpack .../36-libusb-1.0-doc_2%3a1.0.23-2build1_all.deb ...
-Unpacking libusb-1.0-doc (2:1.0.23-2build1) ...
-Selecting previously unselected package libusb-dev.
-Preparing to unpack .../37-libusb-dev_2%3a0.1.12-32_amd64.deb ...
-Unpacking libusb-dev (2:0.1.12-32) ...
-Selecting previously unselected package re2c.
-Preparing to unpack .../38-re2c_1.3-1ubuntu0.1_amd64.deb ...
-Unpacking re2c (1.3-1ubuntu0.1) ...
-Setting up libxau6:amd64 (1:1.0.9-0ubuntu1) ...
-Setting up libkeyutils1:amd64 (1.6-6ubuntu1) ...
-Setting up libpsl5:amd64 (0.21.0-1ubuntu1) ...
-Setting up wget (1.20.3-1ubuntu1) ...
-Setting up libbrotli1:amd64 (1.0.7-6build1) ...
-Setting up libusb-1.0-doc (2:1.0.23-2build1) ...
-Setting up libnghttp2-14:amd64 (1.40.0-1build1) ...
-Setting up less (551-1) ...
-Setting up krb5-locales (1.17-6ubuntu4) ...
-Setting up libcbor0.6:amd64 (0.6.0-0ubuntu1) ...
-Setting up libusb-0.1-4:amd64 (2:0.1.12-32) ...
-Setting up libkrb5support0:amd64 (1.17-6ubuntu4) ...
-Setting up liberror-perl (0.17029-1) ...
-Setting up libx11-data (2:1.6.9-2ubuntu1) ...
-Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2build1) ...
-Setting up libk5crypto3:amd64 (1.17-6ubuntu4) ...
-Setting up git-man (1:2.25.1-1ubuntu3) ...
-Setting up libkrb5-3:amd64 (1.17-6ubuntu4) ...
-Setting up libusb-1.0-0:amd64 (2:1.0.23-2build1) ...
-Setting up re2c (1.3-1ubuntu0.1) ...
-Setting up libfido2-1:amd64 (1.3.1-1ubuntu2) ...
-Setting up openssl (1.1.1f-1ubuntu2) ...
-Setting up libbsd0:amd64 (0.10.0-1) ...
-Setting up publicsuffix (20200303.0012-1) ...
-Setting up libxdmcp6:amd64 (1:1.1.3-0ubuntu1) ...
-Setting up libxcb1:amd64 (1.14-2) ...
-Setting up libedit2:amd64 (3.1-20191231-1) ...
-Setting up libusb-1.0-0-dev:amd64 (2:1.0.23-2build1) ...
-Setting up libusb-dev (2:0.1.12-32) ...
-Setting up ca-certificates (20190110ubuntu1) ...
-debconf: unable to initialize frontend: Dialog
-debconf: (TERM is not set, so the dialog frontend is not usable.)
-debconf: falling back to frontend: Readline
-Updating certificates in /etc/ssl/certs...
-128 added, 0 removed; done.
-Setting up libgssapi-krb5-2:amd64 (1.17-6ubuntu4) ...
-Setting up libssh-4:amd64 (0.9.3-2ubuntu2) ...
-Setting up libx11-6:amd64 (2:1.6.9-2ubuntu1) ...
-Setting up libxmuu1:amd64 (2:1.1.3-0ubuntu1) ...
-Setting up openssh-client (1:8.2p1-4) ...
-Setting up libxext6:amd64 (2:1.3.4-0ubuntu1) ...
-Setting up libcurl3-gnutls:amd64 (7.68.0-1ubuntu2) ...
-Setting up git (1:2.25.1-1ubuntu3) ...
-Setting up xauth (1:1.1-0ubuntu1) ...
-Processing triggers for libc-bin (2.31-0ubuntu9) ...
-Processing triggers for mime-support (3.64ubuntu1) ...
-Processing triggers for ca-certificates (20190110ubuntu1) ...
-Updating certificates in /etc/ssl/certs...
-0 added, 0 removed; done.
-Running hooks in /etc/ca-certificates/update.d...
-done.
-Removing intermediate container 49439eac1b88
- ---> a5ec657ae3fe
-Step 6/19 : ENV APP_ROOT="/opt"
- ---> Running in fb7ce830539f
-Removing intermediate container fb7ce830539f
- ---> c9053e083aeb
-Step 7/19 : ENV EDITOR="nano"
- ---> Running in acff9cdaf7d8
-Removing intermediate container acff9cdaf7d8
- ---> 28849ad46915
-Step 8/19 : ENV EPICS_HOST_ARCH=linux-x86_64
- ---> Running in c2738c8bd5df
-Removing intermediate container c2738c8bd5df
- ---> 828d7f51a2e4
-Step 9/19 : ENV EPICS_ROOT="${APP_ROOT}/base"
- ---> Running in 4fd194f56eb8
-Removing intermediate container 4fd194f56eb8
- ---> 584938f79008
-Step 10/19 : ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
- ---> Running in 886c3351139a
-Removing intermediate container 886c3351139a
- ---> a10e52d6a24a
-Step 11/19 : ENV SUPPORT="${APP_ROOT}/synApps/support"
- ---> Running in 12977769dc28
-Removing intermediate container 12977769dc28
- ---> d6133f0c4066
-Step 12/19 : ENV PATH="${PATH}:${SUPPORT}/utils"
- ---> Running in 5cfe8eed0ffc
-Removing intermediate container 5cfe8eed0ffc
- ---> 202e66b054ed
-Step 13/19 : WORKDIR ${APP_ROOT}
- ---> Running in 9cb12a673e10
-Removing intermediate container 9cb12a673e10
- ---> f7a48608badf
-Step 14/19 : ENV HASH=master
- ---> Running in 83bdfa7c06d4
-Removing intermediate container 83bdfa7c06d4
- ---> dcaa02288fa5
-Step 15/19 : ADD https://raw.githubusercontent.com/EPICS-synApps/support/${HASH}/assemble_synApps.sh ./
+Step 1/21 : FROM  prjemian/epics-base-7.0.3.1
+ ---> 6cc99f74f633
+Step 2/21 : LABEL version="1.0.1"       maintainer="prjemian <prjemian@gmail.com>"       lastupdate="2020-05-10"       Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n3_synApps/README.md"
+ ---> Using cache
+ ---> e6ee60137a90
+Step 3/21 : USER  root
+ ---> Using cache
+ ---> ced3f501ac81
+Step 4/21 : WORKDIR /home
+ ---> Using cache
+ ---> f1f384c86e51
+Step 5/21 : RUN     apt-get update  -y &&     apt-get install -y         git        libusb-dev        libusb-1.0-0-dev        re2c        wget        &&     rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 040b250cf5d3
+Step 6/21 : ENV APP_ROOT="/opt"
+ ---> Using cache
+ ---> de7e8cbfe99f
+Step 7/21 : ENV EDITOR="nano"
+ ---> Using cache
+ ---> 9fedd5342292
+Step 8/21 : ENV EPICS_HOST_ARCH=linux-x86_64
+ ---> Using cache
+ ---> 495cefa6bdc3
+Step 9/21 : ENV EPICS_ROOT="${APP_ROOT}/base"
+ ---> Using cache
+ ---> a2a5a2533381
+Step 10/21 : ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
+ ---> Using cache
+ ---> 3ae05a113b9a
+Step 11/21 : ENV SUPPORT="${APP_ROOT}/synApps/support"
+ ---> Using cache
+ ---> 556d1e193335
+Step 12/21 : ENV PATH="${PATH}:${SUPPORT}/utils"
+ ---> Using cache
+ ---> 03cc1ba87710
+Step 13/21 : WORKDIR ${APP_ROOT}
+ ---> Using cache
+ ---> 58834a6122a7
+Step 14/21 : ENV HASH=master
+ ---> Using cache
+ ---> f217b72cf941
+Step 15/21 : ADD https://raw.githubusercontent.com/EPICS-synApps/support/${HASH}/assemble_synApps.sh ./
 
- ---> 8fc1702a3161
-Step 16/19 : RUN sed -i s:'/APSshare/epics/base-3.15.6':'/opt/base':g assemble_synApps.sh
- ---> Running in 913a63a62515
-Removing intermediate container 913a63a62515
- ---> 3ca8994bcb6d
-Step 17/19 : ENV _MODULES_=ALLENBRADLEY
- ---> Running in 1c0bd17d2772
-Removing intermediate container 1c0bd17d2772
- ---> 1d1227e9c619
-Step 18/19 : ENV _MODULES_+=" CAMAC"
- ---> Running in 5ec9a5039ffb
-Removing intermediate container 5ec9a5039ffb
- ---> 8187dd8f0b52
-Step 19/19 : RUN sed -i s:'ALLENBRADLEY=':'#ALLENBRADLEY=':g         assemble_synApps.sh &&     sed -i s:'CAMAC=':'#CAMAC=':g                       assemble_synApps.sh &&     sed -i s:'DAC128V=':'#DAC128V=':g                   assemble_synApps.sh &&     sed -i s:'DELAYGEN=':'#DELAYGEN=':g                 assemble_synApps.sh &&     sed -i s:'DXP=':'#DXP=':g                           assemble_synApps.sh &&     sed -i s:'DXPSITORO=':'#DXPSITORO=':g               assemble_synApps.sh &&     sed -i s:'GALIL=':'#GALIL=':g                       assemble_synApps.sh &&     sed -i s:'IP330=':'#IP330=':g                       assemble_synApps.sh &&     sed -i s:'IPUNIDIG=':'#IPUNIDIG=':g                 assemble_synApps.sh &&     sed -i s:'LOVE=':'#LOVE=':g                         assemble_synApps.sh &&     sed -i s:'MEASCOMP=':'#MEASCOMP=':g                 assemble_synApps.sh &&     sed -i s:'QUADEM=':'#QUADEM=':g                     assemble_synApps.sh &&     sed -i s:'SOFTGLUE=':'#SOFTGLUE=':g                 assemble_synApps.sh &&     sed -i s:'SOFTGLUEZYNQ=':'#SOFTGLUEZYNQ=':g         assemble_synApps.sh &&     sed -i s:'VAC=':'#VAC=':g                           assemble_synApps.sh &&     sed -i s:'VME=':'#VME=':g                           assemble_synApps.sh &&     sed -i s:'YOKOGAWA_DAS=':'#YOKOGAWA_DAS=':g         assemble_synApps.sh
- ---> Running in a3d7699053c8
-Removing intermediate container a3d7699053c8
- ---> fd49893cd1ae
-Successfully built fd49893cd1ae
+ ---> Using cache
+ ---> dce63362fba4
+Step 16/21 : COPY edit_assemble_synApps.sh .
+ ---> 4549460dd11d
+Step 17/21 : RUN bash edit_assemble_synApps.sh
+ ---> Running in c3af4bce3a94
+sed -i s:'ALLENBRADLEY=':'#+#ALLENBRADLEY=':g assemble_synApps.sh
+sed -i s:'CAMAC=':'#+#CAMAC=':g assemble_synApps.sh
+sed -i s:'DAC128V=':'#+#DAC128V=':g assemble_synApps.sh
+sed -i s:'DELAYGEN=':'#+#DELAYGEN=':g assemble_synApps.sh
+sed -i s:'DXP=':'#+#DXP=':g assemble_synApps.sh
+sed -i s:'DXPSITORO=':'#+#DXPSITORO=':g assemble_synApps.sh
+sed -i s:'GALIL=':'#+#GALIL=':g assemble_synApps.sh
+sed -i s:'IP330=':'#+#IP330=':g assemble_synApps.sh
+sed -i s:'IPUNIDIG=':'#+#IPUNIDIG=':g assemble_synApps.sh
+sed -i s:'LOVE=':'#+#LOVE=':g assemble_synApps.sh
+sed -i s:'MEASCOMP=':'#+#MEASCOMP=':g assemble_synApps.sh
+sed -i s:'QUADEM=':'#+#QUADEM=':g assemble_synApps.sh
+sed -i s:'SOFTGLUE=':'#+#SOFTGLUE=':g assemble_synApps.sh
+sed -i s:'SOFTGLUEZYNQ=':'#+#SOFTGLUEZYNQ=':g assemble_synApps.sh
+sed -i s:'VAC=':'#+#VAC=':g assemble_synApps.sh
+sed -i s:'VME=':'#+#VME=':g assemble_synApps.sh
+sed -i s:'YOKOGAWA_DAS=':'#+#YOKOGAWA_DAS=':g assemble_synApps.sh
+sed -i s:'^ALIVE=\S*$':'ALIVE=master':g assemble_synApps.sh
+sed -i s:'^AREA_DETECTOR=\S*$':'AREA_DETECTOR=master':g assemble_synApps.sh
+sed -i s:'^ASYN=\S*$':'ASYN=master':g assemble_synApps.sh
+sed -i s:'^AUTOSAVE=\S*$':'AUTOSAVE=master':g assemble_synApps.sh
+sed -i s:'^BUSY=\S*$':'BUSY=master':g assemble_synApps.sh
+sed -i s:'^CALC=\S*$':'CALC=master':g assemble_synApps.sh
+sed -i s:'^CAPUTRECORDER=\S*$':'CAPUTRECORDER=master':g assemble_synApps.sh
+sed -i s:'^DEVIOCSTATS=\S*$':'DEVIOCSTATS=master':g assemble_synApps.sh
+sed -i s:'^IP=\S*$':'IP=master':g assemble_synApps.sh
+sed -i s:'^IPAC=\S*$':'IPAC=master':g assemble_synApps.sh
+sed -i s:'^LUA=\S*$':'LUA=master':g assemble_synApps.sh
+sed -i s:'^MCA=\S*$':'MCA=master':g assemble_synApps.sh
+sed -i s:'^MODBUS=\S*$':'MODBUS=master':g assemble_synApps.sh
+sed -i s:'^MOTOR=\S*$':'MOTOR=master':g assemble_synApps.sh
+sed -i s:'^OPTICS=\S*$':'OPTICS=master':g assemble_synApps.sh
+sed -i s:'^SSCAN=\S*$':'SSCAN=master':g assemble_synApps.sh
+sed -i s:'^STD=\S*$':'STD=master':g assemble_synApps.sh
+sed -i s:'^STREAM=\S*$':'STREAM=master':g assemble_synApps.sh
+sed -i s:'^XXX=\S*$':'XXX=master':g assemble_synApps.sh
+Removing intermediate container c3af4bce3a94
+ ---> 57914e21592e
+Step 18/21 : RUN echo # start ------------------- assemble_synApps.sh -------------------
+ ---> Running in 8f82cab339f3
+
+Removing intermediate container 8f82cab339f3
+ ---> 490388aabe3d
+Step 19/21 : RUN cat assemble_synApps.sh
+ ---> Running in 4a527394009d
+#!/bin/bash
+shopt -s expand_aliases
+
+# Command-line arguments
+args=$*
+# Flags set by command-line arguments
+FULL_CLONE=False
+CONFIG_SOURCED=False
+
+# Handle command-line arguments
+for arg in ${args}
+do
+  if [ ${arg} == "full" ]
+  then
+    FULL_CLONE=True
+  else
+    if [ -e ${arg} ]
+    then
+      echo "Sourcing ${arg}"
+      source ${arg}
+      CONFIG_SOURCED=True
+    else
+      echo "${arg} does not exist."
+    fi
+  fi
+done
+
+echo "FULL_CLONE = ${FULL_CLONE}"
+
+if [ ${CONFIG_SOURCED} == "False" ]
+then
+echo "Using default configuration"
+
+EPICS_BASE=/opt/base
+
+# The name of the synApps directory can be customized
+#!SYNAPPS_DIR=synApps_X_X
+
+SUPPORT=R6-1
+#!CONFIGURE=R6-1
+CONFIGURE=master
+UTILS=R6-1
+DOCUMENTATION=R6-1
+
+#+#ALLENBRADLEY=2.3
+ALIVE=master
+AREA_DETECTOR=master
+ASYN=master
+AUTOSAVE=master
+BUSY=master
+CALC=master
+#+#CAMAC=R2-7-1
+CAPUTRECORDER=master
+#+#DAC128V=R2-9
+#+#DELAYGEN=R1-2-1
+#+#DXP=R6-0
+#+#DXPSITORO=R1-2
+DEVIOCSTATS=master
+#ETHERIP=ether_ip-3-1
+##+#GALIL=V3-6
+IP=master
+IPAC=master
+#+#IP330=R2-9
+#+#IPUNIDIG=R2-11
+#+#LOVE=R3-2-7
+LUA=master
+MCA=master
+#+#MEASCOMP=R2-3
+MODBUS=master
+MOTOR=master
+OPTICS=master
+#+#QUADEM=R9-2-1
+SNCSEQ=2.2.6
+#+#SOFTGLUE=R2-8-2
+#+#SOFTGLUEZYNQ=R2-0-2
+SSCAN=master
+STD=master
+STREAM=master
+#+#VAC=R1-9
+#+#VME=R2-9-2
+#+#YOKOGAWA_DAS=R2-0-1
+XXX=master
+fi
+
+
+shallow_repo()
+{
+	PROJECT=$1
+	MODULE_NAME=$2
+	RELEASE_NAME=$3
+	TAG=$4
+	
+	FOLDER_NAME=$MODULE_NAME-${TAG//./-}
+	
+	echo
+	echo "Grabbing $MODULE_NAME at tag: $TAG"
+	echo
+	
+	git clone -q --branch $TAG --depth 1 https://github.com/$PROJECT/$MODULE_NAME.git $FOLDER_NAME
+	
+	echo "$RELEASE_NAME=\$(SUPPORT)/$FOLDER_NAME" >> ./configure/RELEASE
+	
+	echo
+}
+
+full_repo()
+{
+	PROJECT=$1
+	MODULE_NAME=$2
+	RELEASE_NAME=$3
+	TAG=$4
+	
+	FOLDER_NAME=$MODULE_NAME-${TAG//./-}
+	
+	echo
+	echo "Grabbing $MODULE_NAME at tag: $TAG"
+	echo
+	
+	git clone -q https://github.com/$PROJECT/$MODULE_NAME.git $FOLDER_NAME
+	
+	CURR=$(pwd)
+	
+	cd $FOLDER_NAME
+	git checkout -q $TAG
+	cd "$CURR"
+	echo "$RELEASE_NAME=\$(SUPPORT)/$FOLDER_NAME" >> ./configure/RELEASE
+	
+	echo
+}
+
+
+shallow_support()
+{
+	git clone -q --branch $2 --depth 1 https://github.com/EPICS-synApps/$1.git
+}
+
+
+full_support()
+{
+	git clone -q https://github.com/EPICS-synApps/$1.git
+	cd $1
+	git checkout -q $2
+	cd ..
+}
+
+
+if [ ${FULL_CLONE} == "True" ]
+then
+	alias get_support='full_support'
+	alias get_repo='full_repo'
+else
+	# A shallow clone is the default
+	alias get_support='shallow_support'
+	alias get_repo='shallow_repo'
+fi
+
+if [ -z "${SYNAPPS_DIR}" ]
+then
+SYNAPPS_DIR=synApps
+fi
+
+
+# Assume user has nothing but this file, just in case that's true.
+mkdir ${SYNAPPS_DIR}
+cd ${SYNAPPS_DIR}
+
+get_support support $SUPPORT
+cd support
+
+get_support configure      $CONFIGURE
+get_support utils          $UTILS
+get_support documentation  $DOCUMENTATION
+
+SUPPORT=$(pwd)
+
+echo "SUPPORT=$SUPPORT" > configure/RELEASE
+echo '-include $(TOP)/configure/SUPPORT.$(EPICS_HOST_ARCH)' >> configure/RELEASE
+echo "EPICS_BASE=$EPICS_BASE" >> configure/RELEASE
+echo '-include $(TOP)/configure/EPICS_BASE' >> configure/RELEASE
+echo '-include $(TOP)/configure/EPICS_BASE.$(EPICS_HOST_ARCH)' >> configure/RELEASE
+echo "" >> configure/RELEASE
+echo "" >> configure/RELEASE
+
+# modules ##################################################################
+
+#                               get_repo Git Project            Git Repo       RELEASE Name   Tag
+if [[ $ALIVE ]];         then   get_repo epics-modules          alive          ALIVE          $ALIVE         ; fi
+if [[ $ASYN ]];          then   get_repo epics-modules          asyn           ASYN           $ASYN          ; fi
+if [[ $AUTOSAVE ]];      then   get_repo epics-modules          autosave       AUTOSAVE       $AUTOSAVE      ; fi
+if [[ $BUSY ]];          then   get_repo epics-modules          busy           BUSY           $BUSY          ; fi
+if [[ $CALC ]];          then   get_repo epics-modules          calc           CALC           $CALC          ; fi
+if [[ $CAMAC ]];         then   get_repo epics-modules          camac          CAMAC          $CAMAC         ; fi
+if [[ $CAPUTRECORDER ]]; then   get_repo epics-modules          caputRecorder  CAPUTRECORDER  $CAPUTRECORDER ; fi
+if [[ $DAC128V ]];       then   get_repo epics-modules          dac128V        DAC128V        $DAC128V       ; fi
+if [[ $DELAYGEN ]];      then   get_repo epics-modules          delaygen       DELAYGEN       $DELAYGEN      ; fi
+if [[ $DXP ]];           then   get_repo epics-modules          dxp            DXP            $DXP           ; fi
+if [[ $DXPSITORO ]];     then   get_repo epics-modules          dxpSITORO      DXPSITORO      $DXPSITORO     ; fi
+if [[ $DEVIOCSTATS ]];   then   get_repo epics-modules          iocStats       DEVIOCSTATS    $DEVIOCSTATS   ; fi
+if [[ $ETHERIP ]];       then   get_repo EPICSTools             ether_ip       ETHERIP        $ETHERIP       ; fi
+if [[ $GALIL ]];         then   get_repo motorapp               Galil-3-0      GALIL          $GALIL         ; fi
+if [[ $IP ]];            then   get_repo epics-modules          ip             IP             $IP            ; fi
+if [[ $IPAC ]];          then   get_repo epics-modules          ipac           IPAC           $IPAC          ; fi
+if [[ $IP330 ]];         then   get_repo epics-modules          ip330          IP330          $IP330         ; fi
+if [[ $IPUNIDIG ]];      then   get_repo epics-modules          ipUnidig       IPUNIDIG       $IPUNIDIG      ; fi
+if [[ $LOVE ]];          then   get_repo epics-modules          love           LOVE           $LOVE          ; fi
+if [[ $LUA ]];           then   get_repo epics-modules          lua            LUA            $LUA           ; fi
+if [[ $MCA ]];           then   get_repo epics-modules          mca            MCA            $MCA           ; fi
+if [[ $MEASCOMP ]];      then   get_repo epics-modules          measComp       MEASCOMP       $MEASCOMP      ; fi
+if [[ $MODBUS ]];        then   get_repo epics-modules          modbus         MODBUS         $MODBUS        ; fi
+if [[ $MOTOR ]];         then   get_repo epics-modules          motor          MOTOR          $MOTOR         ; fi
+if [[ $OPTICS ]];        then   get_repo epics-modules          optics         OPTICS         $OPTICS        ; fi
+if [[ $QUADEM ]];        then   get_repo epics-modules          quadEM         QUADEM         $QUADEM        ; fi
+if [[ $SOFTGLUE ]];      then   get_repo epics-modules          softGlue       SOFTGLUE       $SOFTGLUE      ; fi
+if [[ $SOFTGLUEZYNQ ]];  then   get_repo epics-modules          softGlueZynq   SOFTGLUEZYNQ   $SOFTGLUEZYNQ  ; fi
+if [[ $SSCAN ]];         then   get_repo epics-modules          sscan          SSCAN          $SSCAN         ; fi
+if [[ $STD ]];           then   get_repo epics-modules          std            STD            $STD           ; fi
+if [[ $STREAM ]];        then   get_repo paulscherrerinstitute  StreamDevice   STREAM         $STREAM        ; fi
+if [[ $VAC ]];           then   get_repo epics-modules          vac            VAC            $VAC           ; fi
+if [[ $VME ]];           then   get_repo epics-modules          vme            VME            $VME           ; fi
+if [[ $YOKOGAWA_DAS ]];  then   get_repo epics-modules          Yokogawa_DAS   YOKOGAWA_DAS   $YOKOGAWA_DAS  ; fi
+if [[ $XXX ]];           then   get_repo epics-modules          xxx            XXX            $XXX           ; fi
+
+
+if [[ $AREA_DETECTOR ]]
+then 
+
+get_repo  areaDetector  areaDetector  AREA_DETECTOR  $AREA_DETECTOR
+
+echo "ADCORE=\$(AREA_DETECTOR)/ADCore" >> configure/RELEASE
+echo "ADSUPPORT=\$(AREA_DETECTOR)/ADSupport" >> configure/RELEASE
+
+cd areaDetector-$AREA_DETECTOR
+git submodule init
+git submodule update ADCore
+git submodule update ADSupport
+git submodule update ADSimDetector
+
+cd ADCore/iocBoot
+
+cp EXAMPLE_commonPlugins.cmd commonPlugins.cmd
+cp EXAMPLE_commonPlugin_settings.req commonPlugin_settings.req
+
+cd ../..
+
+cd configure
+cp EXAMPLE_CONFIG_SITE.local       CONFIG_SITE.local
+cp EXAMPLE_CONFIG_SITE.local.WIN32 CONFIG_SITE.local.WIN32
+# make release will give the correct paths for these files, so we just need to rename them
+cp EXAMPLE_RELEASE_PRODS.local     RELEASE_PRODS.local
+cp EXAMPLE_RELEASE_LIBS.local      RELEASE_LIBS.local
+cp EXAMPLE_RELEASE.local           RELEASE.local
+
+# vxWorks has pthread and other issues
+echo 'WITH_GRAPHICSMAGICK = NO' >> CONFIG_SITE.local.vxWorks
+echo 'WITH_BLOSC = NO' >> CONFIG_SITE.local.vxWorks
+echo 'WITH_BITSHUFFLE = NO' >> CONFIG_SITE.local.vxWorks
+
+
+# linux-arm has X11 and other issues
+echo 'WITH_BITSHUFFLE = NO' >> CONFIG_SITE.local.linux-x86_64.linux-arm
+echo 'WITH_GRAPHICSMAGICK = NO' >> CONFIG_SITE.local.linux-x86_64.linux-arm
+echo 'WITH_BITSHUFFLE = NO' >> CONFIG_SITE.local.linux-x86.linux-arm
+echo 'WITH_GRAPHICSMAGICK = NO' >> CONFIG_SITE.local.linux-x86.linux-arm
+
+# We are still using Epics v3
+sed -i s:'WITH_PVA  = YES':'WITH_PVA = NO':g CONFIG_SITE.local
+sed -i s:'WITH_QSRV = YES':'WITH_QSRV = NO':g CONFIG_SITE.local
+
+# Enable building ADSimDetector
+sed -i s:'#ADSIMDETECTOR':'ADSIMDETECTOR':g RELEASE.local
+
+cd ../..
+
+fi
+
+if [[ $DXP ]]
+then
+	cd dxp-$DXP
+	echo "LINUX_USB_INSTALLED = NO" >> ./configure/CONFIG_SITE.linux-x86_64.linux-arm
+	echo "LINUX_USB_INSTALLED = NO" >> ./configure/CONFIG_SITE.linux-x86.linux-arm
+	cd ..
+fi
+
+if [[ $IPAC ]]
+then
+	cd ipac-${IPAC//./-}
+  echo "-include \$(TOP)/../RELEASE.local" >> ./configure/RELEASE
+  echo "-include \$(TOP)/../RELEASE.\$(EPICS_HOST_ARCH).local" >> ./configure/RELEASE
+  echo "-include \$(TOP)/configure/RELEASE.local" >> ./configure/RELEASE
+	cd ..
+fi
+
+if [[ $MCA ]]
+then
+	cd mca-$MCA
+	echo "LINUX_LIBUSB-1.0_INSTALLED = NO" >> ./configure/CONFIG_SITE.linux-x86_64.linux-arm
+	echo "LINUX_LIBUSB-1.0_INSTALLED = NO" >> ./configure/CONFIG_SITE.linux-x86.linux-arm
+	cd ..
+fi
+
+if [[ $MOTOR ]]
+then
+	cd motor-$MOTOR
+	
+	git submodule init
+	git submodule update
+	
+	cd ..
+fi
+
+if [[ $STREAM ]]
+then
+	cd StreamDevice-${STREAM//./-}
+	
+	# Use the EPICS makefile, rather than PSI's
+	rm GNUmakefile
+	
+	# Don't install to synApps/support
+	sed -i 's/TOP = ../TOP = ./g' ./Makefile
+	sed -i 's/TOP = ..\/../TOP = ../g' ./streamApp/Makefile
+	sed -i 's/TOP = ..\/../TOP = ../g' ./src/Makefile
+	
+	# Comment out PCRE
+	sed -i 's/PCRE=/#PCRE=/g' ./configure/RELEASE
+	
+	echo "SSCAN=" >> ./configure/RELEASE
+	echo "STREAM=" >> ./configure/RELEASE
+  echo "-include \$(TOP)/../RELEASE.local" >> ./configure/RELEASE
+  echo "-include \$(TOP)/../RELEASE.\$(EPICS_HOST_ARCH).local" >> ./configure/RELEASE
+  echo "-include \$(TOP)/configure/RELEASE.local" >> ./configure/RELEASE
+	sed -i 's/#PROD_LIBS += sscan/PROD_LIBS += sscan/g' ./streamApp/Makefile
+	cd ..
+fi
+
+
+if [[ $SNCSEQ ]]
+then
+
+# seq
+wget http://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-$SNCSEQ.tar.gz
+tar zxf seq-$SNCSEQ.tar.gz
+# The synApps build can't handle '.'
+mv seq-$SNCSEQ seq-${SNCSEQ//./-}
+rm -f seq-$SNCSEQ.tar.gz
+echo "SNCSEQ=\$(SUPPORT)/seq-${SNCSEQ//./-}" >> ./configure/RELEASE
+
+if [[ $CALC ]]
+then
+
+# Uncomment sseq support in calc
+cd calc-$CALC
+sed -i s:'#SNCSEQ':'SNCSEQ':g configure/RELEASE
+cd ..
+
+fi
+
+fi
+
+
+if [[ $ALLENBRADLEY ]]
+then
+
+# get allenBradley-2-3
+wget http://www.aps.anl.gov/epics/download/modules/allenBradley-$ALLENBRADLEY.tar.gz
+tar xf allenBradley-$ALLENBRADLEY.tar.gz
+mv allenBradley-$ALLENBRADLEY allenBradley-${ALLENBRADLEY//./-}
+rm -f allenBradley-$ALLENBRADLEY.tar.gz
+#+#ALLENBRADLEY=${ALLENBRADLEY//./-}
+echo "ALLEN_BRADLEY=\$(SUPPORT)/allenBradley-${ALLENBRADLEY}" >> ./configure/RELEASE
+cd allenBradley-$ALLENBRADLEY
+echo "-include \$(TOP)/../RELEASE.local" >> ./configure/RELEASE
+echo "-include \$(TOP)/../RELEASE.\$(EPICS_HOST_ARCH).local" >> ./configure/RELEASE
+echo "-include \$(TOP)/configure/RELEASE.local" >> ./configure/RELEASE
+cd ..
+
+fi
+
+if [[ $GALIL ]]
+then
+
+mv Galil-3-0-$GALIL/3-6 galil-3-6
+rm -Rf Galil-3-0-$GALIL
+cp galil-3-6/config/GALILRELEASE galil-3-6/configure/RELEASE
+echo '#+#GALIL=$(SUPPORT)/galil-3-6' >> ./configure/RELEASE
+sed -i 's/MODULE_LIST[ ]*=[ ]*MEASCOMP/MODULE_LIST = MEASCOMP GALIL/g' Makefile
+sed -i '/\$(MEASCOMP)_DEPEND_DIRS/a \$(GALIL)_DEPEND_DIRS = \$(AUTOSAVE) \$(SNCSEQ) \$(SSCAN) \$(CALC) \$(ASYN) \$(BUSY) \$(MOTOR) \$(IPAC)' Makefile
+
+fi
+
+make release
+Removing intermediate container 4a527394009d
+ ---> 608830b0a986
+Step 20/21 : RUN echo # end ------------------- assemble_synApps.sh -------------------
+ ---> Running in 79c4dbfdc79c
+
+Removing intermediate container 79c4dbfdc79c
+ ---> 465a6dc58ee6
+Step 21/21 : RUN bash assemble_synApps.sh
+ ---> Running in f584696365a4
+FULL_CLONE = False
+Using default configuration
+[91mNote: switching to 'cc5adba5b8848c9cb98ab96768d668ae927d8859'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+[0m[91mNote: switching to '91a07979b9679ab92dc088862c17426df8f6dde1'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+[0m[91mNote: switching to '4983b71f1fdbb2d897c73dcab02946aed40a9219'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+[0m
+Grabbing alive at tag: master
+
+
+
+Grabbing asyn at tag: master
+
+
+
+Grabbing autosave at tag: master
+
+
+
+Grabbing busy at tag: master
+
+
+
+Grabbing calc at tag: master
+
+
+
+Grabbing caputRecorder at tag: master
+
+
+
+Grabbing iocStats at tag: master
+
+
+
+Grabbing ip at tag: master
+
+
+
+Grabbing ipac at tag: master
+
+
+
+Grabbing lua at tag: master
+
+
+
+Grabbing mca at tag: master
+
+
+
+Grabbing modbus at tag: master
+
+
+
+Grabbing motor at tag: master
+
+
+
+Grabbing optics at tag: master
+
+
+
+Grabbing sscan at tag: master
+
+
+
+Grabbing std at tag: master
+
+
+
+Grabbing StreamDevice at tag: master
+
+
+
+Grabbing xxx at tag: master
+
+
+
+Grabbing areaDetector at tag: master
+
+
+[91mSubmodule 'ADADSC' (https://github.com/areaDetector/ADADSC.git) registered for path 'ADADSC'
+[0m[91mSubmodule 'ADAndor' (https://github.com/areaDetector/ADAndor.git) registered for path 'ADAndor'
+[0m[91mSubmodule 'ADAndor3' (https://github.com/areaDetector/ADAndor3.git) registered for path 'ADAndor3'
+[0m[91mSubmodule 'ADAravis' (https://github.com/areaDetector/ADAravis) registered for path 'ADAravis'
+[0m[91mSubmodule 'ADBruker' (https://github.com/areaDetector/ADBruker.git) registered for path 'ADBruker'
+[0m[91mSubmodule 'ADCSimDetector' (https://github.com/areaDetector/ADCSimDetector.git) registered for path 'ADCSimDetector'
+[0m[91mSubmodule 'ADCameraLink' (https://github.com/areaDetector/ADCameraLink.git) registered for path 'ADCameraLink'
+[0m[91mSubmodule 'ADCompVision' (https://github.com/areaDetector/ADCompVision) registered for path 'ADCompVision'
+[0m[91mSubmodule 'ADCore' (https://github.com/areaDetector/ADCore.git) registered for path 'ADCore'
+[0m[91mSubmodule 'ADDexela' (https://github.com/areaDetector/ADDexela.git) registered for path 'ADDexela'
+[0m[91mSubmodule 'ADEiger' (https://github.com/areaDetector/ADEiger) registered for path 'ADEiger'
+[0m[91mSubmodule 'ADFastCCD' (https://github.com/areaDetector/ADFastCCD.git) registered for path 'ADFastCCD'
+[0m[91mSubmodule 'ADFireWireWin' (https://github.com/areaDetector/ADFireWireWin.git) registered for path 'ADFireWireWin'
+[0m[91mSubmodule 'ADGenICam' (https://github.com/areaDetector/ADGenICam) registered for path 'ADGenICam'
+[0m[91mSubmodule 'ADLambda' (https://github.com/areaDetector/ADLambda.git) registered for path 'ADLambda'
+[0m[91mSubmodule 'ADLightField' (https://github.com/areaDetector/ADLightField.git) registered for path 'ADLightField'
+[0m[91mSubmodule 'ADMMPAD' (https://github.com/areaDetector/ADMMPAD) registered for path 'ADMMPAD'
+[0m[91mSubmodule 'ADMerlin' (https://github.com/areaDetector/ADMerlin.git) registered for path 'ADMerlin'
+[0m[91mSubmodule 'ADMythen' (https://github.com/areaDetector/ADMythen.git) registered for path 'ADMythen'
+[0m[91mSubmodule 'ADPCO' (https://github.com/areaDetector/ADPCO.git) registered for path 'ADPCO'
+[0m[91mSubmodule 'ADPICam' (https://github.com/areaDetector/ADPICam.git) registered for path 'ADPICam'
+[0m[91mSubmodule 'ADPSL' (https://github.com/areaDetector/ADPSL.git) registered for path 'ADPSL'
+[0m[91mSubmodule 'ADPcoWin' (https://github.com/areaDetector/ADPcoWin) registered for path 'ADPcoWin'
+[0m[91mSubmodule 'ADPerkinElmer' (https://github.com/areaDetector/ADPerkinElmer.git) registered for path 'ADPerkinElmer'
+[0m[91mSubmodule 'ADPhotonII' (https://github.com/areaDetector/ADPhotonII) registered for path 'ADPhotonII'
+[0m[91mSubmodule 'ADPilatus' (https://github.com/areaDetector/ADPilatus.git) registered for path 'ADPilatus'
+[0m[91mSubmodule 'ADPixirad' (https://github.com/areaDetector/ADPixirad.git) registered for path 'ADPixirad'
+[0m[91mSubmodule 'ADPluginBar' (https://github.com/areaDetector/ADPluginBar) registered for path 'ADPluginBar'
+[0m[91mSubmodule 'ADPluginEdge' (https://github.com/areaDetector/ADPluginEdge.git) registered for path 'ADPluginEdge'
+[0m[91mSubmodule 'ADPointGrey' (https://github.com/areaDetector/ADPointGrey.git) registered for path 'ADPointGrey'
+[0m[91mSubmodule 'ADProsilica' (https://github.com/areaDetector/ADProsilica.git) registered for path 'ADProsilica'
+[0m[91mSubmodule 'ADPvCam' (https://github.com/areaDetector/ADPvCam.git) registered for path 'ADPvCam'
+[0m[91mSubmodule 'ADQImaging' (https://github.com/areaDetector/ADQImaging.git) registered for path 'ADQImaging'
+[0m[91mSubmodule 'ADRIXSCam' (https://github.com/areaDetector/ADRIXSCam.git) registered for path 'ADRIXSCam'
+[0m[91mSubmodule 'ADRoper' (https://github.com/areaDetector/ADRoper.git) registered for path 'ADRoper'
+[0m[91mSubmodule 'ADSimDetector' (https://github.com/areaDetector/ADSimDetector.git) registered for path 'ADSimDetector'
+[0m[91mSubmodule 'ADSpinnaker' (https://github.com/areaDetector/ADSpinnaker.git) registered for path 'ADSpinnaker'
+[0m[91mSubmodule 'ADSupport' (https://github.com/areaDetector/ADSupport.git) registered for path 'ADSupport'
+[0m[91mSubmodule 'ADURL' (https://github.com/areaDetector/ADURL.git) registered for path 'ADURL'
+[0m[91mSubmodule 'ADUVC' (https://github.com/areaDetector/ADUVC) registered for path 'ADUVC'
+[0m[91mSubmodule 'ADViewers' (https://github.com/areaDetector/ADViewers.git) registered for path 'ADViewers'
+[0m[91mSubmodule 'ADVimba' (https://github.com/areaDetector/ADVimba) registered for path 'ADVimba'
+[0m[91mSubmodule 'ADmar345' (https://github.com/areaDetector/ADmar345.git) registered for path 'ADmar345'
+[0m[91mSubmodule 'ADmarCCD' (https://github.com/areaDetector/ADmarCCD.git) registered for path 'ADmarCCD'
+[0m[91mSubmodule 'ADnED' (https://github.com/areaDetector/ADnED.git) registered for path 'ADnED'
+[0m[91mSubmodule 'NDDriverStdArrays' (https://github.com/areaDetector/NDDriverStdArrays.git) registered for path 'NDDriverStdArrays'
+[0m[91mSubmodule 'aravisGigE' (https://github.com/areaDetector/aravisGigE.git) registered for path 'aravisGigE'
+[0m[91mSubmodule 'ffmpegServer' (https://github.com/areaDetector/ffmpegServer.git) registered for path 'ffmpegServer'
+[0m[91mSubmodule 'ffmpegViewer' (https://github.com/areaDetector/ffmpegViewer.git) registered for path 'ffmpegViewer'
+[0m[91mSubmodule 'firewireDCAM' (https://github.com/areaDetector/firewireDCAM.git) registered for path 'firewireDCAM'
+[0m[91mSubmodule 'pvaDriver' (https://github.com/areaDetector/pvaDriver.git) registered for path 'pvaDriver'
+[0m[91mSubmodule 'specsAnalyser' (https://github.com/areaDetector/specsAnalyser.git) registered for path 'specsAnalyser'
+[0m[91mCloning into '/opt/synApps/support/areaDetector-master/ADCore'...
+[0mSubmodule path 'ADCore': checked out '548dd6233fb76f42edc94254273bb7252443b405'
+[91mCloning into '/opt/synApps/support/areaDetector-master/ADSupport'...
+[0mSubmodule path 'ADSupport': checked out '4767b1afcaa676045d4bf9ee68a25448bb8a0b58'
+[91mCloning into '/opt/synApps/support/areaDetector-master/ADSimDetector'...
+[0mSubmodule path 'ADSimDetector': checked out '057cf13a2d44da30b6b272fb1f2d4533831cc2c5'
+[91mSubmodule '.ci' (https://github.com/epics-base/ci-scripts) registered for path '.ci'
+[0m[91mSubmodule 'modules/motorAMCI' (https://github.com/epics-motor/motorAMCI.git) registered for path 'modules/motorAMCI'
+[0m[91mSubmodule 'modules/motorAcs' (https://github.com/epics-motor/motorAcs.git) registered for path 'modules/motorAcs'
+[0m[91mSubmodule 'modules/motorAcsTech80' (https://github.com/epics-motor/motorAcsTech80.git) registered for path 'modules/motorAcsTech80'
+[0m[91mSubmodule 'modules/motorAerotech' (https://github.com/epics-motor/motorAerotech.git) registered for path 'modules/motorAerotech'
+[0m[91mSubmodule 'modules/motorAttocube' (https://github.com/epics-motor/motorAttocube.git) registered for path 'modules/motorAttocube'
+[0m[91mSubmodule 'modules/motorDeltaTau' (https://github.com/epics-motor/motorDeltaTau.git) registered for path 'modules/motorDeltaTau'
+[0m[91mSubmodule 'modules/motorFaulhaber' (https://github.com/epics-motor/motorFaulhaber.git) registered for path 'modules/motorFaulhaber'
+[0m[91mSubmodule 'modules/motorHytec' (https://github.com/epics-motor/motorHytec.git) registered for path 'modules/motorHytec'
+[0m[91mSubmodule 'modules/motorIms' (https://github.com/epics-motor/motorIms.git) registered for path 'modules/motorIms'
+[0m[91mSubmodule 'modules/motorKohzu' (https://github.com/epics-motor/motorKohzu.git) registered for path 'modules/motorKohzu'
+[0m[91mSubmodule 'modules/motorMXmotor' (https://github.com/epics-motor/motorMXmotor.git) registered for path 'modules/motorMXmotor'
+[0m[91mSubmodule 'modules/motorMclennan' (https://github.com/epics-motor/motorMclennan.git) registered for path 'modules/motorMclennan'
+[0m[91mSubmodule 'modules/motorMicos' (https://github.com/epics-motor/motorMicos.git) registered for path 'modules/motorMicos'
+[0m[91mSubmodule 'modules/motorMicroMo' (https://github.com/epics-motor/motorMicroMo.git) registered for path 'modules/motorMicroMo'
+[0m[91mSubmodule 'modules/motorMicronix' (https://github.com/epics-motor/motorMicronix.git) registered for path 'modules/motorMicronix'
+[0m[91mSubmodule 'modules/motorMotorSim' (https://github.com/epics-motor/motorMotorSim.git) registered for path 'modules/motorMotorSim'
+[0m[91mSubmodule 'modules/motorNPoint' (https://github.com/epics-motor/motorNPoint.git) registered for path 'modules/motorNPoint'
+[0m[91mSubmodule 'modules/motorNewFocus' (https://github.com/epics-motor/motorNewFocus.git) registered for path 'modules/motorNewFocus'
+[0m[91mSubmodule 'modules/motorNewport' (https://github.com/epics-motor/motorNewport.git) registered for path 'modules/motorNewport'
+[0m[91mSubmodule 'modules/motorOms' (https://github.com/epics-motor/motorOms.git) registered for path 'modules/motorOms'
+[0m[91mSubmodule 'modules/motorOmsAsyn' (https://github.com/epics-motor/motorOmsAsyn.git) registered for path 'modules/motorOmsAsyn'
+[0m[91mSubmodule 'modules/motorOriel' (https://github.com/epics-motor/motorOriel.git) registered for path 'modules/motorOriel'
+[0m[91mSubmodule 'modules/motorPI' (https://github.com/epics-motor/motorPI.git) registered for path 'modules/motorPI'
+[0m[91mSubmodule 'modules/motorPIGCS2' (https://github.com/epics-motor/motorPIGCS2.git) registered for path 'modules/motorPIGCS2'
+[0m[91mSubmodule 'modules/motorParker' (https://github.com/epics-motor/motorParker.git) registered for path 'modules/motorParker'
+[0m[91mSubmodule 'modules/motorPhytron' (https://github.com/epics-motor/motorPhytron.git) registered for path 'modules/motorPhytron'
+[0m[91mSubmodule 'modules/motorPiJena' (https://github.com/epics-motor/motorPiJena.git) registered for path 'modules/motorPiJena'
+[0m[91mSubmodule 'modules/motorScriptMotor' (https://github.com/epics-motor/motorScriptMotor.git) registered for path 'modules/motorScriptMotor'
+[0m[91mSubmodule 'modules/motorSmarAct' (https://github.com/epics-motor/motorSmarAct.git) registered for path 'modules/motorSmarAct'
+[0m[91mSubmodule 'modules/motorSmartMotor' (https://github.com/epics-motor/motorSmartMotor.git) registered for path 'modules/motorSmartMotor'
+[0m[91mSubmodule 'modules/motorThorLabs' (https://github.com/epics-motor/motorThorLabs.git) registered for path 'modules/motorThorLabs'
+[0m[91mCloning into '/opt/synApps/support/motor-master/.ci'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorAMCI'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorAcs'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorAcsTech80'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorAerotech'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorAttocube'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorDeltaTau'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorFaulhaber'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorHytec'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorIms'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorKohzu'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorMXmotor'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorMclennan'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorMicos'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorMicroMo'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorMicronix'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorMotorSim'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorNPoint'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorNewFocus'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorNewport'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorOms'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorOmsAsyn'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorOriel'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorPI'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorPIGCS2'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorParker'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorPhytron'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorPiJena'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorScriptMotor'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorSmarAct'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorSmartMotor'...
+[0m[91mCloning into '/opt/synApps/support/motor-master/modules/motorThorLabs'...
+[0mSubmodule path '.ci': checked out 'f5047a9e1105574a4735e28467962ad04740d598'
+Submodule path 'modules/motorAMCI': checked out '53b22b302ea43733bd713110b6ecdf1d83b60436'
+Submodule path 'modules/motorAcs': checked out 'ebbb747a721e4393826fc15413d3c2674e50f13f'
+Submodule path 'modules/motorAcsTech80': checked out '9fe15a2860d09448c588e8f0fdfeb80280546d39'
+Submodule path 'modules/motorAerotech': checked out '9abae6420d0e7df2a7369105f577cc5f783e3a6b'
+Submodule path 'modules/motorAttocube': checked out '331069c605e03cd78c438d53c1d8decb714f4d83'
+Submodule path 'modules/motorDeltaTau': checked out 'ab27eae3eb3f81b81ec23204448189bac9440ddf'
+Submodule path 'modules/motorFaulhaber': checked out '62ae8c9d46dfc0126aeb8e6bd480a5f13704ec6e'
+Submodule path 'modules/motorHytec': checked out 'aaa9af21ec8c2bcc9120a80f9e028f3423c8ca96'
+Submodule path 'modules/motorIms': checked out '95ead31379acbd03e729eb5124a278f292e7395c'
+Submodule path 'modules/motorKohzu': checked out 'ac8260270648223e4617f8bb30f91448abf9f4ee'
+Submodule path 'modules/motorMXmotor': checked out 'f58865ae748bb30114a60fd36148788473e24031'
+Submodule path 'modules/motorMclennan': checked out '8a84e307b9bc2cb608a223bf9a3187934ed475d8'
+Submodule path 'modules/motorMicos': checked out '6049202cd3a0f8c9f0450f179baeb3e9503785df'
+Submodule path 'modules/motorMicroMo': checked out 'c1b16db9a8af59b85ce1253f7482a880b1b92103'
+Submodule path 'modules/motorMicronix': checked out '1afcc7e36aed0bb87044eff988d343b736a36d6c'
+Submodule path 'modules/motorMotorSim': checked out 'ed21eac09615ec5bb8bde44a13df28cd651b0f35'
+Submodule path 'modules/motorNPoint': checked out 'f935b02bd55ebc255daa1df9407dbd6cd0b6cd40'
+Submodule path 'modules/motorNewFocus': checked out '0000255ab0a98ba2f57c4b485cddc661500815fc'
+Submodule path 'modules/motorNewport': checked out '428a5fe29e31bbbf5af64d00f6f553f114e42ee2'
+Submodule path 'modules/motorOms': checked out '7dd9732e9fb2ae5b7050f12adac71647f7b72e80'
+Submodule path 'modules/motorOmsAsyn': checked out '549bd6dc241ece183ee4544f29ae01e94899acfd'
+Submodule path 'modules/motorOriel': checked out '9f85ecde56ce9e8758efba1e0175ef498c4bcaa7'
+Submodule path 'modules/motorPI': checked out '045f6cf2b339f7a947efb7e84dc375dac5e36f50'
+Submodule path 'modules/motorPIGCS2': checked out '98d36131b2d57ebc1cd29bb344df21bf4f0d932a'
+Submodule path 'modules/motorParker': checked out '03ef9ca874ad61747e7efafe08527e378608f216'
+Submodule path 'modules/motorPhytron': checked out '72281de83391d838f3d0709cb0205a4fa055c426'
+Submodule path 'modules/motorPiJena': checked out '733d9b0e6beba9e891487bf81fe05d5fd367c490'
+Submodule path 'modules/motorScriptMotor': checked out '5517d7deaf04bab1a6057c64a82cd00381ce480e'
+Submodule path 'modules/motorSmarAct': checked out 'b6bd82f8d400015982d223570586213fe27893c2'
+Submodule path 'modules/motorSmartMotor': checked out '8a1b9cb9e30ffd65fc0db6d0aa79db530d6c3da6'
+Submodule path 'modules/motorThorLabs': checked out '9ec46c1b328227e3405730bb20f869c8a639cc8e'
+[91m--2020-05-11 19:41:57--  http://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-2.2.6.tar.gz
+Resolving www-csr.bessy.de (www-csr.bessy.de)... [0m[91m193.149.12.250
+Connecting to www-csr.bessy.de (www-csr.bessy.de)|193.149.12.250|:80... [0m[91mconnected.
+[0m[91mHTTP request sent, awaiting response... [0m[91m302 Found
+Location: https://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-2.2.6.tar.gz [following]
+--2020-05-11 19:41:58--  https://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-2.2.6.tar.gz
+[0m[91mConnecting to www-csr.bessy.de (www-csr.bessy.de)|193.149.12.250|:443... [0m[91mconnected.
+[0m[91mHTTP request sent, awaiting response... [0m[91m200 OK
+Length: 306984 (300K) [application/x-gzip]
+[0m[91mSaving to: 'seq-2.2.6.tar.gz'
+[0m[91m
+     0K .......... ......[0m[91m.... .......... ..[0m[91m........ ........[0m[91m.. 16%  176K 1s
+    50K .......... ....[0m[91m...... ..........[0m[91m .......... ......[0m[91m.... 33%  368K 1s
+   100K .......... ..[0m[91m........ ........[0m[91m.. ......[0m[91m.... ....[0m[91m...... 50% 3.65M 0s
+   150K ..........[0m[91m .......... ......[0m[91m.... .......... ..[0m[91m........ 66% 3.68M 0s
+   200K ........[0m[91m.. .......... ....[0m[91m...... ..........[0m[91m ........[0m[91m.. 83%  424K 0s
+   250K ......[0m[91m.... .......... ..[0m[91m........ ........[0m[91m.. ......... 100% 4.04M=0.6s
+
+[0m[91m2020-05-11 19:41:59 (520 KB/s) - 'seq-2.2.6.tar.gz' saved [306984/306984]
+
+[0mecho SUPPORT=/opt/synApps/support
+SUPPORT=/opt/synApps/support
+echo ' '
+ 
+echo EPICS_BASE=/opt/base
+EPICS_BASE=/opt/base
+echo ' '
+ 
+echo MASTER_FILE=./configure/RELEASE
+MASTER_FILE=./configure/RELEASE
+echo ' '
+ 
+echo DIRS= configure /opt/synApps/support/alive-master /opt/synApps/support/areaDetector-master /opt/synApps/support/asyn-master /opt/synApps/support/autosave-master /opt/synApps/support/busy-master /opt/synApps/support/calc-master /opt/synApps/support/caputRecorder-master /opt/synApps/support/iocStats-master /opt/synApps/support/ipac-master /opt/synApps/support/ip-master /opt/synApps/support/lua-master /opt/synApps/support/mca-master /opt/synApps/support/modbus-master /opt/synApps/support/motor-master /opt/synApps/support/optics-master /opt/synApps/support/seq-2-2-6 /opt/synApps/support/sscan-master /opt/synApps/support/std-master /opt/synApps/support/StreamDevice-master /opt/synApps/support/xxx-master
+DIRS= configure /opt/synApps/support/alive-master /opt/synApps/support/areaDetector-master /opt/synApps/support/asyn-master /opt/synApps/support/autosave-master /opt/synApps/support/busy-master /opt/synApps/support/calc-master /opt/synApps/support/caputRecorder-master /opt/synApps/support/iocStats-master /opt/synApps/support/ipac-master /opt/synApps/support/ip-master /opt/synApps/support/lua-master /opt/synApps/support/mca-master /opt/synApps/support/modbus-master /opt/synApps/support/motor-master /opt/synApps/support/optics-master /opt/synApps/support/seq-2-2-6 /opt/synApps/support/sscan-master /opt/synApps/support/std-master /opt/synApps/support/StreamDevice-master /opt/synApps/support/xxx-master
+echo ' '
+ 
+echo RELEASE_FILES=/opt/synApps/support/alive-master/configure/RELEASE                   /opt/synApps/support/areaDetector-master/configure/RELEASE          /opt/synApps/support/areaDetector-master/configure/RELEASE_LIBS.local   /opt/synApps/support/areaDetector-master/configure/RELEASE_PRODS.local   /opt/synApps/support/areaDetector-master/configure/RELEASE.local   /opt/synApps/support/asyn-master/configure/RELEASE                   /opt/synApps/support/autosave-master/configure/RELEASE                   /opt/synApps/support/busy-master/configure/RELEASE                   /opt/synApps/support/calc-master/configure/RELEASE                   /opt/synApps/support/caputRecorder-master/configure/RELEASE                   /opt/synApps/support/iocStats-master/configure/RELEASE                   /opt/synApps/support/ipac-master/configure/RELEASE                   /opt/synApps/support/ip-master/configure/RELEASE                   /opt/synApps/support/lua-master/configure/RELEASE                   /opt/synApps/support/mca-master/configure/RELEASE                   /opt/synApps/support/modbus-master/configure/RELEASE                   /opt/synApps/support/motor-master/configure/RELEASE                   /opt/synApps/support/optics-master/configure/RELEASE                   /opt/synApps/support/seq-2-2-6/configure/RELEASE                   /opt/synApps/support/sscan-master/configure/RELEASE                   /opt/synApps/support/std-master/configure/RELEASE                   /opt/synApps/support/StreamDevice-master/configure/RELEASE                   /opt/synApps/support/xxx-master/configure/RELEASE                  
+RELEASE_FILES=/opt/synApps/support/alive-master/configure/RELEASE /opt/synApps/support/areaDetector-master/configure/RELEASE /opt/synApps/support/areaDetector-master/configure/RELEASE_LIBS.local /opt/synApps/support/areaDetector-master/configure/RELEASE_PRODS.local /opt/synApps/support/areaDetector-master/configure/RELEASE.local /opt/synApps/support/asyn-master/configure/RELEASE /opt/synApps/support/autosave-master/configure/RELEASE /opt/synApps/support/busy-master/configure/RELEASE /opt/synApps/support/calc-master/configure/RELEASE /opt/synApps/support/caputRecorder-master/configure/RELEASE /opt/synApps/support/iocStats-master/configure/RELEASE /opt/synApps/support/ipac-master/configure/RELEASE /opt/synApps/support/ip-master/configure/RELEASE /opt/synApps/support/lua-master/configure/RELEASE /opt/synApps/support/mca-master/configure/RELEASE /opt/synApps/support/modbus-master/configure/RELEASE /opt/synApps/support/motor-master/configure/RELEASE /opt/synApps/support/optics-master/configure/RELEASE /opt/synApps/support/seq-2-2-6/configure/RELEASE /opt/synApps/support/sscan-master/configure/RELEASE /opt/synApps/support/std-master/configure/RELEASE /opt/synApps/support/StreamDevice-master/configure/RELEASE /opt/synApps/support/xxx-master/configure/RELEASE
+echo ' '
+ 
+perl -CSD ./configure/makeReleaseConsistent.pl /opt/synApps/support /opt/base ./configure/RELEASE /opt/synApps/support/alive-master/configure/RELEASE                   /opt/synApps/support/areaDetector-master/configure/RELEASE          /opt/synApps/support/areaDetector-master/configure/RELEASE_LIBS.local   /opt/synApps/support/areaDetector-master/configure/RELEASE_PRODS.local   /opt/synApps/support/areaDetector-master/configure/RELEASE.local   /opt/synApps/support/asyn-master/configure/RELEASE                   /opt/synApps/support/autosave-master/configure/RELEASE                   /opt/synApps/support/busy-master/configure/RELEASE                   /opt/synApps/support/calc-master/configure/RELEASE                   /opt/synApps/support/caputRecorder-master/configure/RELEASE                   /opt/synApps/support/iocStats-master/configure/RELEASE                   /opt/synApps/support/ipac-master/configure/RELEASE                   /opt/synApps/support/ip-master/configure/RELEASE                   /opt/synApps/support/lua-master/configure/RELEASE                   /opt/synApps/support/mca-master/configure/RELEASE                   /opt/synApps/support/modbus-master/configure/RELEASE                   /opt/synApps/support/motor-master/configure/RELEASE                   /opt/synApps/support/optics-master/configure/RELEASE                   /opt/synApps/support/seq-2-2-6/configure/RELEASE                   /opt/synApps/support/sscan-master/configure/RELEASE                   /opt/synApps/support/std-master/configure/RELEASE                   /opt/synApps/support/StreamDevice-master/configure/RELEASE                   /opt/synApps/support/xxx-master/configure/RELEASE                  
+Removing intermediate container f584696365a4
+ ---> d69bbaf56e35
+Successfully built d69bbaf56e35
 Successfully tagged prjemian/synapps-6.1-2020.5:latest
-# finished:  2020-05-11T12:06:32-05:00
+# finished:  2020-05-11T14:42:09-05:00
