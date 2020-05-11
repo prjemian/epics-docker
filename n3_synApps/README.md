@@ -1,8 +1,8 @@
 # README.md
 
-The [`prjemian/synApps-6.1`](https://hub.docker.com/r/prjemian/synapps-6.1/tags) 
+The [`prjemian/synApps-2020.5`](https://hub.docker.com/r/prjemian/synapps-2020.5/tags) 
 image provides EPICS
-[synApps release 6.1](https://www.aps.anl.gov/BCDA/synApps),
+[synApps release 6.1+ (master branch 2020-May)](https://www.aps.anl.gov/BCDA/synApps),
 EPICS software tools that help to create a control system for beamlines.
 
 Tools for compiling EPICS software including compilers and
@@ -45,8 +45,8 @@ is `xxx:` as defined in the synApps [XXX](https://github.com/epics-modules/xxx) 
 If you supply an IOC prefix to be used instead of the default, 
 do not add the trailing colon, it will be added by the script.  Additionally, the script copies
 GUI screen file definitions from all installed synApps modules to the subdirectory 
-`/tmp/docker_ioc/synapps-6.1/`.  The script also copies the IOC's boot directory to
-`/tmp/docker_ioc/CONTAINER_NAME/xxx-R6-1/`.  This is a one-time copy as the IOC starts.  
+`/tmp/docker_ioc/synapps-2020.5/`.  The script also copies the IOC's boot directory to
+`/tmp/docker_ioc/CONTAINER_NAME/xxx-git/`.  This is a one-time copy as the IOC starts.  
 It does not contain live updates from autosave/restore or other such.
 
 | directory | contents |

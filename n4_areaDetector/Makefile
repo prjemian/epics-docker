@@ -1,6 +1,6 @@
 
 ORG=prjemian
-REPO=synapps-6.1-ad-3.7
+REPO=synapps-git-ad-git
 LOGFILE=build-log.txt
 # NET=host-bridge
 NET=host
@@ -9,10 +9,12 @@ IOC=dkr
 FULLNAME=$(ORG)/$(REPO)
 
 build ::
+	echo "# started: " `date --iso-8601="seconds"` | tee $(LOGFILE)
 	docker build \
 		-t $(FULLNAME)  \
 		./  \
-		2>&1 | tee $(LOGFILE)
+		2>&1 | tee -a $(LOGFILE)
+	echo "# finished: " `date --iso-8601="seconds"` | tee -a $(LOGFILE)
 
 shell ::
 	docker run \
