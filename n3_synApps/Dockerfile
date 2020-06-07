@@ -1,4 +1,4 @@
-FROM  prjemian/epics-base-7.0.3.1
+FROM  prjemian/epics-base-7.0.4
 LABEL version="1.0.1" \
       maintainer="prjemian <prjemian@gmail.com>" \
       lastupdate="2020-05-10" \
@@ -6,19 +6,16 @@ LABEL version="1.0.1" \
 USER  root
 WORKDIR /home
 
-# Install libraries from offical repo needed by synApps
-# * wget & git needed by assemble_synApps.sh
-# * re2c needed overall
-# * mca needs:
-#    * libusb (newer faster usb support)
-# * run IOCs in screen sessions (base-os provides)
-
 RUN \
     apt-get update  -y && \
     apt-get install -y  \
        git \
-       libusb-dev \
+       libnet-dev \
+       libpcap-dev \
        libusb-1.0-0-dev \
+       libusb-dev \
+       libx11-dev \
+       libxext-dev \
        re2c \
        wget \
        && \
@@ -37,71 +34,73 @@ ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
 ENV SUPPORT="${APP_ROOT}/synApps/support"
 ENV PATH="${PATH}:${SUPPORT}/utils"
 
+
 RUN echo # start ------------------- assemble_synApps.sh -------------------
 WORKDIR ${APP_ROOT}
 # download the installer script
-# synApps 6.1 release
-# ENV HASH=cc5adba5b8848c9cb98ab96768d668ae927d8859
-# latest
+# synApps 6.1+ release
+# ENV HASH=0623a478eae6c55a2378a8a07825b3a1c243b5ef
+# 2020-04-08 (latest script revision at docker build time)
 ENV HASH=master
 ADD https://raw.githubusercontent.com/EPICS-synApps/support/${HASH}/assemble_synApps.sh ./
 # edit the script first!
-COPY edit_assemble_synApps.sh .
+COPY ./ioc_scripts/edit_assemble_synApps.sh .
 RUN bash edit_assemble_synApps.sh
 # done editing
 # review
 RUN cat assemble_synApps.sh
 # run the script now
 RUN bash assemble_synApps.sh
+
+WORKDIR ${SUPPORT}
+# use _released_ version of StreamDevice (master & 2.8.14 have build errors)
+# avoids: https://github.com/paulscherrerinstitute/StreamDevice/issues/56
+RUN wget https://github.com/paulscherrerinstitute/StreamDevice/archive/2.8.12.tar.gz -O StreamDevice-2.8.12.tar.gz
+RUN tar xzf StreamDevice-2.8.12.tar.gz
+RUN mv StreamDevice-2.8.12 StreamDevice-2-8-12
+RUN /bin/rm StreamDevice-2.8.12.tar.gz
 RUN echo # end ------------------- assemble_synApps.sh -------------------
 
 # --- configure and build synApps ---
-ENV MOTOR=${SUPPORT}/motor-R7-1
-ENV XXX=${SUPPORT}/xxx-R6-1
+ENV MOTOR=${SUPPORT}/motor-master
+ENV XXX=${SUPPORT}/xxx-master
 ENV PREFIX=xxx:
 
-# # TODO: convert these lines into a bash script
-# # enable 16 motors and the scaler
-# WORKDIR ${XXX}/iocBoot/iocxxx/
-# RUN cp examples/motors.iocsh ./ && \
-#     cp examples/std.iocsh    ./ && \
-#     cp ${MOTOR}/modules/motorMotorSim/iocsh/motorSim.iocsh                 ${MOTOR}/iocsh/ && \
-#     cp ${MOTOR}/modules/motorMotorSim/iocsh/EXAMPLE_motorSim.substitutions ${MOTOR}/iocsh/ && \
-#     sed -i s:'#iocshLoad("$(STD)/iocsh/softScaler':'iocshLoad("$(STD)/iocsh/softScaler':g std.iocsh && \
-#     sed -i s:'#iocshLoad("$(MOTOR)/iocsh/motorSim.iocsh"':'iocshLoad("$(MOTOR)/iocsh/motorSim.iocsh"':g motors.iocsh && \
-#     sed -i s:'dbLoadTemplate("substitutions/motor.substitutions"':'#dbLoadTemplate("substitutions/motor.substitutions"':g motors.iocsh
-# # remove when https://github.com/epics-modules/xxx/pull/27 is merged and released in new synApps version
-# RUN sed -i s:'< common.iocsh':'< common.iocsh\n< std.iocsh\n< motors.iocsh':g    ${XXX}/iocBoot/iocxxx/st.cmd.Linux
-# # remove when https://github.com/epics-modules/xxx/pull/25 is merged and released in new synApps version
-# RUN \
-#     sed -i s:'if \[\[ ${s_pid} -eq ${P_PID} ]] ; then':'if \[ ${s_pid} -eq ${P_PID} ] ; then':g     ${XXX}/iocBoot/iocxxx/softioc/xxx.sh && \
-#     sed -i s:'if \[\[ ${s_pid} -eq ${GP_PID} ]] ; then':'if \[ ${s_pid} -eq ${GP_PID} ] ; then':g   ${XXX}/iocBoot/iocxxx/softioc/xxx.sh
-# RUN \
-#     sed -i s/'epicsEnvSet("PREFIX", "xxx:")'/'epicsEnvSet("PREFIX", $(PREFIX))'/g   ${XXX}/iocBoot/iocxxx/common.iocsh && \
-#     sed -i s:'IOC=xxx':'IOC=$(PREFIX)':g                                            ${XXX}/iocBoot/iocxxx/st.cmd.Linux
-# # fix for https://github.com/epics-modules/xxx/issues/30                                     ${XXX}/iocBoot/iocxxx/common.iocsh
-# COPY iocAdminSoft_aliases.db ${XXX}/xxxApp/Db
-# COPY iocAdminSoft_aliases.iocsh ${XXX}/iocBoot/iocxxx
-# RUN sed -i s+"IOC=\$(PREFIX)\")"+"IOC=\$(PREFIX)\")\n< iocAdminSoft_aliases.iocsh"+g ${XXX}/iocBoot/iocxxx/st.cmd.Linux
+# fix for https://github.com/epics-modules/xxx/issues/30                                     ${XXX}/iocBoot/iocxxx/common.iocsh
+COPY iocAdminSoft_aliases.db ${XXX}/xxxApp/Db
+COPY iocAdminSoft_aliases.iocsh ${XXX}/iocBoot/iocxxx
+RUN sed -i s+"IOC=\$(PREFIX)\")"+"IOC=\$(PREFIX)\")\n< iocAdminSoft_aliases.iocsh"+g ${XXX}/iocBoot/iocxxx/st.cmd.Linux
 
-# # TODO: convert these lines into a bash script
-# # grab all GUI screens (et al) into a top-level directory
-# # TODO: soft link to directory in /tmp
-# WORKDIR ${SUPPORT}
-# COPY copy_screens.sh .
-# RUN bash ./copy_screens.sh ${SUPPORT} ${SUPPORT}/screens
+# grab all GUI screens (et al) into a top-level directory
+WORKDIR ${SUPPORT}
+COPY ./ioc_scripts/copy_screens.sh .
+RUN \
+    bash ./copy_screens.sh ${SUPPORT} ${SUPPORT}/screens && \
+    ln -s ${SUPPORT}/screens /tmp/screens
 
-# # archive the template IOC, for making new XXX IOCs
-# WORKDIR ${SUPPORT}
-# RUN \
-#     tar czf ${SUPPORT}/../xxx-R6-1.tar.gz xxx-R6-1 && \
-#     ln -s ${XXX}/iocBoot/iocxxx/ ./iocxxx
+# enable 16 motors and the scaler
+WORKDIR ${XXX}/iocBoot/iocxxx/
+COPY ./ioc_scripts/edit_ioc.sh .
+RUN bash ./edit_ioc.sh
 
-# # Build it all
-# RUN \
-#     make -j4 all && \
-#     make -C ${SUPPORT}/iocxxx/
+# configure area detector for PVA, qsrv, ...
+ENV AD=${SUPPORT}/areaDetector-master
+WORKDIR ${AD}
+COPY ./ioc_scripts/edit_ad.sh .
+RUN bash ./edit_ad.sh
 
-# # TODO: add components from start_xxx.sh here
+# archive the template IOC, for making new XXX IOCs
+WORKDIR ${SUPPORT}
+RUN \
+    tar czf ${SUPPORT}/../xxx-master.tar.gz xxx-master && \
+    ln -s ${XXX}/iocBoot/iocxxx/ ./iocxxx
 
-# WORKDIR ${SUPPORT}
+# Build it all
+WORKDIR ${SUPPORT}
+RUN \
+    make -j4 release all && \
+    make -C ${SUPPORT}/iocxxx/
+
+# TODO: add components from start_xxx.sh here
+
+WORKDIR ${SUPPORT}

@@ -1,8 +1,9 @@
 
 ORG=prjemian
-REPO=synapps-6.1-2020.5
+REPO=synapps-6.1-2020.6
 LOGFILE=build-log.txt
-NET=host-bridge
+# NET=host-bridge
+NET=bridge
 
 FULLNAME=$(ORG)/$(REPO)
 
