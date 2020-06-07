@@ -61,4 +61,4 @@ for mod in ${_MODULES_}; do
   eval ${cmd}
 done
 
-sed -i s:'git submodule update ADSimDetector':'git submodule update ADSimDetector\ngit submodule update ADURL':g assemble_synApps.sh
+sed -i s:'git submodule update ADSimDetector':'git submodule update ADSimDetector\ngit submodule update ADURL\ngit submodule update pvaDriver':g assemble_synApps.sh

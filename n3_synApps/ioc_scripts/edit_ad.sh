@@ -10,3 +10,4 @@ sed -i s:'WITH_QSRV = NO':'WITH_QSRV = YES':g configure/CONFIG_SITE.local
 
 # build ADURL
 sed -i s:'#ADURL=':'ADURL=':g configure/RELEASE.local
+sed -i s:'#PVADRIVER=':'PVADRIVER=':g configure/RELEASE.local

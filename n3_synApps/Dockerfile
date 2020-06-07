@@ -90,21 +90,6 @@ COPY ./ioc_scripts/edit_ad.sh .
 RUN bash ./edit_ad.sh
 RUN echo # end ------------------- customize synApps -------------------
 
-RUN echo # start ------------------- make templates for new IOCs -------------------
-WORKDIR ${SUPPORT}
-RUN \
-    mkdir ${SYNAPPS}/iocs && \
-    tar czf ${SYNAPPS}/iocs/xxx.tar.gz xxx-master
-
-WORKDIR ${AD}/ADSimDetector/iocs
-RUN \
-    tar czf ${SYNAPPS}/iocs/simDetectorIOC.tar.gz simDetectorIOC
-
-WORKDIR ${AD}/ADURL/iocs
-RUN \
-    tar czf ${SYNAPPS}/iocs/urlIOC.tar.gz urlIOC
-RUN echo # end ------------------- make templates for new IOCs -------------------
-
 
 RUN echo # start ------------------- build synApps -------------------
 WORKDIR ${SUPPORT}
@@ -113,22 +98,24 @@ RUN \
     make -C ${XXX}/iocBoot/iocxxx/
 RUN echo # end ------------------- build synApps -------------------
 
+
 RUN echo # start ------------------- create custom IOCs -------------------
 
 WORKDIR ${SYNAPPS}/iocs
 COPY ./ioc_scripts/custom_ioc_xxx.sh .
 ENV PREFIX=xxx:
-COPY ./ioc_scripts/iocAdminSoft_aliases.db .
-COPY ./ioc_scripts/iocAdminSoft_aliases.iocsh .
 RUN bash custom_ioc_xxx.sh
+RUN make -j4 -C ${SYNAPPS}/iocs/xxx rebuild
 
 WORKDIR ${SYNAPPS}/iocs
 COPY ./ioc_scripts/custom_ioc_ADsim.sh .
 RUN bash custom_ioc_ADsim.sh
+# RUN make -j4 -C ${SYNAPPS}/iocs/simDetectorIOC rebuild
 
 WORKDIR ${SYNAPPS}/iocs
 COPY ./ioc_scripts/custom_ioc_ADurl.sh .
 RUN bash custom_ioc_ADurl.sh
+# RUN make -j4 -C ${SYNAPPS}/iocs/urlIOC rebuild
 
 RUN echo # end ------------------- create custom IOCs -------------------
 
