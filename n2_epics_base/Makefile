@@ -1,6 +1,6 @@
 
 ORG=prjemian
-REPO=epics-base-7.0.3.1
+REPO=epics-base-7.0.4
 LOGFILE=build-log.txt
 NET=host-bridge
 

@@ -17,7 +17,7 @@ ENV EPICS_HOST_ARCH=linux-x86_64
 ENV EPICS_ROOT="${APP_ROOT}/base"
 ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
 
-ENV EPICS_BASE_NAME=base-7.0.3.1
+ENV EPICS_BASE_NAME=base-7.0.4
 
 WORKDIR ${APP_ROOT}
 ADD https://epics.anl.gov/download/base/${EPICS_BASE_NAME}.tar.gz ./
@@ -29,3 +29,8 @@ RUN tar xzf ${EPICS_BASE_NAME}.tar.gz &&\
 WORKDIR ${EPICS_ROOT}
 RUN make -j4 CFLAGS="-fPIC" CXXFLAGS="-fPIC" &&\
     make clean
+
+# build PVA and QSRV
+# see https://docs.epics-controls.org/projects/pva2pva/en/latest/doxygen/
+#WORKDIR ${EPICS_ROOT}/modules
+#RUN make -j4
