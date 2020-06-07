@@ -1,153 +1,197 @@
-# started:  2020-06-06T22:32:18-05:00
-Sending build context to Docker daemon  35.84kB
-Step 1/49 : FROM  prjemian/epics-base-7.0.4
+# started:  2020-06-07T14:23:18-05:00
+Sending build context to Docker daemon  33.28kB
+Step 1/62 : FROM  prjemian/epics-base-7.0.4
  ---> 690eb4cc0bb6
-Step 2/49 : LABEL version="1.0.1"       maintainer="prjemian <prjemian@gmail.com>"       lastupdate="2020-05-10"       Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n3_synApps/README.md"
+Step 2/62 : LABEL version="1.0.1"       maintainer="prjemian <prjemian@gmail.com>"       lastupdate="2020-05-10"       Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n3_synApps/README.md"
  ---> Using cache
  ---> 5445d7c2ccb9
-Step 3/49 : USER  root
+Step 3/62 : USER  root
  ---> Using cache
  ---> e6c34074ae94
-Step 4/49 : WORKDIR /home
+Step 4/62 : WORKDIR /home
  ---> Using cache
  ---> a5c9edeeab5a
-Step 5/49 : RUN     apt-get update  -y &&     apt-get install -y         git        libnet-dev        libpcap-dev        libusb-1.0-0-dev        libusb-dev        libx11-dev        libxext-dev        re2c        wget        &&     rm -rf /var/lib/apt/lists/*
+Step 5/62 : RUN echo # start ------------------- OS update -------------------
  ---> Using cache
- ---> 8bef591587f6
-Step 6/49 : ENV APP_ROOT="/opt"
+ ---> cefd59924971
+Step 6/62 : RUN     apt-get update  -y &&     apt-get install -y         git        libnet-dev        libpcap-dev        libusb-1.0-0-dev        libusb-dev        libx11-dev        libxext-dev        re2c        wget        &&     rm -rf /var/lib/apt/lists/*
  ---> Using cache
- ---> ad8f821feb43
-Step 7/49 : ENV EDITOR="nano"
+ ---> de83da088f18
+Step 7/62 : RUN echo # end ------------------- OS update -------------------
  ---> Using cache
- ---> 54abcd8438f3
-Step 8/49 : ENV EPICS_HOST_ARCH=linux-x86_64
+ ---> 45d55c39760e
+Step 8/62 : ENV APP_ROOT="/opt"
  ---> Using cache
- ---> d7e4cc7fae07
-Step 9/49 : ENV EPICS_ROOT="${APP_ROOT}/base"
+ ---> 808c8ccd6dd2
+Step 9/62 : ENV EDITOR="nano"
  ---> Using cache
- ---> c8c993bd6715
-Step 10/49 : ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
+ ---> f8c8043a544b
+Step 10/62 : ENV EPICS_HOST_ARCH=linux-x86_64
  ---> Using cache
- ---> db502980046b
-Step 11/49 : ENV SUPPORT="${APP_ROOT}/synApps/support"
+ ---> 1eb6cb87b6e4
+Step 11/62 : ENV EPICS_ROOT="${APP_ROOT}/base"
  ---> Using cache
- ---> bb070b1bcb21
-Step 12/49 : ENV PATH="${PATH}:${SUPPORT}/utils"
+ ---> f69d722e6afa
+Step 12/62 : ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
  ---> Using cache
- ---> edcf6a690fa0
-Step 13/49 : RUN echo # start ------------------- assemble_synApps.sh -------------------
+ ---> dbc69409824a
+Step 13/62 : ENV SYNAPPS="${APP_ROOT}/synApps"
  ---> Using cache
- ---> 0164c1665325
-Step 14/49 : WORKDIR ${APP_ROOT}
+ ---> 2e90a09ea874
+Step 14/62 : ENV SUPPORT="${SYNAPPS}/support"
  ---> Using cache
- ---> 8e85dd421350
-Step 15/49 : ENV HASH=master
+ ---> 5272ebad4369
+Step 15/62 : ENV PATH="${PATH}:${SUPPORT}/utils"
  ---> Using cache
- ---> c9f5a26cafca
-Step 16/49 : ADD https://raw.githubusercontent.com/EPICS-synApps/support/${HASH}/assemble_synApps.sh ./
+ ---> 96d60d030d9a
+Step 16/62 : ENV AD=${SUPPORT}/areaDetector-master
+ ---> Using cache
+ ---> dfe7f4c5bfbf
+Step 17/62 : ENV MOTOR=${SUPPORT}/motor-master
+ ---> Using cache
+ ---> 5ad9f9f27626
+Step 18/62 : ENV XXX=${SUPPORT}/xxx-master
+ ---> Using cache
+ ---> 2cda35e0a908
+Step 19/62 : RUN mkdir /data
+ ---> Using cache
+ ---> c19cbeee3191
+Step 20/62 : RUN echo # start ------------------- assemble_synApps.sh -------------------
+ ---> Using cache
+ ---> 9a54608334fc
+Step 21/62 : WORKDIR ${APP_ROOT}
+ ---> Using cache
+ ---> 27d64b77c3c4
+Step 22/62 : ENV HASH=master
+ ---> Using cache
+ ---> e1514c83d31c
+Step 23/62 : ADD https://raw.githubusercontent.com/EPICS-synApps/support/${HASH}/assemble_synApps.sh ./
 
  ---> Using cache
- ---> 9c1aadc3e310
-Step 17/49 : COPY ./ioc_scripts/edit_assemble_synApps.sh .
+ ---> 7374d38c8c7f
+Step 24/62 : COPY ./ioc_scripts/edit_assemble_synApps.sh .
  ---> Using cache
- ---> e71b07ee609d
-Step 18/49 : RUN bash edit_assemble_synApps.sh
+ ---> c23b85010ceb
+Step 25/62 : RUN bash edit_assemble_synApps.sh
  ---> Using cache
- ---> 63c02a05fc7b
-Step 19/49 : RUN cat assemble_synApps.sh
+ ---> ebc5f0e37889
+Step 26/62 : RUN cat assemble_synApps.sh
  ---> Using cache
- ---> 6d42f4a9b882
-Step 20/49 : RUN bash assemble_synApps.sh
+ ---> c068fd741ab6
+Step 27/62 : RUN bash assemble_synApps.sh
  ---> Using cache
- ---> c7bf14385a5f
-Step 21/49 : WORKDIR ${SUPPORT}
+ ---> d693fb189957
+Step 28/62 : WORKDIR ${SUPPORT}
  ---> Using cache
- ---> 2bd6a3650729
-Step 22/49 : RUN wget https://github.com/paulscherrerinstitute/StreamDevice/archive/2.8.12.tar.gz -O StreamDevice-2.8.12.tar.gz
+ ---> a92e83cd5d36
+Step 29/62 : RUN wget https://github.com/paulscherrerinstitute/StreamDevice/archive/2.8.12.tar.gz -O StreamDevice-2.8.12.tar.gz
  ---> Using cache
- ---> 47b406bfc07a
-Step 23/49 : RUN tar xzf StreamDevice-2.8.12.tar.gz
+ ---> d0dfb295f492
+Step 30/62 : RUN tar xzf StreamDevice-2.8.12.tar.gz
  ---> Using cache
- ---> 2395622ced1d
-Step 24/49 : RUN mv StreamDevice-2.8.12 StreamDevice-2-8-12
+ ---> d538943fad47
+Step 31/62 : RUN mv StreamDevice-2.8.12 StreamDevice-2-8-12
  ---> Using cache
- ---> c175e497f8cc
-Step 25/49 : RUN /bin/rm StreamDevice-2.8.12.tar.gz
+ ---> 6242ed505f48
+Step 32/62 : RUN /bin/rm StreamDevice-2.8.12.tar.gz
  ---> Using cache
- ---> 0bdcdc6ebf9a
-Step 26/49 : RUN echo # end ------------------- assemble_synApps.sh -------------------
+ ---> 3cbd4d97721f
+Step 33/62 : RUN echo # end ------------------- assemble_synApps.sh -------------------
  ---> Using cache
- ---> 7c5cadbf3647
-Step 27/49 : ENV MOTOR=${SUPPORT}/motor-master
+ ---> 12e0398d42bf
+Step 34/62 : RUN echo # start ------------------- customize synApps -------------------
  ---> Using cache
- ---> cd83bba4ce4f
-Step 28/49 : ENV XXX=${SUPPORT}/xxx-master
+ ---> 8144a699e403
+Step 35/62 : WORKDIR ${SUPPORT}
  ---> Using cache
- ---> 4f0d8b3ba26e
-Step 29/49 : ENV PREFIX=xxx:
+ ---> bb95a264ffc2
+Step 36/62 : COPY ./ioc_scripts/copy_screens.sh .
  ---> Using cache
- ---> 5abcd7352961
-Step 30/49 : COPY iocAdminSoft_aliases.db ${XXX}/xxxApp/Db
+ ---> e776eda506ba
+Step 37/62 : RUN     bash ./copy_screens.sh ${SUPPORT} ${SYNAPPS}/screens &&     ln -s ${SYNAPPS}/screens /tmp/screens
  ---> Using cache
- ---> 6f7f24f13c11
-Step 31/49 : COPY iocAdminSoft_aliases.iocsh ${XXX}/iocBoot/iocxxx
+ ---> 9bb849bdb591
+Step 38/62 : WORKDIR ${XXX}/iocBoot/iocxxx/
  ---> Using cache
- ---> 4af1bcf6bc35
-Step 32/49 : RUN sed -i s+"IOC=\$(PREFIX)\")"+"IOC=\$(PREFIX)\")\n< iocAdminSoft_aliases.iocsh"+g ${XXX}/iocBoot/iocxxx/st.cmd.Linux
+ ---> 8e351bec46d9
+Step 39/62 : COPY ./ioc_scripts/edit_ioc.sh .
  ---> Using cache
- ---> b014d7f74763
-Step 33/49 : WORKDIR ${SUPPORT}
+ ---> c8c59a2fed4e
+Step 40/62 : RUN bash ./edit_ioc.sh
  ---> Using cache
- ---> d6f78934d95a
-Step 34/49 : COPY ./ioc_scripts/copy_screens.sh .
+ ---> 706723c2a8ae
+Step 41/62 : WORKDIR ${AD}
  ---> Using cache
- ---> dda56f6e9986
-Step 35/49 : RUN     bash ./copy_screens.sh ${SUPPORT} ${SUPPORT}/screens &&     ln -s ${SUPPORT}/screens /tmp/screens
+ ---> e2615fed41d6
+Step 42/62 : COPY ./ioc_scripts/edit_ad.sh .
  ---> Using cache
- ---> d0a08fd3450b
-Step 36/49 : WORKDIR ${XXX}/iocBoot/iocxxx/
+ ---> 64ef790dbbfb
+Step 43/62 : RUN bash ./edit_ad.sh
  ---> Using cache
- ---> 566a92cf1242
-Step 37/49 : COPY ./ioc_scripts/edit_ioc.sh .
+ ---> 3694ecacf739
+Step 44/62 : RUN echo # end ------------------- customize synApps -------------------
  ---> Using cache
- ---> e3c65a443ce8
-Step 38/49 : RUN bash ./edit_ioc.sh
+ ---> 224921e8161c
+Step 45/62 : RUN echo # start ------------------- build synApps -------------------
  ---> Using cache
- ---> 4e731f3bbeb4
-Step 39/49 : ENV AD=${SUPPORT}/areaDetector-master
+ ---> f05aaf9ce058
+Step 46/62 : WORKDIR ${SUPPORT}
  ---> Using cache
- ---> 8658657eaf29
-Step 40/49 : WORKDIR ${AD}
+ ---> 59110e111b02
+Step 47/62 : RUN     make -j4 release all &&     make -C ${XXX}/iocBoot/iocxxx/
  ---> Using cache
- ---> e065e8210cd7
-Step 41/49 : COPY ./ioc_scripts/edit_ad.sh .
+ ---> 7b7861b93d5f
+Step 48/62 : RUN echo # end ------------------- build synApps -------------------
  ---> Using cache
- ---> a7b1a44992ea
-Step 42/49 : RUN bash ./edit_ad.sh
+ ---> ed9392450d5f
+Step 49/62 : RUN echo # start ------------------- create custom IOCs -------------------
  ---> Using cache
- ---> be3841577849
-Step 43/49 : WORKDIR ${SUPPORT}
+ ---> 4f8a4c4b8f06
+Step 50/62 : WORKDIR ${SYNAPPS}/iocs
  ---> Using cache
- ---> 64c7db389613
-Step 44/49 : RUN     tar czf ${SUPPORT}/../xxx-master.tar.gz xxx-master &&     ln -s ${XXX}/iocBoot/iocxxx/ ./iocxxx
+ ---> a699240eca7f
+Step 51/62 : COPY ./ioc_scripts/custom_ioc_xxx.sh .
  ---> Using cache
- ---> b36f6abbfdc7
-Step 45/49 : WORKDIR ${SUPPORT}
+ ---> 263e6769d3be
+Step 52/62 : ENV PREFIX=xxx:
  ---> Using cache
- ---> cbb56f809190
-Step 46/49 : RUN     make -j4 release all &&     make -C ${SUPPORT}/iocxxx/
+ ---> cc5765c81e20
+Step 53/62 : RUN bash custom_ioc_xxx.sh
  ---> Using cache
- ---> 5c90c57acb05
-Step 47/49 : WORKDIR ${SUPPORT}
+ ---> 69978454b809
+Step 54/62 : RUN make -j4 -C ${SYNAPPS}/iocs/xxx rebuild
  ---> Using cache
- ---> f0aacfd00e6e
-Step 48/49 : RUN     mkdir /data &&     mkdir ../iocs &&     ln -s ${AD}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/ ../iocs/iocSimDetector &&     ln -s ${AD}/ADURL/iocs/urlIOC/iocBoot/iocURLDriver/ ../iocs/iocUrl &&     mv iocxxx screens ../
+ ---> ea9b229b087b
+Step 55/62 : WORKDIR ${SYNAPPS}/iocs
  ---> Using cache
- ---> 8ea9eedecca1
-Step 49/49 : WORKDIR ${SUPPORT}
- ---> Running in 51ebdf7af289
-Removing intermediate container 51ebdf7af289
- ---> acfdb26306ad
-Successfully built acfdb26306ad
+ ---> 2a676c7e35ae
+Step 56/62 : COPY ./ioc_scripts/custom_ioc_ADsim.sh .
+ ---> 31d27169d11a
+Step 57/62 : RUN bash custom_ioc_ADsim.sh
+ ---> Running in 29c11cbea7a8
+# TODO: build a custom IOC: ADsim
+Removing intermediate container 29c11cbea7a8
+ ---> 7bec5beee8fe
+Step 58/62 : WORKDIR ${SYNAPPS}/iocs
+ ---> Running in 92d0e71a0ea7
+Removing intermediate container 92d0e71a0ea7
+ ---> 92f5456ea900
+Step 59/62 : COPY ./ioc_scripts/custom_ioc_ADurl.sh .
+ ---> 7cad1546e035
+Step 60/62 : RUN bash custom_ioc_ADurl.sh
+ ---> Running in c331f847ef71
+# TODO: build a custom IOC: ADurl
+Removing intermediate container c331f847ef71
+ ---> 9649a1c8f46a
+Step 61/62 : RUN echo # end ------------------- create custom IOCs -------------------
+ ---> Running in 35c74f90f606
+
+Removing intermediate container 35c74f90f606
+ ---> 14fe288a740d
+Step 62/62 : WORKDIR ${SYNAPPS}
+ ---> Running in 07d4fd79e9a5
+Removing intermediate container 07d4fd79e9a5
+ ---> d6d429eb7acb
+Successfully built d6d429eb7acb
 Successfully tagged prjemian/synapps-6.1-2020.6:latest
-# finished:  2020-06-06T22:32:19-05:00
+# finished:  2020-06-07T14:23:27-05:00
