@@ -6,6 +6,8 @@ LABEL version="1.0.1" \
 USER  root
 WORKDIR /home
 
+
+RUN echo # start ------------------- OS update -------------------
 RUN \
     apt-get update  -y && \
     apt-get install -y  \
@@ -20,6 +22,7 @@ RUN \
        wget \
        && \
     rm -rf /var/lib/apt/lists/*
+RUN echo # end ------------------- OS update -------------------
 
 # ============ parent image definitions ============
 # additional software packages added here
@@ -34,6 +37,9 @@ ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
 ENV SYNAPPS="${APP_ROOT}/synApps"
 ENV SUPPORT="${SYNAPPS}/support"
 ENV PATH="${PATH}:${SUPPORT}/utils"
+ENV AD=${SUPPORT}/areaDetector-master
+ENV MOTOR=${SUPPORT}/motor-master
+ENV XXX=${SUPPORT}/xxx-master
 
 # a directory for EPICS data (such as written from area detector IOCs)
 RUN mkdir /data
@@ -64,15 +70,7 @@ RUN mv StreamDevice-2.8.12 StreamDevice-2-8-12
 RUN /bin/rm StreamDevice-2.8.12.tar.gz
 RUN echo # end ------------------- assemble_synApps.sh -------------------
 
-# --- configure and build synApps ---
-ENV MOTOR=${SUPPORT}/motor-master
-ENV XXX=${SUPPORT}/xxx-master
-ENV PREFIX=xxx:
-
-# fix for https://github.com/epics-modules/xxx/issues/30                                     ${XXX}/iocBoot/iocxxx/common.iocsh
-COPY iocAdminSoft_aliases.db ${XXX}/xxxApp/Db
-COPY iocAdminSoft_aliases.iocsh ${XXX}/iocBoot/iocxxx
-RUN sed -i s+"IOC=\$(PREFIX)\")"+"IOC=\$(PREFIX)\")\n< iocAdminSoft_aliases.iocsh"+g ${XXX}/iocBoot/iocxxx/st.cmd.Linux
+RUN echo # start ------------------- customize synApps -------------------
 
 # grab all GUI screens (et al) into a top-level directory
 WORKDIR ${SUPPORT}
@@ -87,28 +85,56 @@ COPY ./ioc_scripts/edit_ioc.sh .
 RUN bash ./edit_ioc.sh
 
 # configure area detector for PVA, qsrv, ...
-ENV AD=${SUPPORT}/areaDetector-master
 WORKDIR ${AD}
 COPY ./ioc_scripts/edit_ad.sh .
 RUN bash ./edit_ad.sh
+RUN echo # end ------------------- customize synApps -------------------
 
-# archive the template IOC, for making new XXX IOCs
+RUN echo # start ------------------- make templates for new IOCs -------------------
 WORKDIR ${SUPPORT}
 RUN \
     mkdir ${SYNAPPS}/iocs && \
-    tar czf ${SYNAPPS}/iocs/xxx-master.tar.gz xxx-master
+    tar czf ${SYNAPPS}/iocs/xxx.tar.gz xxx-master
 
-# Build it all
+WORKDIR ${AD}/ADSimDetector/iocs
+RUN \
+    tar czf ${SYNAPPS}/iocs/simDetectorIOC.tar.gz simDetectorIOC
+
+WORKDIR ${AD}/ADURL/iocs
+RUN \
+    tar czf ${SYNAPPS}/iocs/urlIOC.tar.gz urlIOC
+RUN echo # end ------------------- make templates for new IOCs -------------------
+
+
+RUN echo # start ------------------- build synApps -------------------
 WORKDIR ${SUPPORT}
 RUN \
     make -j4 release all && \
-    make -C ${SUPPORT}/iocxxx/
+    make -C ${XXX}/iocBoot/iocxxx/
+RUN echo # end ------------------- build synApps -------------------
+
+RUN echo # start ------------------- create custom IOCs -------------------
+# TODO: customize each IOC in ${SYNAPPS}/iocs
 
 WORKDIR ${SYNAPPS}/iocs
-# TODO: instead of linking to supplied IOCs, copy and customize each in ${SYNAPPS}/iocs
-    # ln -s ${AD}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/ ${SYNAPPS}/iocs/iocSimDetector && \
-    # ln -s ${AD}/ADURL/iocs/urlIOC/iocBoot/iocURLDriver/ ${SYNAPPS}/iocs/iocUrl
-
+COPY ./ioc_scripts/custom_ioc_xxx.sh .
 # TODO: add components from start_xxx.sh here
+# TODO: move to customize IOC (later)
+# fix for https://github.com/epics-modules/xxx/issues/30                                     ${XXX}/iocBoot/iocxxx/common.iocsh
+ENV PREFIX=xxx:
+# COPY iocAdminSoft_aliases.db ${XXX}/xxxApp/Db
+# COPY iocAdminSoft_aliases.iocsh ${XXX}/iocBoot/iocxxx
+# RUN sed -i s+"IOC=\$(PREFIX)\")"+"IOC=\$(PREFIX)\")\n< iocAdminSoft_aliases.iocsh"+g ${XXX}/iocBoot/iocxxx/st.cmd.Linux
+RUN bash custom_ioc_xxx.sh
+
+WORKDIR ${SYNAPPS}/iocs
+COPY ./ioc_scripts/custom_ioc_ADsim.sh .
+RUN bash custom_ioc_ADsim.sh
+
+WORKDIR ${SYNAPPS}/iocs
+COPY ./ioc_scripts/custom_ioc_ADurl.sh .
+RUN bash custom_ioc_ADurl.sh
+
+RUN echo # end ------------------- create custom IOCs -------------------
 
 WORKDIR ${SYNAPPS}
