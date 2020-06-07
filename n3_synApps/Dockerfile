@@ -101,6 +101,14 @@ RUN \
     make -j4 release all && \
     make -C ${SUPPORT}/iocxxx/
 
+WORKDIR ${SUPPORT}
+RUN \
+    mkdir /data && \
+    mkdir ../iocs && \
+    ln -s ${AD}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/ ../iocs/iocSimDetector && \
+    ln -s ${AD}/ADURL/iocs/urlIOC/iocBoot/iocURLDriver/ ../iocs/iocUrl && \
+    mv iocxxx screens ../
+
 # TODO: add components from start_xxx.sh here
 
 WORKDIR ${SUPPORT}
