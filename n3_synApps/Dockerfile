@@ -114,17 +114,12 @@ RUN \
 RUN echo # end ------------------- build synApps -------------------
 
 RUN echo # start ------------------- create custom IOCs -------------------
-# TODO: customize each IOC in ${SYNAPPS}/iocs
 
 WORKDIR ${SYNAPPS}/iocs
 COPY ./ioc_scripts/custom_ioc_xxx.sh .
-# TODO: add components from start_xxx.sh here
-# TODO: move to customize IOC (later)
-# fix for https://github.com/epics-modules/xxx/issues/30                                     ${XXX}/iocBoot/iocxxx/common.iocsh
 ENV PREFIX=xxx:
-# COPY iocAdminSoft_aliases.db ${XXX}/xxxApp/Db
-# COPY iocAdminSoft_aliases.iocsh ${XXX}/iocBoot/iocxxx
-# RUN sed -i s+"IOC=\$(PREFIX)\")"+"IOC=\$(PREFIX)\")\n< iocAdminSoft_aliases.iocsh"+g ${XXX}/iocBoot/iocxxx/st.cmd.Linux
+COPY ./ioc_scripts/iocAdminSoft_aliases.db .
+COPY ./ioc_scripts/iocAdminSoft_aliases.iocsh .
 RUN bash custom_ioc_xxx.sh
 
 WORKDIR ${SYNAPPS}/iocs
