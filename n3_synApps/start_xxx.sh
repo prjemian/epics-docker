@@ -16,16 +16,11 @@ PREFIX=${PRE}:
 CONTAINER=ioc${PRE}
 
 # name of docker image
-SHORT_NAME=synapps-6.1
+SHORT_NAME=synapps-6.1-2020.6
 IMAGE=prjemian/${SHORT_NAME}:latest
 
 # name of IOC manager (start, stop, status, ...)
 IOC_MANAGER=iocxxx/softioc/xxx.sh
-
-# container will quit unless it has something to run
-# this is trivial but shows that container is running
-# prints date/time every 10 seconds
-KEEP_ALIVE_COMMAND="while true; do date; sleep 10; done"
 
 # pass the IOC PREFIX to the container at boot time
 ENVIRONMENT="PREFIX=${PREFIX}"
@@ -45,12 +40,13 @@ remove_container.sh ${CONTAINER}
 mkdir -p ${HOST_TMP_SHARE}
 
 echo -n "starting container ${CONTAINER} ... "
-docker run -d --net=host \
-    --name ${CONTAINER} \
-    -e "${ENVIRONMENT}" \
-    -v "${HOST_TMP_SHARE}":/tmp \
-    ${IMAGE} \
-    bash -c "${KEEP_ALIVE_COMMAND}"
+OPTIONS=
+OPTIONS+=" -it"
+OPTIONS+=" -d"
+OPTIONS+=" --net=host"
+OPTIONS+=" --name ${CONTAINER}"
+OPTIONS+=" -e "${ENVIRONMENT}""
+docker run ${OPTIONS} ${IMAGE} bash
 
 sleep 1
 
