@@ -31,9 +31,12 @@ ENV EPICS_ROOT="${APP_ROOT}/base"
 ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
 
 # ============ EPICS synApps ============
-ENV SUPPORT="${APP_ROOT}/synApps/support"
+ENV SYNAPPS="${APP_ROOT}/synApps"
+ENV SUPPORT="${SYNAPPS}/support"
 ENV PATH="${PATH}:${SUPPORT}/utils"
 
+# a directory for EPICS data (such as written from area detector IOCs)
+RUN mkdir /data
 
 RUN echo # start ------------------- assemble_synApps.sh -------------------
 WORKDIR ${APP_ROOT}
@@ -75,8 +78,8 @@ RUN sed -i s+"IOC=\$(PREFIX)\")"+"IOC=\$(PREFIX)\")\n< iocAdminSoft_aliases.iocs
 WORKDIR ${SUPPORT}
 COPY ./ioc_scripts/copy_screens.sh .
 RUN \
-    bash ./copy_screens.sh ${SUPPORT} ${SUPPORT}/screens && \
-    ln -s ${SUPPORT}/screens /tmp/screens
+    bash ./copy_screens.sh ${SUPPORT} ${SYNAPPS}/screens && \
+    ln -s ${SYNAPPS}/screens /tmp/screens
 
 # enable 16 motors and the scaler
 WORKDIR ${XXX}/iocBoot/iocxxx/
@@ -92,8 +95,8 @@ RUN bash ./edit_ad.sh
 # archive the template IOC, for making new XXX IOCs
 WORKDIR ${SUPPORT}
 RUN \
-    tar czf ${SUPPORT}/../xxx-master.tar.gz xxx-master && \
-    ln -s ${XXX}/iocBoot/iocxxx/ ./iocxxx
+    mkdir ${SYNAPPS}/iocs && \
+    tar czf ${SYNAPPS}/iocs/xxx-master.tar.gz xxx-master
 
 # Build it all
 WORKDIR ${SUPPORT}
@@ -101,14 +104,11 @@ RUN \
     make -j4 release all && \
     make -C ${SUPPORT}/iocxxx/
 
-WORKDIR ${SUPPORT}
-RUN \
-    mkdir /data && \
-    mkdir ../iocs && \
-    ln -s ${AD}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/ ../iocs/iocSimDetector && \
-    ln -s ${AD}/ADURL/iocs/urlIOC/iocBoot/iocURLDriver/ ../iocs/iocUrl && \
-    mv iocxxx screens ../
+WORKDIR ${SYNAPPS}/iocs
+# TODO: instead of linking to supplied IOCs, copy and customize each in ${SYNAPPS}/iocs
+    # ln -s ${AD}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/ ${SYNAPPS}/iocs/iocSimDetector && \
+    # ln -s ${AD}/ADURL/iocs/urlIOC/iocBoot/iocURLDriver/ ${SYNAPPS}/iocs/iocUrl
 
 # TODO: add components from start_xxx.sh here
 
-WORKDIR ${SUPPORT}
+WORKDIR ${SYNAPPS}
