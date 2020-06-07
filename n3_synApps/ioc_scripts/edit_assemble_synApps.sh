@@ -18,6 +18,7 @@ _MODULES_+=" GALIL"
 _MODULES_+=" IP330"
 _MODULES_+=" IPUNIDIG"
 _MODULES_+=" LOVE"
+_MODULES_+=" MCA"
 _MODULES_+=" MEASCOMP"
 _MODULES_+=" QUADEM"
 _MODULES_+=" SOFTGLUE"
@@ -46,7 +47,6 @@ _MODULES_+=" DEVIOCSTATS"
 _MODULES_+=" IP"
 _MODULES_+=" IPAC"
 _MODULES_+=" LUA"
-_MODULES_+=" MCA"
 _MODULES_+=" MODBUS"
 _MODULES_+=" MOTOR"
 _MODULES_+=" OPTICS"
@@ -60,3 +60,5 @@ for mod in ${_MODULES_}; do
   echo ${cmd}
   eval ${cmd}
 done
+
+sed -i s:'git submodule update ADSimDetector':'git submodule update ADSimDetector\ngit submodule update ADURL':g assemble_synApps.sh
