@@ -12,7 +12,7 @@ cp ${MOTOR}/modules/motorMotorSim/motorSimApp/iocsh/motorSim.iocsh              
 cp ${MOTOR}/modules/motorMotorSim/motorSimApp/iocsh/EXAMPLE_motorSim.substitutions ${MOTOR}/motorApp/iocsh/
 
 sed -i s:'#iocshLoad("$(STD)/iocsh/softScaler':'iocshLoad("$(STD)/iocsh/softScaler':g std.iocsh
-sed -i s:'#iocshLoad("$(MOTOR)/modules/motorMotorSim/iocsh/motorSim.iocsh"':'iocshLoad("$(MOTOR)/modules/motorMotorSim/iocsh/motorSim.iocsh"':g motors.iocsh
+sed -i s:'#iocshLoad("$(MOTOR)/modules/motorMotorSim/motorSimApp/iocsh/motorSim.iocsh"':'iocshLoad("$(MOTOR)/modules/motorMotorSim/motorSimApp/iocsh/motorSim.iocsh"':g motors.iocsh
 sed -i s:'dbLoadTemplate("substitutions/motor.substitutions"':'#dbLoadTemplate("substitutions/motor.substitutions"':g motors.iocsh
 
 # remove when https://github.com/epics-modules/xxx/pull/27 is merged and released in new synApps version
