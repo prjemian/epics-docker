@@ -22,7 +22,7 @@ sed -i s:'< common.iocsh':'< common.iocsh\n< std.iocsh\n< motors.iocsh':g    ${X
 
 
 sed -i s/'epicsEnvSet("PREFIX", "xxx:")'/'epicsEnvSet("PREFIX", $(PREFIX))'/g   ${XXX}/iocBoot/iocxxx/settings.iocsh
-sed -i s:'# Shell prompt':'# Shell prompt\nepicsEnvSet("IOC", $(PREFIX))':g     ${XXX}/iocBoot/iocxxx/settings.iocsh
+# sed -i s:'# Shell prompt':'&\nepicsEnvSet("IOC", $(PREFIX))':g     ${XXX}/iocBoot/iocxxx/settings.iocsh
 
 # remove Newport support from motor due to build error
 #     ../xpsSFTPUpload.h:3:1: error: 'epicsShareFunc' does not name a type
