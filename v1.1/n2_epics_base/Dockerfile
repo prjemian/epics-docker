@@ -1,4 +1,4 @@
-FROM  prjemian/os_only
+FROM  prjemian/os_only-1.1
 LABEL version="1.1.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
       lastupdate="2021-01-20"

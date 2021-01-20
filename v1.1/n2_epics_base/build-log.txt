@@ -1,6 +1,6 @@
-# build started:  2021-01-20T17:15:57-06:00
+# build started:  2021-01-20T17:19:29-06:00
 Sending build context to Docker daemon  8.704kB
-Step 1/17 : FROM  prjemian/os_only
+Step 1/17 : FROM  prjemian/os_only-1.1
  ---> d154e60c4138
 Step 2/17 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"       lastupdate="2021-01-20"
  ---> Using cache
@@ -53,4 +53,4 @@ Step 17/17 : RUN make -j4 all CFLAGS="-fPIC" CXXFLAGS="-fPIC" &&    make clean
  ---> 5f95302f2557
 Successfully built 5f95302f2557
 Successfully tagged prjemian/epics-base-7.0.4.1:latest
-# build finished:  2021-01-20T17:15:58-06:00
+# build finished:  2021-01-20T17:19:30-06:00
