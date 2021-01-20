@@ -1,0 +1,25 @@
+# started:  2021-01-20T16:48:08-06:00
+Sending build context to Docker daemon  7.168kB
+Step 1/7 : FROM  ubuntu:latest
+ ---> f643c72bc252
+Step 2/7 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"       lastupdate="2021-01-20"
+ ---> Using cache
+ ---> 31d256607f77
+Step 3/7 : USER  root
+ ---> Using cache
+ ---> ca6b699447b6
+Step 4/7 : WORKDIR /home
+ ---> Using cache
+ ---> ab0d761a0797
+Step 5/7 : RUN apt-get update  -y &&     apt-get upgrade -y &&     apt-get install -y          apt-utils         build-essential          libreadline-dev          nano          screen         vim         &&     rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> a9b2dc0bcf35
+Step 6/7 : ENV APP_ROOT="/opt"
+ ---> Using cache
+ ---> e7f4fd78ba22
+Step 7/7 : ENV EDITOR="nano"
+ ---> Using cache
+ ---> d154e60c4138
+Successfully built d154e60c4138
+Successfully tagged prjemian/os_only-1.1:latest
+# finished:  2021-01-20T16:48:08-06:00
