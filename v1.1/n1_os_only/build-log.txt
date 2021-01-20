@@ -1,4 +1,4 @@
-# started:  2021-01-20T16:48:08-06:00
+# started:  2021-01-20T17:15:57-06:00
 Sending build context to Docker daemon  7.168kB
 Step 1/7 : FROM  ubuntu:latest
  ---> f643c72bc252
@@ -22,4 +22,4 @@ Step 7/7 : ENV EDITOR="nano"
  ---> d154e60c4138
 Successfully built d154e60c4138
 Successfully tagged prjemian/os_only-1.1:latest
-# finished:  2021-01-20T16:48:08-06:00
+# finished:  2021-01-20T17:15:57-06:00

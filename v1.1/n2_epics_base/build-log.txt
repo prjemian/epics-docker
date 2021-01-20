@@ -1,0 +1,56 @@
+# build started:  2021-01-20T17:15:57-06:00
+Sending build context to Docker daemon  8.704kB
+Step 1/17 : FROM  prjemian/os_only
+ ---> d154e60c4138
+Step 2/17 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"       lastupdate="2021-01-20"
+ ---> Using cache
+ ---> 9acadf041ac1
+Step 3/17 : USER  root
+ ---> Using cache
+ ---> 0cb0d2a7593c
+Step 4/17 : WORKDIR /home
+ ---> Using cache
+ ---> 23e15505f98b
+Step 5/17 : ENV APP_ROOT="/opt"
+ ---> Using cache
+ ---> 808b24fb2bfc
+Step 6/17 : ENV EDITOR="nano"
+ ---> Using cache
+ ---> 4db28e08396d
+Step 7/17 : ENV EPICS_BASE_NAME=base-7.0.4.1
+ ---> Using cache
+ ---> 0532c00df849
+Step 8/17 : ENV EPICS_BASE_DIR_NAME=base-R7.0.4.1
+ ---> Using cache
+ ---> fbd7038823dd
+Step 9/17 : ENV EPICS_HOST_ARCH=linux-x86_64
+ ---> Using cache
+ ---> cdc1e630f2fe
+Step 10/17 : ENV EPICS_ROOT="${APP_ROOT}/${EPICS_BASE_DIR_NAME}"
+ ---> Using cache
+ ---> cc15332e5cca
+Step 11/17 : ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
+ ---> Using cache
+ ---> d51d832edd84
+Step 12/17 : WORKDIR ${APP_ROOT}
+ ---> Using cache
+ ---> 06cfb906d9f6
+Step 13/17 : ADD https://epics.anl.gov/download/base/${EPICS_BASE_NAME}.tar.gz ./
+
+ ---> Using cache
+ ---> 57068ffbba2a
+Step 14/17 : RUN tar xzf ${EPICS_BASE_NAME}.tar.gz &&    rm  ${EPICS_BASE_NAME}.tar.gz &&    ln -s ${EPICS_BASE_DIR_NAME} base &&    ls -lAFgh
+ ---> Using cache
+ ---> bcb0e5ea09a8
+Step 15/17 : WORKDIR ${EPICS_ROOT}
+ ---> Using cache
+ ---> 022f4fa978a0
+Step 16/17 : RUN pwd && ls
+ ---> Using cache
+ ---> a2a575dfd2fa
+Step 17/17 : RUN make -j4 all CFLAGS="-fPIC" CXXFLAGS="-fPIC" &&    make clean
+ ---> Using cache
+ ---> 5f95302f2557
+Successfully built 5f95302f2557
+Successfully tagged prjemian/epics-base-7.0.4.1:latest
+# build finished:  2021-01-20T17:15:58-06:00
