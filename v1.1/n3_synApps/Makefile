@@ -1,6 +1,6 @@
 
 ORG=prjemian
-REPO=synapps-6.2-2021.01
+REPO=synapps-6.2
 LOGFILE=build-log.txt
 # NET=host-bridge
 NET=bridge

@@ -1,10 +1,11 @@
 FROM  prjemian/epics-base-7.0.4.1
 LABEL version="1.1.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2021-01-20" \
+      lastupdate="2021-01-21" \
       Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n3_synApps/README.md"
 USER  root
 WORKDIR /home
+RUN pwd && ls -lAFgh
 
 
 RUN echo # start ------------------- OS update -------------------
@@ -46,10 +47,8 @@ RUN mkdir /data
 
 RUN echo # start ------------------- assemble_synApps.sh -------------------
 WORKDIR ${APP_ROOT}
+RUN pwd && ls -lAFgh
 # download the installer script
-# synApps 6.1+ release
-# ENV HASH=0623a478eae6c55a2378a8a07825b3a1c243b5ef
-# 2020-04-08 (latest script revision at docker build time)
 ENV HASH=master
 ADD https://raw.githubusercontent.com/EPICS-synApps/support/${HASH}/assemble_synApps.sh ./
 # edit the script first!
@@ -62,7 +61,7 @@ RUN cat assemble_synApps.sh
 RUN bash assemble_synApps.sh
 
 WORKDIR ${SUPPORT}
-RUN ls -lAFgh
+RUN pwd && ls -lAFgh
 # # fix StreamDevice
 # # use _released_ version of StreamDevice (master & 2.8.14 have build errors)
 # # avoids: https://github.com/paulscherrerinstitute/StreamDevice/issues/56
@@ -77,10 +76,10 @@ RUN echo # end ------------------- assemble_synApps.sh -------------------
 
 RUN echo # start ------------------- build synApps -------------------
 WORKDIR ${SUPPORT}
-RUN ls -lAFgh
-RUN \
-    make -j4 release all && \
-    make -C ${XXX}/iocBoot/iocxxx/
+RUN pwd && ls -lAFgh
+RUN make -j4 release rebuild
+# RUN make -C ${XXX}/iocBoot/iocxxx/
 RUN echo # end ------------------- build synApps -------------------
 
-WORKDIR ${SYNAPPS}
+# WORKDIR ${SYNAPPS}
+# RUN ls -lAFgh
