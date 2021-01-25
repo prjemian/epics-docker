@@ -30,8 +30,9 @@ RUN tar xzf ${EPICS_BASE_NAME}.tar.gz &&\
 
 WORKDIR ${EPICS_ROOT}
 RUN pwd && ls
-RUN make -j4 all CFLAGS="-fPIC" CXXFLAGS="-fPIC" &&\
-    make clean
+RUN make -j4 all CFLAGS="-fPIC" CXXFLAGS="-fPIC"  2>&1 | tee build.log
+RUN echo "# --- make clean ---" 2>&1 | tee -a build.log
+RUN make clean  2>&1 | tee -a build.log
 
 # build PVA and QSRV
 # see https://docs.epics-controls.org/projects/pva2pva/en/latest/doxygen/
