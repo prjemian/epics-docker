@@ -9,6 +9,7 @@ sed -i s:'/APSshare/epics/base-3.15.6':'/opt/base':g assemble_synApps.sh
 # do NOT use these modules
 _MODULES_=""
 _MODULES_+=" ALLENBRADLEY"
+_MODULES_+=" AREA_DETECTOR"
 _MODULES_+=" CAMAC"
 _MODULES_+=" DAC128V"
 _MODULES_+=" DELAYGEN"
@@ -26,6 +27,7 @@ _MODULES_+=" SOFTGLUEZYNQ"
 _MODULES_+=" VAC"
 _MODULES_+=" VME"
 _MODULES_+=" YOKOGAWA_DAS"
+_MODULES_+=" XSPRESS3"
 
 for mod in ${_MODULES_}; do
   cmd="sed -i s:'${mod}=':'#+#${mod}=':g assemble_synApps.sh"
@@ -37,7 +39,6 @@ done
 
 _MODULES_=""
 _MODULES_+=" ALIVE"
-_MODULES_+=" AREA_DETECTOR"
 _MODULES_+=" ASYN"
 _MODULES_+=" AUTOSAVE"
 _MODULES_+=" BUSY"
@@ -55,10 +56,10 @@ _MODULES_+=" STD"
 _MODULES_+=" STREAM"
 _MODULES_+=" XXX"
 
-for mod in ${_MODULES_}; do
-  cmd="sed -i s:'^${mod}=\S*\$':'${mod}=master':g assemble_synApps.sh"
-  echo ${cmd}
-  eval ${cmd}
-done
+# for mod in ${_MODULES_}; do
+#   cmd="sed -i s:'^${mod}=\S*\$':'${mod}=master':g assemble_synApps.sh"
+#   echo ${cmd}
+#   eval ${cmd}
+# done
 
-sed -i s:'git submodule update ADSimDetector':'git submodule update ADSimDetector\ngit submodule update ADURL\ngit submodule update pvaDriver':g assemble_synApps.sh
+# sed -i s:'git submodule update ADSimDetector':'git submodule update ADSimDetector\ngit submodule update ADURL\ngit submodule update pvaDriver':g assemble_synApps.sh

@@ -49,37 +49,30 @@ RUN echo # start ------------------- assemble_synApps.sh -------------------
 WORKDIR ${APP_ROOT}
 RUN pwd && ls -lAFgh
 # download the installer script
-ENV HASH=master
+# ENV HASH=master
+ENV HASH=R6-2
 ADD https://raw.githubusercontent.com/EPICS-synApps/support/${HASH}/assemble_synApps.sh ./
 # edit the script first!
 COPY ./ioc_scripts/edit_assemble_synApps.sh .
-RUN bash edit_assemble_synApps.sh
+RUN bash ./edit_assemble_synApps.sh 2>&1 | tee edit_assemble.log
 # done editing
 # review
-RUN cat assemble_synApps.sh
+RUN cat ./assemble_synApps.sh
 # run the script now
-RUN bash assemble_synApps.sh
+RUN bash ./assemble_synApps.sh 2>&1 | tee assemble.log
 
 WORKDIR ${SUPPORT}
 RUN pwd && ls -lAFgh
-# # fix StreamDevice
-# # use _released_ version of StreamDevice (master & 2.8.14 have build errors)
-# # avoids: https://github.com/paulscherrerinstitute/StreamDevice/issues/56
-# ENV STREAMDEVICE_RELEASE=2.8.12
-# ENV STREAMDEVICE_DIR=StreamDevice-2-8-12
-# RUN wget https://github.com/paulscherrerinstitute/StreamDevice/archive/${STREAMDEVICE_RELEASE}.tar.gz -O StreamDevice-${STREAMDEVICE_RELEASE}.tar.gz
-# RUN tar xzf StreamDevice-${STREAMDEVICE_RELEASE}.tar.gz
-# RUN mv StreamDevice-${STREAMDEVICE_RELEASE} ${STREAMDEVICE_DIR}
-# RUN /bin/rm StreamDevice-${STREAMDEVICE_RELEASE}.tar.gz
 RUN echo # end ------------------- assemble_synApps.sh -------------------
 
 
 RUN echo # start ------------------- build synApps -------------------
 WORKDIR ${SUPPORT}
 RUN pwd && ls -lAFgh
-RUN make -j4 release rebuild
-# RUN make -C ${XXX}/iocBoot/iocxxx/
-RUN echo # end ------------------- build synApps -------------------
+# RUN make release rebuild 2>&1 | tee build.log
+# RUN echo "# --- Building XXX IOC ---" 2>&1 | tee -a build.log
+# RUN make -C ${XXX}/iocBoot/iocxxx/ 2>&1 | tee -a build.log
+# RUN echo # end ------------------- build synApps -------------------
 
-# WORKDIR ${SYNAPPS}
-# RUN ls -lAFgh
+# # WORKDIR ${SYNAPPS}
+# # RUN ls -lAFgh
