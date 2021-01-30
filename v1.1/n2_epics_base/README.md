@@ -75,7 +75,11 @@ enough) with the `docker stop` command, such as this example session:
 
 If you forget this code or need to learn it later, use the `docker ps`
 command to list all running containers.  If you have many containers
-running, you probably do not need these instructions.
+running, you probably do not need these instructions.  There are many
+pages on the web giving more advice how to stop & remove docker
+containers. [Here is one of
+them](https://linuxhandbook.com/remove-docker-containers/).
+
 
 ## Shows the EPICS base version
 
