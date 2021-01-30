@@ -66,5 +66,10 @@ for mod in "MOTOR"; do
   echo ${cmd}
   eval ${cmd}
 done
+for mod in "STREAM"; do
+  cmd="sed -i s:'^${mod}=\S*\$':'${mod}=2.8.14':g assemble_synApps.sh"
+  echo ${cmd}
+  eval ${cmd}
+done
 
 # sed -i s:'git submodule update ADSimDetector':'git submodule update ADSimDetector\ngit submodule update ADURL\ngit submodule update pvaDriver':g assemble_synApps.sh
