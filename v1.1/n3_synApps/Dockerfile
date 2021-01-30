@@ -53,7 +53,7 @@ RUN pwd && ls -lAFgh
 ENV HASH=R6-2
 ADD https://raw.githubusercontent.com/EPICS-synApps/support/${HASH}/assemble_synApps.sh ./
 # edit the script first!
-COPY ./ioc_scripts/edit_assemble_synApps.sh .
+COPY ./ioc_files/* ./
 RUN bash ./edit_assemble_synApps.sh 2>&1 | tee edit_assemble.log
 # done editing
 # review
@@ -72,5 +72,7 @@ RUN pwd && ls -lAFgh
 RUN make -j4 release rebuild 2>&1 | tee build.log
 RUN echo "# --- Building XXX IOC ---" 2>&1 | tee -a build.log
 RUN make -C ${XXX}/iocBoot/iocxxx/ 2>&1 | tee -a build.log
+RUN ln -s ${XXX}/iocBoot/iocxxx ./iocxxx
 RUN echo # end ------------------- build synApps -------------------
 
+CMD ["/bin/bash"]
