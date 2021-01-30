@@ -1,5 +1,5 @@
-# started:  2021-01-24T18:16:26-06:00
-Sending build context to Docker daemon  31.74kB
+# started:  2021-01-30T08:58:56-06:00
+Sending build context to Docker daemon  32.26kB
 Step 1/35 : FROM  prjemian/epics-base-7.0.4.1
  ---> bdb8c86b7842
 Step 2/35 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"       lastupdate="2021-01-21"       Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n3_synApps/README.md"
@@ -69,16 +69,16 @@ Step 23/35 : RUN pwd && ls -lAFgh
  ---> Using cache
  ---> 3f8766ce4439
 Step 24/35 : ENV HASH=R6-2
- ---> Running in a60fa45e980a
-Removing intermediate container a60fa45e980a
+ ---> Using cache
  ---> 14b65c5dded0
 Step 25/35 : ADD https://raw.githubusercontent.com/EPICS-synApps/support/${HASH}/assemble_synApps.sh ./
 
+ ---> Using cache
  ---> 964328c9696b
 Step 26/35 : COPY ./ioc_scripts/edit_assemble_synApps.sh .
- ---> 679145b4b70c
+ ---> 94cd6aa86b7b
 Step 27/35 : RUN bash ./edit_assemble_synApps.sh 2>&1 | tee edit_assemble.log
- ---> Running in 61ce7efd604c
+ ---> Running in 960aee26383a
 sed -i s:'ALLENBRADLEY=':'#+#ALLENBRADLEY=':g assemble_synApps.sh
 sed -i s:'AREA_DETECTOR=':'#+#AREA_DETECTOR=':g assemble_synApps.sh
 sed -i s:'CAMAC=':'#+#CAMAC=':g assemble_synApps.sh
@@ -99,10 +99,11 @@ sed -i s:'VAC=':'#+#VAC=':g assemble_synApps.sh
 sed -i s:'VME=':'#+#VME=':g assemble_synApps.sh
 sed -i s:'YOKOGAWA_DAS=':'#+#YOKOGAWA_DAS=':g assemble_synApps.sh
 sed -i s:'XSPRESS3=':'#+#XSPRESS3=':g assemble_synApps.sh
-Removing intermediate container 61ce7efd604c
- ---> df2259fd88ed
+sed -i s:'^MOTOR=\S*$':'MOTOR=master':g assemble_synApps.sh
+Removing intermediate container 960aee26383a
+ ---> 003fc770cf8a
 Step 28/35 : RUN cat ./assemble_synApps.sh
- ---> Running in fe6b8a799f78
+ ---> Running in 39214a6a35c0
 #!/bin/bash
 shopt -s expand_aliases
 
@@ -174,7 +175,7 @@ LUA=R3-0-1
 #+#MCA=R7-9
 #+#MEASCOMP=R2-5-1
 MODBUS=R3-2
-MOTOR=R7-2-1
+MOTOR=master
 OPTICS=R2-13-5
 #+#QUADEM=R9-4
 SNCSEQ=2.2.8
@@ -520,10 +521,10 @@ cd ..
 fi
 
 make release
-Removing intermediate container fe6b8a799f78
- ---> 3c4e6e53d792
+Removing intermediate container 39214a6a35c0
+ ---> c47277dcf114
 Step 29/35 : RUN bash ./assemble_synApps.sh 2>&1 | tee assemble.log
- ---> Running in 71aeb4bbc1b0
+ ---> Running in c729cdba7ee1
 FULL_CLONE = False
 Using default configuration
 Note: switching to '7a851ed2412bd7849cd671846d5dee3f96f71982'.
@@ -847,24 +848,7 @@ Turn off this advice by setting config variable advice.detachedHead to false
 
 
 
-Grabbing motor at tag: R7-2-1
-
-Note: switching to 'cafd96b0e9d5245ba804f98a3dda36c58d97d2f1'.
-
-You are in 'detached HEAD' state. You can look around, make experimental
-changes and commit them, and you can discard any commits you make in this
-state without impacting any branches by switching back to a branch.
-
-If you want to create a new branch to retain commits you create, you may
-do so (now or later) by using -c with the switch command. Example:
-
-  git switch -c <new-branch-name>
-
-Or undo this operation with:
-
-  git switch -
-
-Turn off this advice by setting config variable advice.detachedHead to false
+Grabbing motor at tag: master
 
 
 
@@ -975,6 +959,7 @@ Turn off this advice by setting config variable advice.detachedHead to false
 Submodule '.ci' (https://github.com/epics-base/ci-scripts) registered for path '.ci'
 Submodule 'modules/motorAMCI' (https://github.com/epics-motor/motorAMCI.git) registered for path 'modules/motorAMCI'
 Submodule 'modules/motorAcs' (https://github.com/epics-motor/motorAcs.git) registered for path 'modules/motorAcs'
+Submodule 'modules/motorAcsMotion' (https://github.com/epics-motor/motorAcsMotion.git) registered for path 'modules/motorAcsMotion'
 Submodule 'modules/motorAcsTech80' (https://github.com/epics-motor/motorAcsTech80.git) registered for path 'modules/motorAcsTech80'
 Submodule 'modules/motorAerotech' (https://github.com/epics-motor/motorAerotech.git) registered for path 'modules/motorAerotech'
 Submodule 'modules/motorAttocube' (https://github.com/epics-motor/motorAttocube.git) registered for path 'modules/motorAttocube'
@@ -1004,41 +989,43 @@ Submodule 'modules/motorScriptMotor' (https://github.com/epics-motor/motorScript
 Submodule 'modules/motorSmarAct' (https://github.com/epics-motor/motorSmarAct.git) registered for path 'modules/motorSmarAct'
 Submodule 'modules/motorSmartMotor' (https://github.com/epics-motor/motorSmartMotor.git) registered for path 'modules/motorSmartMotor'
 Submodule 'modules/motorThorLabs' (https://github.com/epics-motor/motorThorLabs.git) registered for path 'modules/motorThorLabs'
-Cloning into '/opt/synApps/support/motor-R7-2-1/.ci'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorAMCI'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorAcs'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorAcsTech80'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorAerotech'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorAttocube'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorDeltaTau'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorFaulhaber'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorHytec'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorIms'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorKohzu'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorMXmotor'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorMclennan'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorMicos'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorMicroMo'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorMicronix'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorMotorSim'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorNPoint'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorNewFocus'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorNewport'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorOms'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorOmsAsyn'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorOriel'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorPI'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorPIGCS2'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorParker'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorPhytron'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorPiJena'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorScriptMotor'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorSmarAct'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorSmartMotor'...
-Cloning into '/opt/synApps/support/motor-R7-2-1/modules/motorThorLabs'...
-Submodule path '.ci': checked out 'f5047a9e1105574a4735e28467962ad04740d598'
+Cloning into '/opt/synApps/support/motor-master/.ci'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorAMCI'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorAcs'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorAcsMotion'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorAcsTech80'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorAerotech'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorAttocube'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorDeltaTau'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorFaulhaber'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorHytec'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorIms'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorKohzu'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorMXmotor'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorMclennan'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorMicos'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorMicroMo'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorMicronix'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorMotorSim'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorNPoint'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorNewFocus'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorNewport'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorOms'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorOmsAsyn'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorOriel'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorPI'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorPIGCS2'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorParker'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorPhytron'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorPiJena'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorScriptMotor'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorSmarAct'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorSmartMotor'...
+Cloning into '/opt/synApps/support/motor-master/modules/motorThorLabs'...
+Submodule path '.ci': checked out '12d769835e1ee88e94b5b0b4bc0cf7068e678064'
 Submodule path 'modules/motorAMCI': checked out '4c88334bd8dcd82034ccd126fbc11e9007cd4802'
 Submodule path 'modules/motorAcs': checked out '8c1fd9366435b7b9a34d0d5d84a5ad981b241846'
+Submodule path 'modules/motorAcsMotion': checked out 'ff75e0c4cee6b1286a4011b3d8beaf6d83425aa1'
 Submodule path 'modules/motorAcsTech80': checked out 'd7706b0f8189f5d253a4e6a610c34c33115be6f6'
 Submodule path 'modules/motorAerotech': checked out '3fa94b7429cdf3df88ee0cb02c4c7f46a070ce26'
 Submodule path 'modules/motorAttocube': checked out 'cc28182ecdb7d4325f5102be1e4bd4375422e492'
@@ -1055,7 +1042,7 @@ Submodule path 'modules/motorMicronix': checked out 'e2fcf8a4a03a0fd0d9d1c88ef9b
 Submodule path 'modules/motorMotorSim': checked out '6e2f64601e5f27ba212fc8e8488ac655cc4bb483'
 Submodule path 'modules/motorNPoint': checked out '37ab6f1eddb358987d4c4e2b3479c0058d8c63c6'
 Submodule path 'modules/motorNewFocus': checked out '176006e881fcec8a4ea0b300d5ee908fcfd0d655'
-Submodule path 'modules/motorNewport': checked out 'd7b6818a893feb622c9c7dcafa645095561e965d'
+Submodule path 'modules/motorNewport': checked out '070c93e1aa1a4dea39829f7dcb21489cfde582a1'
 Submodule path 'modules/motorOms': checked out 'c3cfa1628015cd17176ebcd97babd8f78ea03630'
 Submodule path 'modules/motorOmsAsyn': checked out '31b01ea483232904709ab1c55ad3d5ade8d2e14d'
 Submodule path 'modules/motorOriel': checked out '32bbe993211535313aff4c1a3157f9089ed08273'
@@ -1068,25 +1055,25 @@ Submodule path 'modules/motorScriptMotor': checked out '374a23bae3d0cfe4aa9f268a
 Submodule path 'modules/motorSmarAct': checked out '2678479e5d1ab6c341f6b30292f9ecec6cfc072d'
 Submodule path 'modules/motorSmartMotor': checked out '79ea9a72980c04f43b43c56ed9a84cdaea7c7e8b'
 Submodule path 'modules/motorThorLabs': checked out 'bffd7c94f6f2dc37485a90e40085f181af2bfeb2'
---2021-01-25 00:17:17--  http://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-2.2.8.tar.gz
+--2021-01-30 14:59:45--  http://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-2.2.8.tar.gz
 Resolving www-csr.bessy.de (www-csr.bessy.de)... 193.149.12.250
 Connecting to www-csr.bessy.de (www-csr.bessy.de)|193.149.12.250|:80... connected.
 HTTP request sent, awaiting response... 302 Found
 Location: https://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-2.2.8.tar.gz [following]
---2021-01-25 00:17:17--  https://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-2.2.8.tar.gz
+--2021-01-30 14:59:47--  https://www-csr.bessy.de/control/SoftDist/sequencer/releases/seq-2.2.8.tar.gz
 Connecting to www-csr.bessy.de (www-csr.bessy.de)|193.149.12.250|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 305811 (299K) [application/x-gzip]
 Saving to: 'seq-2.2.8.tar.gz'
 
-     0K .......... .......... .......... .......... .......... 16%  168K 1s
-    50K .......... .......... .......... .......... .......... 33%  352K 1s
-   100K .......... .......... .......... .......... .......... 50% 6.09M 0s
-   150K .......... .......... .......... .......... .......... 66%  374K 0s
-   200K .......... .......... .......... .......... .......... 83% 6.14M 0s
-   250K .......... .......... .......... .......... ........  100% 6.82M=0.6s
+     0K .......... .......... .......... .......... .......... 16%  177K 1s
+    50K .......... .......... .......... .......... .......... 33%  361K 1s
+   100K .......... .......... .......... .......... .......... 50% 6.35M 0s
+   150K .......... .......... .......... .......... .......... 66%  384K 0s
+   200K .......... .......... .......... .......... .......... 83% 6.22M 0s
+   250K .......... .......... .......... .......... ........  100% 6.80M=0.6s
 
-2021-01-25 00:17:18 (500 KB/s) - 'seq-2.2.8.tar.gz' saved [305811/305811]
+2021-01-30 14:59:48 (521 KB/s) - 'seq-2.2.8.tar.gz' saved [305811/305811]
 
 echo SUPPORT=/opt/synApps/support
 SUPPORT=/opt/synApps/support
@@ -1100,117 +1087,117 @@ echo MASTER_FILE=./configure/RELEASE
 MASTER_FILE=./configure/RELEASE
 echo ' '
  
-echo DIRS= configure /opt/synApps/support/alive-R1-3-1 /opt/synApps/support/asyn-R4-41 /opt/synApps/support/autosave-R5-10-2 /opt/synApps/support/busy-R1-7-3 /opt/synApps/support/calc-R3-7-4 /opt/synApps/support/caputRecorder-R1-7-3 /opt/synApps/support/iocStats-3-1-16 /opt/synApps/support/ether_ip-ether_ip-3-2 /opt/synApps/support/ipac-2-16 /opt/synApps/support/ip-R2-21 /opt/synApps/support/lua-R3-0-1 /opt/synApps/support/modbus-R3-2 /opt/synApps/support/motor-R7-2-1 /opt/synApps/support/optics-R2-13-5 /opt/synApps/support/seq-2-2-8 /opt/synApps/support/sscan-R2-11-4 /opt/synApps/support/std-R3-6-2 /opt/synApps/support/StreamDevice-2-8-16 /opt/synApps/support/xxx-R6-2
-DIRS= configure /opt/synApps/support/alive-R1-3-1 /opt/synApps/support/asyn-R4-41 /opt/synApps/support/autosave-R5-10-2 /opt/synApps/support/busy-R1-7-3 /opt/synApps/support/calc-R3-7-4 /opt/synApps/support/caputRecorder-R1-7-3 /opt/synApps/support/iocStats-3-1-16 /opt/synApps/support/ether_ip-ether_ip-3-2 /opt/synApps/support/ipac-2-16 /opt/synApps/support/ip-R2-21 /opt/synApps/support/lua-R3-0-1 /opt/synApps/support/modbus-R3-2 /opt/synApps/support/motor-R7-2-1 /opt/synApps/support/optics-R2-13-5 /opt/synApps/support/seq-2-2-8 /opt/synApps/support/sscan-R2-11-4 /opt/synApps/support/std-R3-6-2 /opt/synApps/support/StreamDevice-2-8-16 /opt/synApps/support/xxx-R6-2
+echo DIRS= configure /opt/synApps/support/alive-R1-3-1 /opt/synApps/support/asyn-R4-41 /opt/synApps/support/autosave-R5-10-2 /opt/synApps/support/busy-R1-7-3 /opt/synApps/support/calc-R3-7-4 /opt/synApps/support/caputRecorder-R1-7-3 /opt/synApps/support/iocStats-3-1-16 /opt/synApps/support/ether_ip-ether_ip-3-2 /opt/synApps/support/ipac-2-16 /opt/synApps/support/ip-R2-21 /opt/synApps/support/lua-R3-0-1 /opt/synApps/support/modbus-R3-2 /opt/synApps/support/motor-master /opt/synApps/support/optics-R2-13-5 /opt/synApps/support/seq-2-2-8 /opt/synApps/support/sscan-R2-11-4 /opt/synApps/support/std-R3-6-2 /opt/synApps/support/StreamDevice-2-8-16 /opt/synApps/support/xxx-R6-2
+DIRS= configure /opt/synApps/support/alive-R1-3-1 /opt/synApps/support/asyn-R4-41 /opt/synApps/support/autosave-R5-10-2 /opt/synApps/support/busy-R1-7-3 /opt/synApps/support/calc-R3-7-4 /opt/synApps/support/caputRecorder-R1-7-3 /opt/synApps/support/iocStats-3-1-16 /opt/synApps/support/ether_ip-ether_ip-3-2 /opt/synApps/support/ipac-2-16 /opt/synApps/support/ip-R2-21 /opt/synApps/support/lua-R3-0-1 /opt/synApps/support/modbus-R3-2 /opt/synApps/support/motor-master /opt/synApps/support/optics-R2-13-5 /opt/synApps/support/seq-2-2-8 /opt/synApps/support/sscan-R2-11-4 /opt/synApps/support/std-R3-6-2 /opt/synApps/support/StreamDevice-2-8-16 /opt/synApps/support/xxx-R6-2
 echo ' '
  
-echo RELEASE_FILES=/opt/synApps/support/alive-R1-3-1/configure/RELEASE       /opt/synApps/support/asyn-R4-41/configure/RELEASE       /opt/synApps/support/autosave-R5-10-2/configure/RELEASE       /opt/synApps/support/busy-R1-7-3/configure/RELEASE       /opt/synApps/support/calc-R3-7-4/configure/RELEASE       /opt/synApps/support/caputRecorder-R1-7-3/configure/RELEASE       /opt/synApps/support/iocStats-3-1-16/configure/RELEASE       /opt/synApps/support/ether_ip-ether_ip-3-2/configure/RELEASE       /opt/synApps/support/ipac-2-16/configure/RELEASE       /opt/synApps/support/ip-R2-21/configure/RELEASE       /opt/synApps/support/lua-R3-0-1/configure/RELEASE       /opt/synApps/support/modbus-R3-2/configure/RELEASE       /opt/synApps/support/motor-R7-2-1/configure/RELEASE       /opt/synApps/support/optics-R2-13-5/configure/RELEASE       /opt/synApps/support/seq-2-2-8/configure/RELEASE       /opt/synApps/support/sscan-R2-11-4/configure/RELEASE       /opt/synApps/support/std-R3-6-2/configure/RELEASE       /opt/synApps/support/StreamDevice-2-8-16/configure/RELEASE       /opt/synApps/support/xxx-R6-2/configure/RELEASE      
-RELEASE_FILES=/opt/synApps/support/alive-R1-3-1/configure/RELEASE /opt/synApps/support/asyn-R4-41/configure/RELEASE /opt/synApps/support/autosave-R5-10-2/configure/RELEASE /opt/synApps/support/busy-R1-7-3/configure/RELEASE /opt/synApps/support/calc-R3-7-4/configure/RELEASE /opt/synApps/support/caputRecorder-R1-7-3/configure/RELEASE /opt/synApps/support/iocStats-3-1-16/configure/RELEASE /opt/synApps/support/ether_ip-ether_ip-3-2/configure/RELEASE /opt/synApps/support/ipac-2-16/configure/RELEASE /opt/synApps/support/ip-R2-21/configure/RELEASE /opt/synApps/support/lua-R3-0-1/configure/RELEASE /opt/synApps/support/modbus-R3-2/configure/RELEASE /opt/synApps/support/motor-R7-2-1/configure/RELEASE /opt/synApps/support/optics-R2-13-5/configure/RELEASE /opt/synApps/support/seq-2-2-8/configure/RELEASE /opt/synApps/support/sscan-R2-11-4/configure/RELEASE /opt/synApps/support/std-R3-6-2/configure/RELEASE /opt/synApps/support/StreamDevice-2-8-16/configure/RELEASE /opt/synApps/support/xxx-R6-2/configure/RELEASE
+echo RELEASE_FILES=/opt/synApps/support/alive-R1-3-1/configure/RELEASE       /opt/synApps/support/asyn-R4-41/configure/RELEASE       /opt/synApps/support/autosave-R5-10-2/configure/RELEASE       /opt/synApps/support/busy-R1-7-3/configure/RELEASE       /opt/synApps/support/calc-R3-7-4/configure/RELEASE       /opt/synApps/support/caputRecorder-R1-7-3/configure/RELEASE       /opt/synApps/support/iocStats-3-1-16/configure/RELEASE       /opt/synApps/support/ether_ip-ether_ip-3-2/configure/RELEASE       /opt/synApps/support/ipac-2-16/configure/RELEASE       /opt/synApps/support/ip-R2-21/configure/RELEASE       /opt/synApps/support/lua-R3-0-1/configure/RELEASE       /opt/synApps/support/modbus-R3-2/configure/RELEASE       /opt/synApps/support/motor-master/configure/RELEASE       /opt/synApps/support/optics-R2-13-5/configure/RELEASE       /opt/synApps/support/seq-2-2-8/configure/RELEASE       /opt/synApps/support/sscan-R2-11-4/configure/RELEASE       /opt/synApps/support/std-R3-6-2/configure/RELEASE       /opt/synApps/support/StreamDevice-2-8-16/configure/RELEASE       /opt/synApps/support/xxx-R6-2/configure/RELEASE      
+RELEASE_FILES=/opt/synApps/support/alive-R1-3-1/configure/RELEASE /opt/synApps/support/asyn-R4-41/configure/RELEASE /opt/synApps/support/autosave-R5-10-2/configure/RELEASE /opt/synApps/support/busy-R1-7-3/configure/RELEASE /opt/synApps/support/calc-R3-7-4/configure/RELEASE /opt/synApps/support/caputRecorder-R1-7-3/configure/RELEASE /opt/synApps/support/iocStats-3-1-16/configure/RELEASE /opt/synApps/support/ether_ip-ether_ip-3-2/configure/RELEASE /opt/synApps/support/ipac-2-16/configure/RELEASE /opt/synApps/support/ip-R2-21/configure/RELEASE /opt/synApps/support/lua-R3-0-1/configure/RELEASE /opt/synApps/support/modbus-R3-2/configure/RELEASE /opt/synApps/support/motor-master/configure/RELEASE /opt/synApps/support/optics-R2-13-5/configure/RELEASE /opt/synApps/support/seq-2-2-8/configure/RELEASE /opt/synApps/support/sscan-R2-11-4/configure/RELEASE /opt/synApps/support/std-R3-6-2/configure/RELEASE /opt/synApps/support/StreamDevice-2-8-16/configure/RELEASE /opt/synApps/support/xxx-R6-2/configure/RELEASE
 echo ' '
  
-perl -CSD ./configure/makeReleaseConsistent.pl /opt/synApps/support /opt/base ./configure/RELEASE /opt/synApps/support/alive-R1-3-1/configure/RELEASE       /opt/synApps/support/asyn-R4-41/configure/RELEASE       /opt/synApps/support/autosave-R5-10-2/configure/RELEASE       /opt/synApps/support/busy-R1-7-3/configure/RELEASE       /opt/synApps/support/calc-R3-7-4/configure/RELEASE       /opt/synApps/support/caputRecorder-R1-7-3/configure/RELEASE       /opt/synApps/support/iocStats-3-1-16/configure/RELEASE       /opt/synApps/support/ether_ip-ether_ip-3-2/configure/RELEASE       /opt/synApps/support/ipac-2-16/configure/RELEASE       /opt/synApps/support/ip-R2-21/configure/RELEASE       /opt/synApps/support/lua-R3-0-1/configure/RELEASE       /opt/synApps/support/modbus-R3-2/configure/RELEASE       /opt/synApps/support/motor-R7-2-1/configure/RELEASE       /opt/synApps/support/optics-R2-13-5/configure/RELEASE       /opt/synApps/support/seq-2-2-8/configure/RELEASE       /opt/synApps/support/sscan-R2-11-4/configure/RELEASE       /opt/synApps/support/std-R3-6-2/configure/RELEASE       /opt/synApps/support/StreamDevice-2-8-16/configure/RELEASE       /opt/synApps/support/xxx-R6-2/configure/RELEASE      
-Removing intermediate container 71aeb4bbc1b0
- ---> dbcc954252ed
+perl -CSD ./configure/makeReleaseConsistent.pl /opt/synApps/support /opt/base ./configure/RELEASE /opt/synApps/support/alive-R1-3-1/configure/RELEASE       /opt/synApps/support/asyn-R4-41/configure/RELEASE       /opt/synApps/support/autosave-R5-10-2/configure/RELEASE       /opt/synApps/support/busy-R1-7-3/configure/RELEASE       /opt/synApps/support/calc-R3-7-4/configure/RELEASE       /opt/synApps/support/caputRecorder-R1-7-3/configure/RELEASE       /opt/synApps/support/iocStats-3-1-16/configure/RELEASE       /opt/synApps/support/ether_ip-ether_ip-3-2/configure/RELEASE       /opt/synApps/support/ipac-2-16/configure/RELEASE       /opt/synApps/support/ip-R2-21/configure/RELEASE       /opt/synApps/support/lua-R3-0-1/configure/RELEASE       /opt/synApps/support/modbus-R3-2/configure/RELEASE       /opt/synApps/support/motor-master/configure/RELEASE       /opt/synApps/support/optics-R2-13-5/configure/RELEASE       /opt/synApps/support/seq-2-2-8/configure/RELEASE       /opt/synApps/support/sscan-R2-11-4/configure/RELEASE       /opt/synApps/support/std-R3-6-2/configure/RELEASE       /opt/synApps/support/StreamDevice-2-8-16/configure/RELEASE       /opt/synApps/support/xxx-R6-2/configure/RELEASE      
+Removing intermediate container c729cdba7ee1
+ ---> fe4144d28e36
 Step 30/35 : WORKDIR ${SUPPORT}
- ---> Running in a8e3f25a5e27
-Removing intermediate container a8e3f25a5e27
- ---> 6fc9546a8b0b
+ ---> Running in 775071a22a9d
+Removing intermediate container 775071a22a9d
+ ---> 06faaa8a3105
 Step 31/35 : RUN pwd && ls -lAFgh
- ---> Running in 9727075e8768
+ ---> Running in bda0195b446f
 /opt/synApps/support
 total 152K
-drwxr-xr-x  8 root 4.0K Jan 25 00:16 .git/
--rw-r--r--  1 root   83 Jan 25 00:16 .gitattributes
--rw-r--r--  1 root  378 Jan 25 00:16 .gitignore
--rw-r--r--  1 root  214 Jan 25 00:16 .project
--rw-r--r--  1 root   60 Jan 25 00:16 EXAMPLE_RELEASE.win32-x86-static.local
--rw-r--r--  1 root   60 Jan 25 00:16 EXAMPLE_RELEASE.win32-x86.local
--rw-r--r--  1 root   60 Jan 25 00:16 EXAMPLE_RELEASE.windows-x64-static.local
--rw-r--r--  1 root   60 Jan 25 00:16 EXAMPLE_RELEASE.windows-x64.local
--rw-r--r--  1 root 3.7K Jan 25 00:16 LICENSE
--rw-r--r--  1 root 3.6K Jan 25 00:16 Makefile
--rw-r--r--  1 root 3.5K Jan 25 00:16 README
--rw-r--r--  1 root  837 Jan 25 00:16 README.md
-drwxr-xr-x  8 root 4.0K Jan 25 00:17 StreamDevice-2-8-16/
-drwxr-xr-x  9 root 4.0K Jan 25 00:16 alive-R1-3-1/
--rwxr-xr-x  1 root  13K Jan 25 00:16 assemble_synApps.sh*
-drwxr-xr-x 27 root 4.0K Jan 25 00:16 asyn-R4-41/
-drwxr-xr-x  8 root 4.0K Jan 25 00:16 autosave-R5-10-2/
-drwxr-xr-x  9 root 4.0K Jan 25 00:16 busy-R1-7-3/
-drwxr-xr-x  9 root 4.0K Jan 25 00:16 calc-R3-7-4/
-drwxr-xr-x  7 root 4.0K Jan 25 00:16 caputRecorder-R1-7-3/
-drwxr-xr-x  3 root 4.0K Jan 25 00:16 configure/
-drwxr-xr-x  3 root 4.0K Jan 25 00:16 documentation/
-drwxr-xr-x  8 root 4.0K Jan 25 00:16 ether_ip-ether_ip-3-2/
-drwxr-xr-x 11 root 4.0K Jan 25 00:16 iocStats-3-1-16/
-drwxr-xr-x  8 root 4.0K Jan 25 00:16 ip-R2-21/
-drwxr-xr-x  9 root 4.0K Jan 25 00:16 ipac-2-16/
-drwxr-xr-x  8 root 4.0K Jan 25 00:16 lua-R3-0-1/
-drwxr-xr-x  8 root 4.0K Jan 25 00:16 modbus-R3-2/
-drwxr-xr-x  9 root 4.0K Jan 25 00:16 motor-R7-2-1/
-drwxr-xr-x  9 root 4.0K Jan 25 00:16 optics-R2-13-5/
+drwxr-xr-x  8 root 4.0K Jan 30 14:59 .git/
+-rw-r--r--  1 root   83 Jan 30 14:59 .gitattributes
+-rw-r--r--  1 root  378 Jan 30 14:59 .gitignore
+-rw-r--r--  1 root  214 Jan 30 14:59 .project
+-rw-r--r--  1 root   60 Jan 30 14:59 EXAMPLE_RELEASE.win32-x86-static.local
+-rw-r--r--  1 root   60 Jan 30 14:59 EXAMPLE_RELEASE.win32-x86.local
+-rw-r--r--  1 root   60 Jan 30 14:59 EXAMPLE_RELEASE.windows-x64-static.local
+-rw-r--r--  1 root   60 Jan 30 14:59 EXAMPLE_RELEASE.windows-x64.local
+-rw-r--r--  1 root 3.7K Jan 30 14:59 LICENSE
+-rw-r--r--  1 root 3.6K Jan 30 14:59 Makefile
+-rw-r--r--  1 root 3.5K Jan 30 14:59 README
+-rw-r--r--  1 root  837 Jan 30 14:59 README.md
+drwxr-xr-x  8 root 4.0K Jan 30 14:59 StreamDevice-2-8-16/
+drwxr-xr-x  9 root 4.0K Jan 30 14:59 alive-R1-3-1/
+-rwxr-xr-x  1 root  13K Jan 30 14:59 assemble_synApps.sh*
+drwxr-xr-x 27 root 4.0K Jan 30 14:59 asyn-R4-41/
+drwxr-xr-x  8 root 4.0K Jan 30 14:59 autosave-R5-10-2/
+drwxr-xr-x  9 root 4.0K Jan 30 14:59 busy-R1-7-3/
+drwxr-xr-x  9 root 4.0K Jan 30 14:59 calc-R3-7-4/
+drwxr-xr-x  7 root 4.0K Jan 30 14:59 caputRecorder-R1-7-3/
+drwxr-xr-x  3 root 4.0K Jan 30 14:59 configure/
+drwxr-xr-x  3 root 4.0K Jan 30 14:59 documentation/
+drwxr-xr-x  8 root 4.0K Jan 30 14:59 ether_ip-ether_ip-3-2/
+drwxr-xr-x 11 root 4.0K Jan 30 14:59 iocStats-3-1-16/
+drwxr-xr-x  8 root 4.0K Jan 30 14:59 ip-R2-21/
+drwxr-xr-x  9 root 4.0K Jan 30 14:59 ipac-2-16/
+drwxr-xr-x  8 root 4.0K Jan 30 14:59 lua-R3-0-1/
+drwxr-xr-x  8 root 4.0K Jan 30 14:59 modbus-R3-2/
+drwxr-xr-x  9 root 4.0K Jan 30 14:59 motor-master/
+drwxr-xr-x  9 root 4.0K Jan 30 14:59 optics-R2-13-5/
 drwxr-xr-x  7 root 4.0K Dec 11  2019 seq-2-2-8/
-drwxr-xr-x  7 root 4.0K Jan 25 00:16 sscan-R2-11-4/
-drwxr-xr-x  9 root 4.0K Jan 25 00:16 std-R3-6-2/
-drwxr-xr-x 10 root 4.0K Jan 25 00:16 utils/
-drwxr-xr-x  9 root 4.0K Jan 25 00:16 xxx-R6-2/
-Removing intermediate container 9727075e8768
- ---> dd0184b92a27
+drwxr-xr-x  7 root 4.0K Jan 30 14:59 sscan-R2-11-4/
+drwxr-xr-x  9 root 4.0K Jan 30 14:59 std-R3-6-2/
+drwxr-xr-x 10 root 4.0K Jan 30 14:59 utils/
+drwxr-xr-x  9 root 4.0K Jan 30 14:59 xxx-R6-2/
+Removing intermediate container bda0195b446f
+ ---> 1e18ade87be3
 Step 32/35 : RUN echo # end ------------------- assemble_synApps.sh -------------------
- ---> Running in 5274f07b2e9a
+ ---> Running in 6582ec261ba5
 
-Removing intermediate container 5274f07b2e9a
- ---> 2f22d9c9e9e1
+Removing intermediate container 6582ec261ba5
+ ---> ee32333bbbfb
 Step 33/35 : RUN echo # start ------------------- build synApps -------------------
- ---> Running in 3b530d3e24c9
+ ---> Running in 54f868a9156a
 
-Removing intermediate container 3b530d3e24c9
- ---> 1dbf3f1966ef
+Removing intermediate container 54f868a9156a
+ ---> 7408077b6b75
 Step 34/35 : WORKDIR ${SUPPORT}
- ---> Running in c96b66de0883
-Removing intermediate container c96b66de0883
- ---> e09f3a2a18c9
+ ---> Running in 124efc2b3264
+Removing intermediate container 124efc2b3264
+ ---> 05db675c43e1
 Step 35/35 : RUN pwd && ls -lAFgh
- ---> Running in 818142e000a0
+ ---> Running in ec21ae9c104e
 /opt/synApps/support
 total 152K
-drwxr-xr-x  8 root 4.0K Jan 25 00:16 .git/
--rw-r--r--  1 root   83 Jan 25 00:16 .gitattributes
--rw-r--r--  1 root  378 Jan 25 00:16 .gitignore
--rw-r--r--  1 root  214 Jan 25 00:16 .project
--rw-r--r--  1 root   60 Jan 25 00:16 EXAMPLE_RELEASE.win32-x86-static.local
--rw-r--r--  1 root   60 Jan 25 00:16 EXAMPLE_RELEASE.win32-x86.local
--rw-r--r--  1 root   60 Jan 25 00:16 EXAMPLE_RELEASE.windows-x64-static.local
--rw-r--r--  1 root   60 Jan 25 00:16 EXAMPLE_RELEASE.windows-x64.local
--rw-r--r--  1 root 3.7K Jan 25 00:16 LICENSE
--rw-r--r--  1 root 3.6K Jan 25 00:16 Makefile
--rw-r--r--  1 root 3.5K Jan 25 00:16 README
--rw-r--r--  1 root  837 Jan 25 00:16 README.md
-drwxr-xr-x  8 root 4.0K Jan 25 00:17 StreamDevice-2-8-16/
-drwxr-xr-x  9 root 4.0K Jan 25 00:16 alive-R1-3-1/
--rwxr-xr-x  1 root  13K Jan 25 00:16 assemble_synApps.sh*
-drwxr-xr-x 27 root 4.0K Jan 25 00:16 asyn-R4-41/
-drwxr-xr-x  8 root 4.0K Jan 25 00:16 autosave-R5-10-2/
-drwxr-xr-x  9 root 4.0K Jan 25 00:16 busy-R1-7-3/
-drwxr-xr-x  9 root 4.0K Jan 25 00:16 calc-R3-7-4/
-drwxr-xr-x  7 root 4.0K Jan 25 00:16 caputRecorder-R1-7-3/
-drwxr-xr-x  3 root 4.0K Jan 25 00:16 configure/
-drwxr-xr-x  3 root 4.0K Jan 25 00:16 documentation/
-drwxr-xr-x  8 root 4.0K Jan 25 00:16 ether_ip-ether_ip-3-2/
-drwxr-xr-x 11 root 4.0K Jan 25 00:16 iocStats-3-1-16/
-drwxr-xr-x  8 root 4.0K Jan 25 00:16 ip-R2-21/
-drwxr-xr-x  9 root 4.0K Jan 25 00:16 ipac-2-16/
-drwxr-xr-x  8 root 4.0K Jan 25 00:16 lua-R3-0-1/
-drwxr-xr-x  8 root 4.0K Jan 25 00:16 modbus-R3-2/
-drwxr-xr-x  9 root 4.0K Jan 25 00:16 motor-R7-2-1/
-drwxr-xr-x  9 root 4.0K Jan 25 00:16 optics-R2-13-5/
+drwxr-xr-x  8 root 4.0K Jan 30 14:59 .git/
+-rw-r--r--  1 root   83 Jan 30 14:59 .gitattributes
+-rw-r--r--  1 root  378 Jan 30 14:59 .gitignore
+-rw-r--r--  1 root  214 Jan 30 14:59 .project
+-rw-r--r--  1 root   60 Jan 30 14:59 EXAMPLE_RELEASE.win32-x86-static.local
+-rw-r--r--  1 root   60 Jan 30 14:59 EXAMPLE_RELEASE.win32-x86.local
+-rw-r--r--  1 root   60 Jan 30 14:59 EXAMPLE_RELEASE.windows-x64-static.local
+-rw-r--r--  1 root   60 Jan 30 14:59 EXAMPLE_RELEASE.windows-x64.local
+-rw-r--r--  1 root 3.7K Jan 30 14:59 LICENSE
+-rw-r--r--  1 root 3.6K Jan 30 14:59 Makefile
+-rw-r--r--  1 root 3.5K Jan 30 14:59 README
+-rw-r--r--  1 root  837 Jan 30 14:59 README.md
+drwxr-xr-x  8 root 4.0K Jan 30 14:59 StreamDevice-2-8-16/
+drwxr-xr-x  9 root 4.0K Jan 30 14:59 alive-R1-3-1/
+-rwxr-xr-x  1 root  13K Jan 30 14:59 assemble_synApps.sh*
+drwxr-xr-x 27 root 4.0K Jan 30 14:59 asyn-R4-41/
+drwxr-xr-x  8 root 4.0K Jan 30 14:59 autosave-R5-10-2/
+drwxr-xr-x  9 root 4.0K Jan 30 14:59 busy-R1-7-3/
+drwxr-xr-x  9 root 4.0K Jan 30 14:59 calc-R3-7-4/
+drwxr-xr-x  7 root 4.0K Jan 30 14:59 caputRecorder-R1-7-3/
+drwxr-xr-x  3 root 4.0K Jan 30 14:59 configure/
+drwxr-xr-x  3 root 4.0K Jan 30 14:59 documentation/
+drwxr-xr-x  8 root 4.0K Jan 30 14:59 ether_ip-ether_ip-3-2/
+drwxr-xr-x 11 root 4.0K Jan 30 14:59 iocStats-3-1-16/
+drwxr-xr-x  8 root 4.0K Jan 30 14:59 ip-R2-21/
+drwxr-xr-x  9 root 4.0K Jan 30 14:59 ipac-2-16/
+drwxr-xr-x  8 root 4.0K Jan 30 14:59 lua-R3-0-1/
+drwxr-xr-x  8 root 4.0K Jan 30 14:59 modbus-R3-2/
+drwxr-xr-x  9 root 4.0K Jan 30 14:59 motor-master/
+drwxr-xr-x  9 root 4.0K Jan 30 14:59 optics-R2-13-5/
 drwxr-xr-x  7 root 4.0K Dec 11  2019 seq-2-2-8/
-drwxr-xr-x  7 root 4.0K Jan 25 00:16 sscan-R2-11-4/
-drwxr-xr-x  9 root 4.0K Jan 25 00:16 std-R3-6-2/
-drwxr-xr-x 10 root 4.0K Jan 25 00:16 utils/
-drwxr-xr-x  9 root 4.0K Jan 25 00:16 xxx-R6-2/
-Removing intermediate container 818142e000a0
- ---> 79929788eea9
-Successfully built 79929788eea9
+drwxr-xr-x  7 root 4.0K Jan 30 14:59 sscan-R2-11-4/
+drwxr-xr-x  9 root 4.0K Jan 30 14:59 std-R3-6-2/
+drwxr-xr-x 10 root 4.0K Jan 30 14:59 utils/
+drwxr-xr-x  9 root 4.0K Jan 30 14:59 xxx-R6-2/
+Removing intermediate container ec21ae9c104e
+ ---> deeddf583bbe
+Successfully built deeddf583bbe
 Successfully tagged prjemian/synapps-6.2:latest
-# finished:  2021-01-24T18:17:34-06:00
+# finished:  2021-01-30T09:00:05-06:00

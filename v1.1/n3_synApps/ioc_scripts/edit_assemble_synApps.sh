@@ -61,5 +61,10 @@ _MODULES_+=" XXX"
 #   echo ${cmd}
 #   eval ${cmd}
 # done
+for mod in "MOTOR"; do
+  cmd="sed -i s:'^${mod}=\S*\$':'${mod}=master':g assemble_synApps.sh"
+  echo ${cmd}
+  eval ${cmd}
+done
 
 # sed -i s:'git submodule update ADSimDetector':'git submodule update ADSimDetector\ngit submodule update ADURL\ngit submodule update pvaDriver':g assemble_synApps.sh

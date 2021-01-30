@@ -1,26 +1,47 @@
 # README.md
 
-The [`prjemian/synApps-2020.5`](https://hub.docker.com/r/prjemian/synapps-2020.5/tags) 
-image provides EPICS
-[synApps release 6.1+ (master branch 2020-May)](https://www.aps.anl.gov/BCDA/synApps),
-EPICS software tools that help to create a control system for beamlines.
+TODO: needs update
 
-Tools for compiling EPICS software including compilers and
-screen-oriented text editors (nano, vim, and vi) are included.
-The screen program is also included for running detached console
-sessions such as IOCs.
+The
+[`prjemian/synApps-2020.5`](https://hub.docker.com/r/prjemian/synapps-2020.5/tags)
+image provides EPICS [synApps release 6.1+ (master branch
+2020-May)](https://www.aps.anl.gov/BCDA/synApps), EPICS software tools
+that help to create a control system for beamlines.
 
-This synApps modules in this image were gathered using the 
-[`assemble_synApps.sh`](https://github.com/EPICS-synApps/support/blob/master/assemble_synApps.sh) 
-script.  The script was edited to remove the EPICS area detector (module) and other 
-modules that are not used with a linux operating system.  It is intended
-to build an additional container with area detector.
+- [README.md](#readmemd)
+  - [Overview](#overview)
+    - [modifications of assemble_synApps.sh](#modifications-of-assemble_synappssh)
+  - [default application](#default-application)
+  - [default working directory](#default-working-directory)
+  - [one-time setup](#one-time-setup)
+    - [example use](#example-use)
+      - [use a custom IOC prefix](#use-a-custom-ioc-prefix)
+  - [Environment variables](#environment-variables)
+  - [background](#background)
+## Overview
 
-The synApps image also provides a template IOC to create a runnable EPICS server
-based on the [XXX module](https://github.com/epics-modules/xxx), 
-the synApps template IOC module.
+Tools for compiling EPICS software including compilers and text editors
+(nano, vim, and vi) are included. The screen program is also included
+for running detached console sessions such as IOCs.
+
+This synApps modules in this image were gathered using the
+[`assemble_synApps.sh`](https://github.com/EPICS-synApps/support/blob/master/assemble_synApps.sh)
+script.  The script was edited to remove the EPICS area detector
+(module) and other modules that are not used with a linux operating
+system.  It is intended to build an additional container with area
+detector.
+
+The synApps image also provides a template IOC to create a runnable
+EPICS server based on the [XXX
+module](https://github.com/epics-modules/xxx), the synApps template IOC
+module.
 
 The synApps module is installed (already compiled) in directory: `/opt/synApps/support`.
+
+### modifications of assemble_synApps.sh
+
+* `motor` must be installed from GitHub `master` branch due to
+  https://github.com/epics-modules/motor/issues/173
 
 ## default application
 
@@ -30,11 +51,13 @@ By default, no application is run.
 
 The default working directory is `${SUPPORT}`
 
-# one-time setup
+## one-time setup
 
-Bash shell scripts (for linux-x86_64 host architecture) to help you start 
-and stop the images (and load screen files for use by your GUI programs).
-You need both these scripts.
+TODO: re-write
+
+Bash shell scripts (for linux-x86_64 host architecture) to help you
+start and stop the images (and load screen files for use by your GUI
+programs). You need both these scripts.
 
      cd ~/bin
      wget https://raw.githubusercontent.com/prjemian/epics-docker/master/n3_synApps/start_xxx.sh
@@ -57,7 +80,7 @@ It does not contain live updates from autosave/restore or other such.
 
 The `remove_container.sh` script stops the IOC in the container, then stops and removes the container.
 
-## example use
+### example use
 
 Start the IOC in a container and keep it running 
 with a never-ending, trivial script:
@@ -90,7 +113,7 @@ Detach with the keyboard combination `^P ^Q` (<control>+p <control>+q).
 If you `exit` the container, it will stop.
 
 
-### use a custom IOC prefix
+#### use a custom IOC prefix
 
 EPICS expects that every PV on a network has a unique name.
 To ensure this, synApps IOCs are created with a PV `PREFIX`
