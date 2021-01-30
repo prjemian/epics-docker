@@ -29,8 +29,8 @@ EPICS base is installed (and compiled) in directory:
 
 ## default application
 
-By default, no application is run.  See [Demo: soft IOC
-demonstration](#demo-soft-ioc-demonstration) for an example.
+By default, the bash shell is run.  See [Demo: soft IOC
+demonstration](#demo-soft-ioc-demonstration) for an example IOC.
 
 ## default working directory
 
