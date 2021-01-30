@@ -1,0 +1,16 @@
+# demo.db
+# Demonstration database for use with EPICS base application: softIoc
+
+# MACROS
+#
+#  IOC  PV prefix for this database (default: softIoc_demo:)
+#
+# EXAMPLES
+#
+#    softIoc -d ./demo.db
+#    softIoc -m IOC=demo: -d ./demo.db
+
+record(ao, "$(IOC=softIoc_demo:)ao")
+record(bo, "$(IOC=softIoc_demo:)bo")
+record(longout, "$(IOC=softIoc_demo:)longout")
+record(stringout, "$(IOC=softIoc_demo:)stringout")
