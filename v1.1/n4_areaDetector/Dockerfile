@@ -66,63 +66,24 @@ ADD https://github.com/areaDetector/ADCore/archive/${ADCORE_HASH}.tar.gz ./ADCor
 ADD https://github.com/areaDetector/ADSupport/archive/${ADSUPPORT_HASH}.tar.gz ./ADSupport.tar.gz
 ADD https://github.com/areaDetector/ADSimDetector/archive/${ADSIMDETECTOR_HASH}.tar.gz ./ADSimDetector.tar.gz
 ADD https://github.com/areaDetector/pvaDriver/archive/${AD_PVADRIVER_HASH}.tar.gz ./pvaDriver.tar.gz
-RUN \
-    rmdir ADCore && \
-    rmdir ADSupport && \
-    rmdir ADSimDetector && \
-    rmdir pvaDriver && \
-    tar xzf ADCore.tar.gz && \
-    tar xzf ADSupport.tar.gz && \
-    tar xzf ADSimDetector.tar.gz && \
-    tar xzf pvaDriver.tar.gz && \
-    /bin/rm ADCore.tar.gz && \
-    /bin/rm ADSupport.tar.gz && \
-    /bin/rm ADSimDetector.tar.gz && \
-    /bin/rm pvaDriver.tar.gz && \
-    ln -s ADCore-${ADCORE_HASH} ADCore && \
-    ln -s ADSupport-${ADSUPPORT_HASH} ADSupport && \
-    ln -s ADSimDetector-${ADSIMDETECTOR_HASH} ADSimDetector && \
-    ln -s pvaDriver-${AD_PVADRIVER_HASH} pvaDriver
+COPY ioc_files/rearrange_AD_dirs.sh /opt
+RUN /opt/rearrange_AD_dirs.sh 2>&1 | tee /opt/rearrange_AD_dirs.log
 
-# # recommended edits: https://areadetector.github.io/master/install_guide.html
-# WORKDIR ${AREA_DETECTOR}/configure
-# RUN pwd && ls -lAFgh
-# RUN cp EXAMPLE_RELEASE.local         RELEASE.local && \
-#     cp EXAMPLE_RELEASE_SUPPORT.local RELEASE_SUPPORT.local && \
-#     cp EXAMPLE_RELEASE_LIBS.local    RELEASE_LIBS.local && \
-#     cp EXAMPLE_RELEASE_PRODS.local   RELEASE_PRODS.local && \
-#     cp EXAMPLE_CONFIG_SITE.local     CONFIG_SITE.local && \
-#     sed -i s:'#ADSIMDETECTOR=':'ADSIMDETECTOR=':g RELEASE.local && \
-#     sed -i s:'#PVADRIVER=':'PVADRIVER=':g RELEASE.local && \
-#     sed -i s:'SUPPORT=/corvette/home/epics/devel':'SUPPORT=/opt/synApps/support':g RELEASE_SUPPORT.local && \
-#     sed -i s:'asyn-4-36':'asyn-R4-36':g RELEASE_LIBS.local && \
-#     sed -i s:'areaDetector-3-7':'areaDetector-${AD_TAG}':g RELEASE_LIBS.local && \
-#     sed -i s:'EPICS_BASE=/corvette/usr/local/epics-devel/base-7.0.3':'EPICS_BASE=/opt/base-7.0.3':g RELEASE_LIBS.local && \
-#     sed -i s:'asyn-4-36':'asyn-R4-36':g RELEASE_PRODS.local && \
-#     sed -i s:'areaDetector-3-7':'areaDetector-${AD_TAG}':g RELEASE_PRODS.local && \
-#     sed -i s:'autosave-5-10':'autosave-R5-10':g RELEASE_PRODS.local && \
-#     sed -i s:'busy-1-7-2':'busy-R1-7-2':g RELEASE_PRODS.local && \
-#     sed -i s:'calc-3-7-3':'calc-R3-7-3':g RELEASE_PRODS.local && \
-#     sed -i s:'seq-2-2-5':'seq-2-2-6':g RELEASE_PRODS.local && \
-#     sed -i s:'sscan-2-11-3':'sscan-R2-11-3':g RELEASE_PRODS.local && \
-#     sed -i s:'devIocStats-3-1-16':'iocStats-3-1-16':g RELEASE_PRODS.local && \
-#     sed -i s:'EPICS_BASE=/corvette/usr/local/epics-devel/base-7.0.3':'EPICS_BASE=/opt/base-7.0.3':g RELEASE_PRODS.local
-# WORKDIR ${AREA_DETECTOR}/ADCore/iocBoot
-# RUN pwd && ls -lAFgh
-# RUN cp EXAMPLE_commonPlugins.cmd                                commonPlugins.cmd && \
-#     cp EXAMPLE_commonPlugin_settings.req                        commonPlugin_settings.req && \
-#     sed -i s:'#NDPvaConfigure':'NDPvaConfigure':g               commonPlugins.cmd && \
-#     sed -i s:'#dbLoadRecords("NDPva':'dbLoadRecords("NDPva':g   commonPlugins.cmd && \
-#     sed -i s:'#startPVAServer':'startPVAServer':g               commonPlugins.cmd
+# recommended edits: https://areadetector.github.io/master/install_guide.html
+WORKDIR ${AREA_DETECTOR}/configure
+RUN pwd && ls -lAFgh
+COPY ioc_files/recommended_AD_edits.sh /opt
+RUN /opt/recommended_AD_edits.sh 2>&1 | tee /opt/recommended_AD_edits.log
 
-# ENV IMAGE_IOC_BOOT_DIR=${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
+ENV ADSIMDETECTOR_IOC_BOOT_DIR=${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
 
-# WORKDIR ${IMAGE_IOC_BOOT_DIR}
-# RUN pwd && ls -lAFgh
-# COPY run_simDetectorIOC ${IMAGE_IOC_BOOT_DIR}/run
-# COPY start_caQtDM_adsim ${IMAGE_IOC_BOOT_DIR}/
-# RUN cp ${XXX}/iocBoot/iocxxx/softioc/in-screen.sh .
+WORKDIR ${ADSIMDETECTOR_IOC_BOOT_DIR}
+RUN pwd && ls -lAFgh
+COPY run_simDetectorIOC ${ADSIMDETECTOR_IOC_BOOT_DIR}/run
+COPY start_caQtDM_adsim ${ADSIMDETECTOR_IOC_BOOT_DIR}/
+RUN cp ${XXX}/iocBoot/iocxxx/softioc/in-screen.sh .
 
+# TODO: for the custom IOC
 # WORKDIR ${SUPPORT}
 # RUN pwd && ls -lAFgh
 # ENV AD_PREFIX="13SIM1:"
@@ -138,21 +99,23 @@ RUN \
 #     echo "\ndbl > dbl-all.txt" >> ./iocSimDetector/st_base.cmd
 # # done editing
 
-# WORKDIR ${SUPPORT}
-# RUN make release
+WORKDIR ${SUPPORT}
+RUN make release
 
+# TODO: for the custom IOC
 # # grab all GUI screens (et al) into a top-level directory
 # WORKDIR ${SUPPORT}
 # RUN pwd && ls -lAFgh
 # RUN bash ./copy_screens.sh ${SUPPORT} ${SUPPORT}/screens
 
+# TODO: for the custom IOC
 # # archive the unbuilt template IOC, for making new SimDetector IOCs
 # WORKDIR ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot
 # RUN tar czf ${SUPPORT}/../iocSimDetector-3.7.tar.gz iocSimDetector
 
-# # Build it all
-# WORKDIR ${AREA_DETECTOR}
-# RUN make -j4 all
+# Build it all
+WORKDIR ${AREA_DETECTOR}
+RUN make -j4 all 2>&1 | tee makelog.txt
 
-# WORKDIR ${SUPPORT}
-# CMD ["/bin/bash"]
+WORKDIR ${SUPPORT}
+CMD ["/bin/bash"]
