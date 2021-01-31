@@ -1,4 +1,4 @@
-                                                                                                      FROM  prjemian/synapps-6.2
+FROM  prjemian/synapps-6.2
 LABEL version="1.1.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
       lastupdate="2021-01-30" \
@@ -53,12 +53,15 @@ ENV ADCORE_HASH=9321f2a
 ENV ADSUPPORT_HASH=5c549858
 ENV ADSIMDETECTOR_HASH=d24fa04
 ENV AD_PVADRIVER_HASH=1f51a94
+ENV ADURL_HASH=031794e
+ENV ADVIEWERS_HASH=3fe0c51
+ENV AD_FFMPEGSERVER_HASH=063bedd
+ENV AD_NDDRIVERSTDARRAYS_HASH=ac9fe60
 # TODO:
 # ADURL
 # ADViewers
 # ffmpegServer
 # NDDriverStdArrays
-# ADPluginCentroids
 
 WORKDIR ${AREA_DETECTOR}
 RUN pwd && ls -lAFgh
@@ -66,6 +69,10 @@ ADD https://github.com/areaDetector/ADCore/archive/${ADCORE_HASH}.tar.gz ./ADCor
 ADD https://github.com/areaDetector/ADSupport/archive/${ADSUPPORT_HASH}.tar.gz ./ADSupport.tar.gz
 ADD https://github.com/areaDetector/ADSimDetector/archive/${ADSIMDETECTOR_HASH}.tar.gz ./ADSimDetector.tar.gz
 ADD https://github.com/areaDetector/pvaDriver/archive/${AD_PVADRIVER_HASH}.tar.gz ./pvaDriver.tar.gz
+ADD https://github.com/areaDetector/ADURL/archive/${ADURL_HASH}.tar.gz ./ADURL.tar.gz
+ADD https://github.com/areaDetector/ADViewers/archive/${ADVIEWERS_HASH}.tar.gz ./ADViewers.tar.gz
+ADD https://github.com/areaDetector/ffmpegServer/archive/${AD_FFMPEGSERVER_HASH}.tar.gz ./ffmpegServer.tar.gz
+ADD https://github.com/areaDetector/NDDriverStdArrays/archive/${AD_NDDRIVERSTDARRAYS_HASH}.tar.gz ./NDDriverStdArrays.tar.gz
 COPY ioc_files/rearrange_AD_dirs.sh /opt
 RUN /opt/rearrange_AD_dirs.sh 2>&1 | tee /opt/rearrange_AD_dirs.log
 
