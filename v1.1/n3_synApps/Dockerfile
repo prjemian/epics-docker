@@ -35,11 +35,13 @@ ENV EPICS_ROOT="${APP_ROOT}/base"
 ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
 
 # ============ EPICS synApps ============
+# ENV MOTOR_HASH=master
+ENV MOTOR_HASH=R7-2-1-bugfix
 ENV SYNAPPS="${APP_ROOT}/synApps"
 ENV SUPPORT="${SYNAPPS}/support"
 ENV PATH="${PATH}:${SUPPORT}/utils"
 # ENV AD=${SUPPORT}/areaDetector-master
-ENV MOTOR=${SUPPORT}/motor-master
+ENV MOTOR=${SUPPORT}/motor-${MOTOR_HASH}
 ENV XXX=${SUPPORT}/xxx-R6-2
 
 # a directory for EPICS data (such as written from area detector IOCs)

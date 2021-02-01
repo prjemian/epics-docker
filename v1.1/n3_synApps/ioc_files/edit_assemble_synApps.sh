@@ -62,7 +62,7 @@ _MODULES_+=" XXX"
 #   eval ${cmd}
 # done
 for mod in "MOTOR"; do
-  cmd="sed -i s:'^${mod}=\S*\$':'${mod}=master':g assemble_synApps.sh"
+  cmd="sed -i s:'^${mod}=\S*\$':'${mod}=${MOTOR_HASH}':g assemble_synApps.sh"
   echo ${cmd}
   eval ${cmd}
 done
