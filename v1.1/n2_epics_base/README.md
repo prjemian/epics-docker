@@ -203,9 +203,10 @@ you do not have extra containers running from the previous examples.
 
 ## Docker images used by this image
 
-These are the docker images on which this image is based:
+These are the docker images from which this image is based:
 
-image | description
---- | ---
-`prjemian/os_only-1.1` | Linux OS for this EPICS installation
-`ubuntu:latest` | Ubuntu 20.04.1 LTS (at the time of the build)
+from | image | description
+--- | --- | ---
+`prjemian/os_only-1.1` | `prjemian/epics-base-7.0.4.1` |  this image
+`ubuntu` | `prjemian/os_only-1.1` | Linux OS for this EPICS installation
+dockerhub | `ubuntu` | Ubuntu 20.04.1 LTS (at the time of the build)

@@ -106,10 +106,11 @@ ENV XXX=${SUPPORT}/xxx-R6-2
 
 ## Docker images used by this image
 
-These are the docker images on which this image is based:
+These are the docker images from which this image is based:
 
-image | description
---- | ---
-`prjemian/os_only-1.1` | Linux OS for this EPICS installation
-`ubuntu` | Ubuntu 20.04.1 LTS (at the time of the build)
-`prjemian/epics-base-7.0.4.1` |  EPICS base release 7.0.4.1
+from | image | description
+--- | --- | ---
+`prjemian/epics-base-7.0.4.1` |  `prjemian/synapps-6.2` | this image
+`prjemian/os_only-1.1` | `prjemian/epics-base-7.0.4.1` |  EPICS base release 7.0.4.1
+`ubuntu` | `prjemian/os_only-1.1` | Linux OS for this EPICS installation
+dockerhub | `ubuntu` | Ubuntu 20.04.1 LTS (at the time of the build)

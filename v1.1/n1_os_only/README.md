@@ -28,3 +28,12 @@ It is built locally for building epics_base.
     PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
     VERSION_CODENAME=focal
     UBUNTU_CODENAME=focal
+
+
+## Docker images used by this image
+
+These are the docker images from which this image is based:
+
+from | image | description
+--- | --- | ---
+dockerhub | `ubuntu` | Ubuntu 20.04.1 LTS (at the time of the build)
