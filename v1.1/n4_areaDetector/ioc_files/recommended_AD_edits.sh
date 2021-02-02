@@ -29,6 +29,7 @@ sed -i s:'SUPPORT=/corvette/home/epics/devel':'SUPPORT=/opt/synApps/support':g R
 # CONFIG_SITE.local -- no edits
 
 sed -i s:'#ADSIMDETECTOR=':'ADSIMDETECTOR=':g RELEASE.local
+sed -i s:'#ADURL=':'ADURL=':g RELEASE.local
 sed -i s:'#PVADRIVER=':'PVADRIVER=':g RELEASE.local
 
 cd ${AREA_DETECTOR}/ADCore/iocBoot

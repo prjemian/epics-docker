@@ -10,11 +10,10 @@ cd ${AREA_DETECTOR}
 pairs=' ADCORE_HASH/ADCore'
 pairs+=' ADSUPPORT_HASH/ADSupport'
 pairs+=' ADSIMDETECTOR_HASH/ADSimDetector'
-pairs+=' AD_PVADRIVER_HASH/pvaDriver'
 pairs+=' ADURL_HASH/ADURL'
 pairs+=' ADVIEWERS_HASH/ADViewers'
 pairs+=' AD_FFMPEGSERVER_HASH/ffmpegServer'
-pairs+=' AD_NDDRIVERSTDARRAYS_HASH/NDDriverStdArrays'
+pairs+=' AD_PVADRIVER_HASH/pvaDriver'
 
 # repetitive steps best done in a loop (could be a function instead)
 for s in $pairs;

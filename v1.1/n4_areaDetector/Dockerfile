@@ -1,7 +1,7 @@
 FROM  prjemian/synapps-6.2
 LABEL version="1.1.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2021-01-30" \
+      lastupdate="2021-02-02" \
       Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n4_areaDetector/README.md"
 USER  root
 WORKDIR /home
@@ -56,7 +56,6 @@ ENV AD_PVADRIVER_HASH=1f51a94
 ENV ADURL_HASH=031794e
 ENV ADVIEWERS_HASH=3fe0c51
 ENV AD_FFMPEGSERVER_HASH=063bedd
-ENV AD_NDDRIVERSTDARRAYS_HASH=ac9fe60
 
 WORKDIR ${AREA_DETECTOR}
 RUN pwd && ls -lAFgh
@@ -67,7 +66,6 @@ ADD https://github.com/areaDetector/pvaDriver/archive/${AD_PVADRIVER_HASH}.tar.g
 ADD https://github.com/areaDetector/ADURL/archive/${ADURL_HASH}.tar.gz ./ADURL.tar.gz
 ADD https://github.com/areaDetector/ADViewers/archive/${ADVIEWERS_HASH}.tar.gz ./ADViewers.tar.gz
 ADD https://github.com/areaDetector/ffmpegServer/archive/${AD_FFMPEGSERVER_HASH}.tar.gz ./ffmpegServer.tar.gz
-ADD https://github.com/areaDetector/NDDriverStdArrays/archive/${AD_NDDRIVERSTDARRAYS_HASH}.tar.gz ./NDDriverStdArrays.tar.gz
 COPY ioc_files/rearrange_AD_dirs.sh /opt
 RUN /opt/rearrange_AD_dirs.sh 2>&1 | tee /opt/rearrange_AD_dirs.log
 
@@ -78,46 +76,24 @@ COPY ioc_files/recommended_AD_edits.sh /opt
 RUN /opt/recommended_AD_edits.sh 2>&1 | tee /opt/recommended_AD_edits.log
 
 ENV ADSIMDETECTOR_IOC_BOOT_DIR=${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
+RUN ln -s ${ADSIMDETECTOR_IOC_BOOT_DIR} ${SUPPORT}/iocSimDetector
+COPY ioc_files/run_simDetectorIOC ${ADSIMDETECTOR_IOC_BOOT_DIR}/run
+COPY ioc_files/runADSimDetector.sh /opt/
 
-WORKDIR ${ADSIMDETECTOR_IOC_BOOT_DIR}
-RUN pwd && ls -lAFgh
-COPY run_simDetectorIOC ${ADSIMDETECTOR_IOC_BOOT_DIR}/run
-COPY start_caQtDM_adsim ${ADSIMDETECTOR_IOC_BOOT_DIR}/
-RUN cp ${XXX}/iocBoot/iocxxx/softioc/in-screen.sh .
-
-# TODO: for the custom IOC
-# WORKDIR ${SUPPORT}
-# RUN pwd && ls -lAFgh
-# ENV AD_PREFIX="13SIM1:"
-# RUN \
-#     ln -s ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector ./iocSimDetector && \
-#     cp iocxxx/softioc/xxx.sh ./iocSimDetector/simDetector.sh && \
-#     sed -i s:'IOC_NAME=xxx':'IOC_NAME=simDetector':g   ./iocSimDetector/simDetector.sh && \
-#     sed -i s:'IOC_BINARY=xxx':'IOC_BINARY=simDetectorApp':g   ./iocSimDetector/simDetector.sh && \
-#     sed -i s:'IOC_STARTUP_DIR=/home/username/epics/ioc/synApps/xxx/iocBoot/iocxxx/softioc':'':g   ./iocSimDetector/simDetector.sh && \
-#     sed -i s:'IOC_STARTUP_DIR=`dirname ${SNAME}`/..':'IOC_STARTUP_DIR=`dirname ${SNAME}`':g   ./iocSimDetector/simDetector.sh && \
-#     sed -i s:'IOC_STARTUP_FILE="st.cmd.Linux"':'IOC_STARTUP_FILE="st.cmd"':g   ./iocSimDetector/simDetector.sh && \
-#     sed -i s/'epicsEnvSet("PREFIX", "13SIM1:")'/'epicsEnvSet("PREFIX", \$\{AD_PREFIX})'/g   ./iocSimDetector/st_base.cmd && \
-#     echo "\ndbl > dbl-all.txt" >> ./iocSimDetector/st_base.cmd
-# # done editing
+ENV ADURL_IOC_BOOT_DIR=${AREA_DETECTOR}/ADURL/iocs/urlIOC/iocBoot/iocURLDriver
+RUN ln -s ${ADURL_IOC_BOOT_DIR} ${SUPPORT}/iocURLDriver
+COPY ioc_files/run_adUrlIOC ${ADURL_IOC_BOOT_DIR}/run
+COPY ioc_files/runADURL.sh /opt/
 
 WORKDIR ${SUPPORT}
+RUN pwd && ls -lAFgh
 RUN make release
-
-# TODO: for the custom IOC
-# # grab all GUI screens (et al) into a top-level directory
-# WORKDIR ${SUPPORT}
-# RUN pwd && ls -lAFgh
-# RUN bash ./copy_screens.sh ${SUPPORT} ${SUPPORT}/screens
-
-# TODO: for the custom IOC
-# # archive the unbuilt template IOC, for making new SimDetector IOCs
-# WORKDIR ${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot
-# RUN tar czf ${SUPPORT}/../iocSimDetector-3.7.tar.gz iocSimDetector
 
 # Build it all
 WORKDIR ${AREA_DETECTOR}
+RUN pwd && ls -lAFgh
 RUN make -j4 all 2>&1 | tee makelog.txt
 
 WORKDIR ${SUPPORT}
+RUN pwd && ls -lAFgh
 CMD ["/bin/bash"]
