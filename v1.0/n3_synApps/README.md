@@ -1,8 +1,8 @@
 # README.md
 
-The [`prjemian/synApps-6.1`](https://hub.docker.com/r/prjemian/synapps-6.1/tags) 
+The [`prjemian/synApps-6.2`](https://hub.docker.com/r/prjemian/synapps-6.2/tags) 
 image provides EPICS
-[synApps release 6.1](https://www.aps.anl.gov/BCDA/synApps),
+[synApps release 6.2](https://www.aps.anl.gov/BCDA/synApps),
 EPICS software tools that help to create a control system for beamlines.
 
 Tools for compiling EPICS software including compilers and
