@@ -1,7 +1,7 @@
 FROM  prjemian/epics-base-7.0.4.1
 LABEL version="1.1.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2021-01-30" \
+      lastupdate="2021-02-02" \
       Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n3_synApps/README.md"
 USER  root
 WORKDIR /home
