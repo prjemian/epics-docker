@@ -36,7 +36,7 @@ ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
 
 # ============ EPICS synApps ============
 # ENV MOTOR_HASH=master
-ENV MOTOR_HASH=R7-2-1-bugfix
+ENV MOTOR_HASH=R7-2-2
 ENV SYNAPPS="${APP_ROOT}/synApps"
 ENV SUPPORT="${SYNAPPS}/support"
 ENV PATH="${PATH}:${SUPPORT}/utils"

@@ -36,7 +36,7 @@ The synApps module is installed (already compiled) in directory: `/opt/synApps/s
 
 ### modifications of assemble_synApps.sh
 
-* `motor` [must be installed](https://github.com/epics-modules/motor/issues/173) from GitHub `master` branch
+* `motor` release *R7-2-2* must be installed to resolve an [asyn build problem](https://github.com/epics-modules/motor/issues/173)
 * `StreamDevice` [must be installed](https://github.com/prjemian/epics-docker/issues/16#issuecomment-770226806) from GitHub `2.8.14` release
 
 ## default application
@@ -99,7 +99,7 @@ ENV EPICS_ROOT="${APP_ROOT}/base"
 ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
 ENV SUPPORT="${APP_ROOT}/synApps/support"
 ENV PATH="${PATH}:${SUPPORT}/utils"
-ENV MOTOR=${SUPPORT}/motor-master
+ENV MOTOR=${SUPPORT}/motor-R7-2-2
 ENV XXX=${SUPPORT}/xxx-R6-2
 ```
 
