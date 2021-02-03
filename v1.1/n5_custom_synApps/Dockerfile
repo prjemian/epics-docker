@@ -1,7 +1,7 @@
 FROM  prjemian/synapps-6.2
 LABEL version="1.1.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2021-02-02" \
+      lastupdate="2021-02-03" \
       Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n3_synApps/README.md"
 USER  root
 WORKDIR /home
@@ -10,6 +10,7 @@ RUN pwd && ls -lAFgh
 COPY ioc_files/copy_screens.sh /opt
 RUN bash /opt/copy_screens.sh ${SUPPORT} ${SUPPORT}/screens
 
+COPY ioc_files/general_purpose.db ${IOCXXX}/substitutions
 COPY ioc_files/edit_xxx.sh /opt
 RUN /opt/edit_xxx.sh && pwd
 
@@ -18,5 +19,3 @@ WORKDIR ${SUPPORT}
 RUN \
     pwd && ls -lAFgh && \
     tar czf /opt/$(basename ${XXX}).tar.gz $(basename ${XXX})
-
-# TODO: can we script (within the IOC) for a custom IOC name?

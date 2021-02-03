@@ -1,37 +1,89 @@
-# started:  2021-02-02T18:30:29-06:00
-Sending build context to Docker daemon  15.36kB
-Step 1/11 : FROM  prjemian/synapps-6.2
- ---> ac7aafe249ae
-Step 2/11 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"       lastupdate="2021-02-02"       Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n3_synApps/README.md"
- ---> Using cache
- ---> cbf59117e645
-Step 3/11 : USER  root
- ---> Using cache
- ---> 8b53c3ad6db2
-Step 4/11 : WORKDIR /home
- ---> Using cache
- ---> f60b6db3bbb0
-Step 5/11 : RUN pwd && ls -lAFgh
- ---> Using cache
- ---> 4a8ab9dde0ee
-Step 6/11 : COPY ioc_files/copy_screens.sh /opt
- ---> Using cache
- ---> 9125d15ba63c
-Step 7/11 : RUN bash /opt/copy_screens.sh ${SUPPORT} ${SUPPORT}/screens
- ---> Using cache
- ---> e79ee2b3253a
-Step 8/11 : COPY ioc_files/edit_xxx.sh /opt
- ---> Using cache
- ---> 041f96a554d6
-Step 9/11 : RUN /opt/edit_xxx.sh && pwd
- ---> Using cache
- ---> 144738bf3e01
-Step 10/11 : WORKDIR ${SUPPORT}
- ---> Using cache
- ---> 74c58200f867
-Step 11/11 : RUN     pwd && ls -lAFgh &&     tar czf /opt/$(basename ${XXX}).tar.gz $(basename ${XXX})
- ---> Using cache
- ---> cbf05685bac0
-Successfully built cbf05685bac0
+# started:  2021-02-03T11:29:37-06:00
+Sending build context to Docker daemon  19.97kB
+Step 1/12 : FROM  prjemian/synapps-6.2
+ ---> ce69448ca00a
+Step 2/12 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"       lastupdate="2021-02-03"       Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n3_synApps/README.md"
+ ---> Running in 1c9f9441264b
+Removing intermediate container 1c9f9441264b
+ ---> 6907488daa4c
+Step 3/12 : USER  root
+ ---> Running in 31e2d6472fbc
+Removing intermediate container 31e2d6472fbc
+ ---> d654d0f78bac
+Step 4/12 : WORKDIR /home
+ ---> Running in 80026b93d3db
+Removing intermediate container 80026b93d3db
+ ---> 34366dfc9df5
+Step 5/12 : RUN pwd && ls -lAFgh
+ ---> Running in 3be17888e680
+/home
+total 0
+Removing intermediate container 3be17888e680
+ ---> 1e5d77031491
+Step 6/12 : COPY ioc_files/copy_screens.sh /opt
+ ---> fced5bf8cd84
+Step 7/12 : RUN bash /opt/copy_screens.sh ${SUPPORT} ${SUPPORT}/screens
+ ---> Running in 37526eb731da
+Removing intermediate container 37526eb731da
+ ---> efd80c32f4d3
+Step 8/12 : COPY ioc_files/general_purpose.db ${IOCXXX}/substitutions
+ ---> dbf60cad601a
+Step 9/12 : COPY ioc_files/edit_xxx.sh /opt
+ ---> 855c6e6ff1ca
+Step 10/12 : RUN /opt/edit_xxx.sh && pwd
+ ---> Running in 85f2138e9f34
+/home
+Removing intermediate container 85f2138e9f34
+ ---> 19312cd29912
+Step 11/12 : WORKDIR ${SUPPORT}
+ ---> Running in 7084d873f799
+Removing intermediate container 7084d873f799
+ ---> 18ce14fe6e38
+Step 12/12 : RUN     pwd && ls -lAFgh &&     tar czf /opt/$(basename ${XXX}).tar.gz $(basename ${XXX})
+ ---> Running in 25c6c1ba06d7
+/opt/synApps/support
+total 1.7M
+drwxr-xr-x  8 root 4.0K Feb  3 17:20 .git/
+-rw-r--r--  1 root   83 Feb  3 17:20 .gitattributes
+-rw-r--r--  1 root  378 Feb  3 17:20 .gitignore
+-rw-r--r--  1 root  214 Feb  3 17:20 .project
+-rw-r--r--  1 root   60 Feb  3 17:20 EXAMPLE_RELEASE.win32-x86-static.local
+-rw-r--r--  1 root   60 Feb  3 17:20 EXAMPLE_RELEASE.win32-x86.local
+-rw-r--r--  1 root   60 Feb  3 17:20 EXAMPLE_RELEASE.windows-x64-static.local
+-rw-r--r--  1 root   60 Feb  3 17:20 EXAMPLE_RELEASE.windows-x64.local
+-rw-r--r--  1 root 3.7K Feb  3 17:20 LICENSE
+-rw-r--r--  1 root 3.6K Feb  3 17:20 Makefile
+-rw-r--r--  1 root 3.5K Feb  3 17:20 README
+-rw-r--r--  1 root  837 Feb  3 17:20 README.md
+drwxr-xr-x 16 root 4.0K Feb  3 17:22 StreamDevice-2-8-14/
+drwxr-xr-x 18 root 4.0K Feb  3 17:21 alive-R1-3-1/
+-rwxr-xr-x  1 root  13K Feb  3 17:20 assemble_synApps.sh*
+drwxr-xr-x 52 root 4.0K Feb  3 17:22 asyn-R4-41/
+drwxr-xr-x 16 root 4.0K Feb  3 17:21 autosave-R5-10-2/
+-rw-r--r--  1 root 1.5M Feb  3 17:23 build.log
+drwxr-xr-x 17 root 4.0K Feb  3 17:22 busy-R1-7-3/
+drwxr-xr-x 17 root 4.0K Feb  3 17:22 calc-R3-7-4/
+drwxr-xr-x 13 root 4.0K Feb  3 17:21 caputRecorder-R1-7-3/
+drwxr-xr-x  2 root 4.0K Feb  3 17:21 cfg/
+drwxr-xr-x  4 root 4.0K Feb  3 17:21 configure/
+drwxr-xr-x  2 root 4.0K Feb  3 17:20 documentation/
+drwxr-xr-x 16 root 4.0K Feb  3 17:21 ether_ip-ether_ip-3-2/
+drwxr-xr-x 22 root 4.0K Feb  3 17:21 iocStats-3-1-16/
+lrwxrwxrwx  1 root   45 Feb  3 17:23 iocxxx -> /opt/synApps/support/xxx-R6-2/iocBoot/iocxxx//
+drwxr-xr-x 14 root 4.0K Feb  3 17:22 ip-R2-21/
+drwxr-xr-x 18 root 4.0K Feb  3 17:21 ipac-2-16/
+drwxr-xr-x 15 root 4.0K Feb  3 17:22 lua-R3-0-1/
+drwxr-xr-x 16 root 4.0K Feb  3 17:22 modbus-R3-2/
+drwxr-xr-x 18 root 4.0K Feb  3 17:22 motor-R7-2-2/
+drwxr-xr-x 17 root 4.0K Feb  3 17:22 optics-R2-13-5/
+drwxr-xr-x  5 root 4.0K Feb  3 17:29 screens/
+drwxr-xr-x 17 root 4.0K Feb  3 17:21 seq-2-2-8/
+drwxr-xr-x 14 root 4.0K Feb  3 17:21 sscan-R2-11-4/
+drwxr-xr-x 17 root 4.0K Feb  3 17:22 std-R3-6-2/
+drwxr-xr-x  9 root 4.0K Feb  3 17:20 utils/
+drwxr-xr-x 18 root 4.0K Feb  3 17:29 xxx-R6-2/
+Removing intermediate container 25c6c1ba06d7
+ ---> 382a6cb375f4
+Successfully built 382a6cb375f4
 Successfully tagged prjemian/custom-synapps-6.2:latest
-# finished:  2021-02-02T18:30:29-06:00
+# finished:  2021-02-03T11:29:59-06:00

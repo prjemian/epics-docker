@@ -1,0 +1,19 @@
+# general_purpose.db
+# PVs for general purposes
+
+record(ao, "$(P)$(R)float$(N)")
+
+record(bo, "$(P)$(R)bit$(N)") {
+    field(ZNAM, "off")
+    field(ONAM, "on")
+}
+
+record(longout, "$(P)$(R)int$(N)")
+
+record(stringout, "$(P)$(R)text$(N)")
+
+record(waveform, "$(P)$(R)longtext$(N)")
+{
+    field(FTVL, "CHAR")
+    field(NELM, "1024")
+}
