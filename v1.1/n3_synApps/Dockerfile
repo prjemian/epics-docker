@@ -1,7 +1,7 @@
 FROM  prjemian/epics-base-7.0.4.1
 LABEL version="1.1.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2021-02-02" \
+      lastupdate="2021-02-03" \
       Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n3_synApps/README.md"
 USER  root
 WORKDIR /home
@@ -43,6 +43,7 @@ ENV PATH="${PATH}:${SUPPORT}/utils"
 # ENV AD=${SUPPORT}/areaDetector-master
 ENV MOTOR=${SUPPORT}/motor-${MOTOR_HASH}
 ENV XXX=${SUPPORT}/xxx-R6-2
+ENV IOCXXX=${XXX}/iocBoot/iocxxx
 
 # a directory for EPICS data (such as written from area detector IOCs)
 RUN mkdir /data
@@ -73,8 +74,8 @@ WORKDIR ${SUPPORT}
 RUN pwd && ls -lAFgh
 RUN make -j4 release rebuild 2>&1 | tee build.log
 RUN echo "# --- Building XXX IOC ---" 2>&1 | tee -a build.log
-RUN make -C ${XXX}/iocBoot/iocxxx/ 2>&1 | tee -a build.log
-RUN ln -s ${XXX}/iocBoot/iocxxx ./iocxxx
+RUN make -C ${IOCXXX}/ 2>&1 | tee -a build.log
+RUN ln -s ${IOCXXX}/ ./iocxxx
 RUN echo # end ------------------- build synApps -------------------
 
 CMD ["/bin/bash"]

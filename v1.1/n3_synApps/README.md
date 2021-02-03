@@ -101,6 +101,7 @@ ENV SUPPORT="${APP_ROOT}/synApps/support"
 ENV PATH="${PATH}:${SUPPORT}/utils"
 ENV MOTOR=${SUPPORT}/motor-R7-2-2
 ENV XXX=${SUPPORT}/xxx-R6-2
+ENV IOCXXX=${XXX}/iocBoot/iocxxx
 ```
 
 
