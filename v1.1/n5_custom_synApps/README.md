@@ -24,7 +24,7 @@ installed (already compiled) in directory: `/opt/synApps/support`.
 
 ### modifications of synApps-6.2
 
-* 
+*
 
 ## default application
 
@@ -40,28 +40,26 @@ The default working directory is `${SUPPORT}`
 
 ## example use
 
-TODO:
-
 Start the IOC in a container:
 
-    docker run -ti -d --rm --net=host --name iocxxx \
+    docker run -ti -d --rm --net=host --name iocioc -e PREFIX=ioc: \
         prjemian/custom-synapps-6.2:latest \
-        TODO
+        iocxxx/softioc/xxx.sh run
 
 Once the IOC has started, the full list of PVs provided
 will be available in file: `iocxxx/dbl-all.txt`.
 
-    docker exec iocxxx cat iocxxx/dbl-all.txt
+    docker exec iocioc cat iocxxx/dbl-all.txt
 
-You can interact with the iocxxx console in the container by attaching
-to the container and running the bash shell:
+You can interact with *iocioc* console in the container by attaching
+to the container:
 
     docker attach iocxxx
 
 Detach with the keyboard combination `^P ^Q` (<control>+p <control>+q).
 If you `exit` the container, it will stop.
 
-You can access the bash shell in the container:
+You can access the bash shell in the *iocioc* container:
 
     docker exec -it iocxxx bash
 
