@@ -48,6 +48,7 @@ Start the `13URL1:` IOC in a detached container:
 
 ## Environment variables
 
+Environment variables defined in this image (from `grep ENV Dockerfile`)
 ```
 ENV APP_ROOT="/opt"
 ENV EDITOR="nano"
@@ -56,10 +57,6 @@ ENV EPICS_ROOT="${APP_ROOT}/base"
 ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
 ENV SUPPORT="${APP_ROOT}/synApps/support"
 ENV PATH="${PATH}:${SUPPORT}/utils"
-ENV MOTOR_HASH=R7-2-2
-ENV MOTOR=${SUPPORT}/motor-${MOTOR_HASH}
-ENV XXX=${SUPPORT}/xxx-R6-2
-
 ENV AD_TAG=R3-10
 ENV AREA_DETECTOR=${SUPPORT}/areaDetector-${AD_TAG}
 ENV ADCORE_HASH=9321f2a
@@ -69,7 +66,8 @@ ENV AD_PVADRIVER_HASH=1f51a94
 ENV ADURL_HASH=031794e
 ENV ADVIEWERS_HASH=3fe0c51
 ENV AD_FFMPEGSERVER_HASH=063bedd
-ENV ADSIMDETECTOR_IOC_BOOT_DIR=${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
+ENV IOCADSIMDETECTOR=${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
+ENV IOCADURL=${AREA_DETECTOR}/ADURL/iocs/urlIOC/iocBoot/iocURLDriver
 ```
 
 

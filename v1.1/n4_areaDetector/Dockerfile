@@ -1,8 +1,7 @@
 FROM  prjemian/synapps-6.2
 LABEL version="1.1.0" \
-      maintainer="prjemian <prjemian@gmail.com>"
-    #   lastupdate="2021-02-03" \
-    #   Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n4_areaDetector/README.md"
+      maintainer="prjemian <prjemian@gmail.com>" \
+      Description="source: https://github.com/prjemian/epics-docker/"
 USER  root
 WORKDIR /home
 
@@ -75,20 +74,20 @@ RUN pwd && ls -lAFgh
 COPY ioc_files/recommended_AD_edits.sh /opt
 RUN /opt/recommended_AD_edits.sh 2>&1 | tee /opt/recommended_AD_edits.log
 
-ENV ADSIMDETECTOR_IOC_BOOT_DIR=${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
-RUN ln -s ${ADSIMDETECTOR_IOC_BOOT_DIR} ${SUPPORT}/iocSimDetector
-COPY ioc_files/run_simDetectorIOC ${ADSIMDETECTOR_IOC_BOOT_DIR}/run
+ENV IOCADSIMDETECTOR=${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
+RUN ln -s ${IOCADSIMDETECTOR} ${SUPPORT}/iocSimDetector
+COPY ioc_files/run_simDetectorIOC ${IOCADSIMDETECTOR}/run
 COPY ioc_files/runADSimDetector.sh /opt/
 
-ENV ADURL_IOC_BOOT_DIR=${AREA_DETECTOR}/ADURL/iocs/urlIOC/iocBoot/iocURLDriver
-RUN ln -s ${ADURL_IOC_BOOT_DIR} ${SUPPORT}/iocURLDriver
-COPY ioc_files/run_adUrlIOC ${ADURL_IOC_BOOT_DIR}/run
+ENV IOCADURL=${AREA_DETECTOR}/ADURL/iocs/urlIOC/iocBoot/iocURLDriver
+RUN ln -s ${IOCADURL} ${SUPPORT}/iocURLDriver
+COPY ioc_files/run_adUrlIOC ${IOCADURL}/run
 COPY ioc_files/runADURL.sh /opt/
 
 WORKDIR ${SUPPORT}
 RUN pwd && ls -lAFgh
 RUN make release
-RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a copy_screens.log
+RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
 
 # Build it all
 WORKDIR ${AREA_DETECTOR}

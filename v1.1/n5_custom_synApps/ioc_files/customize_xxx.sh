@@ -39,7 +39,7 @@ sed -i s:'< common.iocsh':'< common.iocsh\n< std.iocsh':g    ./st.cmd.Linux
 
 # default PREFIX is xxx:
 sed -i s/'IOC_NAME=xxx'/'export PREFIX=${PREFIX:-xxx:\}\nIOC_NAME=\$\{PREFIX\}'/g   ./softioc/xxx.sh
-sed -i s/'epicsEnvSet("PREFIX", "xxx:")'/'epicsEnvSet("PREFIX", $(PREFIX))'/g   ./settings.iocsh
+sed -i s/'epicsEnvSet("PREFIX", "xxx:")'/'epicsEnvSet("PREFIX", $(PREFIX=xxx:))'/g   ./settings.iocsh
 
 # for dbLoadRecords(... iocAdminSoft.db
 sed -i s:'IOC=xxx':'IOC=$(PREFIX)':g  ./st.cmd.Linux
