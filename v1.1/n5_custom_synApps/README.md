@@ -15,6 +15,7 @@ help to create a control system for beamlines.
   - [default working directory](#default-working-directory)
   - [example use](#example-use)
   - [This Docker Image Provides ...](#this-docker-image-provides-)
+    - [motor assignments](#motor-assignments)
   - [Environment variables](#environment-variables)
   - [Docker images used by this image](#docker-images-used-by-this-image)
 
@@ -25,7 +26,12 @@ installed (already compiled) in directory: `/opt/synApps/support`.
 
 ### modifications of synApps-6.2
 
-*
+* the IOC prefix may be specified
+  * enable this image to create multiple such IOCs with different PV prefixes
+* various components from the synApps [optics](https://github.com/epics-modules/optics) module have been enabled
+* various components from the synApps [std](https://github.com/epics-modules/std) module have been enabled
+* motor channels have been marked for use by components from optics and std
+* a database of general purpose variables (bit, int, float, text, longtext) has been added
 
 ## default application
 
@@ -41,9 +47,10 @@ The default working directory is `${SUPPORT}`
 
 ## example use
 
-Start the IOC in a container:
+Start the IOC in a container with prefix `ioc:`:
 
-    docker run -ti -d --rm --net=host --name iocioc -e PREFIX=ioc: \
+    docker run -ti -d --rm --net=host \
+        --name iocioc -e PREFIX=ioc: \
         prjemian/custom-synapps-6.2:latest \
         iocxxx/softioc/xxx.sh run
 
@@ -81,6 +88,44 @@ command | provides | what happens when you type `exit`
 
 * `${IOCXXX}` : IOC boot directory ready to run with customizable PV prefix (default: `xxx:`)
 
+* simulated 48 motors: : `$(PREFIX)m1` .. `$(PREFIX)m48`
+* common:
+  * autosave support (disappears once the container is removed unless mapped to external volume)
+  * Stream protocol support
+  * devIocStats, such as `$(PREFIX)UPTIME`
+  * caPutRecorder support
+  * 4 sscan records: `$(PREFIX)scan1` ..  `$(PREFIX)scan4` and  `$(PREFIX)scanH`
+  * configMenu support
+  * userCalc support
+    * 10 swait records: `$(PREFIX)userCalc1` .. `$(PREFIX)userCalc10`
+    * 10 scalcout records: `$(PREFIX)userStringCalc1` .. `$(PREFIX)userStringCalc10`
+  * 2 sets of luascript support: `$(PREFIX)set1`, `$(PREFIX)set2`
+  * string sequence records
+  * interpolation support
+  * 2 busy records:  `$(PREFIX)mybusy1`, `$(PREFIX)mybusy2`
+  * alive record support (for use at Advanced Photon Source)
+* from [optics](https://github.com/epics-modules/optics):
+  * simulated 4-blade slits: `$(PREFIX)Slit1H` and `$(PREFIX)Slit1V`
+  * simulated optical table: `$(PREFIX)Table1`
+  * simulated double-crystal *boomerang* monochromator (energy, wavelength, and motions: theta, Y1, Z2)
+  * simulated 4-circle diffractometer database (axes: 2theta, theta, chi, phi)
+* from [std](https://github.com/epics-modules/std):
+  * 1 Coarse/Fine stage database: `$(PREFIX)cf1`
+  * 1 ramp/tweak database: `$(PREFIX)rt1`
+  * simulated 16-channel scaler: `$(PREFIX)scaler1`
+  * 1 4-step measurement database: `$(PREFIX)4step`
+  * 1 PV history database
+  * 1 software timer database
+  * 1 miscellaneous PVs database
+    * 1 ISO8601 time record: `$(PREFIX)iso8601`
+  * 1 fb_epid database: `$(PREFIX)epid1`
+* 20 sets of general purpose PVs: `$(PREFIX)gp`
+  * 1-bit `bit`: `$(PREFIX)gp:bit1` ..  `$(PREFIX)gp:bit20` (default labels: 0="off", 1="on")
+  * 32-bit `int`: `$(PREFIX)gp:int1` ..  `$(PREFIX)gp:int20`
+  * double-precision `float`: `$(PREFIX)gp:float1` ..  `$(PREFIX)gp:float20`
+  * 40-character `text`: `$(PREFIX)gp:text1` ..  `$(PREFIX)gp:text20`
+  * 1024 character `longtext`: `$(PREFIX)gp:longtext1` ..  `$(PREFIX)gp:longtext20`
+
 To customize the PV prefix, add the `PREFIX` environment variable when
 starting the container such as in the examples above.
 
@@ -90,6 +135,33 @@ different `PREFIX` to avoid name contention amongst the available EPICS
 PVs.  There are other ways to use this image to run multiple IOCs in the
 same container, but that description is beyond the scope of this
 documentation.
+
+### motor assignments
+
+motor | assignment
+--- | ---
+m1 - m28 | unassigned
+m29 | 4-circle diffractometer M_TTH
+m30 | 4-circle diffractometer M_TH
+m31 | 4-circle diffractometer M_CHI
+m32 | 4-circle diffractometer M_PHI
+m33 | Coarse/Fine stage, coarse CM
+m34 | Coarse/Fine stage, fine FM
+m35 | optical table M0X
+m36 | optical table M0Y
+m37 | optical table M1Y
+m38 | optical table M2X
+m39 | optical table M2Y
+m40 | optical table M2Z
+m41 | Slit1V:mXp
+m42 | Slit1V:mXn
+m43 | Slit1H:mXp
+m44 | Slit1H:mXn
+m45 | monochromator M_THETA
+m46 | monochromator M_Y
+m47 | monochromator M_Z
+m48 | unassigned
+
 
 ## Environment variables
 
