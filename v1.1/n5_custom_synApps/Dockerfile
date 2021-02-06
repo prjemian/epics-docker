@@ -8,8 +8,8 @@ WORKDIR /home
 RUN pwd && ls -lAFgh
 
 COPY ioc_files/general_purpose.db ${IOCXXX}/substitutions
-COPY ioc_files/edit_xxx.sh /opt
-RUN /opt/edit_xxx.sh && pwd
+COPY ioc_files/customize_xxx.sh /opt
+RUN /opt/customize_xxx.sh && pwd
 RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens
 
 # archive the template IOC, for making new XXX IOCs

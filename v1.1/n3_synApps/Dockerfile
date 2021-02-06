@@ -80,7 +80,7 @@ RUN echo # end ------------------- build synApps -------------------
 
 # copy all the MEDM/CSSBOY/caQtDM/... screens to /opt/screens
 COPY ioc_files/copy_screens.sh /opt
-RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens
+RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a copy_screens.log
 
 
 CMD ["/bin/bash"]

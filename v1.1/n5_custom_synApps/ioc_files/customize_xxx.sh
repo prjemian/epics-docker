@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# edit_xxx.sh
+# customize_xxx.sh
 
 cd ${IOCXXX}/
 

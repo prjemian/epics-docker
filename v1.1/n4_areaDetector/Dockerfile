@@ -88,7 +88,7 @@ COPY ioc_files/runADURL.sh /opt/
 WORKDIR ${SUPPORT}
 RUN pwd && ls -lAFgh
 RUN make release
-RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens
+RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a copy_screens.log
 
 # Build it all
 WORKDIR ${AREA_DETECTOR}
