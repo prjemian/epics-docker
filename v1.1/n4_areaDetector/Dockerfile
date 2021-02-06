@@ -1,8 +1,8 @@
 FROM  prjemian/synapps-6.2
 LABEL version="1.1.0" \
-      maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2021-02-03" \
-      Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n4_areaDetector/README.md"
+      maintainer="prjemian <prjemian@gmail.com>"
+    #   lastupdate="2021-02-03" \
+    #   Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n4_areaDetector/README.md"
 USER  root
 WORKDIR /home
 
@@ -88,6 +88,7 @@ COPY ioc_files/runADURL.sh /opt/
 WORKDIR ${SUPPORT}
 RUN pwd && ls -lAFgh
 RUN make release
+RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens
 
 # Build it all
 WORKDIR ${AREA_DETECTOR}

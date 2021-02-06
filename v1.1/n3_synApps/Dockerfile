@@ -1,8 +1,8 @@
 FROM  prjemian/epics-base-7.0.4.1
 LABEL version="1.1.0" \
-      maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2021-02-03" \
-      Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n3_synApps/README.md"
+      maintainer="prjemian <prjemian@gmail.com>"
+    #   lastupdate="2021-02-03" \
+    #   Description="see docs at https://github.com/prjemian/epics-docker/blob/master/n3_synApps/README.md"
 USER  root
 WORKDIR /home
 RUN pwd && ls -lAFgh
@@ -77,5 +77,10 @@ RUN echo "# --- Building XXX IOC ---" 2>&1 | tee -a build.log
 RUN make -C ${IOCXXX}/ 2>&1 | tee -a build.log
 RUN ln -s ${IOCXXX}/ ./iocxxx
 RUN echo # end ------------------- build synApps -------------------
+
+# copy all the MEDM/CSSBOY/caQtDM/... screens to /opt/screens
+COPY ioc_files/copy_screens.sh /opt
+RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens
+
 
 CMD ["/bin/bash"]

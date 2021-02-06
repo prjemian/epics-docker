@@ -12,6 +12,7 @@ that help to create a control system for beamlines.
   - [default application](#default-application)
   - [default working directory](#default-working-directory)
   - [example use](#example-use)
+  - [What This Docker Image Provides](#what-this-docker-image-provides)
   - [Environment variables](#environment-variables)
   - [Docker images used by this image](#docker-images-used-by-this-image)
 ## Overview
@@ -88,6 +89,16 @@ command | provides | what happens when you type `exit`
 --- | ---
 `docker attach iocxxx` | IOC console | IOC and container stop
 `docker exec -it iocxxx bash` | container linux command line | IOC & container stay running
+
+## What This Docker Image Provides
+
+In addition to its parent images, this image provides:
+
+* Compiled *synApps* modules in `/opt/synApps/support`
+* All synApps GUI screen files (for MEDM, caQtDM, CSS BOY, EDM, ...)
+  copied to `/opt/screens` and application-specific subdirectories.
+* Bash script `/opt/copy_screens.sh` that makes these copies.
+* `${IOCXXX}` : *xxx* IOC boot directory ready to run
 
 ## Environment variables
 
