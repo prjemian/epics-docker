@@ -1,5 +1,5 @@
-# started:  2021-02-06T13:03:09-06:00
-Sending build context to Docker daemon  7.168kB
+# started:  2021-02-06T14:26:45-06:00
+Sending build context to Docker daemon  8.192kB
 Step 1/8 : FROM  ubuntu:latest
  ---> f643c72bc252
 Step 2/8 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"       Description="source: https://github.com/prjemian/epics-docker/"
@@ -25,4 +25,4 @@ Step 8/8 : ENV PROMPT_DIRTRIM=3
  ---> 7b0623b0fa39
 Successfully built 7b0623b0fa39
 Successfully tagged prjemian/os_only-1.1:latest
-# finished:  2021-02-06T13:03:09-06:00
+# finished:  2021-02-06T14:26:45-06:00

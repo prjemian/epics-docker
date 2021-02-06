@@ -1,91 +1,28 @@
-# started:  2021-02-06T13:20:32-06:00
-Sending build context to Docker daemon  10.24kB
+# started:  2021-02-06T14:27:15-06:00
+Sending build context to Docker daemon  10.75kB
 Step 1/8 : FROM  prjemian/synapps-6.2-ad-3.10
- ---> 13405851cfa8
+ ---> ea31f8b8ac61
 Step 2/8 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"       Description="source: https://github.com/prjemian/epics-docker/"
- ---> Running in 9742d77d236b
-Removing intermediate container 9742d77d236b
- ---> d01f80552704
+ ---> Using cache
+ ---> f2f62f0fa62e
 Step 3/8 : USER  root
- ---> Running in 5be2b4a82fe7
-Removing intermediate container 5be2b4a82fe7
- ---> 70ac73936d87
+ ---> Using cache
+ ---> 93c57994e2a6
 Step 4/8 : WORKDIR /home
- ---> Running in 4a6d75ff7052
-Removing intermediate container 4a6d75ff7052
- ---> ebb4463aa483
+ ---> Using cache
+ ---> 25fea3659997
 Step 5/8 : RUN pwd && ls -lAFgh
- ---> Running in 2bb5c6bdb7b8
-/home
-total 0
-Removing intermediate container 2bb5c6bdb7b8
- ---> 0048bc734d40
+ ---> Using cache
+ ---> ff779d71769f
 Step 6/8 : COPY ioc_files/customize_ad.sh /opt
- ---> e1c07d9fbaab
+ ---> Using cache
+ ---> 9cea0b2ecf64
 Step 7/8 : RUN /opt/customize_ad.sh 2>&1 | tee /opt/customize_ad.log
- ---> Running in 6ee274807295
-/opt/synApps/support/areaDetector-R3-10/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
-total 144K
--rw-rw-r-- 1 root  402 Aug 31 22:54 Makefile
--rwxrwxr-x 1 root  116 Aug 31 22:54 Makefile.darwin*
--rwxrwxr-x 1 root  115 Aug 31 22:54 Makefile.linux*
--rwxrwxr-x 1 root  127 Aug 31 22:54 Makefile.win32*
--rw-rw-r-- 1 root 5.3K Aug 31 22:54 NexusTemplate.xml
--rw-rw-r-- 1 root 1.6K Aug 31 22:54 Overlay.substitutions
--rw-rw-r-- 1 root  783 Aug 31 22:54 README
--rw-rw-r-- 1 root 1.2K Aug 31 22:54 ROIAttributes.xml
--rw-rw-r-- 1 root 1.5K Aug 31 22:54 ROIStatAttributes.xml
--rw-rw-r-- 1 root 2.7K Aug 31 22:54 StatsAttributes.xml
--rw-rw-r-- 1 root  259 Aug 31 22:54 auto_settings.req
-drwxrwxr-x 2 root 4.0K Aug 31 22:54 autosave/
--rw-r--r-- 1 root 2.2K Feb  6 19:20 cdCommands
--rw-r--r-- 1 root  378 Feb  6 19:20 dllPath.bat
--rw-r--r-- 1 root  968 Feb  6 19:20 envPaths
--rw-rw-r-- 1 root 2.1K Aug 31 22:54 hdf5_layout_demo.xml
--rw-rw-r-- 1 root  146 Aug 31 22:54 hdf5_layout_minimal.xml
--rw-rw-r-- 1 root 2.2K Aug 31 22:54 hdf5_layout_nexus.xml
--rw-rw-r-- 1 root  525 Aug 31 22:54 netCDFAttributes.xml
--rwxrwxr-x 1 root   56 Feb  2 21:23 run*
--rw-rw-r-- 1 root 3.0K Aug 31 22:54 simDetectorAttributes.xml
--rw-rw-r-- 1 root 2.8K Aug 31 22:54 simDetectorAttributesMacros.xml
--rw-rw-r-- 1 root  175 Aug 31 22:54 single_string_attribute.xml
--rw-rw-r-- 1 root   25 Aug 31 22:54 st.cmd
--rw-rw-r-- 1 root   28 Aug 31 22:54 st.cmd.darwin
--rw-rw-r-- 1 root   31 Aug 31 22:54 st.cmd.linux
--rwxrwxr-x 1 root   26 Aug 31 22:54 st.cmd.mingw*
--rw-rw-r-- 1 root  369 Aug 31 22:54 st.cmd.vxWorks
--rwxrwxr-x 1 root   33 Aug 31 22:54 st.cmd.windows*
--rwxrwxr-x 1 root 4.9K Aug 31 22:54 st_base.cmd*
--rwxrwxr-x 1 root  107 Aug 31 22:54 start_epics*
--rwxrwxr-x 1 root  109 Aug 31 22:54 start_epics.bat*
--rwxrwxr-x 1 root 2.3K Aug 31 22:54 testAttributes.pro*
--rwxrwxr-x 1 root 2.2K Aug 31 22:54 testHDF5Compression.py*
-/opt/synApps/support/areaDetector-R3-10/ADURL/iocs/urlIOC/iocBoot/iocURLDriver
-total 76K
--rw-rw-r-- 1 root  168 Sep 20 14:08 Makefile
--rw-rw-r-- 1 root  394 Sep 20 14:08 README
--rw-rw-r-- 1 root  151 Sep 20 14:08 auto_settings.req
-drwxrwxr-x 2 root 4.0K Sep 20 14:08 autosave/
--rw-r--r-- 1 root 2.1K Feb  6 19:19 cdCommands
--rw-rw-r-- 1 root 6.9K Sep 20 14:08 delegates.mgk
--rw-r--r-- 1 root  378 Feb  6 19:19 dllPath.bat
--rw-r--r-- 1 root  926 Feb  6 19:19 envPaths
-drwxrwxr-x 2 root 4.0K Sep 20 14:08 images/
--rw-rw-r-- 1 root 2.5K Sep 20 14:08 log.mgk
--rw-rw-r-- 1 root  439 Sep 20 14:08 modules.mgk
--rwxrwxr-x 1 root   54 Feb  2 22:13 run*
--rw-rw-r-- 1 root   25 Sep 20 14:08 st.cmd
--rw-rw-r-- 1 root   31 Sep 20 14:08 st.cmd.linux
--rw-rw-r-- 1 root   33 Sep 20 14:08 st.cmd.windows
--rwxrwxr-x 1 root 2.1K Sep 20 14:08 st_base.cmd*
--rwxrwxr-x 1 root  146 Sep 20 14:08 start_epics*
--rw-rw-r-- 1 root  167 Sep 20 14:08 start_epics.bat
-Removing intermediate container 6ee274807295
- ---> 39bed35ca3e4
+ ---> Using cache
+ ---> a304aa70a56e
 Step 8/8 : RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
- ---> Running in 02512a6dbbf8
-Removing intermediate container 02512a6dbbf8
- ---> de0dc35e2b27
-Successfully built de0dc35e2b27
+ ---> Using cache
+ ---> b7cfac7c05ed
+Successfully built b7cfac7c05ed
 Successfully tagged prjemian/custom-synapps-6.2-ad-3.10:latest
-# finished:  2021-02-06T13:20:53-06:00
+# finished:  2021-02-06T14:27:15-06:00
