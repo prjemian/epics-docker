@@ -80,7 +80,7 @@ commands such as `caget` to view the content of a PV:
 The difference between these two methods is shown in this table:
 
 command | provides | what happens when you type `exit`
---- | ---
+--- | --- | ---
 `docker attach iocxxx` | IOC console | IOC and container stop
 `docker exec -it iocxxx bash` | container linux command line | IOC & container stay running
 
