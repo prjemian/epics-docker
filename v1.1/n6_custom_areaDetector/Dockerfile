@@ -8,6 +8,8 @@ WORKDIR /home
 RUN pwd && ls -lAFgh
 
 # TODO: more
-# TODO: modify IOCs with custom PREFIX
 
-RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens
+RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a copy_screens.log
+
+COPY ioc_files/customize_ad.sh /opt
+RUN /opt/customize_ad.sh 2>&1 | tee /opt/customize_ad.log
