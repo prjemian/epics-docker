@@ -63,7 +63,7 @@ to the container:
 
     docker attach iocxxx
 
-Detach with the keyboard combination `^P ^Q` (<control>+p <control>+q).
+Detach with the keyboard combination `^P ^Q` (`<control>+p` `<control>+q`).
 If you `exit` the container, it will stop.
 
 You can access the bash shell in the *iocioc* container:
