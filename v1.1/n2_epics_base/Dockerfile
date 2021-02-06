@@ -20,17 +20,6 @@ ENV EPICS_HOST_ARCH=linux-x86_64
 ENV EPICS_ROOT="${APP_ROOT}/${EPICS_BASE_DIR_NAME}"
 ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
 
-WORKDIR /home
-RUN pwd && ls -lAFgh
-RUN echo # start ------------------- OS update -------------------
-RUN \
-    DEBIAN_FRONTEND=noninteractive apt-get update  -y && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y  \
-       python3-pip \
-       && \
-    pip3 install supervisor
-RUN echo # end ------------------- OS update -------------------
-
 
 WORKDIR ${APP_ROOT}
 ADD https://epics.anl.gov/download/base/${EPICS_BASE_NAME}.tar.gz ./

@@ -24,7 +24,6 @@ EPICS base is installed (and compiled) in directory:
   - [Notes](#notes)
   - [Environment variables](#environment-variables)
     - [Demo: soft IOC demonstration](#demo-soft-ioc-demonstration)
-    - [`supervisord`](#supervisord)
   - [Docker images used by this image](#docker-images-used-by-this-image)
 
 ## default application
@@ -167,36 +166,10 @@ PV | description
 `demo:longout` | integer variable, writeable
 `demo:stringout` | text variable, writeable
 
-### `supervisord`
-
-The [`supervisor`](http://supervisord.org) Python package was added to
-enable running the container and keeping it alive, such as for an EPICS
-IOC.
-
-The demonstration configuration file supplied,
-`/tmp/softIoc_base_demo/supervisord.conf`, shows how to start an EPICS
-*softIoc* process with a demonstration database,
-`/tmp/softIoc_base_demo/demo.db`.  The demonstration creates and runs
-both EPICS IOCs shown [above](#demo-soft-ioc-demonstration).
-
-These IOCs are not run in the default docker image.  To run them, one
-way is to start the container (for the following step, it helps to give
-the container a name),
-
-    docker run -ti -d --rm \
-        --net=host-bridge \
-        --name=softIoc_base_demo \
-        prjemian/epics-base-7.0.4.1
-
-
-then run this command in the `softIoc_base_demo` container:
-
-    docker exec -ti softIoc_base_demo \
-        supervisord -c /tmp/softIoc_base_demo/supervisord.conf
-
-Note:  If you start to get messages about *duplicate PV name found* or some such,
-then you have more than one of these IOCs running on your subnet.  Check that
-you do not have extra containers running from the previous examples.
+Note:  If you start to get messages about *duplicate PV name found* or
+some such, then you have more than one of these IOCs (**with the same
+prefix**) running on your subnet.  Check that you do not have extra
+containers running from previous examples.
 
 ## Docker images used by this image
 
