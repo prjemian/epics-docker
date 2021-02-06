@@ -1,23 +1,29 @@
-# started:  2021-02-06T12:25:42-06:00
-Sending build context to Docker daemon  11.26kB
+# started:  2021-02-06T13:20:32-06:00
+Sending build context to Docker daemon  10.24kB
 Step 1/8 : FROM  prjemian/synapps-6.2-ad-3.10
- ---> 966f54b1607c
-Step 2/8 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"
- ---> Using cache
- ---> 96cdec67d612
+ ---> 13405851cfa8
+Step 2/8 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"       Description="source: https://github.com/prjemian/epics-docker/"
+ ---> Running in 9742d77d236b
+Removing intermediate container 9742d77d236b
+ ---> d01f80552704
 Step 3/8 : USER  root
- ---> Using cache
- ---> feefb021301b
+ ---> Running in 5be2b4a82fe7
+Removing intermediate container 5be2b4a82fe7
+ ---> 70ac73936d87
 Step 4/8 : WORKDIR /home
- ---> Using cache
- ---> 8420df818c50
+ ---> Running in 4a6d75ff7052
+Removing intermediate container 4a6d75ff7052
+ ---> ebb4463aa483
 Step 5/8 : RUN pwd && ls -lAFgh
- ---> Using cache
- ---> f528f5288bd9
+ ---> Running in 2bb5c6bdb7b8
+/home
+total 0
+Removing intermediate container 2bb5c6bdb7b8
+ ---> 0048bc734d40
 Step 6/8 : COPY ioc_files/customize_ad.sh /opt
- ---> 43e2dc39f44d
+ ---> e1c07d9fbaab
 Step 7/8 : RUN /opt/customize_ad.sh 2>&1 | tee /opt/customize_ad.log
- ---> Running in e62fe8dc21ae
+ ---> Running in 6ee274807295
 /opt/synApps/support/areaDetector-R3-10/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
 total 144K
 -rw-rw-r-- 1 root  402 Aug 31 22:54 Makefile
@@ -32,9 +38,9 @@ total 144K
 -rw-rw-r-- 1 root 2.7K Aug 31 22:54 StatsAttributes.xml
 -rw-rw-r-- 1 root  259 Aug 31 22:54 auto_settings.req
 drwxrwxr-x 2 root 4.0K Aug 31 22:54 autosave/
--rw-r--r-- 1 root 2.2K Feb  6 00:13 cdCommands
--rw-r--r-- 1 root  378 Feb  6 00:13 dllPath.bat
--rw-r--r-- 1 root  968 Feb  6 00:13 envPaths
+-rw-r--r-- 1 root 2.2K Feb  6 19:20 cdCommands
+-rw-r--r-- 1 root  378 Feb  6 19:20 dllPath.bat
+-rw-r--r-- 1 root  968 Feb  6 19:20 envPaths
 -rw-rw-r-- 1 root 2.1K Aug 31 22:54 hdf5_layout_demo.xml
 -rw-rw-r-- 1 root  146 Aug 31 22:54 hdf5_layout_minimal.xml
 -rw-rw-r-- 1 root 2.2K Aug 31 22:54 hdf5_layout_nexus.xml
@@ -60,10 +66,10 @@ total 76K
 -rw-rw-r-- 1 root  394 Sep 20 14:08 README
 -rw-rw-r-- 1 root  151 Sep 20 14:08 auto_settings.req
 drwxrwxr-x 2 root 4.0K Sep 20 14:08 autosave/
--rw-r--r-- 1 root 2.1K Feb  6 00:13 cdCommands
+-rw-r--r-- 1 root 2.1K Feb  6 19:19 cdCommands
 -rw-rw-r-- 1 root 6.9K Sep 20 14:08 delegates.mgk
--rw-r--r-- 1 root  378 Feb  6 00:13 dllPath.bat
--rw-r--r-- 1 root  926 Feb  6 00:13 envPaths
+-rw-r--r-- 1 root  378 Feb  6 19:19 dllPath.bat
+-rw-r--r-- 1 root  926 Feb  6 19:19 envPaths
 drwxrwxr-x 2 root 4.0K Sep 20 14:08 images/
 -rw-rw-r-- 1 root 2.5K Sep 20 14:08 log.mgk
 -rw-rw-r-- 1 root  439 Sep 20 14:08 modules.mgk
@@ -74,12 +80,12 @@ drwxrwxr-x 2 root 4.0K Sep 20 14:08 images/
 -rwxrwxr-x 1 root 2.1K Sep 20 14:08 st_base.cmd*
 -rwxrwxr-x 1 root  146 Sep 20 14:08 start_epics*
 -rw-rw-r-- 1 root  167 Sep 20 14:08 start_epics.bat
-Removing intermediate container e62fe8dc21ae
- ---> 08d82131f18d
-Step 8/8 : RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a copy_screens.log
- ---> Running in 4584ae8e1d88
-Removing intermediate container 4584ae8e1d88
- ---> 95b1604229dd
-Successfully built 95b1604229dd
+Removing intermediate container 6ee274807295
+ ---> 39bed35ca3e4
+Step 8/8 : RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
+ ---> Running in 02512a6dbbf8
+Removing intermediate container 02512a6dbbf8
+ ---> de0dc35e2b27
+Successfully built de0dc35e2b27
 Successfully tagged prjemian/custom-synapps-6.2-ad-3.10:latest
-# finished:  2021-02-06T12:25:57-06:00
+# finished:  2021-02-06T13:20:53-06:00

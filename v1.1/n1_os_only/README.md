@@ -7,6 +7,10 @@ screen-oriented text editors (nano, vim, and vi) are included.
 The screen program is also included for running detached console
 sessions such as IOCs.
 
+- [README.md](#readmemd)
+  - [Environment variables](#environment-variables)
+  - [Docker images used by this image](#docker-images-used-by-this-image)
+
 By default, no application is run.
 This image is not uploaded.  
 It is built locally for building epics_base.
@@ -29,6 +33,12 @@ It is built locally for building epics_base.
     VERSION_CODENAME=focal
     UBUNTU_CODENAME=focal
 
+## Environment variables
+
+These environment variables were defined when creating this docker image
+(from `grep ENV Dockerfile`):
+
+    # TODO:
 
 ## Docker images used by this image
 

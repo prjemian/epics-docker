@@ -1,4 +1,4 @@
 #!/bin/sh
 
-cd ${ADURL_IOC_BOOT_DIR}
+cd ${IOCADURL}
 ./run

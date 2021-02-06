@@ -22,7 +22,7 @@ EPICS base is installed (and compiled) in directory:
   - [Shows the EPICS base version](#shows-the-epics-base-version)
   - [Shows the OS version](#shows-the-os-version)
   - [Notes](#notes)
-    - [Environment variables](#environment-variables)
+  - [Environment variables](#environment-variables)
     - [Demo: soft IOC demonstration](#demo-soft-ioc-demonstration)
     - [`supervisord`](#supervisord)
   - [Docker images used by this image](#docker-images-used-by-this-image)
@@ -125,15 +125,12 @@ Expect this result:
 
 ## Notes
 
-### Environment variables
+## Environment variables
 
-These environment variables were defined when creating the docker image:
+These environment variables were defined when creating this docker image
+(from `grep ENV Dockerfile`):
 
-    ENV APP_ROOT="/opt"
-    ENV EDITOR="nano"
-    ENV EPICS_HOST_ARCH=linux-x86_64
-    ENV EPICS_ROOT="${APP_ROOT}/base"
-    ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
+    # TODO:
 
 ### Demo: soft IOC demonstration
 

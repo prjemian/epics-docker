@@ -48,27 +48,10 @@ Start the `13URL1:` IOC in a detached container:
 
 ## Environment variables
 
-Environment variables defined in this image (from `grep ENV Dockerfile`)
-```
-ENV APP_ROOT="/opt"
-ENV EDITOR="nano"
-ENV EPICS_HOST_ARCH=linux-x86_64
-ENV EPICS_ROOT="${APP_ROOT}/base"
-ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
-ENV SUPPORT="${APP_ROOT}/synApps/support"
-ENV PATH="${PATH}:${SUPPORT}/utils"
-ENV AD_TAG=R3-10
-ENV AREA_DETECTOR=${SUPPORT}/areaDetector-${AD_TAG}
-ENV ADCORE_HASH=9321f2a
-ENV ADSUPPORT_HASH=5c549858
-ENV ADSIMDETECTOR_HASH=d24fa04
-ENV AD_PVADRIVER_HASH=1f51a94
-ENV ADURL_HASH=031794e
-ENV ADVIEWERS_HASH=3fe0c51
-ENV AD_FFMPEGSERVER_HASH=063bedd
-ENV IOCADSIMDETECTOR=${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
-ENV IOCADURL=${AREA_DETECTOR}/ADURL/iocs/urlIOC/iocBoot/iocURLDriver
-```
+These environment variables were defined when creating this docker image
+(from `grep ENV Dockerfile`):
+
+    # TODO:
 
 
 ## Docker images used by this image

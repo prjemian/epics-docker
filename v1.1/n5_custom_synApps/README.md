@@ -78,17 +78,10 @@ command | provides | what happens when you type `exit`
 
 ## Environment variables
 
-```
-ENV APP_ROOT="/opt"
-ENV EDITOR="nano"
-ENV EPICS_HOST_ARCH=linux-x86_64
-ENV EPICS_ROOT="${APP_ROOT}/base"
-ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
-ENV SUPPORT="${APP_ROOT}/synApps/support"
-ENV PATH="${PATH}:${SUPPORT}/utils"
-ENV MOTOR=${SUPPORT}/motor-R7-2-2
-ENV XXX=${SUPPORT}/xxx-R6-2
-```
+These environment variables were defined when creating this docker image
+(from `grep ENV Dockerfile`):
+
+    # --none--
 
 
 ## Docker images used by this image

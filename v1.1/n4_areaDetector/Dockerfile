@@ -12,7 +12,7 @@ WORKDIR /home
 # * run IOCs in screen sessions (base-os provides)
 
 RUN \
-    apt-get update  -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get update  -y && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y  \
        libx11-dev \
        x11-xserver-utils \

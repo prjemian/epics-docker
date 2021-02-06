@@ -9,8 +9,8 @@ RUN pwd && ls -lAFgh
 
 RUN echo # start ------------------- OS update -------------------
 RUN \
-    apt-get update  -y && \
-    apt-get install -y  \
+    DEBIAN_FRONTEND=noninteractive apt-get update  -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y  \
        git \
        libnet-dev \
        libpcap-dev \

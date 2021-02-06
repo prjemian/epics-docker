@@ -13,6 +13,7 @@ image provides ...
 - [TODO](#todo)
   - [default working directory](#default-working-directory)
   - [example use](#example-use)
+    - [TODO:](#todo-1)
   - [Environment variables](#environment-variables)
   - [Docker images used by this image](#docker-images-used-by-this-image)
 
@@ -30,7 +31,8 @@ installed (already compiled) in directory: `/opt/synApps/support`.
 By default, the bash shell is run but no IOC is started.
 
     docker run -ti --rm --net=host \
-        --name synApps prjemian/custom-synapps-6.2-ad-3.10:latest
+        --name customAreaDetector \
+        prjemian/custom-synapps-6.2-ad-3.10:latest
 
 See the [*example use*](#example-use) section for an IOC example.
 
@@ -40,59 +42,35 @@ See the [*example use*](#example-use) section for an IOC example.
 
 ## default working directory
 
-The default working directory is `${SUPPORT}`
+The default working directory is `/home`
 
 ## example use
 
-Start the IOC in a container:
+Start the `13SIM1:` IOC in a detached container:
 
-    docker run -ti -d --rm --net=host --name iocioc -e PREFIX=ioc: \
-        prjemian/custom-synapps-6.2:latest \
-        iocxxx/softioc/xxx.sh run
+    docker run -ti -d --rm --net=host \
+        -e PREFIX=adsim: \
+        --name iocadsim \
+        prjemian/custom-synapps-6.2-ad-3.10:latest \
+        /opt/runADSimDetector.sh
 
-Once the IOC has started, the full list of PVs provided
-will be available in file: `iocxxx/dbl-all.txt`.
+Start the `13URL1:` IOC in a detached container:
 
-    docker exec iocioc cat iocxxx/dbl-all.txt
+    docker run -ti -d --rm --net=host \
+        -e PREFIX=adurl: \
+        --name iocadurl \
+        prjemian/custom-synapps-6.2-ad-3.10:latest \
+        /opt/runADURL.sh
 
-You can interact with *iocioc* console in the container by attaching
-to the container:
-
-    docker attach iocxxx
-
-Detach with the keyboard combination `^P ^Q` (<control>+p <control>+q).
-If you `exit` the container, it will stop.
-
-You can access the bash shell in the *iocioc* container:
-
-    docker exec -it iocxxx bash
-
-From the bash shell in the container, you may use EPICS
-commands such as `caget` to view the content of a PV:
-
-    root@345225848f10:/opt/synApps/support# caget xxx:UPTIME
-    xxx:UPTIME                     00:05:33
-
-The difference between these two methods is shown in this table:
-
-command | provides | what happens when you type `exit`
---- | ---
-`docker attach iocxxx` | IOC console | IOC and container stop
-`docker exec -it iocxxx bash` | container linux command line | IOC & container stay running
+### TODO:
+show how to mount `/tmp` as a shared volume
 
 ## Environment variables
 
-```
-ENV APP_ROOT="/opt"
-ENV EDITOR="nano"
-ENV EPICS_HOST_ARCH=linux-x86_64
-ENV EPICS_ROOT="${APP_ROOT}/base"
-ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
-ENV SUPPORT="${APP_ROOT}/synApps/support"
-ENV PATH="${PATH}:${SUPPORT}/utils"
-ENV MOTOR=${SUPPORT}/motor-R7-2-2
-ENV XXX=${SUPPORT}/xxx-R6-2
-```
+These environment variables were defined when creating this docker image
+(from `grep ENV Dockerfile`):
+
+    # --none--
 
 
 ## Docker images used by this image
