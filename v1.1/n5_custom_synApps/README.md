@@ -14,6 +14,7 @@ help to create a control system for beamlines.
   - [default application](#default-application)
   - [default working directory](#default-working-directory)
   - [example use](#example-use)
+  - [This Docker Image Provides ...](#this-docker-image-provides-)
   - [Environment variables](#environment-variables)
   - [Docker images used by this image](#docker-images-used-by-this-image)
 
@@ -75,6 +76,20 @@ command | provides | what happens when you type `exit`
 --- | ---
 `docker attach iocxxx` | IOC console | IOC and container stop
 `docker exec -it iocxxx bash` | container linux command line | IOC & container stay running
+
+## This Docker Image Provides ...
+
+* `${IOCXXX}` : IOC boot directory ready to run with customizable PV prefix (default: `xxx:`)
+
+To customize the PV prefix, add the `PREFIX` environment variable when
+starting the container such as in the examples above.
+
+With this docker image, it is possible to create multiple containers,
+each running an EPICS IOC.  Each container should be started with a
+different `PREFIX` to avoid name contention amongst the available EPICS
+PVs.  There are other ways to use this image to run multiple IOCs in the
+same container, but that description is beyond the scope of this
+documentation.
 
 ## Environment variables
 

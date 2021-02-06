@@ -12,7 +12,7 @@ that help to create a control system for beamlines.
   - [default application](#default-application)
   - [default working directory](#default-working-directory)
   - [example use](#example-use)
-  - [What This Docker Image Provides](#what-this-docker-image-provides)
+  - [This Docker Image Provides ...](#this-docker-image-provides-)
   - [Environment variables](#environment-variables)
   - [Docker images used by this image](#docker-images-used-by-this-image)
 ## Overview
@@ -90,22 +90,42 @@ command | provides | what happens when you type `exit`
 `docker attach iocxxx` | IOC console | IOC and container stop
 `docker exec -it iocxxx bash` | container linux command line | IOC & container stay running
 
-## What This Docker Image Provides
 
-In addition to its parent images, this image provides:
+## This Docker Image Provides ...
+
+With this image, it is possible to simulate many components of a
+scientific instrument for X-ray measurements at the [Advanced Photon
+Source](https://www.aps.anl.gov).
+
+In addition to its parent image(s), this image provides:
 
 * Compiled *synApps* modules in `/opt/synApps/support`
+* `${IOCXXX}` : IOC boot directory ready to run with prefix `xxx:`
 * All synApps GUI screen files (for MEDM, caQtDM, CSS BOY, EDM, ...)
   copied to `/opt/screens` and application-specific subdirectories.
 * Bash script `/opt/copy_screens.sh` that makes these copies.
-* `${IOCXXX}` : *xxx* IOC boot directory ready to run
 
 ## Environment variables
 
 These environment variables were defined when creating this docker image
 (from `grep ENV Dockerfile`):
 
-    # TODO:
+    ENV APP_ROOT="/opt"
+    ENV EDITOR="nano"
+    ENV EPICS_HOST_ARCH=linux-x86_64
+    ENV EPICS_ROOT="${APP_ROOT}/base"
+    ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
+    # ENV MOTOR_HASH=master
+    ENV MOTOR_HASH=R7-2-2
+    ENV SYNAPPS="${APP_ROOT}/synApps"
+    ENV SUPPORT="${SYNAPPS}/support"
+    ENV PATH="${PATH}:${SUPPORT}/utils"
+    # ENV AD=${SUPPORT}/areaDetector-master
+    ENV MOTOR=${SUPPORT}/motor-${MOTOR_HASH}
+    ENV XXX=${SUPPORT}/xxx-R6-2
+    ENV IOCXXX=${XXX}/iocBoot/iocxxx
+    # ENV HASH=master
+    ENV HASH=R6-2
 
 
 ## Docker images used by this image

@@ -14,6 +14,7 @@ image provides ...
   - [default working directory](#default-working-directory)
   - [example use](#example-use)
     - [TODO:](#todo-1)
+  - [This Docker Image Provides ...](#this-docker-image-provides-)
   - [Environment variables](#environment-variables)
   - [Docker images used by this image](#docker-images-used-by-this-image)
 
@@ -64,6 +65,23 @@ Start the `13URL1:` IOC in a detached container:
 
 ### TODO:
 show how to mount `/tmp` as a shared volume
+
+## This Docker Image Provides ...
+
+* `${IOCADSIMDETECTOR}` : IOC boot directory ready to run with customizable PV prefix (default: prefix `13SIM1:`)
+* `${IOCADURL}` : IOC boot directory ready to run with customizable PV prefix (default: `13URL1:`)
+
+To customize the PV prefix, add the `PREFIX` environment variable when
+starting the container such as in the examples above.  Both the
+`IOCADSIMDETECTOR` and the `IOCADURL` IOC can be run from the same
+container (since they operate in separate directories).
+
+With this docker image, it is possible to create multiple containers,
+each running an EPICS IOC.  Each container should be started with a
+different `PREFIX` to avoid name contention amongst the available EPICS
+PVs.  There are other ways to use this image to run multiple instances
+of either IOC in the same container, but that description is beyond the
+scope of this documentation.
 
 ## Environment variables
 

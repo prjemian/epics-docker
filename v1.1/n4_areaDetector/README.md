@@ -18,6 +18,7 @@ Specifically, this image includes:
   - [default application](#default-application)
   - [default working directory](#default-working-directory)
   - [example use](#example-use)
+  - [This Docker Image Provides ...](#this-docker-image-provides-)
   - [Environment variables](#environment-variables)
   - [Docker images used by this image](#docker-images-used-by-this-image)
 
@@ -46,12 +47,47 @@ Start the `13URL1:` IOC in a detached container:
         prjemian/synapps-6.2-ad-3.10:latest \
         /opt/runADURL.sh
 
+## This Docker Image Provides ...
+
+With this image, it is possible to simulate a 2-D area detector such as
+used by a scientific instrument for X-ray measurements at the [Advanced
+Photon Source](https://www.aps.anl.gov).  With the ADURL detector, it is
+possible to obtain area detector images from a URL.
+
+In addition to its parent image(s), this image provides:
+
+* compiled version of [EPICS Area Detector](https://github.com/areaDetector)
+* [ADSimDetector](https://github.com/areaDetector/ADSimDetector)
+* `${IOCADSIMDETECTOR}` : IOC boot directory ready to run with prefix `13SIM1:`
+* [ADURL](https://github.com/areaDetector/ADURL)
+* `${IOCADURL}` : IOC boot directory ready to run with prefix `13URL1:`
+* All synApps GUI screen files (for MEDM, caQtDM, CSS BOY, EDM, ...)
+  copied to `/opt/screens` and application-specific subdirectories.
+* Bash script `/opt/copy_screens.sh` that makes these copies.
+
 ## Environment variables
 
 These environment variables were defined when creating this docker image
 (from `grep ENV Dockerfile`):
 
-    # TODO:
+    ENV APP_ROOT="/opt"
+    ENV EDITOR="nano"
+    ENV EPICS_HOST_ARCH=linux-x86_64
+    ENV EPICS_ROOT="${APP_ROOT}/base"
+    ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
+    ENV SUPPORT="${APP_ROOT}/synApps/support"
+    ENV PATH="${PATH}:${SUPPORT}/utils"
+    ENV AD_TAG=R3-10
+    ENV AREA_DETECTOR=${SUPPORT}/areaDetector-${AD_TAG}
+    ENV ADCORE_HASH=9321f2a
+    ENV ADSUPPORT_HASH=5c549858
+    ENV ADSIMDETECTOR_HASH=d24fa04
+    ENV AD_PVADRIVER_HASH=1f51a94
+    ENV ADURL_HASH=031794e
+    ENV ADVIEWERS_HASH=3fe0c51
+    ENV AD_FFMPEGSERVER_HASH=063bedd
+    ENV IOCADSIMDETECTOR=${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
+    ENV IOCADURL=${AREA_DETECTOR}/ADURL/iocs/urlIOC/iocBoot/iocURLDriver
 
 
 ## Docker images used by this image

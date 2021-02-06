@@ -22,6 +22,7 @@ EPICS base is installed (and compiled) in directory:
   - [Shows the EPICS base version](#shows-the-epics-base-version)
   - [Shows the OS version](#shows-the-os-version)
   - [Notes](#notes)
+  - [This Docker Image Provides ...](#this-docker-image-provides-)
   - [Environment variables](#environment-variables)
     - [Demo: soft IOC demonstration](#demo-soft-ioc-demonstration)
   - [Docker images used by this image](#docker-images-used-by-this-image)
@@ -124,12 +125,26 @@ Expect this result:
 
 ## Notes
 
+
+## This Docker Image Provides ...
+
+In addition to its parent image(s), this image provides:
+
+[EPICS base](https://epics.anl.gov/base/index.php) compiled for
+`${EPICS_HOST_ARCH}` in directory  `/opt/base/`.
+
 ## Environment variables
 
 These environment variables were defined when creating this docker image
 (from `grep ENV Dockerfile`):
 
-    # TODO:
+    ENV APP_ROOT="/opt"
+    ENV EDITOR="nano"
+    ENV EPICS_BASE_NAME=base-7.0.4.1
+    ENV EPICS_BASE_DIR_NAME=base-R7.0.4.1
+    ENV EPICS_HOST_ARCH=linux-x86_64
+    ENV EPICS_ROOT="${APP_ROOT}/${EPICS_BASE_DIR_NAME}"
+    ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
 
 ### Demo: soft IOC demonstration
 
