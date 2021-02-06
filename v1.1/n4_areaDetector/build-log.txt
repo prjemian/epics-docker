@@ -760,3 +760,307 @@ Setting up libxmu-dev:amd64 (2:1.1.3-0ubuntu1) ...
 Setting up libxaw7-dev:amd64 (2:1.0.13-1) ...
 Setting up mesa-common-dev:amd64 (20.2.6-0ubuntu0.20.04.1) ...
 Setting up xserver-common (2:1.20.9-2ubuntu1.2~20.04.1) ...
+Setting up libxft-dev:amd64 (2.3.3-0ubuntu1) ...
+Setting up xserver-xorg-dev (2:1.20.9-2ubuntu1.2~20.04.1) ...
+Setting up xvfb (2:1.20.9-2ubuntu1.2~20.04.1) ...
+Setting up xorg-dev (1:7.7+19ubuntu14) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.2) ...
+Removing intermediate container 73d09394283a
+ ---> fdf25409ff11
+Step 6/58 : ENV APP_ROOT="/opt"
+ ---> Running in 3d68c07a1d2d
+Removing intermediate container 3d68c07a1d2d
+ ---> 44b386e49483
+Step 7/58 : ENV EDITOR="nano"
+ ---> Running in 9af20cab3645
+Removing intermediate container 9af20cab3645
+ ---> c1ddca9f73a8
+Step 8/58 : ENV EPICS_HOST_ARCH=linux-x86_64
+ ---> Running in a19ed7c5b8f1
+Removing intermediate container a19ed7c5b8f1
+ ---> 10f55c3ac588
+Step 9/58 : ENV EPICS_ROOT="${APP_ROOT}/base"
+ ---> Running in adec7c5ba1d9
+Removing intermediate container adec7c5ba1d9
+ ---> 28923ea98c6a
+Step 10/58 : ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
+ ---> Running in 46360f2e3327
+Removing intermediate container 46360f2e3327
+ ---> e763337b8056
+Step 11/58 : ENV SUPPORT="${APP_ROOT}/synApps/support"
+ ---> Running in ea172b1f5bd6
+Removing intermediate container ea172b1f5bd6
+ ---> aa698965c57d
+Step 12/58 : ENV PATH="${PATH}:${SUPPORT}/utils"
+ ---> Running in d31be7a439fd
+Removing intermediate container d31be7a439fd
+ ---> 8cdc0359440e
+Step 13/58 : WORKDIR ${SUPPORT}
+ ---> Running in 537c4393e6f9
+Removing intermediate container 537c4393e6f9
+ ---> 986878aeaa58
+Step 14/58 : RUN pwd && ls -lAFgh
+ ---> Running in a8c35ebee1a1
+/opt/synApps/support
+total 1.6M
+drwxr-xr-x  8 root 4.0K Feb  6 18:45 .git/
+-rw-r--r--  1 root   83 Feb  6 18:45 .gitattributes
+-rw-r--r--  1 root  378 Feb  6 18:45 .gitignore
+-rw-r--r--  1 root  214 Feb  6 18:45 .project
+-rw-r--r--  1 root   60 Feb  6 18:45 EXAMPLE_RELEASE.win32-x86-static.local
+-rw-r--r--  1 root   60 Feb  6 18:45 EXAMPLE_RELEASE.win32-x86.local
+-rw-r--r--  1 root   60 Feb  6 18:45 EXAMPLE_RELEASE.windows-x64-static.local
+-rw-r--r--  1 root   60 Feb  6 18:45 EXAMPLE_RELEASE.windows-x64.local
+-rw-r--r--  1 root 3.7K Feb  6 18:45 LICENSE
+-rw-r--r--  1 root 3.6K Feb  6 18:45 Makefile
+-rw-r--r--  1 root 3.5K Feb  6 18:45 README
+-rw-r--r--  1 root  837 Feb  6 18:45 README.md
+drwxr-xr-x 16 root 4.0K Feb  6 18:47 StreamDevice-2-8-14/
+drwxr-xr-x 18 root 4.0K Feb  6 18:46 alive-R1-3-1/
+-rwxr-xr-x  1 root  13K Feb  6 18:45 assemble_synApps.sh*
+drwxr-xr-x 52 root 4.0K Feb  6 18:47 asyn-R4-41/
+drwxr-xr-x 16 root 4.0K Feb  6 18:46 autosave-R5-10-2/
+-rw-r--r--  1 root 1.5M Feb  6 18:48 build.log
+drwxr-xr-x 17 root 4.0K Feb  6 18:47 busy-R1-7-3/
+drwxr-xr-x 17 root 4.0K Feb  6 18:46 calc-R3-7-4/
+drwxr-xr-x 13 root 4.0K Feb  6 18:46 caputRecorder-R1-7-3/
+drwxr-xr-x  2 root 4.0K Feb  6 18:46 cfg/
+drwxr-xr-x  4 root 4.0K Feb  6 18:46 configure/
+drwxr-xr-x  2 root 4.0K Feb  6 18:45 documentation/
+drwxr-xr-x 16 root 4.0K Feb  6 18:46 ether_ip-ether_ip-3-2/
+drwxr-xr-x 22 root 4.0K Feb  6 18:46 iocStats-3-1-16/
+lrwxrwxrwx  1 root   45 Feb  6 18:48 iocxxx -> /opt/synApps/support/xxx-R6-2/iocBoot/iocxxx//
+drwxr-xr-x 14 root 4.0K Feb  6 18:47 ip-R2-21/
+drwxr-xr-x 18 root 4.0K Feb  6 18:46 ipac-2-16/
+drwxr-xr-x 15 root 4.0K Feb  6 18:47 lua-R3-0-1/
+drwxr-xr-x 16 root 4.0K Feb  6 18:47 modbus-R3-2/
+drwxr-xr-x 18 root 4.0K Feb  6 18:47 motor-R7-2-2/
+drwxr-xr-x 17 root 4.0K Feb  6 18:47 optics-R2-13-5/
+drwxr-xr-x 17 root 4.0K Feb  6 18:46 seq-2-2-8/
+drwxr-xr-x 14 root 4.0K Feb  6 18:46 sscan-R2-11-4/
+drwxr-xr-x 17 root 4.0K Feb  6 18:47 std-R3-6-2/
+drwxr-xr-x  9 root 4.0K Feb  6 18:45 utils/
+drwxr-xr-x 16 root 4.0K Feb  6 18:48 xxx-R6-2/
+Removing intermediate container a8c35ebee1a1
+ ---> 29c9a7a3c1f8
+Step 15/58 : ENV AD_TAG=R3-10
+ ---> Running in 1abf57dac596
+Removing intermediate container 1abf57dac596
+ ---> ce27df8b8487
+Step 16/58 : ENV AREA_DETECTOR=${SUPPORT}/areaDetector-${AD_TAG}
+ ---> Running in b7e57341b2a4
+Removing intermediate container b7e57341b2a4
+ ---> 460af1d3dd10
+Step 17/58 : ADD https://github.com/areaDetector/areaDetector/archive/${AD_TAG}.tar.gz ./areaDetector-${AD_TAG}.tar.gz
+
+
+ ---> 5ab987e5223f
+Step 18/58 : RUN     tar xzf areaDetector-${AD_TAG}.tar.gz &&     /bin/rm areaDetector-${AD_TAG}.tar.gz &&     echo "AREA_DETECTOR=\$(SUPPORT)/areaDetector-${AD_TAG}" >>  ${SUPPORT}/configure/RELEASE
+ ---> Running in b08bcab72103
+Removing intermediate container b08bcab72103
+ ---> a97e96468b07
+Step 19/58 : ENV ADCORE_HASH=9321f2a
+ ---> Running in a7f5668a11af
+Removing intermediate container a7f5668a11af
+ ---> 289c63c10adb
+Step 20/58 : ENV ADSUPPORT_HASH=5c549858
+ ---> Running in 3aae7778d183
+Removing intermediate container 3aae7778d183
+ ---> be8b31f99ede
+Step 21/58 : ENV ADSIMDETECTOR_HASH=d24fa04
+ ---> Running in c5f1888d19ec
+Removing intermediate container c5f1888d19ec
+ ---> e939edf74887
+Step 22/58 : ENV AD_PVADRIVER_HASH=1f51a94
+ ---> Running in 61e055f8e277
+Removing intermediate container 61e055f8e277
+ ---> 71bd8467c765
+Step 23/58 : ENV ADURL_HASH=031794e
+ ---> Running in d1bdca997fb8
+Removing intermediate container d1bdca997fb8
+ ---> d881270aecbb
+Step 24/58 : ENV ADVIEWERS_HASH=3fe0c51
+ ---> Running in 332b93253a98
+Removing intermediate container 332b93253a98
+ ---> 0844d36c262f
+Step 25/58 : ENV AD_FFMPEGSERVER_HASH=063bedd
+ ---> Running in 00eaccc05537
+Removing intermediate container 00eaccc05537
+ ---> 0656b945ce5c
+Step 26/58 : WORKDIR ${AREA_DETECTOR}
+ ---> Running in dbe0703364e7
+Removing intermediate container dbe0703364e7
+ ---> 44944f5b7974
+Step 27/58 : RUN pwd && ls -lAFgh
+ ---> Running in dfa4345b4fcc
+/opt/synApps/support/areaDetector-R3-10
+total 304K
+-rw-rw-r-- 1 root  108 Sep 20 20:28 .gitignore
+-rw-rw-r-- 1 root 4.9K Sep 20 20:28 .gitmodules
+-rw-rw-r-- 1 root 2.1K Sep 20 20:28 .travis.yml
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADADSC/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADAndor/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADAndor3/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADAravis/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADBruker/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADCSimDetector/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADCameraLink/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADCompVision/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADCore/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADDexela/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADEiger/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADFastCCD/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADFireWireWin/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADGenICam/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADLambda/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADLightField/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADMMPAD/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADMerlin/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADMythen/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADPCO/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADPICam/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADPSL/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADPcoWin/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADPerkinElmer/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADPhotonII/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADPilatus/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADPixirad/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADPluginBar/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADPluginEdge/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADPointGrey/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADProsilica/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADPvCam/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADQImaging/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADRIXSCam/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADRoper/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADSimDetector/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADSpinnaker/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADSupport/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADURL/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADUVC/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADViewers/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADVimba/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADmar345/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADmarCCD/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ADnED/
+-rw-rw-r-- 1 root  556 Sep 20 20:28 DriverReleaseChecklist.txt
+-rwxrwxr-x 1 root  136 Sep 20 20:28 INSTALL_GUIDE.md*
+-rw-rw-r-- 1 root 2.6K Sep 20 20:28 LICENSE
+-rw-rw-r-- 1 root 5.5K Sep 20 20:28 Makefile
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 NDDriverStdArrays/
+-rw-rw-r-- 1 root 2.1K Sep 20 20:28 README.md
+-rw-rw-r-- 1 root  20K Sep 20 20:28 RELEASE.md
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 aravisGigE/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ci/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 configure/
+drwxrwxr-x 3 root 4.0K Sep 20 20:28 docs/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 documentation/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ffmpegServer/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 ffmpegViewer/
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 firewireDCAM/
+-rw-rw-r-- 1 root 4.4K Sep 20 20:28 github_deploy_key_areadetector_areadetector_github_io.enc
+-rwxrwxr-x 1 root 3.7K Sep 20 20:28 makeADPrebuilt*
+-rw-rw-r-- 1 root   16 Sep 20 20:28 mkdocs.yml
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 pvaDriver/
+-rw-rw-r-- 1 root   67 Sep 20 20:28 requirements.txt
+drwxrwxr-x 2 root 4.0K Sep 20 20:28 specsAnalyser/
+Removing intermediate container dfa4345b4fcc
+ ---> 9ca35adc9055
+Step 28/58 : ADD https://github.com/areaDetector/ADCore/archive/${ADCORE_HASH}.tar.gz ./ADCore.tar.gz
+
+
+ ---> 1677d15b63d8
+Step 29/58 : ADD https://github.com/areaDetector/ADSupport/archive/${ADSUPPORT_HASH}.tar.gz ./ADSupport.tar.gz
+
+
+ ---> 7a3498e332f6
+Step 30/58 : ADD https://github.com/areaDetector/ADSimDetector/archive/${ADSIMDETECTOR_HASH}.tar.gz ./ADSimDetector.tar.gz
+
+
+ ---> d33f9665670c
+Step 31/58 : ADD https://github.com/areaDetector/pvaDriver/archive/${AD_PVADRIVER_HASH}.tar.gz ./pvaDriver.tar.gz
+
+
+ ---> 90031cf100a0
+Step 32/58 : ADD https://github.com/areaDetector/ADURL/archive/${ADURL_HASH}.tar.gz ./ADURL.tar.gz
+
+
+ ---> 4a19cb3e5e33
+Step 33/58 : ADD https://github.com/areaDetector/ADViewers/archive/${ADVIEWERS_HASH}.tar.gz ./ADViewers.tar.gz
+
+
+ ---> d21f08985813
+Step 34/58 : ADD https://github.com/areaDetector/ffmpegServer/archive/${AD_FFMPEGSERVER_HASH}.tar.gz ./ffmpegServer.tar.gz
+
+
+ ---> 7f299fe0d167
+Step 35/58 : COPY ioc_files/rearrange_AD_dirs.sh /opt
+ ---> 4110b3080c0a
+Step 36/58 : RUN /opt/rearrange_AD_dirs.sh 2>&1 | tee /opt/rearrange_AD_dirs.log
+ ---> Running in 7521f59017f0
+Removing intermediate container 7521f59017f0
+ ---> bf331e833caf
+Step 37/58 : WORKDIR ${AREA_DETECTOR}/configure
+ ---> Running in 103edb3d8c27
+Removing intermediate container 103edb3d8c27
+ ---> f506ef5973bc
+Step 38/58 : RUN pwd && ls -lAFgh
+ ---> Running in 752031dd698b
+/opt/synApps/support/areaDetector-R3-10/configure
+total 124K
+-rwxrwxr-x 1 root  838 Sep 20 20:28 CONFIG*
+-rw-rw-r-- 1 root 1.6K Sep 20 20:28 CONFIG_SITE
+-rw-rw-r-- 1 root 4.7K Sep 20 20:28 EXAMPLE_CONFIG_SITE.local
+-rw-rw-r-- 1 root 1.2K Sep 20 20:28 EXAMPLE_CONFIG_SITE.local.Linux
+-rw-rw-r-- 1 root  356 Sep 20 20:28 EXAMPLE_CONFIG_SITE.local.WIN32
+-rw-rw-r-- 1 root  637 Sep 20 20:28 EXAMPLE_CONFIG_SITE.local.darwin-x86
+-rw-rw-r-- 1 root  624 Sep 20 20:28 EXAMPLE_CONFIG_SITE.local.linux-x86
+-rw-rw-r-- 1 root  387 Sep 20 20:28 EXAMPLE_CONFIG_SITE.local.linux-x86.vxWorks-ppc32
+-rw-rw-r-- 1 root  172 Sep 20 20:28 EXAMPLE_CONFIG_SITE.local.linux-x86.win32-x86-mingw
+-rw-rw-r-- 1 root  172 Sep 20 20:28 EXAMPLE_CONFIG_SITE.local.linux-x86.win32-x86-mingw-static
+-rw-rw-r-- 1 root 1.6K Sep 20 20:28 EXAMPLE_CONFIG_SITE.local.linux-x86_64
+-rw-rw-r-- 1 root  435 Sep 20 20:28 EXAMPLE_CONFIG_SITE.local.linux-x86_64-gcc42
+-rw-rw-r-- 1 root 2.5K Sep 20 20:28 EXAMPLE_RELEASE.local
+-rw-rw-r-- 1 root 2.0K Sep 20 20:28 EXAMPLE_RELEASE.local.APS_Jenkins
+-rw-rw-r-- 1 root  166 Sep 20 20:28 EXAMPLE_RELEASE.local.linux-x86
+-rw-rw-r-- 1 root  374 Sep 20 20:28 EXAMPLE_RELEASE.local.linux-x86_64
+-rw-rw-r-- 1 root  144 Sep 20 20:28 EXAMPLE_RELEASE.local.win32-x86
+-rw-rw-r-- 1 root 1.7K Sep 20 20:28 EXAMPLE_RELEASE_LIBS.local
+-rw-rw-r-- 1 root 2.6K Sep 20 20:28 EXAMPLE_RELEASE_PRODS.local
+-rw-rw-r-- 1 root  157 Sep 20 20:28 Makefile
+-rw-rw-r-- 1 root  534 Sep 20 20:28 RELEASE
+-rw-rw-r-- 1 root  346 Sep 20 20:28 RELEASE_LIBS_INCLUDE
+-rw-rw-r-- 1 root  388 Sep 20 20:28 RELEASE_PRODS_INCLUDE
+-rw-rw-r-- 1 root  120 Sep 20 20:28 RULES
+-rw-rw-r-- 1 root   39 Sep 20 20:28 RULES.ioc
+-rw-rw-r-- 1 root   41 Sep 20 20:28 RULES_DIRS
+-rw-rw-r-- 1 root   40 Sep 20 20:28 RULES_TOP
+-rwxrwxr-x 1 root 1.6K Sep 20 20:28 copyFromExample*
+-rwxrwxr-x 1 root 1.6K Sep 20 20:28 copyToExample*
+-rwxrwxr-x 1 root 1.6K Sep 20 20:28 diffFromExample*
+Removing intermediate container 752031dd698b
+ ---> 4e467a1631e0
+Step 39/58 : COPY ioc_files/recommended_AD_edits.sh /opt
+ ---> 1a6a6611aa05
+Step 40/58 : RUN /opt/recommended_AD_edits.sh 2>&1 | tee /opt/recommended_AD_edits.log
+ ---> Running in e6118d4456af
+Removing intermediate container e6118d4456af
+ ---> 3509826e1335
+Step 41/58 : ENV IOCADSIMDETECTOR=${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
+ ---> Running in 05b375a689f5
+Removing intermediate container 05b375a689f5
+ ---> 69ea9f0c9b81
+Step 42/58 : RUN ln -s ${IOCADSIMDETECTOR} ${SUPPORT}/iocSimDetector
+ ---> Running in f6c9a11dd875
+Removing intermediate container f6c9a11dd875
+ ---> a18468988fa1
+Step 43/58 : COPY ioc_files/run_simDetectorIOC ${IOCADSIMDETECTOR}/run
+ ---> 1225dbe5f9e2
+Step 44/58 : COPY ioc_files/runADSimDetector.sh /opt/
+ ---> cd3da5b2b8fa
+Step 45/58 : ENV IOCADURL=${AREA_DETECTOR}/ADURL/iocs/urlIOC/iocBoot/iocURLDriver
+ ---> Running in 6ead6fe9c28d
+Removing intermediate container 6ead6fe9c28d
+ ---> 294f0cb3f84b
+Step 46/58 : RUN ln -s ${IOCADURL} ${SUPPORT}/iocURLDriver
+ ---> Running in 0cfb89a6180e
