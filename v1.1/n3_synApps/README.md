@@ -105,6 +105,13 @@ In addition to its parent image(s), this image provides:
   copied to `/opt/screens` and application-specific subdirectories.
 * Bash script `/opt/copy_screens.sh` that makes these copies.
 
+
+| directory | contents |
+| ---- | ---- |
+| `/opt/screens/adl/` | MEDM `.adl` screens and related files |
+| `/opt/screens/opi/` | CSS BOY `.opi` screens and related files |
+| `/opt/screens/ui/` | caQtDM `.ui` screens and related files |
+
 ## Environment variables
 
 These environment variables were defined when creating this docker image
