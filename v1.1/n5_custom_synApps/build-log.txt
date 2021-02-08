@@ -1,5 +1,5 @@
-# started:  2021-02-06T14:27:15-06:00
-Sending build context to Docker daemon  16.38kB
+# started:  2021-02-08T03:39:45-06:00
+Sending build context to Docker daemon  19.97kB
 Step 1/11 : FROM  prjemian/synapps-6.2
  ---> 19598b8fbdc3
 Step 2/11 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"       Description="source: https://github.com/prjemian/epics-docker/"
@@ -18,20 +18,64 @@ Step 6/11 : COPY ioc_files/general_purpose.db ${IOCXXX}/substitutions
  ---> Using cache
  ---> 0ea16b7995ce
 Step 7/11 : COPY ioc_files/customize_xxx.sh /opt
- ---> Using cache
- ---> 7c118850d334
+ ---> 5289a0349443
 Step 8/11 : RUN /opt/customize_xxx.sh && pwd
- ---> Using cache
- ---> 7c5ad4b74a3f
+ ---> Running in 9524481bafa9
+/home
+Removing intermediate container 9524481bafa9
+ ---> d279548571fd
 Step 9/11 : RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
- ---> Using cache
- ---> de8acae3c91d
+ ---> Running in 40fa2112074c
+Removing intermediate container 40fa2112074c
+ ---> ebc6287db48e
 Step 10/11 : WORKDIR ${SUPPORT}
- ---> Using cache
- ---> 17fdf2d11d50
+ ---> Running in a293aed48169
+Removing intermediate container a293aed48169
+ ---> 9a30000a809d
 Step 11/11 : RUN     pwd && ls -lAFgh &&     tar czf /opt/$(basename ${XXX}).tar.gz $(basename ${XXX})
- ---> Using cache
- ---> 7a2d8c283438
-Successfully built 7a2d8c283438
+ ---> Running in f9d0b0c10c80
+/opt/synApps/support
+total 1.6M
+drwxr-xr-x  8 root 4.0K Feb  6 19:52 .git/
+-rw-r--r--  1 root   83 Feb  6 19:52 .gitattributes
+-rw-r--r--  1 root  378 Feb  6 19:52 .gitignore
+-rw-r--r--  1 root  214 Feb  6 19:52 .project
+-rw-r--r--  1 root   60 Feb  6 19:52 EXAMPLE_RELEASE.win32-x86-static.local
+-rw-r--r--  1 root   60 Feb  6 19:52 EXAMPLE_RELEASE.win32-x86.local
+-rw-r--r--  1 root   60 Feb  6 19:52 EXAMPLE_RELEASE.windows-x64-static.local
+-rw-r--r--  1 root   60 Feb  6 19:52 EXAMPLE_RELEASE.windows-x64.local
+-rw-r--r--  1 root 3.7K Feb  6 19:52 LICENSE
+-rw-r--r--  1 root 3.6K Feb  6 19:52 Makefile
+-rw-r--r--  1 root 3.5K Feb  6 19:52 README
+-rw-r--r--  1 root  837 Feb  6 19:52 README.md
+drwxr-xr-x 16 root 4.0K Feb  6 19:54 StreamDevice-2-8-14/
+drwxr-xr-x 18 root 4.0K Feb  6 19:53 alive-R1-3-1/
+-rwxr-xr-x  1 root  13K Feb  6 19:52 assemble_synApps.sh*
+drwxr-xr-x 52 root 4.0K Feb  6 19:54 asyn-R4-41/
+drwxr-xr-x 16 root 4.0K Feb  6 19:53 autosave-R5-10-2/
+-rw-r--r--  1 root 1.5M Feb  6 19:55 build.log
+drwxr-xr-x 17 root 4.0K Feb  6 19:54 busy-R1-7-3/
+drwxr-xr-x 17 root 4.0K Feb  6 19:53 calc-R3-7-4/
+drwxr-xr-x 13 root 4.0K Feb  6 19:53 caputRecorder-R1-7-3/
+drwxr-xr-x  2 root 4.0K Feb  6 19:53 cfg/
+drwxr-xr-x  4 root 4.0K Feb  6 19:53 configure/
+drwxr-xr-x  2 root 4.0K Feb  6 19:52 documentation/
+drwxr-xr-x 16 root 4.0K Feb  6 19:53 ether_ip-ether_ip-3-2/
+drwxr-xr-x 22 root 4.0K Feb  6 19:53 iocStats-3-1-16/
+lrwxrwxrwx  1 root   45 Feb  6 19:55 iocxxx -> /opt/synApps/support/xxx-R6-2/iocBoot/iocxxx//
+drwxr-xr-x 14 root 4.0K Feb  6 19:54 ip-R2-21/
+drwxr-xr-x 18 root 4.0K Feb  6 19:53 ipac-2-16/
+drwxr-xr-x 15 root 4.0K Feb  6 19:54 lua-R3-0-1/
+drwxr-xr-x 16 root 4.0K Feb  6 19:54 modbus-R3-2/
+drwxr-xr-x 18 root 4.0K Feb  6 19:54 motor-R7-2-2/
+drwxr-xr-x 17 root 4.0K Feb  6 19:54 optics-R2-13-5/
+drwxr-xr-x 17 root 4.0K Feb  6 19:53 seq-2-2-8/
+drwxr-xr-x 14 root 4.0K Feb  6 19:53 sscan-R2-11-4/
+drwxr-xr-x 17 root 4.0K Feb  6 19:54 std-R3-6-2/
+drwxr-xr-x  9 root 4.0K Feb  6 19:52 utils/
+drwxr-xr-x 18 root 4.0K Feb  8 09:39 xxx-R6-2/
+Removing intermediate container f9d0b0c10c80
+ ---> 5dae6118d2dd
+Successfully built 5dae6118d2dd
 Successfully tagged prjemian/custom-synapps-6.2:latest
-# finished:  2021-02-06T14:27:15-06:00
+# finished:  2021-02-08T03:40:01-06:00
