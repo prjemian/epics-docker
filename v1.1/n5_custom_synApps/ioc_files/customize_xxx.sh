@@ -18,13 +18,13 @@ sed -i s:'#iocshLoad("$(MOTOR)/modules/motorMotorSim/iocsh/motorSim.iocsh"':'ioc
 sed -i s:'LOW_LIM=':'HIGH_LIM=32000, LOW_LIM=':g ./motors.iocsh
 sed -i s:'NUM_AXES=16':'NUM_AXES=56':g ./motors.iocsh
 
-# re-write the substitutions file for 48 motors (easier than modifying it)
+# re-write the substitutions file for 56 motors (easier than modifying it)
 export SUBFILE=./substitutions/motorSim.substitutions
 echo file \"\$\(MOTOR\)/db/asyn_motor.db\"  > ${SUBFILE}
 echo {  >> ${SUBFILE}
 echo pattern  >> ${SUBFILE}
 echo {N,  M, ADDR, DESC, EGU, DIR, VELO, VBAS, ACCL, BDST, BVEL, BACC, MRES, PREC, INIT}  >> ${SUBFILE}
-for n in $(seq 1 48); do
+for n in $(seq 1 56); do
     echo {${n}, \"m${n}\", $((${n}-1)), \"motor ${n}\",  degrees,  Pos,  1, .1, .2, 0, 1, .2, 0.01, 5, \"\"}  >> ${SUBFILE}
 done
 echo }  >> ${SUBFILE}
@@ -45,35 +45,34 @@ sed -i s/'epicsEnvSet("PREFIX", "xxx:")'/'epicsEnvSet("PREFIX", $(PREFIX=xxx:))'
 # for dbLoadRecords(... iocAdminSoft.db
 sed -i s:'IOC=xxx':'IOC=$(PREFIX)':g  ./st.cmd.Linux
 
+cat > ./pre_assigned_motor_names.iocsh  << EOF
 # motor assignments:
-# m29 4-circle diffractometer M_TTH
-# m30 4-circle diffractometer M_TH
-# m31 4-circle diffractometer M_CHI
-# m32 4-circle diffractometer M_PHI
-# m33 Coarse/Fine stage, coarse CM
-# m34 Coarse/Fine stage, fine FM
-# m35 table M0X
-# m36 table M0Y
-# m37 table M1Y
-# m38 table M2X
-# m39 table M2Y
-# m40 table M2Z
-# m41 Slit1V:mXp
-# m42 Slit1V:mXn
-# m43 Slit1H:mXp
-# m44 Slit1H:mXn
-# m45 monochromator M_THETA
-# m46 monochromator M_Y
-# m47 monochromator M_Z
-# m48 unassigned
-# m49 unassigned
-# m50 unassigned
-# m51 unassigned
-# m52 unassigned
-# m53 unassigned
-# m54 unassigned
-# m55 unassigned
-# m56 unassigned
+dbpf(${PREFIX}m29.DESC, "TTH 4-circle")
+dbpf(${PREFIX}m30.DESC, "TH 4-circle")
+dbpf(${PREFIX}m31.DESC, "CHI 4-circle")
+dbpf(${PREFIX}m32.DESC, "PHI 4-circle")
+dbpf(${PREFIX}m33.DESC, "CM coarse/fine")
+dbpf(${PREFIX}m34.DESC, "FM coarse/fine")
+dbpf(${PREFIX}m35.DESC, "M0X table")
+dbpf(${PREFIX}m36.DESC, "M0Y table")
+dbpf(${PREFIX}m37.DESC, "M1Y table")
+dbpf(${PREFIX}m38.DESC, "M2X table")
+dbpf(${PREFIX}m39.DESC, "M2Y table")
+dbpf(${PREFIX}m40.DESC, "M2Z table")
+dbpf(${PREFIX}m41.DESC, "Slit1V:mXp")
+dbpf(${PREFIX}m42.DESC, "Slit1V:mXn")
+dbpf(${PREFIX}m43.DESC, "Slit1H:mXp")
+dbpf(${PREFIX}m44.DESC, "Slit1H:mXn")
+dbpf(${PREFIX}m45.DESC, "THETA monochromator")
+dbpf(${PREFIX}m46.DESC, "Y monochromator")
+dbpf(${PREFIX}m47.DESC, "Z monochromator")
+EOF
+
+cat >> st.cmd.Linux << EOF
+#
+# pre-assigned motors
+< pre_assigned_motor_names.iocsh
+EOF
 
 # monochromator: m45 - m47
 # append new line instead of edit in place
