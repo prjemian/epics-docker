@@ -8,6 +8,7 @@
 
 PRE=${1:-13SIM1}
 IMAGE_SHORT_NAME=custom-synapps-6.2-ad-3.10
+# TODO: also need IOC starter for urlDetector
 
 # -------------------------------------------
 # IOC prefix
@@ -50,9 +51,9 @@ docker run -d -it --rm --net=host \
 sleep 1
 
 echo -n "starting IOC ${CONTAINER} ... "
+# TODO need IOC_MANAGER
 CMD="${RUN} ${IOC_MANAGER} start"
 echo ${CMD}
-# TODO: need IOC starters for both simDetector and urlDetector
 ${CMD}
 sleep 2
 
