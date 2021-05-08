@@ -4,6 +4,7 @@ LABEL version="1.1.0" \
       Description="source: https://github.com/prjemian/epics-docker/"
 USER  root
 WORKDIR /home
+CMD bash
 RUN pwd && ls -lAFgh
 
 COPY ioc_files/general_purpose.db ${IOCXXX}/substitutions
