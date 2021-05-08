@@ -8,6 +8,7 @@ sed -i s:'/APSshare/epics/base-3.15.6':'/opt/base':g assemble_synApps.sh
 
 # do NOT use these modules
 _MODULES_=""
+_MODULES_+=" ALIVE"
 _MODULES_+=" ALLENBRADLEY"
 _MODULES_+=" AREA_DETECTOR"
 _MODULES_+=" CAMAC"
@@ -38,7 +39,6 @@ done
 # use these modules from their GitHub master branch(es)
 
 _MODULES_=""
-_MODULES_+=" ALIVE"
 _MODULES_+=" ASYN"
 _MODULES_+=" AUTOSAVE"
 _MODULES_+=" BUSY"
