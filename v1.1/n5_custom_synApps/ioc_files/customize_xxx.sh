@@ -6,7 +6,7 @@ cd ${IOCXXX}/
 
 # PV prefix is $PREFIX (default: xxx:)
 # enable:
-# * 48 motors
+# * 56 motors
 # * scaler
 # * Kohzu monochromator
 
@@ -16,7 +16,7 @@ cp examples/std.iocsh    ./
 
 sed -i s:'#iocshLoad("$(MOTOR)/modules/motorMotorSim/iocsh/motorSim.iocsh"':'iocshLoad("$(MOTOR)/iocsh/motorSim.iocsh"':g ./motors.iocsh
 sed -i s:'LOW_LIM=':'HIGH_LIM=32000, LOW_LIM=':g ./motors.iocsh
-sed -i s:'NUM_AXES=16':'NUM_AXES=48':g ./motors.iocsh
+sed -i s:'NUM_AXES=16':'NUM_AXES=56':g ./motors.iocsh
 
 # re-write the substitutions file for 48 motors (easier than modifying it)
 export SUBFILE=./substitutions/motorSim.substitutions
@@ -66,6 +66,14 @@ sed -i s:'IOC=xxx':'IOC=$(PREFIX)':g  ./st.cmd.Linux
 # m46 monochromator M_Y
 # m47 monochromator M_Z
 # m48 unassigned
+# m49 unassigned
+# m50 unassigned
+# m51 unassigned
+# m52 unassigned
+# m53 unassigned
+# m54 unassigned
+# m55 unassigned
+# m56 unassigned
 
 # monochromator: m45 - m47
 # append new line instead of edit in place

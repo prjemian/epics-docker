@@ -87,7 +87,7 @@ command | provides | what happens when you type `exit`
 
 * `${IOCXXX}` : IOC boot directory ready to run with customizable PV prefix (default: `xxx:`)
 
-* simulated 48 motors: : `$(PREFIX)m1` .. `$(PREFIX)m48`
+* simulated 56 motors: : `$(PREFIX)m1` .. `$(PREFIX)m48`
 * common:
   * autosave support (disappears once the container is removed unless mapped to external volume)
   * Stream protocol support
@@ -159,7 +159,7 @@ m44 | Slit1H:mXn
 m45 | monochromator M_THETA
 m46 | monochromator M_Y
 m47 | monochromator M_Z
-m48 | unassigned
+m48 - m56 | unassigned
 
 
 ## Environment variables
