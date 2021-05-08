@@ -23,11 +23,6 @@ IMAGE=prjemian/${IMAGE_SHORT_NAME}:latest
 # name of IOC manager (start, stop, status, ...)
 IOC_MANAGER=iocxxx/softioc/xxx.sh
 
-# container will quit unless it has something to run
-# this is trivial but shows that container is running
-# prints date/time every 10 seconds
-KEEP_ALIVE_COMMAND="while true; do date; sleep 10; done"
-
 # pass the IOC PREFIX to the container at boot time
 ENVIRONMENT="PREFIX=${PREFIX}"
 
@@ -52,7 +47,7 @@ docker run -d -it --rm --net=host \
     -e "${ENVIRONMENT}" \
     -v "${HOST_TMP_SHARE}":/tmp \
     ${IMAGE} \
-    bash # -c "${KEEP_ALIVE_COMMAND}"
+    bash
 
 sleep 1
 
