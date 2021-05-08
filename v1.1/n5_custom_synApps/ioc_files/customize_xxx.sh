@@ -115,3 +115,6 @@ export SUBFILE=./general_purpose.iocsh
 echo dbLoadTemplate\(\"substitutions/general_purpose.substitutions\", \"P=\$\(PREFIX\),R=gp:\"\) > ${SUBFILE}
 export SUBFILE=
 sed -i s:'< common.iocsh':'< common.iocsh\n< general_purpose.iocsh':g    ./st.cmd.Linux
+
+# 4-circle diffractometer orientation: motors
+sed -i s:'mTTH=SM1,mTH=SM2,mCHI=SM3,mPHI=SM4':'mTTH=m29,mTH=m30,mCHI=m31,mPHI=m32':g   ${XXX}/xxxApp/op/ui/xxx.ui
