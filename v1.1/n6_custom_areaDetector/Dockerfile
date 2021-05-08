@@ -11,3 +11,5 @@ COPY ioc_files/customize_ad.sh /opt
 RUN /opt/customize_ad.sh 2>&1 | tee /opt/customize_ad.log
 
 RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
+
+RUN ln -s ${IOCADSIMDETECTOR} iocSimDetector
