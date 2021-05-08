@@ -89,6 +89,7 @@ sed -i s/',T=table1,M0X=m1,M0Y=m2,M1Y=m3,M2X=m4,M2Y=m5,M2Z=m6'/',T=table1,M0X=m3
 
 # Coarse/Fine stage: m33 - m34
 sed -i s/',CM=m7,FM=m8'/',CM=m33,FM=m34'/g   ./optics.iocsh
+# TODO: update the screen file, too
 
 # 4-circle diffractometer
 # append new line instead of edit in place
