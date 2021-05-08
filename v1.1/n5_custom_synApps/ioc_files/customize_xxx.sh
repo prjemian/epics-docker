@@ -87,7 +87,7 @@ sed -i s/',CM=m7,FM=m8'/',CM=m33,FM=m34'/g   ./optics.iocsh
 # append new line instead of edit in place
 echo ""  >> ./optics.iocsh
 echo "# 4-circle diffractometer orientation"  >> ./optics.iocsh
-echo iocshLoad\(\"\$\(OPTICS\)/iocsh/orient.iocsh\", \"PREFIX=\$\(PREFIX\), INSTANCE=1, M_TTH=m29, M_TH=m30, M_CHI=m31, M_PHI=m32, PREC=6, SUB=substitutions/orient_xtals.substitutions\"\)  >> ./optics.iocsh
+echo iocshLoad\(\"\$\(OPTICS\)/iocsh/orient.iocsh\", \"PREFIX=\$\(PREFIX\), INSTANCE=_0, M_TTH=m29, M_TH=m30, M_CHI=m31, M_PHI=m32, PREC=6, SUB=substitutions/orient_xtals.substitutions\"\)  >> ./optics.iocsh
 
 # PID support
 echo ""  >> ./std.iocsh
