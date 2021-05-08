@@ -81,5 +81,8 @@ RUN echo # end ------------------- build synApps -------------------
 COPY ioc_files/copy_screens.sh /opt
 RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
 
+# use this script in all IOCs
+COPY ioc_files/modify_adl_in_ui_files.sh /opt
+RUN bash /opt/modify_adl_in_ui_files.sh  /opt/screens/ui
 
 CMD ["/bin/bash"]

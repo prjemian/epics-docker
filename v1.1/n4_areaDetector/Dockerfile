@@ -88,6 +88,7 @@ WORKDIR ${SUPPORT}
 RUN pwd && ls -lAFgh
 RUN make release
 RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
+RUN bash /opt/modify_adl_in_ui_files.sh  /opt/screens/ui
 
 # Build it all
 WORKDIR ${AREA_DETECTOR}
