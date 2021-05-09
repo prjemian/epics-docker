@@ -47,9 +47,9 @@ docker run -d -it --rm --net=host \
     --name ${CONTAINER} \
     -e "${ENVIRONMENT}" \
     -v "${HOST_TMP_SHARE}":/tmp \
-    -v "${HOST_OPT_SHARE}":/opt \
     ${IMAGE} \
     bash
+    # -v "${HOST_OPT_SHARE}":/opt \
 
 sleep 1
 

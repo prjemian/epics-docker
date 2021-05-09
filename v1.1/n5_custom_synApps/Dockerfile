@@ -8,12 +8,14 @@ WORKDIR /home
 RUN pwd && ls -lAFgh
 
 COPY ioc_files/general_purpose.db ${IOCXXX}/substitutions
-COPY ioc_files/customize_xxx.sh /opt
+COPY \
+      ioc_files/customize_xxx.sh \
+      ioc_files/changes-gp-ui.diff \
+      ioc_files/screens \
+      /opt/
 RUN /opt/customize_xxx.sh && pwd
 RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
 RUN bash /opt/modify_adl_in_ui_files.sh  /opt/screens/ui
-# COPY ioc_files/changes-gp-ui.diff /opt
-# RUN patch /opt/screens/ui/xxx.ui /opt/changes-gp-ui.diff
 
 # archive the template IOC, for making new XXX IOCs
 WORKDIR ${SUPPORT}

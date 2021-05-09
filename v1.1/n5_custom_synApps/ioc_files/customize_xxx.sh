@@ -123,6 +123,26 @@ export SUBFILE=./general_purpose.iocsh
 echo dbLoadTemplate\(\"substitutions/general_purpose.substitutions\", \"P=\$\(PREFIX\),R=gp:\"\) > ${SUBFILE}
 export SUBFILE=
 sed -i s:'< common.iocsh':'< common.iocsh\n< general_purpose.iocsh':g    ./st.cmd.Linux
+# patch the caQtDM screen
+cat > /opt/changes-gp-ui.diff << EOF
+3865c3928
+<               <string notr="true">-</string>
+---
+>               <string notr="true">- General PVs</string>
+3882c3945
+<               <string>1</string>
+---
+>               <string>bits;ints;floats;arrays;text;longtext;overview</string>
+3885c3948
+<               <string>1</string>
+---
+>               <string>gp_bit20.ui;gp_int20.ui;gp_float20.ui;gp_array20.ui;gp_text20.ui;gp_longtext20.ui;general_purpose.ui</string>
+3888c3951
+<               <string>1</string>
+---
+>               <string>P=xxx:,R=gp:;P=xxx:,R=gp:;P=xxx:,R=gp:;P=xxx:,R=gp:;P=xxx:,R=gp:;P=xxx:,R=gp:;P=xxx:,R=gp:</string>
+EOF
+patch ${XXX}/xxxApp/op/ui/xxx.ui /opt/changes-gp-ui.diff
 
 # 4-circle diffractometer orientation: motors
 sed -i s:'mTTH=SM1,mTH=SM2,mCHI=SM3,mPHI=SM4':'mTTH=m29,mTH=m30,mCHI=m31,mPHI=m32':g   ${XXX}/xxxApp/op/ui/xxx.ui
