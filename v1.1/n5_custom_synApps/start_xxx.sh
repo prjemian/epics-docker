@@ -34,6 +34,7 @@ HOST_IOC_ROOT=${TMP_ROOT}/${CONTAINER}
 IOC_TOP=${HOST_IOC_ROOT}/${XXX}
 OP_DIR=${TMP_ROOT}/${IMAGE_SHORT_NAME}
 HOST_TMP_SHARE=${HOST_IOC_ROOT}/tmp
+HOST_OPT_SHARE=${HOST_IOC_ROOT}/opt
 # -------------------------------------------
 
 # stop and remove container if it exists
@@ -46,6 +47,7 @@ docker run -d -it --rm --net=host \
     --name ${CONTAINER} \
     -e "${ENVIRONMENT}" \
     -v "${HOST_TMP_SHARE}":/tmp \
+    -v "${HOST_OPT_SHARE}":/opt \
     ${IMAGE} \
     bash
 
