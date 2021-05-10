@@ -1,4 +1,4 @@
-FROM  prjemian/epics-base-7.0.4.1
+FROM  prjemian/epics-base-7.0.5
 LABEL version="1.1.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
       Description="source: https://github.com/prjemian/epics-docker/"
@@ -35,6 +35,7 @@ ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
 
 # ============ EPICS synApps ============
 # ENV MOTOR_HASH=master
+ENV CAPUTRECORDER_HASH=master
 ENV MOTOR_HASH=R7-2-2
 ENV SYNAPPS="${APP_ROOT}/synApps"
 ENV SUPPORT="${SYNAPPS}/support"
@@ -75,6 +76,7 @@ RUN make -j4 release rebuild 2>&1 | tee build.log
 RUN echo "# --- Building XXX IOC ---" 2>&1 | tee -a build.log
 RUN make -C ${IOCXXX}/ 2>&1 | tee -a build.log
 RUN ln -s ${IOCXXX}/ ./iocxxx
+RUN ln -s ${IOCXXX}/ /opt/iocxxx
 RUN echo # end ------------------- build synApps -------------------
 
 # copy all the MEDM/CSSBOY/caQtDM/... screens to /opt/screens

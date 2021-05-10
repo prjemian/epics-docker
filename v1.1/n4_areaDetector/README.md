@@ -97,7 +97,7 @@ These are the docker images from which this image is based:
 from | image | description
 --- | --- | ---
 `prjemian/synapps-6.2` | `prjemian/synapps-6.2-ad-3.10` | this image
-`prjemian/epics-base-7.0.4.1` |  `prjemian/synapps-6.2` | synApps release 6.2
-`prjemian/os_only-1.1` | `prjemian/epics-base-7.0.4.1` |  EPICS base release 7.0.4.1
+`prjemian/epics-base-7.0.5` |  `prjemian/synapps-6.2` | synApps release 6.2
+`prjemian/os_only-1.1` | `prjemian/epics-base-7.0.5` |  EPICS base release 7.0.5
 `ubuntu` | `prjemian/os_only-1.1` | Linux OS for this EPICS installation
 dockerhub | `ubuntu` | Ubuntu 20.04.1 LTS (at the time of the build)

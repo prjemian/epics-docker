@@ -13,20 +13,22 @@ ENV EDITOR="nano"
 
 # ============ EPICS base ============
 # Get the latest version of EPICS
-ENV EPICS_BASE_NAME=base-7.0.4.1
-ENV EPICS_BASE_DIR_NAME=base-R7.0.4.1
+ENV BASE_VERSION=7.0.5
+ENV EPICS_BASE_NAME=base-${BASE_VERSION}
+# ENV EPICS_BASE_DIR_NAME=base-R${BASE_VERSION}
 
 ENV EPICS_HOST_ARCH=linux-x86_64
-ENV EPICS_ROOT="${APP_ROOT}/${EPICS_BASE_DIR_NAME}"
+ENV EPICS_ROOT="${APP_ROOT}/${EPICS_BASE_NAME}"
 ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
 
 
 WORKDIR ${APP_ROOT}
+RUN ls -lart
 ADD https://epics.anl.gov/download/base/${EPICS_BASE_NAME}.tar.gz ./
 
 RUN tar xzf ${EPICS_BASE_NAME}.tar.gz &&\
     rm  ${EPICS_BASE_NAME}.tar.gz &&\
-    ln -s ${EPICS_BASE_DIR_NAME} base &&\
+    ln -s ${EPICS_BASE_NAME} base &&\
     ls -lAFgh
 
 WORKDIR ${EPICS_ROOT}

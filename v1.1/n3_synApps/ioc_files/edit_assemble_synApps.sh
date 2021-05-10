@@ -61,6 +61,11 @@ _MODULES_+=" XXX"
 #   echo ${cmd}
 #   eval ${cmd}
 # done
+for mod in "CAPUTRECORDER"; do
+  cmd="sed -i s:'^${mod}=\S*\$':'${mod}=${CAPUTRECORDER_HASH}':g assemble_synApps.sh"
+  echo ${cmd}
+  eval ${cmd}
+done
 for mod in "MOTOR"; do
   cmd="sed -i s:'^${mod}=\S*\$':'${mod}=${MOTOR_HASH}':g assemble_synApps.sh"
   echo ${cmd}

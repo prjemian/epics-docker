@@ -1,9 +1,9 @@
 # README.md
 
-The [`prjemian/epics-base-7.0.4.1`
-image](https://hub.docker.com/r/prjemian/epics-base-7.0.4.1/tags)
+The [`prjemian/epics-base-7.0.5`
+image](https://hub.docker.com/r/prjemian/epics-base-7.0.5/tags)
 provides [EPICS base release
-7.0.4.1](https://epics.anl.gov/base/R7-0/4.php), the Experimental
+7.0.5](https://epics.anl.gov/base/R7-0/5.php), the Experimental
 Physics and Industrial Control System in docker images. Tools for
 compiling EPICS software including compilers and screen-oriented text
 editors (*nano*, *vim*, and *vi*) are included. The *screen* program is
@@ -13,7 +13,7 @@ This image will serve as the starting point for images
 that provide other EPICS components.
 
 EPICS base is installed (and compiled) in directory:
-`/opt/base-R7.0.4.1` which is soft-linked to `/opt/base`.
+`/opt/base-R7.0.5` which is soft-linked to `/opt/base`.
 
 - [README.md](#readmemd)
   - [default application](#default-application)
@@ -54,8 +54,8 @@ Next, start the container (the default application is a *bash* shell):
         -d \
         --rm \
         --net=host-bridge \
-        --name=epics-base-7.0.4.1 \
-        prjemian/epics-base-7.0.4.1
+        --name=epics-base-7.0.5 \
+        prjemian/epics-base-7.0.5
 
 Note: The *docker* command returns a long hexadecimal code that
 identifies this container uniquely.  You can stop the container by using
@@ -67,8 +67,8 @@ enough) with the `docker stop` command, such as this example session:
     >         -d \
     >         --rm \
     >         --net=host-bridge \
-    >         --name=epics-base-7.0.4.1 \
-    >         prjemian/epics-base-7.0.4.1
+    >         --name=epics-base-7.0.5 \
+    >         prjemian/epics-base-7.0.5
     d3a2279cccb99a818837283eb0c456e7225d3d765d2c8fb949e131b0a1901d63
     (base) user@host:~ $ docker stop d3a
     d3a
@@ -86,7 +86,7 @@ them](https://linuxhandbook.com/remove-docker-containers/).
 Print the version of EPICS base by starting a soft IOC:
 
     (base) user@host:~ $ docker \
-        run prjemian/epics-base-7.0.4.1 \
+        run prjemian/epics-base-7.0.5 \
         /opt/base/bin/linux-x86_64/softIoc \
             -m IOC=ioc \
             -d /opt/base/db/softIocExit.db
@@ -96,12 +96,12 @@ such as these to the terminal (date might be different):
 
     Starting iocInit
     iocRun: All initialization complete
-    dbLoadDatabase("/opt/base-R7.0.4.1/bin/linux-x86_64/../../dbd/softIoc.dbd")
+    dbLoadDatabase("/opt/base-R7.0.5/bin/linux-x86_64/../../dbd/softIoc.dbd")
     softIoc_registerRecordDeviceDriver(pdbbase)
     dbLoadRecords("/opt/base/db/softIocExit.db", "IOC=ioc")
     iocInit()
     ############################################################################
-    ## EPICS R7.0.4.1
+    ## EPICS R7.0.5
     ## Rev. 2021-01-20T23:13+0000
     ############################################################################
     epics>
@@ -113,7 +113,7 @@ Then, the container will exit back to your host system.
 Print the operating system info from the container:
 
     (base) user@host:~ $ docker \
-        run prjemian/epics-base-7.0.4.1 \
+        run prjemian/epics-base-7.0.5 \
         cat /etc/lsb-release
 
 Expect this result:
@@ -140,8 +140,8 @@ These environment variables were defined when creating this docker image
 
     ENV APP_ROOT="/opt"
     ENV EDITOR="nano"
-    ENV EPICS_BASE_NAME=base-7.0.4.1
-    ENV EPICS_BASE_DIR_NAME=base-R7.0.4.1
+    ENV EPICS_BASE_NAME=base-7.0.5
+    ENV EPICS_BASE_DIR_NAME=base-R7.0.5
     ENV EPICS_HOST_ARCH=linux-x86_64
     ENV EPICS_ROOT="${APP_ROOT}/${EPICS_BASE_DIR_NAME}"
     ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
@@ -153,7 +153,7 @@ provided to test the installation using the `softIoc` application from
 EPICS base.  To run the image as an IOC (with the default PV prefix
 of `softIoc_demo:`):
 
-    docker run -ti -d --rm prjemian/epics-base-7.0.4.1:latest \
+    docker run -ti -d --rm prjemian/epics-base-7.0.5:latest \
         softIoc -d /tmp/softIoc_base_demo/demo.db
 
 These are the PVs the demonstration IOC provides:
@@ -168,7 +168,7 @@ PV | description
 You can also supply a custom PV prefix (such as `demo:` as shown) by
 using the `-m IOC=custom_prefix` option as shown in this example:
 
-    docker run -ti -d --rm prjemian/epics-base-7.0.4.1:latest \
+    docker run -ti -d --rm prjemian/epics-base-7.0.5:latest \
         softIoc -m IOC=demo: -d /tmp/softIoc_base_demo/demo.db
 
 These are the PVs the demonstration IOC provides when using the custom
@@ -192,6 +192,6 @@ These are the docker images from which this image is based:
 
 from | image | description
 --- | --- | ---
-`prjemian/os_only-1.1` | `prjemian/epics-base-7.0.4.1` |  this image
+`prjemian/os_only-1.1` | `prjemian/epics-base-7.0.5` |  this image
 `ubuntu` | `prjemian/os_only-1.1` | Linux OS for this EPICS installation
 dockerhub | `ubuntu` | Ubuntu 20.04.1 LTS (at the time of the build)

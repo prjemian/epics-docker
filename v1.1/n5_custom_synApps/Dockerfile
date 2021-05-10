@@ -6,11 +6,11 @@ USER  root
 CMD bash
 WORKDIR /home
 RUN pwd && ls -lAFgh
+RUN ls
 
 COPY ioc_files/general_purpose.db ${IOCXXX}/substitutions
 COPY \
       ioc_files/customize_xxx.sh \
-      ioc_files/changes-gp-ui.diff \
       ioc_files/screens \
       /opt/
 RUN /opt/customize_xxx.sh && pwd

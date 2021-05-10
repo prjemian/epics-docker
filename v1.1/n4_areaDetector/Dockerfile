@@ -46,15 +46,24 @@ RUN \
     /bin/rm areaDetector-${AD_TAG}.tar.gz && \
     echo "AREA_DETECTOR=\$(SUPPORT)/areaDetector-${AD_TAG}" >>  ${SUPPORT}/configure/RELEASE
 
-# this page lists specific hashes for the AD R3-10 release
-# https://github.com/areaDetector/areaDetector/tree/9739d42659d180f88e08104cad4d02cbd414a75f
-ENV ADCORE_HASH=9321f2a
-ENV ADSUPPORT_HASH=5c549858
-ENV ADSIMDETECTOR_HASH=d24fa04
-ENV AD_PVADRIVER_HASH=1f51a94
-ENV ADURL_HASH=031794e
-ENV ADVIEWERS_HASH=3fe0c51
-ENV AD_FFMPEGSERVER_HASH=063bedd
+# TODO: EPICS 7.0.5 tightened rules and now GraphicsMagick won't build from AD3.10
+# Need to use master branch now
+# # this page lists specific hashes for the AD R3-10 release
+# # https://github.com/areaDetector/areaDetector/tree/9739d42659d180f88e08104cad4d02cbd414a75f
+# ENV ADCORE_HASH=9321f2a
+# ENV ADSUPPORT_HASH=5c549858
+# ENV ADSIMDETECTOR_HASH=d24fa04
+# ENV AD_PVADRIVER_HASH=1f51a94
+# ENV ADURL_HASH=031794e
+# ENV ADVIEWERS_HASH=3fe0c51
+# ENV AD_FFMPEGSERVER_HASH=063bedd
+ENV ADCORE_HASH=master
+ENV ADSUPPORT_HASH=master
+ENV ADSIMDETECTOR_HASH=master
+ENV AD_PVADRIVER_HASH=master
+ENV ADURL_HASH=master
+ENV ADVIEWERS_HASH=master
+ENV AD_FFMPEGSERVER_HASH=master
 
 WORKDIR ${AREA_DETECTOR}
 RUN pwd && ls -lAFgh
@@ -76,11 +85,13 @@ RUN /opt/recommended_AD_edits.sh 2>&1 | tee /opt/recommended_AD_edits.log
 
 ENV IOCADSIMDETECTOR=${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
 RUN ln -s ${IOCADSIMDETECTOR} ${SUPPORT}/iocSimDetector
+RUN ln -s ${IOCADSIMDETECTOR} /opt/iocSimDetector
 COPY ioc_files/run_simDetectorIOC ${IOCADSIMDETECTOR}/run
 COPY ioc_files/runADSimDetector.sh /opt/
 
 ENV IOCADURL=${AREA_DETECTOR}/ADURL/iocs/urlIOC/iocBoot/iocURLDriver
 RUN ln -s ${IOCADURL} ${SUPPORT}/iocURLDriver
+RUN ln -s ${IOCADURL} /opt/iocURLDriver
 COPY ioc_files/run_adUrlIOC ${IOCADURL}/run
 COPY ioc_files/runADURL.sh /opt/
 
