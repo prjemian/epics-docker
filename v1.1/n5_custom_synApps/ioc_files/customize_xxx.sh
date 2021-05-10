@@ -88,8 +88,14 @@ sed -i s/'Slit1H,mXp=m3,mXn=m4'/'Slit1H,mXp=m43,mXn=m44'/g   ./optics.iocsh
 sed -i s/',T=table1,M0X=m1,M0Y=m2,M1Y=m3,M2X=m4,M2Y=m5,M2Z=m6'/',T=table1,M0X=m35,M0Y=m36,M1Y=m37,M2X=m38,M2Y=m39,M2Z=m40'/g   ./optics.iocsh
 
 # Coarse/Fine stage: m33 - m34
-sed -i s/',CM=m7,FM=m8'/',CM=m33,FM=m34'/g   ./optics.iocsh
-# TODO: update the screen file, too
+# append new config: easier than removing the comment characters
+cat >> ./optics.iocsh << EOF
+#
+# Coarse/Fine stage
+dbLoadRecords("\$(OPTICS)/opticsApp/Db/CoarseFineMotor.db","P=\$(PREFIX)cf1:,PM=\$(PREFIX),CM=m33,FM=m34")
+EOF
+sed -i s:'CM=m7,FM=m8':'CM=m33,FM=m34':g   ${XXX}/xxxApp/op/ui/xxx.ui
+
 
 # 4-circle diffractometer
 # append new line instead of edit in place
