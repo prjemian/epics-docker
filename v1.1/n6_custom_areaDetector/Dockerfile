@@ -12,5 +12,3 @@ RUN /opt/customize_ad.sh 2>&1 | tee /opt/customize_ad.log
 
 RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
 RUN bash /opt/modify_adl_in_ui_files.sh  /opt/screens/ui
-
-RUN ln -s ${IOCADSIMDETECTOR} iocSimDetector

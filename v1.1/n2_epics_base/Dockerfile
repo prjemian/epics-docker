@@ -44,7 +44,7 @@ RUN make clean  2>&1 | tee -a build.log
 
 WORKDIR /tmp
 RUN pwd && ls
-COPY ioc_files/* /tmp/softIoc_base_demo/
+COPY ioc_files/* /opt/softIoc_base_demo/
 CMD ["/bin/bash"]
 
 WORKDIR ${EPICS_ROOT}

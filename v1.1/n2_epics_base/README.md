@@ -154,7 +154,7 @@ EPICS base.  To run the image as an IOC (with the default PV prefix
 of `softIoc_demo:`):
 
     docker run -ti -d --rm prjemian/epics-base-7.0.5:latest \
-        softIoc -d /tmp/softIoc_base_demo/demo.db
+        softIoc -d /opt/softIoc_base_demo/demo.db
 
 These are the PVs the demonstration IOC provides:
 
@@ -169,7 +169,7 @@ You can also supply a custom PV prefix (such as `demo:` as shown) by
 using the `-m IOC=custom_prefix` option as shown in this example:
 
     docker run -ti -d --rm prjemian/epics-base-7.0.5:latest \
-        softIoc -m IOC=demo: -d /tmp/softIoc_base_demo/demo.db
+        softIoc -m IOC=demo: -d /opt/softIoc_base_demo/demo.db
 
 These are the PVs the demonstration IOC provides when using the custom
 `demo:` PV prefix:
