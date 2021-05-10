@@ -88,11 +88,13 @@ RUN ln -s ${IOCADSIMDETECTOR} ${SUPPORT}/iocSimDetector
 RUN ln -s ${IOCADSIMDETECTOR} /opt/iocSimDetector
 COPY ioc_files/run_simDetectorIOC ${IOCADSIMDETECTOR}/run
 COPY ioc_files/runADSimDetector.sh /opt/
+RUN cp ${XXX}/iocBoot/iocxxx/softioc/in-screen.sh ${IOCADSIMDETECTOR}/
 
 ENV IOCADURL=${AREA_DETECTOR}/ADURL/iocs/urlIOC/iocBoot/iocURLDriver
 RUN ln -s ${IOCADURL} ${SUPPORT}/iocURLDriver
 RUN ln -s ${IOCADURL} /opt/iocURLDriver
 COPY ioc_files/run_adUrlIOC ${IOCADURL}/run
+RUN cp ${XXX}/iocBoot/iocxxx/softioc/in-screen.sh ${IOCADURL}/
 COPY ioc_files/runADURL.sh /opt/
 
 WORKDIR ${SUPPORT}
