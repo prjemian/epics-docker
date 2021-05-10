@@ -6,7 +6,6 @@ USER  root
 CMD bash
 WORKDIR /home
 RUN pwd && ls -lAFgh
-RUN ls
 
 COPY ioc_files/general_purpose.db ${IOCXXX}/substitutions
 COPY \
