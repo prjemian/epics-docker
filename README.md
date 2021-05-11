@@ -1,4 +1,5 @@
 # epics-docker
+
 Build EPICS docker images for testing, development, training, and simulation.
 
 ## Quick Reference
@@ -6,7 +7,7 @@ Build EPICS docker images for testing, development, training, and simulation.
 Install the latest Linux bash shell scripts to start IOCs with custom
 prefixes.  Replace any existing (v1.0) scripts with these new versions.
 
-Suggestion: Place these shell scripts into a directory on the 
+Suggestion: Place these shell scripts into a directory on the
 executable `$PATH` and give each executable permission
 (`chmod +x script_name`).  I create a `~/bin` directory for such scripts.
 
@@ -74,7 +75,6 @@ release | image | docs | notes
 **v1.0** | [`prjemian/synApps-6.1`](https://hub.docker.com/r/prjemian/synapps-6.1/tags) | [docs](v1.0/n3_synApps/README.md) | synApps 6.1
 **v1.0** | [`prjemian/synapps-6.1-ad-3.7`](https://hub.docker.com/r/prjemian/synapps-6.1-ad-3.7/tags) | [docs](v1.0/n4_areaDetector/README.md) | area detector 3.7
 
-
 ## Authors
 
 * Pete Jemian
@@ -82,8 +82,9 @@ release | image | docs | notes
 ## Acknowledgements
 
 * Contributors
-  - Chen Zhang
-  - Jeff Hoffman
-  - Quan Zhou
-* moved here from https://github.com/prjemian/virtualbeamline
-* which was forked from https://github.com/KedoKudo/virtualbeamline
+  * Chen Zhang
+  * Jeff Hoffman
+  * Quan Zhou
+
+* moved here from [virtualbeamline](https://github.com/prjemian/virtualbeamline),
+  a fork of [KedoKudo/virtualbeamline](https://github.com/KedoKudo/virtualbeamline).
