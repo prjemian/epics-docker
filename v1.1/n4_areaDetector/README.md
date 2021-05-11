@@ -79,13 +79,13 @@ These environment variables were defined when creating this docker image
     ENV PATH="${PATH}:${SUPPORT}/utils"
     ENV AD_TAG=R3-10
     ENV AREA_DETECTOR=${SUPPORT}/areaDetector-${AD_TAG}
-    ENV ADCORE_HASH=9321f2a
-    ENV ADSUPPORT_HASH=5c549858
-    ENV ADSIMDETECTOR_HASH=d24fa04
-    ENV AD_PVADRIVER_HASH=1f51a94
-    ENV ADURL_HASH=031794e
-    ENV ADVIEWERS_HASH=3fe0c51
-    ENV AD_FFMPEGSERVER_HASH=063bedd
+    ENV ADCORE_HASH=master
+    ENV ADSUPPORT_HASH=master
+    ENV ADSIMDETECTOR_HASH=master
+    ENV AD_PVADRIVER_HASH=master
+    ENV ADURL_HASH=master
+    ENV ADVIEWERS_HASH=master
+    ENV AD_FFMPEGSERVER_HASH=master
     ENV IOCADSIMDETECTOR=${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
     ENV IOCADURL=${AREA_DETECTOR}/ADURL/iocs/urlIOC/iocBoot/iocURLDriver
 
