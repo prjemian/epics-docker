@@ -8,7 +8,6 @@
 
 PRE=${1:-13SIM1}
 IMAGE_SHORT_NAME=custom-synapps-6.2-ad-3.10
-# TODO: also need IOC starter for urlDetector
 
 # -------------------------------------------
 # IOC prefix
@@ -62,13 +61,12 @@ docker cp ${CONTAINER}:/opt/iocSimDetector/  ${HOST_IOC_ROOT}
 mkdir -p ${OP_DIR}
 docker cp ${CONTAINER}:/opt/screens/   ${OP_DIR}
 
-# FIXME:
-# # edit files in docker container IOC for use with GUI software
-# echo "changing 13SIM1: to ${PREFIX} in ${CONTAINER}"
-# sed -i s+13SIM1+`echo ${PRE}`+g ${IOC_TOP}/start_caQtDM_adsim
-# sed -i s+_IOC_SCREEN_DIR_+`echo ${IOC_TOP}`+g ${IOC_TOP}/start_caQtDM_adsim
-# sed -i s+_AD_SCREENS_DIR_+`echo ${OP_DIR}/screens/ui`+g ${IOC_TOP}/start_caQtDM_adsim
-# sed -i s+"# CAQTDM_DISPLAY_PATH"+CAQTDM_DISPLAY_PATH+g ${IOC_TOP}/start_caQtDM_adsim
+# edit files in docker container IOC for use with GUI software
+echo "changing 13SIM1: to ${PREFIX} in ${CONTAINER}"
+sed -i s+13SIM1+`echo ${PRE}`+g ${IOC_TOP}/start_caQtDM_adsim
+sed -i s+_IOC_SCREEN_DIR_+`echo ${IOC_TOP}`+g ${IOC_TOP}/start_caQtDM_adsim
+sed -i s+_AD_SCREENS_DIR_+`echo ${OP_DIR}/screens/ui`+g ${IOC_TOP}/start_caQtDM_adsim
+sed -i s+"# CAQTDM_DISPLAY_PATH"+CAQTDM_DISPLAY_PATH+g ${IOC_TOP}/start_caQtDM_adsim
 
-# # TODO: find the caQtDM plugins and copy locally
-# # TODO: edit QT_PLUGIN_PATH in start_caQtDM_adsim
+# TODO: find the caQtDM plugins and copy locally
+# TODO: edit QT_PLUGIN_PATH in start_caQtDM_adsim
