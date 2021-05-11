@@ -1,5 +1,5 @@
 FROM  prjemian/synapps-6.2
-LABEL version="1.1.0" \
+LABEL version="1.1.1" \
       maintainer="prjemian <prjemian@gmail.com>" \
       Description="source: https://github.com/prjemian/epics-docker/"
 USER  root
@@ -8,10 +8,9 @@ WORKDIR /home
 RUN pwd && ls -lAFgh
 
 COPY ioc_files/general_purpose.db ${IOCXXX}/substitutions
-COPY \
-      ioc_files/customize_xxx.sh \
-      ioc_files/screens \
-      /opt/
+COPY ioc_files/customize_xxx.sh /opt/
+COPY ioc_files/screens/ /opt/screens/
+      
 RUN /opt/customize_xxx.sh && pwd
 RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
 RUN bash /opt/modify_adl_in_ui_files.sh  /opt/screens/ui
