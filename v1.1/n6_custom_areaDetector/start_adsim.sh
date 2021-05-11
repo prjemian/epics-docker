@@ -21,10 +21,10 @@ CONTAINER=ioc${PRE}
 IMAGE=prjemian/${IMAGE_SHORT_NAME}:latest
 
 # name of IOC manager (start, stop, status, ...)
-IOC_MANAGER=iocSimDetector/simDetector.sh
+IOC_MANAGER=/opt/iocSimDetector/adsim.sh
 
 # pass the IOC PREFIX to the container at boot time
-ENVIRONMENT="AD_PREFIX=${PREFIX}"
+ENVIRONMENT="PREFIX=${PREFIX}"
 
 # convenience definitions
 RUN="docker exec ${CONTAINER}"
@@ -51,7 +51,6 @@ docker run -d -it --rm --net=host \
 sleep 1
 
 echo -n "starting IOC ${CONTAINER} ... "
-# TODO need IOC_MANAGER
 CMD="${RUN} ${IOC_MANAGER} start"
 echo ${CMD}
 ${CMD}
@@ -59,16 +58,17 @@ sleep 2
 
 # copy container's files to /tmp for medm & caQtDM
 echo "copy IOC ${CONTAINER} to ${HOST_IOC_ROOT}"
-docker cp ${CONTAINER}:/opt/synApps/support/areaDetector-R3-7/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector/  ${HOST_IOC_ROOT}
+docker cp ${CONTAINER}:/opt/iocSimDetector/  ${HOST_IOC_ROOT}
 mkdir -p ${OP_DIR}
-docker cp ${CONTAINER}:/opt/synApps/support/screens/   ${OP_DIR}
+docker cp ${CONTAINER}:/opt/screens/   ${OP_DIR}
 
-# edit files in docker container IOC for use with GUI software
-echo "changing 13SIM1: to ${PREFIX} in ${CONTAINER}"
-sed -i s+13SIM1+`echo ${PRE}`+g ${IOC_TOP}/start_caQtDM_adsim
-sed -i s+_IOC_SCREEN_DIR_+`echo ${IOC_TOP}`+g ${IOC_TOP}/start_caQtDM_adsim
-sed -i s+_AD_SCREENS_DIR_+`echo ${OP_DIR}/screens/ui`+g ${IOC_TOP}/start_caQtDM_adsim
-sed -i s+"# CAQTDM_DISPLAY_PATH"+CAQTDM_DISPLAY_PATH+g ${IOC_TOP}/start_caQtDM_adsim
+# FIXME:
+# # edit files in docker container IOC for use with GUI software
+# echo "changing 13SIM1: to ${PREFIX} in ${CONTAINER}"
+# sed -i s+13SIM1+`echo ${PRE}`+g ${IOC_TOP}/start_caQtDM_adsim
+# sed -i s+_IOC_SCREEN_DIR_+`echo ${IOC_TOP}`+g ${IOC_TOP}/start_caQtDM_adsim
+# sed -i s+_AD_SCREENS_DIR_+`echo ${OP_DIR}/screens/ui`+g ${IOC_TOP}/start_caQtDM_adsim
+# sed -i s+"# CAQTDM_DISPLAY_PATH"+CAQTDM_DISPLAY_PATH+g ${IOC_TOP}/start_caQtDM_adsim
 
-# TODO: find the caQtDM plugins and copy locally
-# TODO: edit QT_PLUGIN_PATH in start_caQtDM_adsim
+# # TODO: find the caQtDM plugins and copy locally
+# # TODO: edit QT_PLUGIN_PATH in start_caQtDM_adsim
