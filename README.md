@@ -2,9 +2,10 @@
 
 Build EPICS docker images for testing, development, training, and simulation.
 
-**Contents**
+## Contents
 
 - [epics-docker](#epics-docker)
+  - [Contents](#contents)
   - [Quick Reference](#quick-reference)
     - [custom synApps](#custom-synapps)
     - [custom Area Detector (ADSimDetector)](#custom-area-detector-adsimdetector)
@@ -90,14 +91,14 @@ release | image | docs | notes
 
 ## Authors
 
-* Pete Jemian
+- Pete Jemian
 
 ## Acknowledgements
 
-* Contributors
-  * Chen Zhang
-  * Jeff Hoffman
-  * Quan Zhou
+- Contributors
+  - Chen Zhang
+  - Jeff Hoffman
+  - Quan Zhou
 
-* moved here from [virtualbeamline](https://github.com/prjemian/virtualbeamline),
+- moved here from [virtualbeamline](https://github.com/prjemian/virtualbeamline),
   a fork of [KedoKudo/virtualbeamline](https://github.com/KedoKudo/virtualbeamline).
