@@ -32,7 +32,14 @@ cd ${IOCADURL}
 pwd
 ls -lAFgh
 
+cp ${IOCADSIMDETECTOR}/adsim.sh ./adurl.sh
+sed -i s+'13SIM1'+'13URL1'+g   ./adurl.sh
+sed -i s+'IOC_BINARY=simDetectorApp'+'IOC_BINARY=URLDriverApp'+g   ./adurl.sh
+
 # default PREFIX is 13URL1:
 sed -i s/'epicsEnvSet("PREFIX", "13URL1:")'/'epicsEnvSet("PREFIX", $(PREFIX=13URL1:))'/g   ./st_base.cmd
 
-# TODO: update GUI files, too?
+cat >> ./st.cmd << EOF
+#
+dbl > dbl-all.txt
+EOF

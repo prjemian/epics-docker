@@ -12,7 +12,11 @@ RUN /opt/customize_ad.sh 2>&1 | tee /opt/customize_ad.log
 
 RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
 COPY \
-      *_cam_image.ui \
+      sim_cam_image.ui \
       start_caQtDM_adsim \
       /opt/iocSimDetector/
+COPY \
+      url_cam_image.ui \
+      start_caQtDM_adurl \
+      /opt/iocURLDriver/
 RUN bash /opt/modify_adl_in_ui_files.sh  /opt/screens/ui
