@@ -87,41 +87,41 @@ command | provides | what happens when you type `exit`
 
 * `${IOCXXX}` : IOC boot directory ready to run with customizable PV prefix (default: `xxx:`)
 
-* simulated 56 motors: : `$(PREFIX)m1` .. `$(PREFIX)m48`
+* 56 simulated motors: : `$(PREFIX)m1` .. `$(PREFIX)m48`
 * common:
-  * autosave support (disappears once the container is removed unless mapped to external volume)
-  * Stream protocol support
-  * devIocStats, such as `$(PREFIX)UPTIME`
-  * caPutRecorder support
+  * 2 busy records:  `$(PREFIX)mybusy1`, `$(PREFIX)mybusy2`
+  * 2 sets of luascript support: `$(PREFIX)set1`, `$(PREFIX)set2`
   * 4 sscan records: `$(PREFIX)scan1` ..  `$(PREFIX)scan4` and  `$(PREFIX)scanH`
+  * autosave support (disappears once the container is removed unless mapped to external volume)
+  * caPutRecorder support
   * configMenu support
+  * devIocStats, such as `$(PREFIX)UPTIME`
+  * interpolation support
+  * Stream protocol support
+  * string sequence records
   * userCalc support
     * 10 swait records: `$(PREFIX)userCalc1` .. `$(PREFIX)userCalc10`
     * 10 scalcout records: `$(PREFIX)userStringCalc1` .. `$(PREFIX)userStringCalc10`
-  * 2 sets of luascript support: `$(PREFIX)set1`, `$(PREFIX)set2`
-  * string sequence records
-  * interpolation support
-  * 2 busy records:  `$(PREFIX)mybusy1`, `$(PREFIX)mybusy2`
-  * alive record support (for use at Advanced Photon Source)
 * from [optics](https://github.com/epics-modules/optics):
   * simulated 4-blade slits: `$(PREFIX)Slit1H` and `$(PREFIX)Slit1V`
-  * simulated optical table: `$(PREFIX)Table1`
-  * simulated double-crystal *boomerang* monochromator (energy, wavelength, and motions: theta, Y1, Z2)
   * simulated 4-circle diffractometer database (axes: 2theta, theta, chi, phi)
+  * simulated coarse+fine motion: `$(PREFIX)cf1`
+  * simulated double-crystal *boomerang* monochromator (energy, wavelength, and motions: theta, Y1, Z2)
+  * simulated optical table: `$(PREFIX)Table1`
 * from [std](https://github.com/epics-modules/std):
-  * 1 Coarse/Fine stage database: `$(PREFIX)cf1`
-  * 1 ramp/tweak database: `$(PREFIX)rt1`
+  * 4-step measurement database: `$(PREFIX)4step`
+  * fb_epid database: `$(PREFIX)epid1`
+  * miscellaneous PVs database
+    * ISO8601 time record: `$(PREFIX)iso8601`
+  * PV history database
+  * ramp/tweak database: `$(PREFIX)rt1`
   * simulated 16-channel scaler: `$(PREFIX)scaler1`
-  * 1 4-step measurement database: `$(PREFIX)4step`
-  * 1 PV history database
-  * 1 software timer database
-  * 1 miscellaneous PVs database
-    * 1 ISO8601 time record: `$(PREFIX)iso8601`
-  * 1 fb_epid database: `$(PREFIX)epid1`
+  * software timer database
 * 20 sets of general purpose PVs: `$(PREFIX)gp`
   * 1-bit `bit`: `$(PREFIX)gp:bit1` ..  `$(PREFIX)gp:bit20` (default labels: 0="off", 1="on")
   * 32-bit `int`: `$(PREFIX)gp:int1` ..  `$(PREFIX)gp:int20`
   * double-precision `float`: `$(PREFIX)gp:float1` ..  `$(PREFIX)gp:float20`
+  * 1k array double-precision `float`: `$(PREFIX)gp:array1` ..  `$(PREFIX)gp:array20`
   * 40-character `text`: `$(PREFIX)gp:text1` ..  `$(PREFIX)gp:text20`
   * 1024 character `longtext`: `$(PREFIX)gp:longtext1` ..  `$(PREFIX)gp:longtext20`
 
@@ -180,4 +180,4 @@ from | image | description
 `prjemian/epics-base-7.0.5` |  `prjemian/synapps-6.2` | synApps release 6.2
 `prjemian/os_only-1.1` | `prjemian/epics-base-7.0.5` |  EPICS base release 7.0.5
 `ubuntu` | `prjemian/os_only-1.1` | Linux OS for this EPICS installation
-dockerhub | `ubuntu` | Ubuntu 20.04.1 LTS (at the time of the build)
+dockerhub | `ubuntu` | Ubuntu 20.04.2 LTS (at the time of the build)

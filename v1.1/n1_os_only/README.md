@@ -30,10 +30,10 @@ Operating system identification
 ```
 (base) builder@host:~/.../epics-docker/n1_os_only$ docker run prjemian/os_only cat /etc/os-release
 NAME="Ubuntu"
-VERSION="20.04.1 LTS (Focal Fossa)"
+VERSION="20.04.2 LTS (Focal Fossa)"
 ID=ubuntu
 ID_LIKE=debian
-PRETTY_NAME="Ubuntu 20.04.1 LTS"
+PRETTY_NAME="Ubuntu 20.04.2 LTS"
 VERSION_ID="20.04"
 HOME_URL="https://www.ubuntu.com/"
 SUPPORT_URL="https://help.ubuntu.com/"
@@ -63,4 +63,4 @@ These are the docker images from which this image is based:
 
 from | image | description
 --- | --- | ---
-dockerhub | `ubuntu` | Ubuntu 20.04.1 LTS (at the time of the build)
+dockerhub | `ubuntu` | Ubuntu 20.04.2 LTS (at the time of the build)

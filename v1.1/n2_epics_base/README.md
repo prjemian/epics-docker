@@ -194,4 +194,4 @@ from | image | description
 --- | --- | ---
 `prjemian/os_only-1.1` | `prjemian/epics-base-7.0.5` |  this image
 `ubuntu` | `prjemian/os_only-1.1` | Linux OS for this EPICS installation
-dockerhub | `ubuntu` | Ubuntu 20.04.1 LTS (at the time of the build)
+dockerhub | `ubuntu` | Ubuntu 20.04.2 LTS (at the time of the build)
