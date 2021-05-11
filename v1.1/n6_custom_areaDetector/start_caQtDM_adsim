@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# starts caQtDM
+export PREFIX=${PREFIX:-13SIM1:}
+export DEFAULT_SCREEN=sim_cam_image.ui
+
+export EPICS_HOST_ARCH=linux-x86_64
+export EPICS_CA_MAX_ARRAY_BYTES=10000000
+
+CAQTDM_DISPLAY_PATH=$(dirname $(readlink -f $0))
+# NOTE: Next two lines will be modified 
+# (via sed commands) in start_caQtDM_adsim.sh
+# targets:  _IOC_SCREEN_DIR_ & _AD_SCREENS_DIR_  
+CAQTDM_DISPLAY_PATH=${CAQTDM_DISPLAY_PATH}:_IOC_SCREEN_DIR_
+CAQTDM_DISPLAY_PATH=${CAQTDM_DISPLAY_PATH}:_AD_SCREENS_DIR_
+export CAQTDM_DISPLAY_PATH
+
+export QT_PLUGIN_PATH=/usr/local/epics/extensions/lib/linux-x86_64
+export CAQTDM_OPTIMIZE_EPICS3CONNECTIONS="TRUE"
+
+export APP=caQtDM
+export MACRO="P=${PREFIX},R=cam1:" 
+export UI_FILE=${1:-${DEFAULT_SCREEN}}
+
+${APP} -macro ${MACRO} ${UI_FILE} &

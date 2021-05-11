@@ -1,0 +1,558 @@
+make -C n1_os_only      	    build
+make[1]: Entering directory '/home/prjemian/Documents/projects/epics-docker/v1.1/n1_os_only'
+echo "# started: " `date --iso-8601="seconds"` | tee build-log.txt
+# started:  2021-02-06T14:26:45-06:00
+docker build \
+	-t prjemian/os_only-1.1  \
+	./  \
+	2>&1 | tee -a build-log.txt
+Sending build context to Docker daemon  8.192kB
+Step 1/8 : FROM  ubuntu:latest
+ ---> f643c72bc252
+Step 2/8 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"       Description="source: https://github.com/prjemian/epics-docker/"
+ ---> Using cache
+ ---> 6228827ebfb1
+Step 3/8 : USER  root
+ ---> Using cache
+ ---> 9fba1d475de7
+Step 4/8 : WORKDIR /home
+ ---> Using cache
+ ---> 4aade2e25f45
+Step 5/8 : RUN DEBIAN_FRONTEND=noninteractive apt-get update  -y &&     DEBIAN_FRONTEND=noninteractive apt-get upgrade -y &&     DEBIAN_FRONTEND=noninteractive apt-get install -y          apt-utils         build-essential          libreadline-dev          nano          screen         vim         &&     rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 6b82f5fb6ce1
+Step 6/8 : ENV APP_ROOT="/opt"
+ ---> Using cache
+ ---> 27f83125505b
+Step 7/8 : ENV EDITOR="nano"
+ ---> Using cache
+ ---> 679272d3e2fd
+Step 8/8 : ENV PROMPT_DIRTRIM=3
+ ---> Using cache
+ ---> 7b0623b0fa39
+Successfully built 7b0623b0fa39
+Successfully tagged prjemian/os_only-1.1:latest
+echo "# finished: " `date --iso-8601="seconds"` | tee -a build-log.txt
+# finished:  2021-02-06T14:26:45-06:00
+make[1]: Leaving directory '/home/prjemian/Documents/projects/epics-docker/v1.1/n1_os_only'
+make -C n2_epics_base   	    build
+make[1]: Entering directory '/home/prjemian/Documents/projects/epics-docker/v1.1/n2_epics_base'
+echo "# build started: " `date --iso-8601="seconds"` | tee build-log.txt
+# build started:  2021-02-06T14:26:45-06:00
+docker build \
+	-t prjemian/epics-base-7.0.4.1  \
+	./  \
+	2>&1 | tee -a build-log.txt
+Sending build context to Docker daemon  14.85kB
+Step 1/25 : FROM  prjemian/os_only-1.1
+ ---> 7b0623b0fa39
+Step 2/25 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"       Description="source: https://github.com/prjemian/epics-docker/"
+ ---> Using cache
+ ---> 7b174d110f63
+Step 3/25 : USER  root
+ ---> Using cache
+ ---> 3096f52e1196
+Step 4/25 : WORKDIR /home
+ ---> Using cache
+ ---> f8ad48669557
+Step 5/25 : ENV APP_ROOT="/opt"
+ ---> Using cache
+ ---> b897f9e80a8b
+Step 6/25 : ENV EDITOR="nano"
+ ---> Using cache
+ ---> 3b3faad35b38
+Step 7/25 : ENV EPICS_BASE_NAME=base-7.0.4.1
+ ---> Using cache
+ ---> cc0df33de0fe
+Step 8/25 : ENV EPICS_BASE_DIR_NAME=base-R7.0.4.1
+ ---> Using cache
+ ---> b83917052740
+Step 9/25 : ENV EPICS_HOST_ARCH=linux-x86_64
+ ---> Using cache
+ ---> 204f6d998b90
+Step 10/25 : ENV EPICS_ROOT="${APP_ROOT}/${EPICS_BASE_DIR_NAME}"
+ ---> Using cache
+ ---> 5b8d3971c7d0
+Step 11/25 : ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
+ ---> Using cache
+ ---> 91845baddc91
+Step 12/25 : WORKDIR ${APP_ROOT}
+ ---> Using cache
+ ---> 4ac4115879af
+Step 13/25 : ADD https://epics.anl.gov/download/base/${EPICS_BASE_NAME}.tar.gz ./
+
+ ---> Using cache
+ ---> 7f62694ae40d
+Step 14/25 : RUN tar xzf ${EPICS_BASE_NAME}.tar.gz &&    rm  ${EPICS_BASE_NAME}.tar.gz &&    ln -s ${EPICS_BASE_DIR_NAME} base &&    ls -lAFgh
+ ---> Using cache
+ ---> 8701864d7e6e
+Step 15/25 : WORKDIR ${EPICS_ROOT}
+ ---> Using cache
+ ---> f09b8b61e149
+Step 16/25 : RUN pwd && ls
+ ---> Using cache
+ ---> 01017161221e
+Step 17/25 : RUN make -j4 all CFLAGS="-fPIC" CXXFLAGS="-fPIC"  2>&1 | tee build.log
+ ---> Using cache
+ ---> d0a771a8aa89
+Step 18/25 : RUN echo "# --- make clean ---" 2>&1 | tee -a build.log
+ ---> Using cache
+ ---> f9ffe367d6a4
+Step 19/25 : RUN make clean  2>&1 | tee -a build.log
+ ---> Using cache
+ ---> 58b99d950096
+Step 20/25 : WORKDIR /tmp
+ ---> Using cache
+ ---> 4c4fa2f60c17
+Step 21/25 : RUN pwd && ls
+ ---> Using cache
+ ---> 54675ec7bf57
+Step 22/25 : COPY ioc_files/* /tmp/softIoc_base_demo/
+ ---> Using cache
+ ---> c25e69bf48c6
+Step 23/25 : CMD ["/bin/bash"]
+ ---> Using cache
+ ---> 2ccfba5febc4
+Step 24/25 : WORKDIR ${EPICS_ROOT}
+ ---> Using cache
+ ---> cf79f7bd96b7
+Step 25/25 : RUN pwd && ls
+ ---> Using cache
+ ---> df4cb86b89d3
+Successfully built df4cb86b89d3
+Successfully tagged prjemian/epics-base-7.0.4.1:latest
+echo "# build finished: " `date --iso-8601="seconds"` | tee -a build-log.txt
+# build finished:  2021-02-06T14:26:46-06:00
+make[1]: Leaving directory '/home/prjemian/Documents/projects/epics-docker/v1.1/n2_epics_base'
+make -C n3_synApps      	    build
+make[1]: Entering directory '/home/prjemian/Documents/projects/epics-docker/v1.1/n3_synApps'
+echo "# started: " `date --iso-8601="seconds"` | tee build-log.txt
+# started:  2021-02-06T14:26:46-06:00
+docker build \
+	-t prjemian/synapps-6.2  \
+	./  \
+	2>&1 | tee -a build-log.txt
+Sending build context to Docker daemon  19.97kB
+Step 1/44 : FROM  prjemian/epics-base-7.0.4.1
+ ---> df4cb86b89d3
+Step 2/44 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"       Description="source: https://github.com/prjemian/epics-docker/"
+ ---> Using cache
+ ---> 406cce5304d4
+Step 3/44 : USER  root
+ ---> Using cache
+ ---> 58375fac48ac
+Step 4/44 : WORKDIR /home
+ ---> Using cache
+ ---> 772cb011a5f4
+Step 5/44 : RUN pwd && ls -lAFgh
+ ---> Using cache
+ ---> 851905334ccc
+Step 6/44 : RUN echo # start ------------------- OS update -------------------
+ ---> Using cache
+ ---> eac272a45197
+Step 7/44 : RUN     DEBIAN_FRONTEND=noninteractive apt-get update  -y &&     DEBIAN_FRONTEND=noninteractive apt-get install -y         git        libnet-dev        libpcap-dev        libusb-1.0-0-dev        libusb-dev        libx11-dev        libxext-dev        re2c        wget        &&     rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 5bfee17fdc66
+Step 8/44 : RUN echo # end ------------------- OS update -------------------
+ ---> Using cache
+ ---> 6248e4c0cd40
+Step 9/44 : ENV APP_ROOT="/opt"
+ ---> Using cache
+ ---> 5100c4793c0b
+Step 10/44 : ENV EDITOR="nano"
+ ---> Using cache
+ ---> 09be23880442
+Step 11/44 : ENV EPICS_HOST_ARCH=linux-x86_64
+ ---> Using cache
+ ---> 187a0c1b01ac
+Step 12/44 : ENV EPICS_ROOT="${APP_ROOT}/base"
+ ---> Using cache
+ ---> 1b0555788357
+Step 13/44 : ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
+ ---> Using cache
+ ---> 881c84097752
+Step 14/44 : ENV MOTOR_HASH=R7-2-2
+ ---> Using cache
+ ---> 04f416ce3b7f
+Step 15/44 : ENV SYNAPPS="${APP_ROOT}/synApps"
+ ---> Using cache
+ ---> d22e9b08fe85
+Step 16/44 : ENV SUPPORT="${SYNAPPS}/support"
+ ---> Using cache
+ ---> 4b6667687a50
+Step 17/44 : ENV PATH="${PATH}:${SUPPORT}/utils"
+ ---> Using cache
+ ---> d02e063308b0
+Step 18/44 : ENV MOTOR=${SUPPORT}/motor-${MOTOR_HASH}
+ ---> Using cache
+ ---> bd6f7e7b03e4
+Step 19/44 : ENV XXX=${SUPPORT}/xxx-R6-2
+ ---> Using cache
+ ---> 2859beacb7ad
+Step 20/44 : ENV IOCXXX=${XXX}/iocBoot/iocxxx
+ ---> Using cache
+ ---> 569d4d082bb4
+Step 21/44 : RUN mkdir /data
+ ---> Using cache
+ ---> 586c0a81e829
+Step 22/44 : RUN echo # start ------------------- assemble_synApps.sh -------------------
+ ---> Using cache
+ ---> 3511cb736912
+Step 23/44 : WORKDIR ${APP_ROOT}
+ ---> Using cache
+ ---> 3d48bd2d8f61
+Step 24/44 : RUN pwd && ls -lAFgh
+ ---> Using cache
+ ---> be262c9762d2
+Step 25/44 : ENV HASH=R6-2
+ ---> Using cache
+ ---> a0aef59f616f
+Step 26/44 : ADD https://raw.githubusercontent.com/EPICS-synApps/support/${HASH}/assemble_synApps.sh ./
+
+ ---> Using cache
+ ---> 4b4c7c7c1783
+Step 27/44 : COPY ./ioc_files/* ./
+ ---> Using cache
+ ---> 7f8523587915
+Step 28/44 : RUN bash ./edit_assemble_synApps.sh 2>&1 | tee edit_assemble.log
+ ---> Using cache
+ ---> ff3b2b8c1f01
+Step 29/44 : RUN cat ./assemble_synApps.sh
+ ---> Using cache
+ ---> f0b8ee552b6d
+Step 30/44 : RUN bash ./assemble_synApps.sh 2>&1 | tee assemble.log
+ ---> Using cache
+ ---> 22228fbb303a
+Step 31/44 : WORKDIR ${SUPPORT}
+ ---> Using cache
+ ---> 2dd554d79fbc
+Step 32/44 : RUN pwd && ls -lAFgh
+ ---> Using cache
+ ---> 6efd2e69b2c0
+Step 33/44 : RUN echo # end ------------------- assemble_synApps.sh -------------------
+ ---> Using cache
+ ---> 5fecd959786e
+Step 34/44 : RUN echo # start ------------------- build synApps -------------------
+ ---> Using cache
+ ---> 0df0e1022aee
+Step 35/44 : WORKDIR ${SUPPORT}
+ ---> Using cache
+ ---> ce9f8479d5bb
+Step 36/44 : RUN pwd && ls -lAFgh
+ ---> Using cache
+ ---> 8f06dd9e3c01
+Step 37/44 : RUN make -j4 release rebuild 2>&1 | tee build.log
+ ---> Using cache
+ ---> c2c044d8c561
+Step 38/44 : RUN echo "# --- Building XXX IOC ---" 2>&1 | tee -a build.log
+ ---> Using cache
+ ---> e5325f82ffc5
+Step 39/44 : RUN make -C ${IOCXXX}/ 2>&1 | tee -a build.log
+ ---> Using cache
+ ---> 006f72323d1c
+Step 40/44 : RUN ln -s ${IOCXXX}/ ./iocxxx
+ ---> Using cache
+ ---> 7daf931afefb
+Step 41/44 : RUN echo # end ------------------- build synApps -------------------
+ ---> Using cache
+ ---> adea94c3afff
+Step 42/44 : COPY ioc_files/copy_screens.sh /opt
+ ---> Using cache
+ ---> a2d958fceba4
+Step 43/44 : RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
+ ---> Using cache
+ ---> 584145db0877
+Step 44/44 : CMD ["/bin/bash"]
+ ---> Using cache
+ ---> 19598b8fbdc3
+Successfully built 19598b8fbdc3
+Successfully tagged prjemian/synapps-6.2:latest
+echo "# finished: " `date --iso-8601="seconds"` | tee -a build-log.txt
+# finished:  2021-02-06T14:26:46-06:00
+make[1]: Leaving directory '/home/prjemian/Documents/projects/epics-docker/v1.1/n3_synApps'
+make -C n4_areaDetector 	    build
+make[1]: Entering directory '/home/prjemian/Documents/projects/epics-docker/v1.1/n4_areaDetector'
+echo "# started: " `date --iso-8601="seconds"` | tee build-log.txt
+# started:  2021-02-06T14:26:46-06:00
+docker build \
+	-t prjemian/synapps-6.2-ad-3.10  \
+	./  \
+	2>&1 | tee -a build-log.txt
+Sending build context to Docker daemon  23.04kB
+Step 1/58 : FROM  prjemian/synapps-6.2
+ ---> 19598b8fbdc3
+Step 2/58 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"       Description="source: https://github.com/prjemian/epics-docker/"
+ ---> Using cache
+ ---> 59447297868c
+Step 3/58 : USER  root
+ ---> Using cache
+ ---> d2d705ca82e3
+Step 4/58 : WORKDIR /home
+ ---> Using cache
+ ---> 944f6ea2f98b
+Step 5/58 : RUN     DEBIAN_FRONTEND=noninteractive apt-get update  -y &&     DEBIAN_FRONTEND=noninteractive apt-get install -y         libx11-dev        x11-xserver-utils        xorg-dev        xvfb        &&     rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 8db21b19f5ad
+Step 6/58 : ENV APP_ROOT="/opt"
+ ---> Using cache
+ ---> 7a30a89812b4
+Step 7/58 : ENV EDITOR="nano"
+ ---> Using cache
+ ---> 9f3f088873e1
+Step 8/58 : ENV EPICS_HOST_ARCH=linux-x86_64
+ ---> Using cache
+ ---> a708743fdc21
+Step 9/58 : ENV EPICS_ROOT="${APP_ROOT}/base"
+ ---> Using cache
+ ---> 4769a7cb97c6
+Step 10/58 : ENV PATH="${PATH}:${EPICS_ROOT}/bin/${EPICS_HOST_ARCH}"
+ ---> Using cache
+ ---> 8f34eb5644aa
+Step 11/58 : ENV SUPPORT="${APP_ROOT}/synApps/support"
+ ---> Using cache
+ ---> 7b0f823e5c78
+Step 12/58 : ENV PATH="${PATH}:${SUPPORT}/utils"
+ ---> Using cache
+ ---> 542c619e172b
+Step 13/58 : WORKDIR ${SUPPORT}
+ ---> Using cache
+ ---> 448132b9f2eb
+Step 14/58 : RUN pwd && ls -lAFgh
+ ---> Using cache
+ ---> e56f2a667ecc
+Step 15/58 : ENV AD_TAG=R3-10
+ ---> Using cache
+ ---> 8b3865ce434d
+Step 16/58 : ENV AREA_DETECTOR=${SUPPORT}/areaDetector-${AD_TAG}
+ ---> Using cache
+ ---> 17514146f258
+Step 17/58 : ADD https://github.com/areaDetector/areaDetector/archive/${AD_TAG}.tar.gz ./areaDetector-${AD_TAG}.tar.gz
+
+
+ ---> Using cache
+ ---> cdf8025d90e2
+Step 18/58 : RUN     tar xzf areaDetector-${AD_TAG}.tar.gz &&     /bin/rm areaDetector-${AD_TAG}.tar.gz &&     echo "AREA_DETECTOR=\$(SUPPORT)/areaDetector-${AD_TAG}" >>  ${SUPPORT}/configure/RELEASE
+ ---> Using cache
+ ---> f25bb9095fda
+Step 19/58 : ENV ADCORE_HASH=9321f2a
+ ---> Using cache
+ ---> cdf36414e9a3
+Step 20/58 : ENV ADSUPPORT_HASH=5c549858
+ ---> Using cache
+ ---> 6eb5919047df
+Step 21/58 : ENV ADSIMDETECTOR_HASH=d24fa04
+ ---> Using cache
+ ---> aa58d67cae56
+Step 22/58 : ENV AD_PVADRIVER_HASH=1f51a94
+ ---> Using cache
+ ---> 5f359cc7130b
+Step 23/58 : ENV ADURL_HASH=031794e
+ ---> Using cache
+ ---> 7ee33befbc7a
+Step 24/58 : ENV ADVIEWERS_HASH=3fe0c51
+ ---> Using cache
+ ---> 1014d69137c3
+Step 25/58 : ENV AD_FFMPEGSERVER_HASH=063bedd
+ ---> Using cache
+ ---> bf241fc0b71f
+Step 26/58 : WORKDIR ${AREA_DETECTOR}
+ ---> Using cache
+ ---> b252f541314a
+Step 27/58 : RUN pwd && ls -lAFgh
+ ---> Using cache
+ ---> c988656be83a
+Step 28/58 : ADD https://github.com/areaDetector/ADCore/archive/${ADCORE_HASH}.tar.gz ./ADCore.tar.gz
+
+
+ ---> Using cache
+ ---> f54022746760
+Step 29/58 : ADD https://github.com/areaDetector/ADSupport/archive/${ADSUPPORT_HASH}.tar.gz ./ADSupport.tar.gz
+
+
+ ---> Using cache
+ ---> 7c9967705e6f
+Step 30/58 : ADD https://github.com/areaDetector/ADSimDetector/archive/${ADSIMDETECTOR_HASH}.tar.gz ./ADSimDetector.tar.gz
+
+
+ ---> Using cache
+ ---> 1b0fbba5b9c2
+Step 31/58 : ADD https://github.com/areaDetector/pvaDriver/archive/${AD_PVADRIVER_HASH}.tar.gz ./pvaDriver.tar.gz
+
+
+ ---> Using cache
+ ---> 94366163001c
+Step 32/58 : ADD https://github.com/areaDetector/ADURL/archive/${ADURL_HASH}.tar.gz ./ADURL.tar.gz
+
+
+ ---> Using cache
+ ---> 4ab6668c42f3
+Step 33/58 : ADD https://github.com/areaDetector/ADViewers/archive/${ADVIEWERS_HASH}.tar.gz ./ADViewers.tar.gz
+
+
+ ---> Using cache
+ ---> 5f7f5d1c3a19
+Step 34/58 : ADD https://github.com/areaDetector/ffmpegServer/archive/${AD_FFMPEGSERVER_HASH}.tar.gz ./ffmpegServer.tar.gz
+
+
+ ---> Using cache
+ ---> 6e145cbcecf1
+Step 35/58 : COPY ioc_files/rearrange_AD_dirs.sh /opt
+ ---> Using cache
+ ---> 3142d2fff5e2
+Step 36/58 : RUN /opt/rearrange_AD_dirs.sh 2>&1 | tee /opt/rearrange_AD_dirs.log
+ ---> Using cache
+ ---> 4d4f7a1753f0
+Step 37/58 : WORKDIR ${AREA_DETECTOR}/configure
+ ---> Using cache
+ ---> 5ce038273437
+Step 38/58 : RUN pwd && ls -lAFgh
+ ---> Using cache
+ ---> 728d2824abee
+Step 39/58 : COPY ioc_files/recommended_AD_edits.sh /opt
+ ---> Using cache
+ ---> e9522e73c300
+Step 40/58 : RUN /opt/recommended_AD_edits.sh 2>&1 | tee /opt/recommended_AD_edits.log
+ ---> Using cache
+ ---> 35d6ff177653
+Step 41/58 : ENV IOCADSIMDETECTOR=${AREA_DETECTOR}/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector
+ ---> Using cache
+ ---> 44243a161a4c
+Step 42/58 : RUN ln -s ${IOCADSIMDETECTOR} ${SUPPORT}/iocSimDetector
+ ---> Using cache
+ ---> 86ceb7dc2a95
+Step 43/58 : COPY ioc_files/run_simDetectorIOC ${IOCADSIMDETECTOR}/run
+ ---> Using cache
+ ---> 8fa5cce3a2aa
+Step 44/58 : COPY ioc_files/runADSimDetector.sh /opt/
+ ---> Using cache
+ ---> 876763c40bb5
+Step 45/58 : ENV IOCADURL=${AREA_DETECTOR}/ADURL/iocs/urlIOC/iocBoot/iocURLDriver
+ ---> Using cache
+ ---> d9e79c156525
+Step 46/58 : RUN ln -s ${IOCADURL} ${SUPPORT}/iocURLDriver
+ ---> Using cache
+ ---> 5fa95b6d9021
+Step 47/58 : COPY ioc_files/run_adUrlIOC ${IOCADURL}/run
+ ---> Using cache
+ ---> 375dfe09e19b
+Step 48/58 : COPY ioc_files/runADURL.sh /opt/
+ ---> Using cache
+ ---> 748db21e94dd
+Step 49/58 : WORKDIR ${SUPPORT}
+ ---> Using cache
+ ---> 4607b1ba8077
+Step 50/58 : RUN pwd && ls -lAFgh
+ ---> Using cache
+ ---> 4c2ee782f078
+Step 51/58 : RUN make release
+ ---> Using cache
+ ---> 0a6b99074cd2
+Step 52/58 : RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
+ ---> Using cache
+ ---> 81f11d907f49
+Step 53/58 : WORKDIR ${AREA_DETECTOR}
+ ---> Using cache
+ ---> 4756efbfc00d
+Step 54/58 : RUN pwd && ls -lAFgh
+ ---> Using cache
+ ---> d7facb23af21
+Step 55/58 : RUN make -j4 all 2>&1 | tee makelog.txt
+ ---> Using cache
+ ---> 17a454aff601
+Step 56/58 : WORKDIR ${SUPPORT}
+ ---> Using cache
+ ---> 1ab7f1815e50
+Step 57/58 : RUN pwd && ls -lAFgh
+ ---> Using cache
+ ---> d58965d3d4c4
+Step 58/58 : CMD ["/bin/bash"]
+ ---> Using cache
+ ---> ea31f8b8ac61
+Successfully built ea31f8b8ac61
+Successfully tagged prjemian/synapps-6.2-ad-3.10:latest
+echo "# finished: " `date --iso-8601="seconds"` | tee -a build-log.txt
+# finished:  2021-02-06T14:27:15-06:00
+make[1]: Leaving directory '/home/prjemian/Documents/projects/epics-docker/v1.1/n4_areaDetector'
+make -C n5_custom_synApps	    build
+make[1]: Entering directory '/home/prjemian/Documents/projects/epics-docker/v1.1/n5_custom_synApps'
+echo "# started: " `date --iso-8601="seconds"` | tee build-log.txt
+# started:  2021-02-06T14:27:15-06:00
+docker build \
+	-t prjemian/custom-synapps-6.2  \
+	./  \
+	2>&1 | tee -a build-log.txt
+Sending build context to Docker daemon  16.38kB
+Step 1/11 : FROM  prjemian/synapps-6.2
+ ---> 19598b8fbdc3
+Step 2/11 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"       Description="source: https://github.com/prjemian/epics-docker/"
+ ---> Using cache
+ ---> 59447297868c
+Step 3/11 : USER  root
+ ---> Using cache
+ ---> d2d705ca82e3
+Step 4/11 : WORKDIR /home
+ ---> Using cache
+ ---> 944f6ea2f98b
+Step 5/11 : RUN pwd && ls -lAFgh
+ ---> Using cache
+ ---> 9c7f958c203d
+Step 6/11 : COPY ioc_files/general_purpose.db ${IOCXXX}/substitutions
+ ---> Using cache
+ ---> 0ea16b7995ce
+Step 7/11 : COPY ioc_files/customize_xxx.sh /opt
+ ---> Using cache
+ ---> 7c118850d334
+Step 8/11 : RUN /opt/customize_xxx.sh && pwd
+ ---> Using cache
+ ---> 7c5ad4b74a3f
+Step 9/11 : RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
+ ---> Using cache
+ ---> de8acae3c91d
+Step 10/11 : WORKDIR ${SUPPORT}
+ ---> Using cache
+ ---> 17fdf2d11d50
+Step 11/11 : RUN     pwd && ls -lAFgh &&     tar czf /opt/$(basename ${XXX}).tar.gz $(basename ${XXX})
+ ---> Using cache
+ ---> 7a2d8c283438
+Successfully built 7a2d8c283438
+Successfully tagged prjemian/custom-synapps-6.2:latest
+echo "# finished: " `date --iso-8601="seconds"` | tee -a build-log.txt
+# finished:  2021-02-06T14:27:15-06:00
+make[1]: Leaving directory '/home/prjemian/Documents/projects/epics-docker/v1.1/n5_custom_synApps'
+make -C n6_custom_areaDetector	build
+make[1]: Entering directory '/home/prjemian/Documents/projects/epics-docker/v1.1/n6_custom_areaDetector'
+echo "# started: " `date --iso-8601="seconds"` | tee build-log.txt
+# started:  2021-02-06T14:27:15-06:00
+docker build \
+	-t prjemian/custom-synapps-6.2-ad-3.10  \
+	./  \
+	2>&1 | tee -a build-log.txt
+Sending build context to Docker daemon  10.75kB
+Step 1/8 : FROM  prjemian/synapps-6.2-ad-3.10
+ ---> ea31f8b8ac61
+Step 2/8 : LABEL version="1.1.0"       maintainer="prjemian <prjemian@gmail.com>"       Description="source: https://github.com/prjemian/epics-docker/"
+ ---> Using cache
+ ---> f2f62f0fa62e
+Step 3/8 : USER  root
+ ---> Using cache
+ ---> 93c57994e2a6
+Step 4/8 : WORKDIR /home
+ ---> Using cache
+ ---> 25fea3659997
+Step 5/8 : RUN pwd && ls -lAFgh
+ ---> Using cache
+ ---> ff779d71769f
+Step 6/8 : COPY ioc_files/customize_ad.sh /opt
+ ---> Using cache
+ ---> 9cea0b2ecf64
+Step 7/8 : RUN /opt/customize_ad.sh 2>&1 | tee /opt/customize_ad.log
+ ---> Using cache
+ ---> a304aa70a56e
+Step 8/8 : RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
+ ---> Using cache
+ ---> b7cfac7c05ed
+Successfully built b7cfac7c05ed
+Successfully tagged prjemian/custom-synapps-6.2-ad-3.10:latest
+echo "# finished: " `date --iso-8601="seconds"` | tee -a build-log.txt
+# finished:  2021-02-06T14:27:15-06:00
+make[1]: Leaving directory '/home/prjemian/Documents/projects/epics-docker/v1.1/n6_custom_areaDetector'
