@@ -1,10 +1,6 @@
 # epics-docker
 Build EPICS docker images for testing, development, training, and simulation.
 
-## Authors
-
-* Pete Jemian
-
 ## Quick Reference
 
 Install the latest Linux bash shell scripts to start IOCs with custom
@@ -78,6 +74,10 @@ release | image | docs | notes
 **v1.0** | [`prjemian/synApps-6.1`](https://hub.docker.com/r/prjemian/synapps-6.1/tags) | [docs](v1.0/n3_synApps/README.md) | synApps 6.1
 **v1.0** | [`prjemian/synapps-6.1-ad-3.7`](https://hub.docker.com/r/prjemian/synapps-6.1-ad-3.7/tags) | [docs](v1.0/n4_areaDetector/README.md) | area detector 3.7
 
+
+## Authors
+
+* Pete Jemian
 
 ## Acknowledgements
 
