@@ -27,7 +27,9 @@ shell ::
 		/bin/bash
 
 push ::
-	docker push $(FULLNAME)
+	echo "# push started: " `date --iso-8601="seconds"` | tee -a $(LOGFILE)
+	docker push $(FULLNAME) 2>&1 | tee -a $(LOGFILE)
+	echo "# push finished: " `date --iso-8601="seconds"` | tee -a $(LOGFILE)
 
 net ::
 	docker network create \
