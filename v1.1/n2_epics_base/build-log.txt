@@ -4078,3 +4078,33 @@ Removing intermediate container 9f059aab1c1c
 Successfully built 3057de4ffb54
 Successfully tagged prjemian/epics-base-7.0.5:latest
 # build finished:  2021-05-10T21:46:26-05:00
+# push started:  2021-05-10T23:14:09-05:00
+Using default tag: latest
+The push refers to repository [docker.io/prjemian/epics-base-7.0.5]
+58c038950a90: Preparing
+5e9c8b4c37f1: Preparing
+0a5847cf2f3a: Preparing
+b59ec67a291e: Preparing
+9af906b6234a: Preparing
+54eac0eb8400: Preparing
+1fa81a84ea3c: Preparing
+2f140462f3bc: Preparing
+63c99163f472: Preparing
+ccdbb80308cc: Preparing
+54eac0eb8400: Waiting
+1fa81a84ea3c: Waiting
+2f140462f3bc: Waiting
+63c99163f472: Waiting
+ccdbb80308cc: Waiting
+58c038950a90: Pushed
+0a5847cf2f3a: Pushed
+5e9c8b4c37f1: Pushed
+1fa81a84ea3c: Mounted from prjemian/os_only-1.1
+2f140462f3bc: Mounted from prjemian/os_only-1.1
+9af906b6234a: Pushed
+63c99163f472: Mounted from prjemian/os_only-1.1
+ccdbb80308cc: Mounted from prjemian/os_only-1.1
+54eac0eb8400: Pushed
+b59ec67a291e: Pushed
+latest: digest: sha256:f75741f278dffe8d066596ea5ffea7fb235fe407539dcebc87b3899f17499354 size: 2414
+# push finished:  2021-05-10T23:15:39-05:00

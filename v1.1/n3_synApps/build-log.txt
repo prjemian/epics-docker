@@ -14495,3 +14495,78 @@ Removing intermediate container 16370cdaf658
 Successfully built 460661040c5c
 Successfully tagged prjemian/synapps-6.2:latest
 # finished:  2021-05-10T21:49:35-05:00
+# push started:  2021-05-10T23:16:46-05:00
+Using default tag: latest
+The push refers to repository [docker.io/prjemian/synapps-6.2]
+91eeff21c059: Preparing
+68c12d84b437: Preparing
+3b7e0890b7b1: Preparing
+a7a54e5f7ad4: Preparing
+ea2b65027492: Preparing
+35f30d79072e: Preparing
+8433c46fbb66: Preparing
+0e46894ad7f0: Preparing
+0113d09f46e7: Preparing
+7d9b6049f45c: Preparing
+5ff4aa359470: Preparing
+ff335f882e2d: Preparing
+b4431279765c: Preparing
+a073a6350073: Preparing
+c21d16692c7a: Preparing
+58c038950a90: Preparing
+5e9c8b4c37f1: Preparing
+0a5847cf2f3a: Preparing
+b59ec67a291e: Preparing
+9af906b6234a: Preparing
+54eac0eb8400: Preparing
+1fa81a84ea3c: Preparing
+2f140462f3bc: Preparing
+63c99163f472: Preparing
+ccdbb80308cc: Preparing
+7d9b6049f45c: Waiting
+5ff4aa359470: Waiting
+ff335f882e2d: Waiting
+b4431279765c: Waiting
+a073a6350073: Waiting
+c21d16692c7a: Waiting
+58c038950a90: Waiting
+5e9c8b4c37f1: Waiting
+0a5847cf2f3a: Waiting
+b59ec67a291e: Waiting
+9af906b6234a: Waiting
+54eac0eb8400: Waiting
+1fa81a84ea3c: Waiting
+2f140462f3bc: Waiting
+63c99163f472: Waiting
+ccdbb80308cc: Waiting
+0e46894ad7f0: Waiting
+35f30d79072e: Waiting
+8433c46fbb66: Waiting
+0113d09f46e7: Waiting
+68c12d84b437: Pushed
+ea2b65027492: Pushed
+a7a54e5f7ad4: Pushed
+35f30d79072e: Pushed
+91eeff21c059: Pushed
+8433c46fbb66: Pushed
+0e46894ad7f0: Pushed
+3b7e0890b7b1: Pushed
+5ff4aa359470: Pushed
+ff335f882e2d: Pushed
+b4431279765c: Pushed
+58c038950a90: Mounted from prjemian/epics-base-7.0.5
+a073a6350073: Pushed
+5e9c8b4c37f1: Mounted from prjemian/epics-base-7.0.5
+0a5847cf2f3a: Mounted from prjemian/epics-base-7.0.5
+b59ec67a291e: Mounted from prjemian/epics-base-7.0.5
+9af906b6234a: Mounted from prjemian/epics-base-7.0.5
+54eac0eb8400: Mounted from prjemian/epics-base-7.0.5
+1fa81a84ea3c: Mounted from prjemian/epics-base-7.0.5
+2f140462f3bc: Mounted from prjemian/epics-base-7.0.5
+63c99163f472: Mounted from prjemian/epics-base-7.0.5
+ccdbb80308cc: Mounted from prjemian/epics-base-7.0.5
+c21d16692c7a: Pushed
+7d9b6049f45c: Pushed
+0113d09f46e7: Pushed
+latest: digest: sha256:48c9089c6c7bc6d2daa5fcd4f7d4ad651480025d77c9d978a1658d5245664b6e size: 5553
+# push finished:  2021-05-10T23:21:24-05:00
