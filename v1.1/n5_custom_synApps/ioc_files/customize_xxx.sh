@@ -47,25 +47,25 @@ sed -i s:'IOC=xxx':'IOC=$(PREFIX)':g  ./st.cmd.Linux
 
 cat > ./pre_assigned_motor_names.iocsh  << EOF
 # motor assignments:
-dbpf(${PREFIX}m29.DESC, "TTH 4-circle")
-dbpf(${PREFIX}m30.DESC, "TH 4-circle")
-dbpf(${PREFIX}m31.DESC, "CHI 4-circle")
-dbpf(${PREFIX}m32.DESC, "PHI 4-circle")
-dbpf(${PREFIX}m33.DESC, "CM coarse/fine")
-dbpf(${PREFIX}m34.DESC, "FM coarse/fine")
-dbpf(${PREFIX}m35.DESC, "M0X table")
-dbpf(${PREFIX}m36.DESC, "M0Y table")
-dbpf(${PREFIX}m37.DESC, "M1Y table")
-dbpf(${PREFIX}m38.DESC, "M2X table")
-dbpf(${PREFIX}m39.DESC, "M2Y table")
-dbpf(${PREFIX}m40.DESC, "M2Z table")
-dbpf(${PREFIX}m41.DESC, "Slit1V:mXp")
-dbpf(${PREFIX}m42.DESC, "Slit1V:mXn")
-dbpf(${PREFIX}m43.DESC, "Slit1H:mXp")
-dbpf(${PREFIX}m44.DESC, "Slit1H:mXn")
-dbpf(${PREFIX}m45.DESC, "THETA monochromator")
-dbpf(${PREFIX}m46.DESC, "Y monochromator")
-dbpf(${PREFIX}m47.DESC, "Z monochromator")
+dbpf(\${PREFIX}m29.DESC, "TTH 4-circle")
+dbpf(\${PREFIX}m30.DESC, "TH 4-circle")
+dbpf(\${PREFIX}m31.DESC, "CHI 4-circle")
+dbpf(\${PREFIX}m32.DESC, "PHI 4-circle")
+dbpf(\${PREFIX}m33.DESC, "CM coarse/fine")
+dbpf(\${PREFIX}m34.DESC, "FM coarse/fine")
+dbpf(\${PREFIX}m35.DESC, "M0X table")
+dbpf(\${PREFIX}m36.DESC, "M0Y table")
+dbpf(\${PREFIX}m37.DESC, "M1Y table")
+dbpf(\${PREFIX}m38.DESC, "M2X table")
+dbpf(\${PREFIX}m39.DESC, "M2Y table")
+dbpf(\${PREFIX}m40.DESC, "M2Z table")
+dbpf(\${PREFIX}m41.DESC, "Slit1V:mXp")
+dbpf(\${PREFIX}m42.DESC, "Slit1V:mXn")
+dbpf(\${PREFIX}m43.DESC, "Slit1H:mXp")
+dbpf(\${PREFIX}m44.DESC, "Slit1H:mXn")
+dbpf(\${PREFIX}m45.DESC, "THETA monochromator")
+dbpf(\${PREFIX}m46.DESC, "Y monochromator")
+dbpf(\${PREFIX}m47.DESC, "Z monochromator")
 EOF
 
 cat >> st.cmd.Linux << EOF
@@ -95,7 +95,6 @@ cat >> ./optics.iocsh << EOF
 dbLoadRecords("\$(OPTICS)/opticsApp/Db/CoarseFineMotor.db","P=\$(PREFIX)cf1:,PM=\$(PREFIX),CM=m33,FM=m34")
 EOF
 sed -i s:'CM=m7,FM=m8':'CM=m33,FM=m34':g   ${XXX}/xxxApp/op/ui/xxx.ui
-
 
 # 4-circle diffractometer
 # append new line instead of edit in place
