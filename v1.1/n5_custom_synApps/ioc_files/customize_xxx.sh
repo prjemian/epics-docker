@@ -14,6 +14,12 @@ cp examples/motors.iocsh ./
 cp examples/optics.iocsh    ./
 cp examples/std.iocsh    ./
 
+# change the TIMEZONE environment variable per issue #30
+# https://github.com/prjemian/epics-docker/issues/30
+# get the exact path to the EPICS database file
+export dbFile=$(readlink -f /opt/synApps/support/iocStats*/db/iocAdminSoft.db)
+sed -i s:'EPICS_TIMEZONE':'EPICS_TZ':g ${dbFile}
+
 sed -i s:'#iocshLoad("$(MOTOR)/modules/motorMotorSim/iocsh/motorSim.iocsh"':'iocshLoad("$(MOTOR)/iocsh/motorSim.iocsh"':g ./motors.iocsh
 sed -i s:'LOW_LIM=':'HIGH_LIM=32000, LOW_LIM=':g ./motors.iocsh
 sed -i s:'NUM_AXES=16':'NUM_AXES=56':g ./motors.iocsh
