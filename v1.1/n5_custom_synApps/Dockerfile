@@ -8,7 +8,7 @@ WORKDIR /home
 RUN pwd && ls -lAFgh
 
 COPY ioc_files/general_purpose.db ${IOCXXX}/substitutions
-COPY ioc_files/customize_xxx.sh /opt/
+COPY ioc_files/customize_xxx.sh ioc_files/asyn_motor.db.diffs /opt/
 COPY ioc_files/screens/ /opt/screens/
       
 RUN /opt/customize_xxx.sh && pwd

@@ -1,0 +1,62 @@
+58,65c58,59
+< # Motor direction for this axis
+< record(longout,"$(P)$(M)Direction") {
+<     field(DESC, "$(M) direction")
+<     field(DOL,  "$(P)$(M).DIR CP MS")
+<     field(OMSL, "closed_loop")
+<     field(DTYP, "asynInt32")
+<     field(OUT,  "@asyn($(PORT),$(ADDR))MOTOR_REC_DIRECTION")
+< }
+---
+> # Commented out for docker image
+> # see: https://github.com/prjemian/epics-docker/issues/24
+66a61,68
+> # # Motor direction for this axis
+> # record(longout,"$(P)$(M)Direction") {
+> #     field(DESC, "$(M) direction")
+> #     field(DOL,  "$(P)$(M).DIR CP MS")
+> #     field(OMSL, "closed_loop")
+> #     field(DTYP, "asynInt32")
+> #     field(OUT,  "@asyn($(PORT),$(ADDR))MOTOR_REC_DIRECTION")
+> # }
+68,76d69
+< # Motor offset for this axis
+< record(ao,"$(P)$(M)Offset") {
+<     field(DESC, "$(M) offset")
+<     field(DOL,  "$(P)$(M).OFF CP MS")
+<     field(OMSL, "closed_loop")
+<     field(DTYP, "asynFloat64")
+<     field(OUT,  "@asyn($(PORT),$(ADDR))MOTOR_REC_OFFSET")
+<     field(PREC, "$(PREC)")
+< }
+77a71,79
+> # # Motor offset for this axis
+> # record(ao,"$(P)$(M)Offset") {
+> #     field(DESC, "$(M) offset")
+> #     field(DOL,  "$(P)$(M).OFF CP MS")
+> #     field(OMSL, "closed_loop")
+> #     field(DTYP, "asynFloat64")
+> #     field(OUT,  "@asyn($(PORT),$(ADDR))MOTOR_REC_OFFSET")
+> #     field(PREC, "$(PREC)")
+> # }
+79,87c81,90
+< # Motor resolution for this axis
+< record(ao,"$(P)$(M)Resolution") {
+<     field(DESC, "$(M) resolution")
+<     field(DOL,  "$(P)$(M).MRES CP MS")
+<     field(OMSL, "closed_loop")
+<     field(DTYP, "asynFloat64")
+<     field(OUT,  "@asyn($(PORT),$(ADDR))MOTOR_REC_RESOLUTION")
+<     field(PREC, "$(PREC)")
+< }
+---
+> 
+> # # Motor resolution for this axis
+> # record(ao,"$(P)$(M)Resolution") {
+> #     field(DESC, "$(M) resolution")
+> #     field(DOL,  "$(P)$(M).MRES CP MS")
+> #     field(OMSL, "closed_loop")
+> #     field(DTYP, "asynFloat64")
+> #     field(OUT,  "@asyn($(PORT),$(ADDR))MOTOR_REC_RESOLUTION")
+> #     field(PREC, "$(PREC)")
+> # }

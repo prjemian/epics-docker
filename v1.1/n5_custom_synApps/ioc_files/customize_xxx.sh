@@ -20,9 +20,13 @@ cp examples/std.iocsh    ./
 export dbFile=$(readlink -f /opt/synApps/support/iocStats*/db/iocAdminSoft.db)
 sed -i s:'EPICS_TIMEZONE':'EPICS_TZ':g ${dbFile}
 
+# motors
 sed -i s:'#iocshLoad("$(MOTOR)/modules/motorMotorSim/iocsh/motorSim.iocsh"':'iocshLoad("$(MOTOR)/iocsh/motorSim.iocsh"':g ./motors.iocsh
 sed -i s:'LOW_LIM=':'HIGH_LIM=32000, LOW_LIM=':g ./motors.iocsh
 sed -i s:'NUM_AXES=16':'NUM_AXES=56':g ./motors.iocsh
+
+# https://github.com/prjemian/epics-docker/issues/24
+patch ${MOTOR}/db/asyn_motor.db /opt/asyn_motor.db.diffs
 
 # re-write the substitutions file for 56 motors (easier than modifying it)
 export SUBFILE=./substitutions/motorSim.substitutions
