@@ -91,8 +91,8 @@ echo "# monochromator"  >> ./optics.iocsh
 echo iocshLoad\(\"\$\(OPTICS\)/iocsh/kohzu_mono.iocsh\", \"PREFIX=\$\(PREFIX\), M_THETA=m45,M_Y=m46,M_Z=m47, YOFF_LO=17.4999,YOFF_HI=17.5001, GEOM=1, LOG=kohzuCtl.log\"\)  >> ./optics.iocsh
 
 # slits: m41 - m44
-sed -i s/'Slit1V,mXp=m3,mXn=m4'/'Slit1V,mXp=m41,mXn=m42'/g   ./optics.iocsh
-sed -i s/'Slit1H,mXp=m3,mXn=m4'/'Slit1H,mXp=m43,mXn=m44'/g   ./optics.iocsh
+sed -i s/'Slit1V:,mXp=m3,mXn=m4'/'Slit1V,mXp=m41,mXn=m42'/g   ./optics.iocsh
+sed -i s/'Slit1H:,mXp=m5,mXn=m6'/'Slit1H,mXp=m43,mXn=m44'/g   ./optics.iocsh
 
 # optical table: m35 - m40
 sed -i s/',T=table1,M0X=m1,M0Y=m2,M1Y=m3,M2X=m4,M2Y=m5,M2Z=m6'/',T=table1,M0X=m35,M0Y=m36,M1Y=m37,M2X=m38,M2Y=m39,M2Z=m40'/g   ./optics.iocsh
