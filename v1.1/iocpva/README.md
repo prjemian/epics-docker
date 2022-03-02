@@ -11,6 +11,9 @@ PVAccess](https://epics-controls.org/resources-and-support/documents/pvaccess/)
 Here, an IOC using the `pvaDriver` is provided using the [`custom-synapps-6.2-ad-3.10`](https://hub.docker.com/repository/docker/prjemian/custom-synapps-6.2-ad-3.10) 
 docker image.
 
+
+<!--lint enable no-undefined-references list-item-indent -->
+
 - [Area Detector IOC using pvaDriver](#area-detector-ioc-using-pvadriver)
   - [Usage](#usage)
     - [Example](#example)
@@ -173,7 +176,9 @@ It should be possible to start a new container with the `13PVA1:` IOC with a new
 
 ### Requirements
 
-* [x] host shell script that creates new container and starts IOC
-* [x] is custom IOC prefix supported by the image?  Yes, with some script editing.
-* [x] shared volume between container & host
-* [x] caQtDM starter and GUI screen
+- [x] host shell script that creates new container and starts IOC
+- [x] is custom IOC prefix supported by the image?  Yes, with some script editing.
+- [x] shared volume between container & host
+- [x] caQtDM starter and GUI screen
+
+<!--lint enable no-undefined-references list-item-indent -->
