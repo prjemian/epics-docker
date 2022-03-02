@@ -17,7 +17,7 @@ docker image.
     - [Graphical User Interface](#graphical-user-interface)
   - [Original Proposal](#original-proposal)
     - [Questions](#questions)
-    - [Requirements:](#requirements)
+    - [Requirements](#requirements)
 
 ## Usage
 
@@ -159,7 +159,7 @@ To see an image, you must first *Enable* the image plugin from the `setup` -> `p
 
 ## Original Proposal
 
-_Before_ the support was created, we had some questions and requirements.
+**Before** the support was created, we had some questions and requirements.
 
 ### Questions
 
@@ -171,9 +171,9 @@ docker image has it.  How about the
 image? [Perhaps](https://github.com/prjemian/epics-docker/search?q=pvaDriver).)
 It should be possible to start a new container with the `13PVA1:` IOC with a new bash shell script.
 
-### Requirements:
+### Requirements
 
-- [x] host shell script that creates new container and starts IOC
-- [x] is custom IOC prefix supported by the image?  Yes, with some script editing.
-- [x] shared volume between container & host
-- [x] caQtDM starter and GUI screen
+* [x] host shell script that creates new container and starts IOC
+* [x] is custom IOC prefix supported by the image?  Yes, with some script editing.
+* [x] shared volume between container & host
+* [x] caQtDM starter and GUI screen
