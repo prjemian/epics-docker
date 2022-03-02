@@ -1,11 +1,14 @@
 #!/bin/bash
 
-CONTAINER=$1
-INFO=`docker ps -a | grep " ${CONTAINER}$"`
+# stop and remove docker container named by supplied argument
 
-if [ "" != "${INFO}" ]; then
+CONTAINER=$1
+
+if [ "" != "$(which docker ps -a | grep ' ${CONTAINER}$' )" ]; then
     echo -n "stopping container ${CONTAINER} ... "
     docker stop ${CONTAINER}
-    echo -n "removing container ${CONTAINER} ... "
-    docker rm ${CONTAINER}
+    if [ "" != "$(which docker ps -a | grep ' ${CONTAINER}$' )" ]; then
+        echo -n "removing container ${CONTAINER} ... "
+        docker rm ${CONTAINER}
+    fi
 fi
