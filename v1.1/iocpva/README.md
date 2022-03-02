@@ -22,12 +22,19 @@ docker image.
 ## Usage
 
 1. Download the the `start_adpva.sh` IOC starter (a bash shell script)
-1. Give the starter exectuable permissions: `chmod +x start_adpva.sh`
-1. Move `start_adpva.sh` to a folder on your executable `PATH`, such as `~/bin/`.
-1. Start the IOC:
+
+2. Give the starter exectuable permissions: `chmod +x start_adpva.sh`
+
+3. Move `start_adpva.sh` to a folder on your executable `PATH`, such as `~/bin/`.
+
+4. Start the IOC:
    1. `start_adpva.sh` (use default IOC prefix `13PVA1`)
+
    2. `start_adpva.sh adpva` to use custom IOC prefix `adpva`
-1. Copy the GUI starter (a bash shell script) from the IOC folder to your executable folder.  See the [Graphical User Interface](#graphical-user-interface) section below.
+
+5. Copy the GUI starter (a bash shell script) from the IOC folder to your
+   executable folder.  See the [Graphical User
+   Interface](#graphical-user-interface) section below.
 
 ### Example
 
