@@ -11,8 +11,7 @@ PVAccess](https://epics-controls.org/resources-and-support/documents/pvaccess/)
 Here, an IOC using the `pvaDriver` is provided using the [`custom-synapps-6.2-ad-3.10`](https://hub.docker.com/repository/docker/prjemian/custom-synapps-6.2-ad-3.10) 
 docker image.
 
-
-<!--lint enable no-undefined-references list-item-indent -->
+<!--lint disable no-undefined-references list-item-indent -->
 
 - [Area Detector IOC using pvaDriver](#area-detector-ioc-using-pvadriver)
   - [Usage](#usage)
@@ -32,7 +31,6 @@ docker image.
 
 4. Start the IOC:
    1. `start_adpva.sh` (use default IOC prefix `13PVA1`)
-
    2. `start_adpva.sh adpva` to use custom IOC prefix `adpva`
 
 5. Copy the GUI starter (a bash shell script) from the IOC folder to your
