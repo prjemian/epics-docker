@@ -1,3 +1,6 @@
+<!--lint disable list-item-indent -->
+<!--lint disable no-undefined-references -->
+
 # Area Detector IOC using pvaDriver
 
 The BDP (beamline data pipelines) project wants to inject real data into the
@@ -10,8 +13,6 @@ PVAccess](https://epics-controls.org/resources-and-support/documents/pvaccess/)
 
 Here, an IOC using the `pvaDriver` is provided using the [`custom-synapps-6.2-ad-3.10`](https://hub.docker.com/repository/docker/prjemian/custom-synapps-6.2-ad-3.10) 
 docker image.
-
-<!--lint disable no-undefined-references list-item-indent -->
 
 - [Area Detector IOC using pvaDriver](#area-detector-ioc-using-pvadriver)
   - [Usage](#usage)
@@ -178,5 +179,3 @@ It should be possible to start a new container with the `13PVA1:` IOC with a new
 - [x] is custom IOC prefix supported by the image?  Yes, with some script editing.
 - [x] shared volume between container & host
 - [x] caQtDM starter and GUI screen
-
-<!--lint enable no-undefined-references list-item-indent -->
