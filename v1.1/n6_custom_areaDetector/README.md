@@ -10,6 +10,7 @@ image provides ...
   - [Overview](#overview)
     - [modifications of synApps-6.2-ad-2.10](#modifications-of-synapps-62-ad-210)
   - [default application](#default-application)
+  - [IOC for pvaDriver](#ioc-for-pvadriver)
 - [TODO](#todo)
   - [default working directory](#default-working-directory)
   - [example use](#example-use)
@@ -36,6 +37,11 @@ By default, the bash shell is run but no IOC is started.
         prjemian/custom-synapps-6.2-ad-3.10:latest
 
 See the [*example use*](#example-use) section for an IOC example.
+
+## IOC for pvaDriver
+
+An [IOC using the `pvaDriver`](./iocpva/README.md) is provided using the [`custom-synapps-6.2-ad-3.10`](https://hub.docker.com/repository/docker/prjemian/custom-synapps-6.2-ad-3.10) 
+docker image.
 
 ---
 
