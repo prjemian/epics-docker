@@ -11,7 +11,7 @@ that monitors an [EPICS
 PVAccess](https://epics-controls.org/resources-and-support/documents/pvaccess/)
 (PVA) PV for new data to be pushed through the area detector pipeline.
 
-Here, an IOC using the `pvaDriver` is provided using the [`custom-synapps-6.2-ad-3.10`](https://hub.docker.com/repository/docker/prjemian/custom-synapps-6.2-ad-3.10) 
+Here, an IOC using the `pvaDriver` is provided using the [`custom-synapps-6.2-ad-3.10`](https://hub.docker.com/repository/docker/prjemian/custom-synapps-6.2-ad-3.10)
 docker image.
 
 - [Area Detector IOC using pvaDriver](#area-detector-ioc-using-pvadriver)
@@ -24,15 +24,24 @@ docker image.
 
 ## Usage
 
+These instructions are written for use on Linux.  You'll probably need to modify them to work on other operating systems.
+
 1. Download the the `start_adpva.sh` IOC starter (a bash shell script)
 
-2. Give the starter exectuable permissions: `chmod +x start_adpva.sh`
+   ```bash
+   wget https://raw.githubusercontent.com/prjemian/epics-docker/main/v1.1/iocpva/start_adpva.sh
+   ```
+
+2. Give the starter executable permissions: `chmod +x start_adpva.sh`
 
 3. Move `start_adpva.sh` to a folder on your executable `PATH`, such as `~/bin/`.
 
-4. Start the IOC:
-   1. `start_adpva.sh` (use default IOC prefix `13PVA1`)
-   2. `start_adpva.sh adpva` to use custom IOC prefix `adpva`
+4. Start the IOC.  Choose either:
+
+   command | IOC prefix | description
+   --- | --- | ---
+   `start_adpva.sh` | `13PVA1` | default IOC prefix
+   `start_adpva.sh adpva` | `adpva` | example custom IOC prefix
 
 5. Copy the GUI starter (a bash shell script) from the IOC folder to your
    executable folder.  See the [Graphical User
@@ -43,7 +52,7 @@ docker image.
 Start IOC with default prefix (`13PVA1`):
 
 ```bash
-user@localhost$ ~/bin/start_adpva.sh 
+user@localhost$ ~/bin/start_adpva.sh
 starting container ioc13PVA1 ... 833690c4318e7231705fd45fbe63c54daacd5332c2c42d0c43a6534373eeb65c
 starting IOC ioc13PVA1 ... Starting adpva
 changing 13PVA1: to 13PVA1: in ./start_caQtDM_13PVA1
@@ -165,11 +174,11 @@ To see an image, you must first *Enable* the image plugin from the `setup` -> `p
 
 ### Questions
 
-The [epics-docker custom area detector 
-image](https://github.com/prjemian/epics-docker/tree/main/v1.1/n6_custom_areaDetector) has `pvaDriver` already built.  (The 
-[`custom-synapps-6.2-ad-3.10`](https://hub.docker.com/repository/docker/prjemian/custom-synapps-6.2-ad-3.10) 
-docker image has it.  How about the 
-[`synapps-6.2-ad-3.10`](https://hub.docker.com/repository/docker/prjemian/synapps-6.2-ad-3.10) 
+The [epics-docker custom area detector
+image](https://github.com/prjemian/epics-docker/tree/main/v1.1/n6_custom_areaDetector) has `pvaDriver` already built.  (The
+[`custom-synapps-6.2-ad-3.10`](https://hub.docker.com/repository/docker/prjemian/custom-synapps-6.2-ad-3.10)
+docker image has it.  How about the
+[`synapps-6.2-ad-3.10`](https://hub.docker.com/repository/docker/prjemian/synapps-6.2-ad-3.10)
 image? [Perhaps](https://github.com/prjemian/epics-docker/search?q=pvaDriver).)
 It should be possible to start a new container with the `13PVA1:` IOC with a new bash shell script.
 
