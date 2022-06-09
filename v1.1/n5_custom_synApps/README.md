@@ -90,7 +90,7 @@ command | provides | what happens when you type `exit`
 * 56 simulated motors: : `$(PREFIX)m1` .. `$(PREFIX)m48`
 * common:
   * 2 busy records:  `$(PREFIX)mybusy1`, `$(PREFIX)mybusy2`
-  * 2 sets of luascript support: `$(PREFIX)set1`, `$(PREFIX)set2`
+  * 2 sets of luascript support: `$(PREFIX)set1`, `$(PREFIX)set2`, each with 10 scripts
   * 4 sscan records: `$(PREFIX)scan1` ..  `$(PREFIX)scan4` and  `$(PREFIX)scanH`
   * autosave support (disappears once the container is removed unless mapped to external volume)
   * caPutRecorder support
@@ -100,8 +100,8 @@ command | provides | what happens when you type `exit`
   * Stream protocol support
   * string sequence records
   * userCalc support
-    * 10 swait records: `$(PREFIX)userCalc1` .. `$(PREFIX)userCalc10`
-    * 10 scalcout records: `$(PREFIX)userStringCalc1` .. `$(PREFIX)userStringCalc10`
+    * 20 swait records: `$(PREFIX)userCalc1` .. `$(PREFIX)userCalc20`
+    * 20 scalcout records: `$(PREFIX)userStringCalc1` .. `$(PREFIX)userStringCalc20`
 * from [optics](https://github.com/epics-modules/optics):
   * simulated 4-blade slits: `$(PREFIX)Slit1H` and `$(PREFIX)Slit1V`
   * simulated 4-circle diffractometer database (axes: 2theta, theta, chi, phi)
