@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# echo "Hello!  PWD=$(pwd)"
-# ls -larth "${RESOURCES}/"
-
 export BASE_VERSION=7.0.5
 export EPICS_BASE_NAME=base-${BASE_VERSION}
 export EPICS_BASE="${APP_ROOT}/${EPICS_BASE_NAME}"
