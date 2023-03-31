@@ -11,8 +11,6 @@ echo "# --- --- --- --- --- script ---> $(readlink -f ${0})"
 source "${HOME}/.bash_aliases"
 LOG_FILE="${LOG_DIR}/create_gp_ioc.log"
 
-export IOCS_DIR="$(readlink -f ${SUPPORT}/../iocs)"
-mkdir "${IOCS_DIR}"
 export GP="${IOCS_DIR}/iocgp"
 export IOCGP="${GP}/iocBoot/iocgp"
 
@@ -21,7 +19,6 @@ cat >> "${HOME}/.bash_aliases"  << EOF
 # create_gp_ioc.sh
 export GP="${GP}"
 export IOCGP="${IOCGP}"
-export IOCS_DIR="${IOCS_DIR}"
 EOF
 
 echo "# ................................ copy XXX" 2>&1 | tee -a "${LOG_FILE}"
@@ -213,7 +210,7 @@ chmod +x "${HOME}/bin/gp.sh"
 
 
 #--------------------------------------------------------------------------
-# TODO: COPY ioc_files/screens/ /opt/screens/
+mv /tmp/gp_screens "${GP}/screens"  # TODO:
 # bash ${RESOURCES}/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
 # bash /opt/modify_adl_in_ui_files.sh  /opt/screens/ui
 

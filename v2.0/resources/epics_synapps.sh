@@ -9,8 +9,10 @@ LOG_FILE="${LOG_DIR}/build-synApps.log"
 export SYNAPPS="${APP_ROOT}/synApps"
 export SUPPORT="${SYNAPPS}/support"
 export PATH="${PATH}:${SUPPORT}/utils"
+export IOCS_DIR="$(readlink -m ${SUPPORT}/../iocs)"
+mkdir -p "${IOCS_DIR}"
 
-export CAPUTRECORDER_HASH=master
+# export CAPUTRECORDER_HASH=master  # TODO: still needed?
 export MOTOR_HASH=R7-2-2
 # export AD=${SUPPORT}/areaDetector-master
 # export MOTOR=${SUPPORT}/motor-${MOTOR_HASH}
@@ -23,9 +25,10 @@ cat >> "${HOME}/.bash_aliases"  << EOF
 # epics_synapps.sh
 export SYNAPPS="${SYNAPPS}"
 export SUPPORT="${SUPPORT}"
+export IOCS_DIR="${IOCS_DIR}"
 export PATH="${PATH}"
 export CAPUTRECORDER_HASH="${CAPUTRECORDER_HASH}"
-export MOTOR_HASH="${CAPUTRECORDER_HASH}"
+export MOTOR_HASH="${MOTOR_HASH}"
 # export AD="${AD}"
 # export MOTOR="${MOTOR}"
 export XXX="${XXX}"
