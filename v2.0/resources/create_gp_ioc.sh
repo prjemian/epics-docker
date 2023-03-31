@@ -34,7 +34,7 @@ mv "$(basename ${XXX})" "$(basename ${GP})"
 cd "${GP}"
 /bin/rm -rf ./.git* ./.ci* ./.travis.yml
 
-make clean
+make -C "${GP}" clean
 
 echo "# ................................ repair iocStats timezone setup" 2>&1 | tee -a "${LOG_FILE}"
 # change the TIMEZONE environment variable per issue #30
@@ -49,6 +49,10 @@ changePrefix xxx gp  # default PREFIX is gp:
 cd "${IOCGP}"
 sed -i s/'IOC_NAME=gp'/'export PREFIX=${PREFIX:-gp:\}\nIOC_NAME=\$\{PREFIX\}'/g   ./softioc/gp.sh
 sed -i s/'epicsEnvSet("PREFIX", "gp:")'/'epicsEnvSet("PREFIX", $(PREFIX=gp:))'/g   ./settings.iocsh
+
+
+echo "# ................................ recompile" 2>&1 | tee -a "${LOG_FILE}"
+make -C "${GP}"
 
 
 echo "# ................................ customize motors" 2>&1 | tee -a "${LOG_FILE}"
@@ -146,10 +150,10 @@ sed -i s:'#iocshLoad("$(STD)/iocsh/softScaler':'iocshLoad("$(STD)/iocsh/softScal
 echo ""  >> ./std.iocsh
 echo "# feedback: fb_epid"  >> ./std.iocsh
 echo dbLoadTemplate\(\"substitutions/fb_epid.substitutions\",\"PREFIX=\$\(PREFIX\)\"\)  >> ./std.iocsh
-sed -i s/'P=xxx:epid1'/'P=\"$(PREFIX)epid1\"'/g   ./substitutions/fb_epid.substitutions
-sed -i s/'IN=xxx:epid1:sim.VAL'/'IN=\"$(P):sim.VAL\"'/g   ./substitutions/fb_epid.substitutions
-sed -i s/'OUT=xxx:epid1:sim.D'/'OUT=\"$(P):sim.D\"'/g   ./substitutions/fb_epid.substitutions
-sed -i s/'PERMIT1=\"xxx:epid1:on.VAL\"'/'PERMIT1=\"$(P):on.VAL\"'/g   ./substitutions/fb_epid.substitutions
+sed -i s/'P=gp:epid1'/'P=\"$(PREFIX)epid1\"'/g   ./substitutions/fb_epid.substitutions
+sed -i s/'IN=gp:epid1:sim.VAL'/'IN=\"$(P):sim.VAL\"'/g   ./substitutions/fb_epid.substitutions
+sed -i s/'OUT=gp:epid1:sim.D'/'OUT=\"$(P):sim.D\"'/g   ./substitutions/fb_epid.substitutions
+sed -i s/'PERMIT1=\"gp:epid1:on.VAL\"'/'PERMIT1=\"$(P):on.VAL\"'/g   ./substitutions/fb_epid.substitutions
 
 
 
@@ -184,6 +188,20 @@ sed \
     -i \
     s:'mTTH=SM1,mTH=SM2,mCHI=SM3,mPHI=SM4':'mTTH=m29,mTH=m30,mCHI=m31,mPHI=m32':g \
     "${GP}/gpApp/op/ui/gp.ui"
+
+
+echo "# ................................ starter shortcut" 2>&1 | tee -a "${LOG_FILE}"
+cat >> "${HOME}/bin/gp.sh"  << EOF
+#!/bin/bash
+
+cd "${IOCGP}/softioc"
+bash ./gp.sh "\${1}"
+EOF
+chmod +x "${HOME}/bin/gp.sh"
+# HINT:
+# FIXME:  IOC does not stay runnning (needs run-in-backgroun option)
+# docker run -e PREFIX='bub:' -it --rm --net=host-bridge --name synapps prjemian/synapps bash
+# docker exec -it synapps /root/bin/gp.sh start
 
 
 #--------------------------------------------------------------------------
