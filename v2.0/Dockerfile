@@ -1,18 +1,35 @@
-FROM  ubuntu:latest
+FROM  debian:stable-slim
 LABEL version="2.0.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
       lastupdate="2023-03-31" \
       Description="source: https://github.com/prjemian/epics-docker/"
 USER  root
+
+RUN echo "# -------------------------------- customize command shell"
 CMD ["/bin/bash"]
 WORKDIR /home
+RUN \
+    touch ~/.bashrc ~/.bash_aliases \
+    && echo "if [ -f ~/.bash_aliases ]; then" >> ~/.bashrc \
+    && echo "    . ~/.bash_aliases" >> ~/.bashrc \
+    && echo "fi" >> ~/.bashrc \
+    && echo "export LS_OPTIONS='--color=auto'" >> ~/.bash_aliases \
+    && echo "export EDITOR=nano" >> ~/.bash_aliases \
+    && echo "export PROMPT_DIRTRIM=3" >> ~/.bash_aliases \
+    && echo "alias ls='ls --color=auto'" >> ~/.bash_aliases \
+    && echo "alias ll='ls -lAFgh'" >> ~/.bash_aliases
 
-RUN echo "# -------------------------------- start OS install"
+
+RUN echo "# -------------------------------- start OS update"
 # Build EPICS software here
 ENV APP_ROOT="/opt"
 ENV RESOURCES="${APP_ROOT}/resources"
 ENV LOG_DIR="${APP_ROOT}/logs"
-RUN mkdir ${LOG_DIR}
+RUN \
+    mkdir ${LOG_DIR} \
+    && echo "export APP_ROOT=${APP_ROOT}" >> ~/.bash_aliases \
+    && echo "export RESOURCES=${RESOURCES}" >> ~/.bash_aliases \
+    && echo "export LOG_DIR=${LOG_DIR}" >> ~/.bash_aliases
 
 # sysAdmin work: Install necessary libraries from offical repo
 RUN DEBIAN_FRONTEND=noninteractive apt-get update  -y \
@@ -30,6 +47,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update  -y \
         libx11-dev \
         libxext-dev \
         nano \
+        procps \
         re2c \
         screen \
         vim \
