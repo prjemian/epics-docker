@@ -13,9 +13,7 @@ build ::
 		2>&1 | tee $(LOGFILE)
 	echo "# finished: " `date --iso-8601="seconds"` | tee -a $(LOGFILE)
 
-shell :: build
-	# docker run -it --rm my_iocs bash
-
+run ::
 	docker run \
 		-it \
 		--rm \
@@ -23,6 +21,8 @@ shell :: build
 		--name=$(REPO) \
 		$(FULLNAME) \
 		/bin/bash
+
+shell :: build run
 
 push ::
 	echo "# push started: " `date --iso-8601="seconds"` | tee -a $(LOGFILE)
