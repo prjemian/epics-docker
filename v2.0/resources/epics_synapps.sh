@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "# --- --- --- --- --- script ---> $(readlink -f ${0})"
+
 source "${HOME}/.bash_aliases"
 
 LOG_FILE="${LOG_DIR}/build-synApps.log"
