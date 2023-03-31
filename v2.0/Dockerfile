@@ -73,8 +73,20 @@ COPY ./resources/edit_assemble_synApps.sh "${RESOURCES}/"
 RUN "${RESOURCES}/epics_synapps.sh"
 RUN echo "# -------------------------------- end EPICS synApps"
 
-# TODO: collect the screen files
+RUN echo "# -------------------------------- start GUI screens"
+# These scripts will be used by the scripts which create custom IOCs
+COPY ./resources/copy_screens.sh "${RESOURCES}/"
+COPY ./resources/modify_adl_in_ui_files.sh "${RESOURCES}/"
+RUN echo "# -------------------------------- end GUI screens"
+
+RUN echo "# -------------------------------- start create GP IOC"
+COPY ./resources/create_gp_ioc.sh "${RESOURCES}/"
+COPY ./resources/general_purpose.db /tmp/
+RUN "${RESOURCES}/create_gp_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+RUN echo "# -------------------------------- end create GP IOC"
+
 # TODO: add custom support for custom (GP) IOC
 # TODO: add custom support for custom ADSimDetector IOC
 # TODO: add custom support for custom pvaDriver IOC
 # TODO: add custom support for custom ADURL IOC
+# TODO: add support to start/stop IOCs in containers

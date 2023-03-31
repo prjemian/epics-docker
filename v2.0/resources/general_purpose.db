@@ -1,0 +1,33 @@
+# general_purpose.db
+# PVs for general purposes
+
+record(ao, "$(P)$(R)float$(N)") {
+    field(DESC, "GP float $(N)")
+    field(PREC, 4)
+}
+
+record(bo, "$(P)$(R)bit$(N)") {
+    field(DESC, "GP bit $(N)")
+    field(ZNAM, "off")
+    field(ONAM, "on")
+}
+
+record(longout, "$(P)$(R)int$(N)") {
+    field(DESC, "GP int $(N)")
+}
+
+record(stringout, "$(P)$(R)text$(N)") {
+    field(DESC, "GP text $(N)")
+}
+
+record(waveform, "$(P)$(R)longtext$(N)") {
+    field(DESC, "GP longtext (1k) $(N)")
+    field(FTVL, "CHAR")
+    field(NELM, "1024")
+}
+
+record(waveform, "$(P)$(R)array$(N)") {
+    field(DESC, "GP array $(N)")
+    field(FTVL, "DOUBLE")
+    field(NELM, "1024")
+}
