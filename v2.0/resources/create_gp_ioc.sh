@@ -194,14 +194,22 @@ echo "# ................................ starter shortcut" 2>&1 | tee -a "${LOG_
 cat >> "${HOME}/bin/gp.sh"  << EOF
 #!/bin/bash
 
+source "${HOME}/.bash_aliases"
+
 cd "${IOCGP}/softioc"
 bash ./gp.sh "\${1}"
+
+if [ "\${1}" == "start" ]; then
+    # allow time for the IOC to start (in screen, possibly)
+    sleep 2
+    bash ./gp.sh status
+fi
 EOF
 chmod +x "${HOME}/bin/gp.sh"
-# HINT:
-# FIXME:  IOC does not stay runnning (needs run-in-backgroun option)
-# docker run -e PREFIX='bub:' -it --rm --net=host-bridge --name synapps prjemian/synapps bash
-# docker exec -it synapps /root/bin/gp.sh start
+# startup hints:
+# docker run -e PREFIX='bub:' -it -d --rm --net=host-bridge --name iocbub prjemian/synapps bash
+# docker exec iocbub /root/bin/gp.sh start
+# docker stop iocbub
 
 
 #--------------------------------------------------------------------------
