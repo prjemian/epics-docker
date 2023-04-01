@@ -21,16 +21,11 @@ export GP="${GP}"
 export IOCGP="${IOCGP}"
 EOF
 
-echo "# ................................ copy XXX" 2>&1 | tee -a "${LOG_FILE}"
-# copy entire XXX directory to GP directory
-cd "${SUPPORT}"
-tar cf - "$(basename ${XXX})" | (cd "${IOCS_DIR}" && tar xf -)
-cd "${IOCS_DIR}"
-mv "$(basename ${XXX})" "$(basename ${GP})"
-
+echo "# ................................ copy XXX to GP" 2>&1 | tee -a "${LOG_FILE}"
+source "${RESOURCES}/tarcopy.sh"
+tarcopy "${XXX}" "${GP}"
 cd "${GP}"
 /bin/rm -rf ./.git* ./.ci* ./.travis.yml
-
 make -C "${GP}" clean
 
 echo "# ................................ repair iocStats timezone setup" 2>&1 | tee -a "${LOG_FILE}"

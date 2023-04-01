@@ -74,6 +74,7 @@ RUN echo "# -------------------------------- start script tools" 2>&1 | tee -a "
 # These scripts will be used by the scripts which create custom IOCs
 COPY ./resources/copy_screens.sh "${RESOURCES}/"
 COPY ./resources/modify_adl_in_ui_files.sh "${RESOURCES}/"
+COPY ./resources/tarcopy.sh "${RESOURCES}/"
 RUN echo "# -------------------------------- end script tools" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 
 RUN echo "# -------------------------------- start EPICS synApps" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
@@ -90,7 +91,7 @@ RUN "${RESOURCES}/create_gp_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 RUN echo "# -------------------------------- end create custom GP IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 
 RUN echo "# -------------------------------- start create custom ADSimDetector IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-COPY ./resources/create_adsim_ioc.sh "${RESOURCES}/"
+# COPY ./resources/create_adsim_ioc.sh "${RESOURCES}/"
 # RUN "${RESOURCES}/create_adsim_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 RUN echo "# -------------------------------- end create custom ADSimDetector IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 
