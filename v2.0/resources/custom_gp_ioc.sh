@@ -54,6 +54,7 @@ cp examples/motors.iocsh ./
 sed -i s:'< common.iocsh':'< common.iocsh\n< motors.iocsh':g    ./st.cmd.Linux
 sed -i s:'#iocshLoad':'iocshLoad':g ./motors.iocsh
 sed -i s:'NUM_AXES=16':'NUM_AXES=56':g ./motors.iocsh
+sed -i s:'32000':'20000000':g ./motors.iocsh
 
 # re-write the substitutions file for 56 motors (easier than modifying it)
 sed -i s:'dbLoadTemplate("substitutions/motor.substitutions"':'#dbLoadTemplate("substitutions/motor.substitutions"':g ./motors.iocsh
@@ -61,9 +62,9 @@ export SUBFILE=./substitutions/motorSim.substitutions
 echo file \"\$\(MOTOR\)/db/asyn_motor.db\"  > "${SUBFILE}"
 echo {  >> "${SUBFILE}"
 echo pattern  >> "${SUBFILE}"
-echo {N,  M, ADDR, DESC, EGU, DIR, VELO, VBAS, ACCL, BDST, BVEL, BACC, MRES, PREC, INIT}  >> "${SUBFILE}"
+echo {N,  M, ADDR, DESC, EGU, DIR, VELO, VBAS, ACCL, BDST, BVEL, BACC, MRES, PREC, DLLM, DHLM, INIT}  >> "${SUBFILE}"
 for n in $(seq 1 56); do
-    echo {${n}, \"m${n}\", $((${n}-1)), \"motor ${n}\",  degrees,  Pos,  1, .1, .2, 0, 1, .2, 0.01, 5, \"\"}  >> "${SUBFILE}"
+    echo {${n}, \"m${n}\", $((${n}-1)), \"motor ${n}\",  degrees,  Pos,  1, .1, .2, 0, 1, .2, 1e-4, 4, -1000, 1000, \"\"}  >> "${SUBFILE}"
 done
 echo }  >> "${SUBFILE}"
 export SUBFILE=
