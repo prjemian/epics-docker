@@ -14,10 +14,6 @@ mkdir -p "${IOCS_DIR}"
 
 # export CAPUTRECORDER_HASH=master  # TODO: still needed?
 export MOTOR_HASH=R7-2-2
-# export AD=${SUPPORT}/areaDetector-master
-# export MOTOR=${SUPPORT}/motor-${MOTOR_HASH}
-export XXX=${SUPPORT}/xxx-R6-2-1
-export IOCXXX=${XXX}/iocBoot/iocxxx
 
 # update ~/.bash_aliases
 cat >> "${HOME}/.bash_aliases"  << EOF
@@ -27,12 +23,8 @@ export SYNAPPS="${SYNAPPS}"
 export SUPPORT="${SUPPORT}"
 export IOCS_DIR="${IOCS_DIR}"
 export PATH="${PATH}"
-export CAPUTRECORDER_HASH="${CAPUTRECORDER_HASH}"
+# export CAPUTRECORDER_HASH="${CAPUTRECORDER_HASH}"
 export MOTOR_HASH="${MOTOR_HASH}"
-# export AD="${AD}"
-# export MOTOR="${MOTOR}"
-export XXX="${XXX}"
-export IOCXXX="${IOCXXX}"
 EOF
 
 source "${HOME}/.bash_aliases"
@@ -64,11 +56,19 @@ bash \
 
 echo "# ................................ build synApps" 2>&1 | tee -a "${LOG_FILE}"
 cd ${SUPPORT}
+export AD="${SUPPORT}/$(ls | grep areaDetector)"
 export ASYN="${SUPPORT}/$(ls | grep asyn)"
+export MOTOR="${SUPPORT}/$(ls | grep motor)"
+export XXX="${SUPPORT}/$(ls | grep xxx)"
+export IOCXXX=${XXX}/iocBoot/iocxxx
 
 # update ~/.bash_aliases
 cat >> "${HOME}/.bash_aliases"  << EOF
+export AD="${AD}"
 export ASYN="${ASYN}"
+export IOCXXX="${IOCXXX}"
+export MOTOR="${MOTOR}"
+export XXX="${XXX}"
 EOF
 
 source "${HOME}/.bash_aliases"

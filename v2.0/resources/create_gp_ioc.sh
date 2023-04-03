@@ -22,8 +22,7 @@ export IOCGP="${IOCGP}"
 EOF
 
 echo "# ................................ copy XXX to GP" 2>&1 | tee -a "${LOG_FILE}"
-source "${RESOURCES}/tarcopy.sh"
-tarcopy "${XXX}" "${GP}"
+"${RESOURCES}/tarcopy.sh" "${XXX}" "${GP}"
 cd "${GP}"
 /bin/rm -rf ./.git* ./.ci* ./.travis.yml
 make -C "${GP}" clean
@@ -39,6 +38,7 @@ echo "# ................................ customize default PREFIX" 2>&1 | tee -a
 cd "${GP}"
 changePrefix xxx gp  # default PREFIX is gp:
 cd "${IOCGP}"
+ln -s "${IOCGP}" /home/iocgp
 sed -i s/'IOC_NAME=gp'/'export PREFIX=${PREFIX:-gp:\}\nIOC_NAME=\$\{PREFIX\}'/g   ./softioc/gp.sh
 sed -i s/'epicsEnvSet("PREFIX", "gp:")'/'epicsEnvSet("PREFIX", $(PREFIX=gp:))'/g   ./settings.iocsh
 

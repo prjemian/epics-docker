@@ -98,3 +98,8 @@ sed -i \
 # TODO:
 # FFMPEGSERVER=$(AREA_DETECTOR)/ffmpegServer
 # FFMPEGVIEWER=$(AREA_DETECTOR)/ffmpegViewer
+
+# XXX
+sed -i \
+  "s:^XXX=:XXX=master\n#!# XXX=:g" \
+  assemble_synApps.sh

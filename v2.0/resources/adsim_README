@@ -1,0 +1,4 @@
+This is a customized copy of ${IOCADSIMDETECTOR}, intended to be run
+in a "linux-x86_64" EPICS host architecture.
+
+The Makefiles have been removed from this copy.

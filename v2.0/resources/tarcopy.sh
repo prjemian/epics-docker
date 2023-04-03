@@ -12,7 +12,15 @@ function tarcopy {
         parent="$(readlink -m $2/..)"
         tar cf - "$(basename $1)" | (cd "${parent}" && tar xf -)
         cd "${parent}"
-        mv  "$(basename $1)" "$(basename $2)"
+        if [ "$(basename $1)" != "$(basename $2)" ]; then
+            mv  "$(basename $1)" "$(basename $2)"
+        fi
         popd
     fi
 }
+
+if [ "${#}" -gt "0" ]; then
+    # If arguments supplied, call the function.
+    # When NO arguments supplied, just loads the function.
+    tarcopy $@
+fi

@@ -91,8 +91,10 @@ RUN "${RESOURCES}/create_gp_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 RUN echo "# -------------------------------- end create custom GP IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 
 RUN echo "# -------------------------------- start create custom ADSimDetector IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-# COPY ./resources/create_adsim_ioc.sh "${RESOURCES}/"
-# RUN "${RESOURCES}/create_adsim_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+COPY ./resources/adsim_README /tmp/
+COPY ./resources/adsim_run.sh /tmp/
+COPY ./resources/create_adsim_ioc.sh "${RESOURCES}/"
+RUN "${RESOURCES}/create_adsim_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 RUN echo "# -------------------------------- end create custom ADSimDetector IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 
 RUN echo "# -------------------------------- start create custom pvaDriver IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
