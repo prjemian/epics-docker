@@ -54,7 +54,8 @@ cp examples/motors.iocsh ./
 sed -i s:'< common.iocsh':'< common.iocsh\n< motors.iocsh':g    ./st.cmd.Linux
 sed -i s:'#iocshLoad':'iocshLoad':g ./motors.iocsh
 sed -i s:'NUM_AXES=16':'NUM_AXES=56':g ./motors.iocsh
-sed -i s:'32000':'20000000':g ./motors.iocsh
+# no more than 2^31 - 1 (2,147,483,648)
+sed -i s:'32000':'2100000':g ./motors.iocsh
 
 # re-write the substitutions file for 56 motors (easier than modifying it)
 sed -i s:'dbLoadTemplate("substitutions/motor.substitutions"':'#dbLoadTemplate("substitutions/motor.substitutions"':g ./motors.iocsh
