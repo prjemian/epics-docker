@@ -71,6 +71,28 @@ sed -i s+'cmd\.Linux'+'cmd'+g "${IOCADSIM}/softioc/adsim.sh"
 echo "# ................................ configure custom IOC PREFIX" 2>&1 | tee -a "${LOG_FILE}"
 # TODO: Customize everything that expects prefix "13SIM1:"
 
+
+echo "# ................................ starter shortcut" 2>&1 | tee -a "${LOG_FILE}"
+cat >> "${HOME}/bin/adsim.sh"  << EOF
+#!/bin/bash
+
+source "${HOME}/.bash_aliases"
+
+cd "${IOCADSIM}/softioc"
+bash ./adsim.sh "\${1}"
+
+if [ "\${1}" == "start" ]; then
+    # allow time for the IOC to start (in screen, possibly)
+    sleep 2
+    bash ./adsim.sh status
+fi
+EOF
+chmod +x "${HOME}/bin/adsim.sh"
+# startup hints:
+# docker run -e PREFIX='bub:' -it -d --rm --net=host-bridge --name iocbub prjemian/synapps bash
+# docker exec iocbub /root/bin/adsim.sh start
+# docker stop iocbub
+
 # ---------------------------------------------------------------------------
 # RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
 # COPY \
