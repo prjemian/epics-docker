@@ -35,15 +35,10 @@ ln -s "${IOCADSIM}" /home/iocadsim
 mv /tmp/adsim_README ./README
 /bin/rm -f Makefile*
 
-# envPaths
-# epicsEnvSet("IOC","iocSimDetector")
 sed -i \
     s+'epicsEnvSet("IOC",'+'epicsEnvSet(\"IOC\",\"iocadsim\")\n# epicsEnvSet("IOC",'+g \
     ./envPaths
 
-# cdCommands
-# startup = "/opt/synApps/support/areaDetector-R3-11/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector"
-# putenv("IOC=iocSimDetector")
 sed -i \
     s+"startup =+startup = \"$IOCADSIM\"\n# startup ="+g \
     ./cdCommands
@@ -69,8 +64,8 @@ sed -i \
 sed -i s+'cmd\.Linux'+'cmd'+g "${IOCADSIM}/softioc/adsim.sh"
 
 echo "# ................................ configure custom IOC PREFIX" 2>&1 | tee -a "${LOG_FILE}"
-# TODO: Customize everything that expects prefix "13SIM1:"
-
+# Customize everything that expects prefix "13SIM1:", default PREFIX is "adsim:".
+sed -i s/'epicsEnvSet("PREFIX", "13SIM1:")'/'epicsEnvSet("PREFIX", $(PREFIX=adsim:))'/g   ./st_base.cmd
 
 echo "# ................................ starter shortcut" 2>&1 | tee -a "${LOG_FILE}"
 cat >> "${HOME}/bin/adsim.sh"  << EOF
@@ -92,6 +87,50 @@ chmod +x "${HOME}/bin/adsim.sh"
 # docker run -e PREFIX='bub:' -it -d --rm --net=host-bridge --name iocbub prjemian/synapps bash
 # docker exec iocbub /root/bin/adsim.sh start
 # docker stop iocbub
+
+echo "# ................................ customize st_base.cmd" 2>&1 | tee -a "${LOG_FILE}"
+# comment out any line with SIM2
+sed -i '/SIM2/s/^/#/g' "${IOCADSIM}/st_base.cmd"
+
+echo "# ................................ plugins" 2>&1 | tee -a "${LOG_FILE}"
+# customize ${AD}/ADCore/iocBoot/commonPlugins.cmd
+sed -i \
+    s+'$(ADCORE)/iocBoot'+"${IOCADSIM}"+g \
+    "${IOCADSIM}/st_base.cmd"
+cp ${AD}/ADCore/iocBoot/commonPlugins.cmd "${IOCADSIM}/"
+# uncomment any line with FileMagick
+sed -i \
+    '/FileMagick/s/^#//g' \
+    "${IOCADSIM}/commonPlugins.cmd"
+# enable the PVA server
+sed -i \
+    '/PVA1/s/^#//g' \
+    "${IOCADSIM}/commonPlugins.cmd"
+sed -i \
+    '/Pva1:/s/^#//g' \
+    "${IOCADSIM}/commonPlugins.cmd"
+sed -i \
+    '/startPVAServer/s/^#//g' \
+    "${IOCADSIM}/commonPlugins.cmd"
+# enable the ffmpegserver  (needs support in assemble_synApps.sh)
+# sed -i \
+#     '/ffmpegServerConfigure/s/^#//g' \
+#     "${IOCADSIM}/commonPlugins.cmd"
+# sed -i \
+#     '/ffmpegStreamConfigure/s/^#//g' \
+#     "${IOCADSIM}/commonPlugins.cmd"
+# sed -i \
+#     '/ffmpegFileConfigure/s/^#//g' \
+#     "${IOCADSIM}/commonPlugins.cmd"
+# sed -i \
+#     '/FFMPEGSERVER/s/^#//g' \
+#     "${IOCADSIM}/commonPlugins.cmd"
+
+echo "# ................................ autosave" 2>&1 | tee -a "${LOG_FILE}"
+cp ${IOCADSIMDETECTOR}/auto_settings.req "${IOCADSIM}/"
+# comment out any line with cam2
+sed -i '/cam2/s/^/#/g' "${IOCADSIM}/auto_settings.req"
+
 
 # ---------------------------------------------------------------------------
 # RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
