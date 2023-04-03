@@ -56,7 +56,7 @@ sed -i \
 
 echo "# ................................ prepare IOC run scripts" 2>&1 | tee -a "${LOG_FILE}"
 cd "${IOCADSIM}"
-echo "dbl > dbl-all.txt" >> st.cmd
+echo "dbl > dbl-all.txt" >> st_base.cmd
 "${RESOURCES}/tarcopy.sh" "${IOCGP}/softioc" "${IOCADSIM}/softioc"
 mv /tmp/adsim_run.sh "${IOCADSIM}/softioc/run"
 chmod +x "${IOCADSIM}/softioc/run"
