@@ -56,21 +56,20 @@ sed -i \
 
 echo "# ................................ prepare IOC run scripts" 2>&1 | tee -a "${LOG_FILE}"
 cd "${IOCADSIM}"
+echo "dbl > dbl-all.txt" >> st.cmd
 "${RESOURCES}/tarcopy.sh" "${IOCGP}/softioc" "${IOCADSIM}/softioc"
 mv /tmp/adsim_run.sh "${IOCADSIM}/softioc/run"
 chmod +x "${IOCADSIM}/softioc/run"
 
 mv "${IOCADSIM}/softioc/gp.sh" "${IOCADSIM}/softioc/adsim.sh"
 sed -i s+gp+adsim+g "${IOCADSIM}/softioc/adsim.sh"
-sed -i s+IOC_BINARY=adsim+IOC_BINARY=simDetectorApp+g "${IOCADSIM}/softioc/adsim.sh"
-# TODO:
-# IOC_BIN_PATH="${IOC_BIN_DIR}/${EPICS_HOST_ARCH}/${IOC_BINARY}"
-# Needs these in the environment when calling adsim.sh (new since xxx 6.2.1)
-# IOC_BIN_DIR="${ADSIMDETECTOR}/bin"
-# IOC_BINARY=simDetectorApp
+sed -i \
+    s+"IOC_BINARY=adsim"+"IOC_BINARY=simDetectorApp\nIOC_BIN_DIR=${ADSIMDETECTOR}/bin"+g \
+    "${IOCADSIM}/softioc/adsim.sh"
+sed -i s+'cmd\.Linux'+'cmd'+g "${IOCADSIM}/softioc/adsim.sh"
 
-
-# TODO: change Prefix 13SIM1 adsim
+echo "# ................................ configure custom IOC PREFIX" 2>&1 | tee -a "${LOG_FILE}"
+# TODO: Customize everything that expects prefix "13SIM1:"
 
 # ---------------------------------------------------------------------------
 # RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log

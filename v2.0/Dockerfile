@@ -84,27 +84,28 @@ RUN "${RESOURCES}/epics_synapps.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 RUN echo "# -------------------------------- end EPICS synApps" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 
 RUN echo "# -------------------------------- start create custom GP IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-COPY ./resources/create_gp_ioc.sh "${RESOURCES}/"
 COPY ./resources/general_purpose.db /tmp/
 COPY ./resources/gp_screens/ /tmp/gp_screens
-RUN "${RESOURCES}/create_gp_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+COPY ./resources/custom_gp_ioc.sh "${RESOURCES}/"
+RUN "${RESOURCES}/custom_gp_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 RUN echo "# -------------------------------- end create custom GP IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 
 RUN echo "# -------------------------------- start create custom ADSimDetector IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 COPY ./resources/adsim_README /tmp/
 COPY ./resources/adsim_run.sh /tmp/
-COPY ./resources/create_adsim_ioc.sh "${RESOURCES}/"
-RUN "${RESOURCES}/create_adsim_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+# COPY ./resources/adsim_screens/ /tmp/adsim_screens
+COPY ./resources/custom_adsim_ioc.sh "${RESOURCES}/"
+RUN "${RESOURCES}/custom_adsim_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 RUN echo "# -------------------------------- end create custom ADSimDetector IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 
-RUN echo "# -------------------------------- start create custom pvaDriver IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-# COPY ./resources/create_adpva_ioc.sh "${RESOURCES}/"
-# RUN "${RESOURCES}/create_adpva_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-RUN echo "# -------------------------------- end create custom pvaDriver IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+# RUN echo "# -------------------------------- start create custom pvaDriver IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+# # COPY ./resources/custom_adpva_ioc.sh "${RESOURCES}/"
+# # RUN "${RESOURCES}/custom_adpva_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+# RUN echo "# -------------------------------- end create custom pvaDriver IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 
-RUN echo "# -------------------------------- start create custom ADURL IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-# COPY ./resources/create_adurl_ioc.sh "${RESOURCES}/"
-# RUN "${RESOURCES}/create_adurl_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-RUN echo "# -------------------------------- end create custom ADURL IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+# RUN echo "# -------------------------------- start create custom ADURL IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+# # COPY ./resources/custom_adurl_ioc.sh "${RESOURCES}/"
+# # RUN "${RESOURCES}/custom_adurl_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+# RUN echo "# -------------------------------- end create custom ADURL IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 
 # TODO: add support to start/stop IOCs in containers
