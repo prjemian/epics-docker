@@ -18,7 +18,7 @@
 
 OP_DIR=${1:-/opt/screens/ui}
 
-cd ${OP_DIR}
+cd "${OP_DIR}"
 for f in $(ls *.ui); do
     echo Converting $f ...
     sed -i s:'.adl':'.ui':g ./$f
