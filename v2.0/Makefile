@@ -10,7 +10,7 @@ build ::
 	docker build \
 		-t $(FULLNAME)  \
 		./  \
-		2>&1 | tee $(LOGFILE)
+		2>&1 | tee -a $(LOGFILE)
 	echo "# finished: " `date --iso-8601="seconds"` | tee -a $(LOGFILE)
 
 run ::
