@@ -132,14 +132,8 @@ cp ${IOCADSIMDETECTOR}/auto_settings.req "${IOCADSIM}/"
 sed -i '/cam2/s/^/#/g' "${IOCADSIM}/auto_settings.req"
 
 
-# ---------------------------------------------------------------------------
-# RUN bash /opt/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
-# COPY \
-#       sim_cam_image.ui \
-#       start_caQtDM_adsim \
-#       /opt/iocSimDetector/
-# COPY \
-#       url_cam_image.ui \
-#       start_caQtDM_adurl \
-#       /opt/iocURLDriver/
-# RUN bash /opt/modify_adl_in_ui_files.sh  /opt/screens/ui
+echo "# ................................ install custom screen(s)" 2>&1 | tee -a "${LOG_FILE}"
+cd "${IOCADSIM}/"
+mkdir "${IOCADSIM}/softioc"
+mv /tmp/adsim_screens/sim_cam_image.ui "${IOCADSIM}/"
+# TODO: bash ${RESOURCES}/modify_adl_in_ui_files.sh  /opt/screens/ui

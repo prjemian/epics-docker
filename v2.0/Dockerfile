@@ -1,7 +1,7 @@
 FROM  debian:stable-slim
 LABEL version="2.0.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2023-03-31" \
+      lastupdate="2023-04-04" \
       Description="source: https://github.com/prjemian/epics-docker/"
 USER  root
 
@@ -93,7 +93,7 @@ RUN echo "# -------------------------------- end create custom GP IOC" 2>&1 | te
 RUN echo "# -------------------------------- start create custom ADSimDetector IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 COPY ./resources/adsim_README /tmp/
 COPY ./resources/adsim_run.sh /tmp/
-# COPY ./resources/adsim_screens/ /tmp/adsim_screens
+COPY ./resources/adsim_screens/ /tmp/adsim_screens
 COPY ./resources/custom_adsim_ioc.sh "${RESOURCES}/"
 RUN "${RESOURCES}/custom_adsim_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 RUN echo "# -------------------------------- end create custom ADSimDetector IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
