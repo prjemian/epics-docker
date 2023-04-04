@@ -13,8 +13,9 @@ export IOCS_DIR="$(readlink -m ${SUPPORT}/../iocs)"
 mkdir -p "${IOCS_DIR}"
 
 export MOTOR_HASH=R7-2-2
+export CAPUTRECORDER_HASH=master  # https://github.com/epics-modules/motor/issues/91
 
-# update ~/.bash_aliases
+echo "# ................................ update ~/bash_aliases" 2>&1 | tee -a "${LOG_FILE}"
 cat >> "${HOME}/.bash_aliases"  << EOF
 #
 # epics_synapps.sh
@@ -22,7 +23,7 @@ export SYNAPPS="${SYNAPPS}"
 export SUPPORT="${SUPPORT}"
 export IOCS_DIR="${IOCS_DIR}"
 export PATH="${PATH}"
-# export CAPUTRECORDER_HASH="${CAPUTRECORDER_HASH}"
+export CAPUTRECORDER_HASH="${CAPUTRECORDER_HASH}"
 export MOTOR_HASH="${MOTOR_HASH}"
 EOF
 
@@ -52,15 +53,14 @@ bash \
     "${APP_ROOT}/assemble_synApps.sh" 2>&1 \
     | tee "${LOG_DIR}/assemble_synApps.log"
 
-echo "# ................................ build synApps" 2>&1 | tee -a "${LOG_FILE}"
-cd ${SUPPORT}
+echo "# ................................ update ~/bash_aliases" 2>&1 | tee -a "${LOG_FILE}"
+cd "${SUPPORT}"
 export AD="${SUPPORT}/$(ls | grep areaDetector)"
 export ASYN="${SUPPORT}/$(ls | grep asyn)"
 export MOTOR="${SUPPORT}/$(ls | grep motor)"
 export XXX="${SUPPORT}/$(ls | grep xxx)"
 export IOCXXX=${XXX}/iocBoot/iocxxx
 
-# update ~/.bash_aliases
 cat >> "${HOME}/.bash_aliases"  << EOF
 export AD="${AD}"
 export ASYN="${ASYN}"
@@ -68,20 +68,21 @@ export IOCXXX="${IOCXXX}"
 export MOTOR="${MOTOR}"
 export XXX="${XXX}"
 EOF
-
 source "${HOME}/.bash_aliases"
+
+echo "# ................................ build synApps" 2>&1 | tee -a "${LOG_FILE}"
 CPUs=$(grep "^cpu cores" /proc/cpuinfo | uniq | awk '{print $4}')
 echo "TIRPC=YES" > "${ASYN}/configure/CONFIG_SITE.local"
-make -j${CPUs} release rebuild 2>&1 | tee ${LOG_DIR}/build-synApps.log
+make -j${CPUs} -C "${SUPPORT}" release rebuild 2>&1 | tee ${LOG_DIR}/build-synApps.log
 
 cd "${SUPPORT}"
 ln -s "${SUPPORT}" /home/support
 
 
 echo "# ................................ collect screen files" 2>&1 | tee -a "${LOG_FILE}"
-"${RESOURCES}/copy_screens.sh" "${SUPPORT}" "${SUPPORT}/screens"
-${RESOURCES}/modify_adl_in_ui_files.sh  "${SCREENS}/ui"
-${RESOURCES}/modify_adl_in_ui_files.sh  "${SCREENS}/ui/autoconvert"
+export SCREENS="${SUPPORT}/screens"
+"${RESOURCES}/copy_screens.sh" "${SUPPORT}" "${SCREENS}/"
+"${RESOURCES}/modify_adl_in_ui_files.sh"  "${SCREENS}/ui"
 
 
 echo "# ................................ build synApps XXX" 2>&1 | tee -a "${LOG_FILE}"

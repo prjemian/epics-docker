@@ -52,11 +52,23 @@ MOTOR="${SUPPORT}/$(ls ${SUPPORT} | grep motor)"
 cd "${IOCGP}"
 cp examples/motors.iocsh ./
 sed -i s:'< common.iocsh':'< common.iocsh\n< motors.iocsh':g    ./st.cmd.Linux
-sed -i s:'#iocshLoad':'iocshLoad':g ./motors.iocsh
-sed -i s:'NUM_AXES=16':'NUM_AXES=56':g ./motors.iocsh
-# no more than 2^31 - 1 (2,147,483,648)
-sed -i s:'32000':'2100000':g ./motors.iocsh
 
+echo "# ................................ customize motors -- motors.iocsh" 2>&1 | tee -a "${LOG_FILE}"
+cat > "${IOCGP}/motors.iocsh"  << EOF
+iocshLoad("${IOCGP}/motorSim.iocsh", "INSTANCE=motorSim, HOME_POS=0, NUM_AXES=56, HIGH_LIM=2100000, LOW_LIM=-2100000, SUB=substitutions/motorSim.substitutions")
+
+# Allstop, alldone
+iocshLoad("\$(MOTOR)/iocsh/allstop.iocsh", "P=\$(PREFIX)")
+EOF
+echo "# ................................ customize motors -- motorSim.iocsh" 2>&1 | tee -a "${LOG_FILE}"
+cat > "${IOCGP}/motorSim.iocsh"  << EOF
+motorSimCreate(\$(CONTROLLER=0), 0, \$(LOW_LIM=-32000), \$(HIGH_LIM=32000), \$(HOME_POS=0), 1, \$(NUM_AXES=1))
+drvAsynMotorConfigure("\$(INSTANCE)\$(CONTROLLER=0)", "\$(INSTANCE)", \$(CONTROLLER=0), \$(NUM_AXES=1))
+
+# this line overrides MOTOR/iocsh/motorSim.iocsh
+dbLoadTemplate("${IOCGP}/substitutions/motorSim.substitutions", "P=\$(PREFIX), DTYP='asynMotor', PORT=\$(INSTANCE)\$(CONTROLLER=0), DHLM=\$(HIGH_LIM=32000), DLLM=\$(LOW_LIM=-32000)")
+EOF
+echo "# ................................ customize motors -- substitutions/motor.substitutions" 2>&1 | tee -a "${LOG_FILE}"
 # re-write the substitutions file for 56 motors (easier than modifying it)
 sed -i s:'dbLoadTemplate("substitutions/motor.substitutions"':'#dbLoadTemplate("substitutions/motor.substitutions"':g ./motors.iocsh
 export SUBFILE=./substitutions/motorSim.substitutions
@@ -70,6 +82,7 @@ done
 echo }  >> "${SUBFILE}"
 export SUBFILE=
 
+echo "# ................................ customize motors -- pre_assigned_motor_names.iocsh" 2>&1 | tee -a "${LOG_FILE}"
 cat > ./pre_assigned_motor_names.iocsh  << EOF
 # motor assignments:
 dbpf(\${PREFIX}m29.DESC, "TTH 4-circle")
@@ -165,7 +178,7 @@ export SUBFILE="${IOCGP}/substitutions/general_purpose.substitutions"
 echo "# general_purpose.substitutions"  > "${SUBFILE}"
 echo "# PVs for general purposes"  >> "${SUBFILE}"
 echo   >> "${SUBFILE}"
-echo file \"${IOCXXX}/substitutions/general_purpose.db\"  >> "${SUBFILE}"
+echo file \"${IOCGP}/substitutions/general_purpose.db\"  >> "${SUBFILE}"
 echo {  >> "${SUBFILE}"
 echo pattern  >> "${SUBFILE}"
 echo {N}  >> "${SUBFILE}"
@@ -174,6 +187,9 @@ for n in $(seq 1 20); do
 done
 echo }  >> "${SUBFILE}"
 
+echo "# ................................ remove ALIVE support" 2>&1 | tee -a "${LOG_FILE}"
+# comment out any line with ALIVE
+sed -i '/ALIVE/s/^/#/g' "${IOCGP}/common.iocsh"
 
 echo "# ................................ GUI screens" 2>&1 | tee -a "${LOG_FILE}"
 # update with motor assignments: 4-circle diffractometer orientation
