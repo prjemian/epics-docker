@@ -150,7 +150,6 @@ sed -i s/'OUT=gp:epid1:sim.D'/'OUT=\"$(P):sim.D\"'/g   ./substitutions/fb_epid.s
 sed -i s/'PERMIT1=\"gp:epid1:on.VAL\"'/'PERMIT1=\"$(P):on.VAL\"'/g   ./substitutions/fb_epid.substitutions
 
 
-
 echo "# ................................ add general purpose PVs" 2>&1 | tee -a "${LOG_FILE}"
 # database for general purpose PVs
 mv /tmp/general_purpose.db "${IOCGP}/substitutions"
