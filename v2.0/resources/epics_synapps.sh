@@ -12,7 +12,6 @@ export PATH="${PATH}:${SUPPORT}/utils"
 export IOCS_DIR="$(readlink -m ${SUPPORT}/../iocs)"
 mkdir -p "${IOCS_DIR}"
 
-# export CAPUTRECORDER_HASH=master  # TODO: still needed?
 export MOTOR_HASH=R7-2-2
 
 # update ~/.bash_aliases
@@ -31,7 +30,6 @@ source "${HOME}/.bash_aliases"
 
 cd ${APP_ROOT}
 echo "# ................................ download EPICS assemble_synApps.sh" 2>&1 | tee -a "${LOG_FILE}"
-# TODO: build synApps out of source
 
 # download the installer script
 # ENV HASH=master
@@ -75,6 +73,16 @@ source "${HOME}/.bash_aliases"
 CPUs=$(grep "^cpu cores" /proc/cpuinfo | uniq | awk '{print $4}')
 echo "TIRPC=YES" > "${ASYN}/configure/CONFIG_SITE.local"
 make -j${CPUs} release rebuild 2>&1 | tee ${LOG_DIR}/build-synApps.log
+
+cd "${SUPPORT}"
+ln -s "${SUPPORT}" /home/support
+
+
+echo "# ................................ collect screen files" 2>&1 | tee -a "${LOG_FILE}"
+"${RESOURCES}/copy_screens.sh" "${SUPPORT}" "${SUPPORT}/screens"
+${RESOURCES}/modify_adl_in_ui_files.sh  "${SCREENS}/ui"
+${RESOURCES}/modify_adl_in_ui_files.sh  "${SCREENS}/ui/autoconvert"
+
 
 echo "# ................................ build synApps XXX" 2>&1 | tee -a "${LOG_FILE}"
 echo "# --- Building XXX IOC ---" 2>&1 | tee -a ${LOG_DIR}/build-synApps.log

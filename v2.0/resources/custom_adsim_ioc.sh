@@ -112,7 +112,8 @@ sed -i \
 sed -i \
     '/startPVAServer/s/^#//g' \
     "${IOCADSIM}/commonPlugins.cmd"
-# enable the ffmpegserver  (needs support in assemble_synApps.sh)
+# TODO: FFMPEGSERVER  (needs support in edit_assemble_synApps.sh)
+# TODO: FFMPEGVIEWER  (needs support in edit_assemble_synApps.sh)
 # sed -i \
 #     '/ffmpegServerConfigure/s/^#//g' \
 #     "${IOCADSIM}/commonPlugins.cmd"
@@ -134,6 +135,10 @@ sed -i '/cam2/s/^/#/g' "${IOCADSIM}/auto_settings.req"
 
 echo "# ................................ install custom screen(s)" 2>&1 | tee -a "${LOG_FILE}"
 cd "${IOCADSIM}/"
-mkdir "${IOCADSIM}/softioc"
-mv /tmp/adsim_screens/sim_cam_image.ui "${IOCADSIM}/"
-# TODO: bash ${RESOURCES}/modify_adl_in_ui_files.sh  /opt/screens/ui
+export SCREENS="${IOCADSIM}/screens"
+${RESOURCES}/tarcopy.sh "${AD}/ADSimDetector/simDetectorApp/op/" "${SCREENS}/"
+mv /tmp/{adsim_,}screens
+${RESOURCES}/tarcopy.sh /tmp/screens "${SCREENS}/"
+/bin/rm -rf /tmp/screens
+${RESOURCES}/modify_adl_in_ui_files.sh  "${SCREENS}/ui"
+${RESOURCES}/modify_adl_in_ui_files.sh  "${SCREENS}/ui/autoconvert"

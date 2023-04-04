@@ -95,9 +95,8 @@ sed -i \
   "s:building ADSimDetector:building ADSimDetector\n$REPLACE:g" \
   assemble_synApps.sh
 
-# TODO:
-# FFMPEGSERVER=$(AREA_DETECTOR)/ffmpegServer
-# FFMPEGVIEWER=$(AREA_DETECTOR)/ffmpegViewer
+# TODO: FFMPEGSERVER=$(AREA_DETECTOR)/ffmpegServer
+# TODO: FFMPEGVIEWER=$(AREA_DETECTOR)/ffmpegViewer
 
 # XXX
 sed -i \

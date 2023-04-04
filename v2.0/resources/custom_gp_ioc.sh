@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# PV prefix is $PREFIX (default: xxx:)  <-- FIXME (gp, ioc, ...)
+# PV prefix is $PREFIX (default: gp:)
 # enable:
 # * 56 motors
 # * scaler
@@ -205,13 +205,18 @@ chmod +x "${HOME}/bin/gp.sh"
 # docker stop iocbub
 
 
-#--------------------------------------------------------------------------
-mv /tmp/gp_screens "${GP}/screens"  # TODO:
-# bash ${RESOURCES}/copy_screens.sh ${SUPPORT} /opt/screens | tee -a /opt/copy_screens.log
-# bash /opt/modify_adl_in_ui_files.sh  /opt/screens/ui
+echo "# ................................ install custom screen(s)" 2>&1 | tee -a "${LOG_FILE}"
+cd "${IOCGP}/"
+export SCREENS="${IOCGP}/screens"
+${RESOURCES}/tarcopy.sh "${XXX}/xxxApp/op/" "${SCREENS}/"
+mv /tmp/{gp_,}screens
+${RESOURCES}/tarcopy.sh /tmp/screens "${SCREENS}/"
+/bin/rm -rf /tmp/screens
+${RESOURCES}/modify_adl_in_ui_files.sh  "${SCREENS}/ui"
+${RESOURCES}/modify_adl_in_ui_files.sh  "${SCREENS}/ui/autoconvert"
 
-# # archive the template IOC, for making new XXX IOCs
-# WORKDIR ${SUPPORT}
-# RUN \
-#     pwd && ls -lAFgh && \
-#     tar czf /opt/$(basename ${XXX}).tar.gz $(basename ${XXX})
+# change "xxx:" to "$(P)" in all screen files
+find "${SCREENS}/" -type f -exec sed -i 's/xxx:/$(P)/g' {} \;
+find "${SCREENS}/" -type f -exec sed -i 's/ioc=xxx/ioc=gp/g' {} \;
+find "${SCREENS}/" -type f -exec sed -i 's/xxxA/$(P)A/g' {} \;
+find "${SCREENS}/" -type f -exec sed -i 's/>xxx/>gp/g' {} \;

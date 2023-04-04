@@ -5,7 +5,7 @@
 
 # usage:  copy_screens.sh SUPPORT OP_DIR
 #
-# examples:  
+# examples:
 #
 #     copy_screens.sh /usr/local/epics/synApps/support
 #     copy_screens.sh /opt/synApps/support /opt/synApps/screens
@@ -23,7 +23,7 @@
 # CSS BOY in $OP_DIR/opi)
 #
 # All screen files for a particular program (MEDM, caQtDM, CSS BOY)
-# will be copied to a single directory for that GUI.  This simplifies 
+# will be copied to a single directory for that GUI.  This simplifies
 # the process of configuring the GUI to find its screen files.
 #
 # NOTE:
@@ -64,16 +64,20 @@ function contents
 }
 
 EXTENSIONS=
-EXTENSIONS+=" adl"
-EXTENSIONS+=" opi"
-EXTENSIONS+=" ui"
-# NOTE: this will fail once PyDM screens are added.
-# PyDM screens use .ui as extension.
+# EXTENSIONS+=" burt"       # BURT
+# EXTENSIONS+=" python"     # caPutRecorder
+EXTENSIONS+=" ui"           # caQtDM
+EXTENSIONS+=" opi"          # CSS BOY
+# EXTENSIONS+=" edl"        # EDM
+EXTENSIONS+=" adl"          # MEDM
+EXTENSIONS+=" bob"          # Phoebus
+# EXTENSIONS+=" ui"         # PyDM  # FIXME: ui files used by caQtDM AND PyDM
 
 for ext in $EXTENSIONS; do
     # find directories containing files with extension
+    echo "locating '*.${ext}' files"
     dirlist=
-    for item in `find ${SUPPORT} -name "*.${ext}"`; do 
+    for item in `find ${SUPPORT} -name "*.${ext}"`; do
         if [[ *"/documentation/"* != "${item}" ]]; then
             if [[ *"/example"* != "${item}" ]]; then
                 if [[ *"/test"* != "${item}" ]]; then
@@ -91,6 +95,7 @@ for ext in $EXTENSIONS; do
     # (screens plus related such as images)
     filelist=
     for dir in $dirlist; do
+        echo "copy ${dir}/*.${ext}"
         contents ${dir}
         filelist+=" ${files}"
     done
@@ -103,6 +108,6 @@ for ext in $EXTENSIONS; do
         cmd="cp -u ${item}  ${OP_DIR}/${ext}/$(basename -- $item)"
         # echo ${cmd}
         # echo "$(basename -- $item)"
-        ${cmd}                
+        ${cmd}
     done
 done
