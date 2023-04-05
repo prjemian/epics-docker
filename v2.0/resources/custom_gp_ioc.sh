@@ -27,12 +27,6 @@ cd "${GP}"
 /bin/rm -rf ./.git* ./.ci* ./.travis.yml
 make -C "${GP}" clean
 
-echo "# ................................ repair iocStats timezone setup" 2>&1 | tee -a "${LOG_FILE}"
-# change the TIMEZONE environment variable per issue #30
-# https://github.com/prjemian/epics-docker/issues/30
-dbfile="${SUPPORT}/$(ls ${SUPPORT} | grep iocStats)/db/iocAdminSoft.db"
-sed -i s:'EPICS_TIMEZONE':'EPICS_TZ':g "${dbfile}"
-
 
 echo "# ................................ customize default PREFIX" 2>&1 | tee -a "${LOG_FILE}"
 cd "${GP}"
@@ -41,6 +35,12 @@ cd "${IOCGP}"
 ln -s "${IOCGP}" /home/iocgp
 sed -i s/'IOC_NAME=gp'/'export PREFIX=${PREFIX:-gp:\}\nIOC_NAME=\$\{PREFIX\}'/g   ./softioc/gp.sh
 sed -i s/'epicsEnvSet("PREFIX", "gp:")'/'epicsEnvSet("PREFIX", $(PREFIX=gp:))'/g   ./settings.iocsh
+
+echo "# ................................ repair iocStats timezone setup" 2>&1 | tee -a "${LOG_FILE}"
+# change the TIMEZONE environment variable per issue #30
+# https://github.com/prjemian/epics-docker/issues/30
+dbfile="${SUPPORT}/$(ls ${SUPPORT} | grep iocStats)/db/iocAdminSoft.db"
+sed -i s:'EPICS_TIMEZONE':'EPICS_TZ':g "${dbfile}"
 
 
 echo "# ................................ recompile" 2>&1 | tee -a "${LOG_FILE}"
@@ -200,7 +200,7 @@ sed \
 
 
 echo "# ................................ starter shortcut" 2>&1 | tee -a "${LOG_FILE}"
-cat >> "${HOME}/bin/gp.sh"  << EOF
+cat > "${HOME}/bin/gp.sh"  << EOF
 #!/bin/bash
 
 source "${HOME}/.bash_aliases"
@@ -215,10 +215,6 @@ if [ "\${1}" == "start" ]; then
 fi
 EOF
 chmod +x "${HOME}/bin/gp.sh"
-# startup hints:
-# docker run -e PREFIX='bub:' -it -d --rm --net=host-bridge --name iocbub prjemian/synapps bash
-# docker exec iocbub /root/bin/gp.sh start
-# docker stop iocbub
 
 
 echo "# ................................ install custom screen(s)" 2>&1 | tee -a "${LOG_FILE}"
