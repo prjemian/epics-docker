@@ -136,9 +136,9 @@ sed -i s/'Slit1V,mXp=m3,mXn=m4'/'Slit1V,mXp=m49,mXn=m50'/g   ./optics.iocsh
 sed -i s/'Slit1H,mXp=m5,mXn=m6'/'Slit1H,mXp=m51,mXn=m52'/g   ./optics.iocsh
 cat >> ./optics.iocsh << EOF
 
-# add Slit2 (2slit.db): m53-m56
-dbLoadRecords("\$(OPTICS)/opticsApp/Db/2slit.db","P=\$(PREFIX),SLIT=Slit2V,mXp=m53,mXn=m54,RELTOCENTER=0")
-dbLoadRecords("\$(OPTICS)/opticsApp/Db/2slit.db","P=\$(PREFIX),SLIT=Slit2H,mXp=m55,mXn=m56,RELTOCENTER=0")
+# add Slit2 (2slit_soft.vdb): m53-m56
+dbLoadRecords("\$(OPTICS)/opticsApp/Db/2slit_soft.vdb","P=\$(PREFIX),SLIT=Slit2V,mXp=m53,mXn=m54,PAIRED_WITH=Slit2H")
+dbLoadRecords("\$(OPTICS)/opticsApp/Db/2slit_soft.vdb","P=\$(PREFIX),SLIT=Slit2H,mXp=m55,mXn=m56,PAIRED_WITH=Slit2V")
 EOF
 
 # optical table: m35 - m40
@@ -151,10 +151,11 @@ sed -i s/'CM=m7,FM=m8'/'CM=m33,FM=m34'/g  "${IOCGP}/optics.iocsh"
 sed -i s:'CM=m7,FM=m8':'CM=m33,FM=m34':g   "${XXX}/xxxApp/op/ui/xxx.ui"
 
 # 4-circle diffractometer
-# append new line instead of edit in place
-echo ""  >> ./optics.iocsh
-echo "# 4-circle diffractometer orientation"  >> ./optics.iocsh
-echo iocshLoad\(\"\$\(OPTICS\)/iocsh/orient.iocsh\", \"PREFIX=\$\(PREFIX\), INSTANCE=_0, M_TTH=m29, M_TH=m30, M_CHI=m31, M_PHI=m32, PREC=6, SUB=substitutions/orient_xtals.substitutions\"\)  >> ./optics.iocsh
+sed -i '/orient.iocsh/s/^#//g' "${IOCGP}/optics.iocsh"
+sed -i s/'INSTANCE=1, M_TTH=m9'/'INSTANCE=_0, M_TTH=m29'/g  "${IOCGP}/optics.iocsh"
+sed -i s/M_TH=m10/M_TH=m30/g  "${IOCGP}/optics.iocsh"
+sed -i s/M_CHI=m11/M_CHI=m31/g  "${IOCGP}/optics.iocsh"
+sed -i s/'M_PHI=m12'/'M_PHI=m32, PREC=6'/g  "${IOCGP}/optics.iocsh"
 
 
 echo "# ................................ customize std" 2>&1 | tee -a "${LOG_FILE}"
