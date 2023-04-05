@@ -35,15 +35,14 @@ ln -s "${IOCADSIM}" /home/iocadsim
 mv /tmp/adsim_README ./README
 /bin/rm -f Makefile*
 
-sed -i \
-    s+'epicsEnvSet("IOC",'+'epicsEnvSet(\"IOC\",\"iocadsim\")\n# epicsEnvSet("IOC",'+g \
-    ./envPaths
+sed -i s/iocSimDetector/iocadsim/g ./envPaths
+
 
 sed -i \
     s+"startup =+startup = \"$IOCADSIM\"\n# startup ="+g \
     ./cdCommands
 sed -i \
-    s+'putenv("IOC=iocSimDetector")+putenv("IOC=iocadsim")'+g \
+    s+'putenv("IOC=iocSimDetector")'+"putenv(\"IOC=$IOCADSIM\")"+g \
     ./cdCommands
 
 # NeXus writer support is superceded by HDF writer, remove the template here.
