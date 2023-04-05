@@ -86,6 +86,8 @@ RUN echo "# -------------------------------- end EPICS synApps" 2>&1 | tee -a "$
 RUN echo "# -------------------------------- start create custom GP IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 COPY ./resources/general_purpose.db /tmp/
 COPY ./resources/gp_screens/ /tmp/gp_screens
+COPY ./resources/start_caQtDM.sh /tmp/
+COPY ./resources/start_MEDM.sh /tmp/
 COPY ./resources/custom_gp_ioc.sh "${RESOURCES}/"
 RUN "${RESOURCES}/custom_gp_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 RUN echo "# -------------------------------- end create custom GP IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
@@ -93,8 +95,6 @@ RUN echo "# -------------------------------- end create custom GP IOC" 2>&1 | te
 RUN echo "# -------------------------------- start create custom ADSimDetector IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 COPY ./resources/adsim_README /tmp/
 COPY ./resources/adsim_run.sh /tmp/
-COPY ./resources/start_caQtDM_adsim.sh /tmp/
-COPY ./resources/start_MEDM_adsim.sh /tmp/
 COPY ./resources/adsim_screens/ /tmp/adsim_screens
 COPY ./resources/custom_adsim_ioc.sh "${RESOURCES}/"
 RUN "${RESOURCES}/custom_adsim_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"

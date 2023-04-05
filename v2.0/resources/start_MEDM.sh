@@ -1,10 +1,17 @@
 #!/bin/bash
 
+# template for starting MEDM
+# replace these symbols (typical replacements shown)
+#   SET_EXT         adl
+#   SET_SCREEN      xxx.adl ...
+#   SET_PREFIX      gp:  sky:  ad:  ...
+#   SET_MACRO       P=$PREFIX,R=cam1:
+
 # https://stackoverflow.com/a/246128/1046449
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-SCREENS=$(readlink -m "${SCRIPT_DIR}/screens/adl")
-DEFAULT_SCREEN="${DEFAULT_SCREEN:-simDetector.adl}"
-PREFIX=REPLACE_WHEN_CUSTOMIZED
+SCREENS=$(readlink -m "${SCRIPT_DIR}/screens/SET_EXT")
+DEFAULT_SCREEN="${DEFAULT_SCREEN:-SET_SCREEN}"
+PREFIX=SET_PREFIX
 
 # echo "DEFAULT_SCREEN=${DEFAULT_SCREEN}"
 # echo "PREFIX=${PREFIX}"
@@ -25,7 +32,7 @@ export EPICS_CA_MAX_ARRAY_BYTES=10000000
 export EDITOR=nano
 
 export APP=medm
-export MACRO="P=${PREFIX},R=cam1:" 
+export MACRO="SET_MACRO" 
 export ADL_FILE=${1:-${DEFAULT_SCREEN}}
 
 ${APP} -x -macro ${MACRO} ${ADL_FILE} &

@@ -1,10 +1,17 @@
 #!/bin/bash
 
+# template for starting caQtDM
+# replace these symbols (typical replacements shown)
+#   SET_EXT         ui
+#   SET_SCREEN      xxx.ui ...
+#   SET_PREFIX      gp:  sky:  ad:  ...
+#   SET_MACRO       P=$PREFIX,R=cam1:
+
 # https://stackoverflow.com/a/246128/1046449
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-SCREENS=$(readlink -m "${SCRIPT_DIR}/screens/ui")
-DEFAULT_SCREEN="${DEFAULT_SCREEN:-sim_cam_image.ui}"
-PREFIX=REPLACE_WHEN_CUSTOMIZED
+SCREENS=$(readlink -m "${SCRIPT_DIR}/screens/SET_EXT")
+DEFAULT_SCREEN="${DEFAULT_SCREEN:-SET_SCREEN}"
+PREFIX=SET_PREFIX
 
 export EPICS_HOST_ARCH=linux-x86_64
 
@@ -30,7 +37,7 @@ export EPICS_CA_MAX_ARRAY_BYTES=10000000
 export EDITOR=nano
 
 export APP=caQtDM
-export MACRO="P=${PREFIX},R=cam1:" 
+export MACRO="SET_MACRO" 
 export UI_FILE=${1:-${DEFAULT_SCREEN}}
 
 ${APP} -macro ${MACRO} ${UI_FILE} &

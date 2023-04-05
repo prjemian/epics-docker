@@ -151,7 +151,13 @@ echo "# ................................ customize std" 2>&1 | tee -a "${LOG_FIL
 cd "${IOCGP}"
 cp examples/std.iocsh    ./
 sed -i s:'< common.iocsh':'< common.iocsh\n< std.iocsh':g    ./st.cmd.Linux
-sed -i s:'#iocshLoad("$(STD)/iocsh/softScaler':'iocshLoad("$(STD)/iocsh/softScaler':g ./std.iocsh
+sed -i '/SCALER/s/^#//g' "${IOCGP}/std.iocsh"
+cat >> "${IOCGP}/std.iocsh" << EOF
+
+# extra Soft scalers for testing
+iocshLoad("\$(SCALER)/iocsh/softScaler.iocsh", "P=\$(PREFIX), INSTANCE=scaler2")
+iocshLoad("\$(SCALER)/iocsh/softScaler.iocsh", "P=\$(PREFIX), INSTANCE=scaler3")
+EOF
 
 # PID support
 echo ""  >> ./std.iocsh
@@ -200,16 +206,53 @@ sed \
 
 
 echo "# ................................ starter shortcut" 2>&1 | tee -a "${LOG_FILE}"
+mv /tmp/start_MEDM.sh "${RESOURCES}/"
+mv /tmp/start_caQtDM.sh "${RESOURCES}/"
+
 cat > "${HOME}/bin/gp.sh"  << EOF
 #!/bin/bash
 
 source "${HOME}/.bash_aliases"
 
+export PREFIX=\${PREFIX:-gp:}
+# echo "PREFIX=\${PREFIX}"
+
+PRE="\${PREFIX:0:-1}"  # remove the trailing colon
+# echo "PRE=\${PRE}"
+
 cd "${IOCGP}/softioc"
 bash ./gp.sh "\${1}"
 
+publish_synApps_screens(){
+    pushd "${SUPPORT}"
+    tar cf - screens | (cd /tmp && tar xf -)
+    popd
+}
+
+publish_ioc_custom_screens(){
+    pushd "${IOCGP}"
+    tar cf - screens | (cd /tmp && tar xf -)
+    popd
+}
+
 if [ "\${1}" == "start" ]; then
-    # allow time for the IOC to start (in screen, possibly)
+    publish_synApps_screens
+    publish_ioc_custom_screens
+    # echo "PREFIX=\${PREFIX}  PRE=\${PRE}"
+
+    sed -i s/'SET_EXT'/"ui"/g   "\${RESOURCES}/start_caQtDM.sh"
+    sed -i s/'SET_MACRO'/"P=\${PREFIX}"/g   "\${RESOURCES}/start_caQtDM.sh"
+    sed -i s/'SET_PREFIX'/"\${PREFIX}"/g   "\${RESOURCES}/start_caQtDM.sh"
+    sed -i s/'SET_SCREEN'/"xxx.ui"/g   "\${RESOURCES}/start_caQtDM.sh"
+    cp  "\${RESOURCES}/start_caQtDM.sh"   "/tmp/start_caQtDM_\${PRE}"
+
+    sed -i s/'SET_EXT'/"adl"/g   "\${RESOURCES}/start_MEDM.sh"
+    sed -i s/'SET_MACRO'/"P=\${PREFIX}"/g   "\${RESOURCES}/start_MEDM.sh"
+    sed -i s/'SET_PREFIX'/"\${PREFIX}"/g   "\${RESOURCES}/start_MEDM.sh"
+    sed -i s/'SET_SCREEN'/"xxx.adl"/g   "\${RESOURCES}/start_MEDM.sh"
+    cp  "\${RESOURCES}/start_MEDM.sh"   "/tmp/start_MEDM_\${PRE}"
+
+    # allow more time for the IOC to start (in screen, possibly)
     sleep 2
     bash ./gp.sh status
 fi

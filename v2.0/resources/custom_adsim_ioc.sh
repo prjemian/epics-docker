@@ -68,8 +68,6 @@ echo "# ................................ configure custom IOC PREFIX" 2>&1 | tee
 sed -i s/'13SIM1:'/"\$(PREFIX=adsim:)"/g ./st_base.cmd
 
 echo "# ................................ starter shortcut" 2>&1 | tee -a "${LOG_FILE}"
-mv /tmp/start_MEDM_adsim.sh "${IOCADSIM}/"
-mv /tmp/start_caQtDM_adsim.sh "${IOCADSIM}/"
 
 cat >> "${HOME}/bin/adsim.sh"  << EOF
 #!/bin/bash
@@ -101,20 +99,18 @@ if [ "\${1}" == "start" ]; then
     publish_synApps_screens
     publish_ioc_custom_screens
     # echo "PREFIX=\${PREFIX}  PRE=\${PRE}"
-    sed \
-        -i \
-        s/'REPLACE_WHEN_CUSTOMIZED'/"\${PREFIX}"/g \
-        "\${IOCADSIM}/start_MEDM_adsim.sh"
-    sed \
-        -i \
-        s/'REPLACE_WHEN_CUSTOMIZED'/"\${PREFIX}"/g \
-        "\${IOCADSIM}/start_caQtDM_adsim.sh"
-    cp \
-        "\${IOCADSIM}/start_MEDM_adsim.sh" \
-        "/tmp/start_MEDM_\${PRE}"
-    cp \
-        "\${IOCADSIM}/start_caQtDM_adsim.sh" \
-        "/tmp/start_caQtDM_\${PRE}"
+
+    sed -i s/'SET_EXT'/"ui"/g   "\${RESOURCES}/start_caQtDM.sh"
+    sed -i s/'SET_MACRO'/"P=\${PREFIX},R=cam1:"/g   "\${RESOURCES}/start_caQtDM.sh"
+    sed -i s/'SET_PREFIX'/"\${PREFIX}"/g   "\${RESOURCES}/start_caQtDM.sh"
+    sed -i s/'SET_SCREEN'/"sim_cam_image.ui"/g   "\${RESOURCES}/start_caQtDM.sh"
+    cp  "\${RESOURCES}/start_caQtDM.sh"   "/tmp/start_caQtDM_\${PRE}"
+
+    sed -i s/'SET_EXT'/"adl"/g   "\${RESOURCES}/start_MEDM.sh"
+    sed -i s/'SET_MACRO'/"P=\${PREFIX},R=cam1:"/g   "\${RESOURCES}/start_MEDM.sh"
+    sed -i s/'SET_PREFIX'/"\${PREFIX}"/g   "\${RESOURCES}/start_MEDM.sh"
+    sed -i s/'SET_SCREEN'/"simDetector.adl"/g   "\${RESOURCES}/start_MEDM.sh"
+    cp  "\${RESOURCES}/start_MEDM.sh"   "/tmp/start_MEDM_\${PRE}"
 
     # allow more time for the IOC to start (in screen, possibly)
     sleep 2
