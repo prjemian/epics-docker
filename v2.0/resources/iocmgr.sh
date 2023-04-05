@@ -4,8 +4,8 @@
 
 # Usage: ${0} ACTION IOC PRE
 
-ACTION=${1}  # console|restart|run|start|status|stop|usage
-IOC=${2}  # "gp", "adsim", 
+ACTION=${1}  # console|restart|run|start|status|stop|caqtdm|medm|usage
+IOC=${2}  # "gp", "adsim",
 PRE=${3}  # User's choice.  No trailing colon!
 
 # -------------------------------------------
@@ -127,10 +127,18 @@ symbols(){
     echo "TMP_ROOT=${TMP_ROOT}"
 }
 
+caqtdm(){
+    "${HOST_TMP_SHARE}/start_caQtDM_${PRE}"
+}
+
+medm(){
+    "${HOST_TMP_SHARE}/start_MEDM_${PRE}"
+}
+
 usage(){
     echo "Usage: ${0} ACTION IOC PRE"
     echo "  where:"
-    echo "  ACTION  choices: start stop restart status usage"
+    echo "  ACTION  choices: start stop restart status caqtdm medm usage"
     echo "  IOC     choices: gp adsim"
     echo "  PRE     User's choice.  No trailing colon!"
     echo ""
@@ -155,5 +163,7 @@ case "${ACTION}" in
   restart) restart ;;
   status) status ;;
   symbols) symbols ;;
+  caqtdm) caqtdm ;;
+  medm) medm ;;
   *) usage
 esac
