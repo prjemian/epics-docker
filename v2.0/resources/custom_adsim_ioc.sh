@@ -122,6 +122,7 @@ chmod +x "${HOME}/bin/adsim.sh"
 echo "# ................................ customize st_base.cmd" 2>&1 | tee -a "${LOG_FILE}"
 # comment out any line with SIM2
 sed -i '/SIM2/s/^/#/g' "${IOCADSIM}/st_base.cmd"
+sed -i '/"EPICS_CA_MAX_ARRAY_BYTES"/s/^#//g' "${IOCADSIM}/st_base.cmd"
 
 echo "# ................................ plugins" 2>&1 | tee -a "${LOG_FILE}"
 # customize ${AD}/ADCore/iocBoot/commonPlugins.cmd
