@@ -32,10 +32,10 @@ record(waveform, "$(P)$(R)array$(N)") {
     field(NELM, "1024")
 }
 
-# https://github.com/prjemian/epics-docker/issues/48
-# https://epics.anl.gov/base/R7-0/6-docs/subRecord.html
-record(sub, "$(P)$(R)sub$(N)") {
-    field(DESC, "sub record $(N)")
-    field(INAM, "initSubAve")
-    field(SNAM, "SubAve")
-}
+# # https://github.com/prjemian/epics-docker/issues/48
+# # https://epics.anl.gov/base/R7-0/6-docs/subRecord.html
+# record(sub, "$(P)$(R)sub$(N)") {
+#     field(DESC, "sub record $(N)")
+#     field(INAM, "initSubAve")
+#     field(SNAM, "SubAve")
+# }
