@@ -10,12 +10,16 @@ Contents
   - [IOCs Provided](#iocs-provided)
     - [Starter Scripts](#starter-scripts)
   - [Software versions](#software-versions)
+  - [Source Code](#source-code)
   - [Initial Plans](#initial-plans)
 
 ## How to use this image
 
 Run custom XXX or ADSimDetector IOCs.  Copy (download) the `iocmgr.sh` shell
 script to a directory on your executable path and make the script executable.
+
+Here are some examples for a GP IOC with prefix `gp`:` and an ADSIM IOC with
+prefix `ad1:`:
 
 command | description
 --- | ---
@@ -38,6 +42,10 @@ system | filesystem
 IOC | `/tmp`
 host | `/tmp/docker_ioc/iocPRE`
 
+Use the same docker image (`prjemian/synapps:latest`) for all IOCs.  The
+`iocmgr.sh` script runs only *one IOC per container*.  Starting containers is
+usually very fast.
+
 ## Environment Variables
 
 Defined in image file `~/.bash_aliases`:
@@ -52,6 +60,49 @@ variable | comments
 `LOG_DIR` | directory with log files while building the image
 `PATH` | list of directories for executable software
 `RESOURCES` | directory with scripts and other resources to install the image contents
+
+```bash
+# file: ~/.bash_aliases
+export LS_OPTIONS='--color=auto'
+export EDITOR=nano
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/bin
+export PROMPT_DIRTRIM=3
+alias ls='ls --color=auto'
+alias ll='ls -lAFgh'
+export APP_ROOT=/opt
+export RESOURCES=/opt/resources
+export LOG_DIR=/opt/logs
+#
+# epics_base.sh
+export BASE_VERSION="7.0.5"
+export EPICS_BASE_NAME="base-7.0.5"
+export EPICS_BASE="/opt/base-7.0.5"
+export EPICS_HOST_ARCH="linux-x86_64"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/bin:/opt/base-7.0.5/bin/linux-x86_64"
+#
+# epics_synapps.sh
+export SYNAPPS="/opt/synApps"
+export SUPPORT="/opt/synApps/support"
+export IOCS_DIR="/opt/synApps/iocs"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/bin:/opt/base-7.0.5/bin/linux-x86_64:/opt/synApps/support/utils"
+export CAPUTRECORDER_HASH="master"
+export MOTOR_HASH="R7-2-2"
+export AD="/opt/synApps/support/areaDetector-R3-11"
+export ASYN="/opt/synApps/support/asyn-R4-42"
+export IOCXXX="/opt/synApps/support/xxx-master/iocBoot/iocxxx"
+export MOTOR="/opt/synApps/support/motor-R7-2-2"
+export XXX="/opt/synApps/support/xxx-master"
+#
+# create_gp_ioc.sh
+export GP="/opt/synApps/iocs/iocgp"
+export IOCGP="/opt/synApps/iocs/iocgp/iocBoot/iocgp"
+#
+# create_adsim_ioc.sh
+export IOCADSIM="/opt/synApps/iocs/iocadsim"
+export AREA_DETECTOR="/opt/synApps/support/areaDetector-R3-11"
+export ADSIMDETECTOR="/opt/synApps/support/areaDetector-R3-11/ADSimDetector/iocs/simDetectorIOC"
+export IOCADSIMDETECTOR="/opt/synApps/support/areaDetector-R3-11/ADSimDetector/iocs/simDetectorIOC/iocBoot/iocSimDetector"
+```
 
 ## IOCs Provided
 
@@ -100,6 +151,21 @@ sscan | R2-11-4
 std | R3-6-3
 StreamDevice | 2-8-14
 xxx | master
+
+## Source Code
+
+The source code is installed in `/opt` in the following subdirectories:
+
+content | description
+--- | ---
+`assemble_synApps.sh` | script that creates content in `synApps/support`
+`base` | soft link to `base-7.0.5`
+`base-7.0.5` | EPICS base
+`logs` | log files when image features were built
+`resources` | scripts for building or running IOCs
+`synApps/support` | the synApps modules
+`synApps/support/screens` | GUI screens from all the synApps modules
+`synApps/iocs` | custom synApps IOCs
 
 ## Initial Plans
 
