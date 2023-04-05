@@ -1,7 +1,7 @@
 FROM  debian:stable-slim
 LABEL version="2.0.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2023-04-04" \
+      lastupdate="2023-04-05" \
       Description="source: https://github.com/prjemian/epics-docker/"
 USER  root
 
