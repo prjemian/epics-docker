@@ -65,28 +65,63 @@ sed -i s+'cmd\.Linux'+'cmd'+g "${IOCADSIM}/softioc/adsim.sh"
 
 echo "# ................................ configure custom IOC PREFIX" 2>&1 | tee -a "${LOG_FILE}"
 # Customize everything that expects prefix "13SIM1:", default PREFIX is "adsim:".
-sed -i s/'epicsEnvSet("PREFIX", "13SIM1:")'/'epicsEnvSet("PREFIX", $(PREFIX=adsim:))'/g   ./st_base.cmd
+sed -i s/'13SIM1:'/"\$(PREFIX=adsim:)"/g ./st_base.cmd
 
 echo "# ................................ starter shortcut" 2>&1 | tee -a "${LOG_FILE}"
+mv /tmp/start_MEDM_adsim.sh "${IOCADSIM}/"
+mv /tmp/start_caQtDM_adsim.sh "${IOCADSIM}/"
+
 cat >> "${HOME}/bin/adsim.sh"  << EOF
 #!/bin/bash
 
 source "${HOME}/.bash_aliases"
 
+export PREFIX=\${PREFIX:-adsim:}
+# echo "PREFIX=\${PREFIX}"
+
+PRE="\${PREFIX:0:-1}"  # remove the trailing colon
+# echo "PRE=\${PRE}"
+
 cd "${IOCADSIM}/softioc"
 bash ./adsim.sh "\${1}"
 
+publish_synApps_screens(){
+    pushd "${SUPPORT}"
+    tar cf - screens | (cd /tmp && tar xf -)
+    popd
+}
+
+publish_ioc_custom_screens(){
+    pushd "${IOCADSIM}"
+    tar cf - screens | (cd /tmp && tar xf -)
+    popd
+}
+
 if [ "\${1}" == "start" ]; then
-    # allow time for the IOC to start (in screen, possibly)
+    publish_synApps_screens
+    publish_ioc_custom_screens
+    # echo "PREFIX=\${PREFIX}  PRE=\${PRE}"
+    sed \
+        -i \
+        s/'REPLACE_WHEN_CUSTOMIZED'/"\${PREFIX}"/g \
+        "\${IOCADSIM}/start_MEDM_adsim.sh"
+    sed \
+        -i \
+        s/'REPLACE_WHEN_CUSTOMIZED'/"\${PREFIX}"/g \
+        "\${IOCADSIM}/start_caQtDM_adsim.sh"
+    cp \
+        "\${IOCADSIM}/start_MEDM_adsim.sh" \
+        "/tmp/start_MEDM_\${PRE}"
+    cp \
+        "\${IOCADSIM}/start_caQtDM_adsim.sh" \
+        "/tmp/start_caQtDM_\${PRE}"
+
+    # allow more time for the IOC to start (in screen, possibly)
     sleep 2
     bash ./adsim.sh status
 fi
 EOF
 chmod +x "${HOME}/bin/adsim.sh"
-# startup hints:
-# docker run -e PREFIX='bub:' -it -d --rm --net=host-bridge --name iocbub prjemian/synapps bash
-# docker exec iocbub /root/bin/adsim.sh start
-# docker stop iocbub
 
 echo "# ................................ customize st_base.cmd" 2>&1 | tee -a "${LOG_FILE}"
 # comment out any line with SIM2

@@ -93,6 +93,8 @@ RUN echo "# -------------------------------- end create custom GP IOC" 2>&1 | te
 RUN echo "# -------------------------------- start create custom ADSimDetector IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 COPY ./resources/adsim_README /tmp/
 COPY ./resources/adsim_run.sh /tmp/
+COPY ./resources/start_caQtDM_adsim.sh /tmp/
+COPY ./resources/start_MEDM_adsim.sh /tmp/
 COPY ./resources/adsim_screens/ /tmp/adsim_screens
 COPY ./resources/custom_adsim_ioc.sh "${RESOURCES}/"
 RUN "${RESOURCES}/custom_adsim_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
