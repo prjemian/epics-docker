@@ -145,18 +145,10 @@ sed -i \
     "${IOCADSIM}/commonPlugins.cmd"
 # TODO: FFMPEGSERVER  (needs support in edit_assemble_synApps.sh)
 # TODO: FFMPEGVIEWER  (needs support in edit_assemble_synApps.sh)
-# sed -i \
-#     '/ffmpegServerConfigure/s/^#//g' \
-#     "${IOCADSIM}/commonPlugins.cmd"
-# sed -i \
-#     '/ffmpegStreamConfigure/s/^#//g' \
-#     "${IOCADSIM}/commonPlugins.cmd"
-# sed -i \
-#     '/ffmpegFileConfigure/s/^#//g' \
-#     "${IOCADSIM}/commonPlugins.cmd"
-# sed -i \
-#     '/FFMPEGSERVER/s/^#//g' \
-#     "${IOCADSIM}/commonPlugins.cmd"
+# sed -i '/ffmpegServerConfigure/s/^#//g'   "${IOCADSIM}/commonPlugins.cmd"
+# sed -i '/ffmpegStreamConfigure/s/^#//g'   "${IOCADSIM}/commonPlugins.cmd"
+# sed -i '/ffmpegFileConfigure/s/^#//g'   "${IOCADSIM}/commonPlugins.cmd"
+# sed -i '/FFMPEGSERVER/s/^#//g'   "${IOCADSIM}/commonPlugins.cmd"
 
 echo "# ................................ autosave" 2>&1 | tee -a "${LOG_FILE}"
 cp ${IOCADSIMDETECTOR}/auto_settings.req "${IOCADSIM}/"
