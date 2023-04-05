@@ -85,6 +85,7 @@ export SUBFILE=
 echo "# ................................ customize motors -- pre_assigned_motor_names.iocsh" 2>&1 | tee -a "${LOG_FILE}"
 cat > ./pre_assigned_motor_names.iocsh  << EOF
 # motor assignments:
+# m1-m28 unassigned
 dbpf(\${PREFIX}m29.DESC, "TTH 4-circle")
 dbpf(\${PREFIX}m30.DESC, "TH 4-circle")
 dbpf(\${PREFIX}m31.DESC, "CHI 4-circle")
@@ -97,13 +98,19 @@ dbpf(\${PREFIX}m37.DESC, "M1Y table")
 dbpf(\${PREFIX}m38.DESC, "M2X table")
 dbpf(\${PREFIX}m39.DESC, "M2Y table")
 dbpf(\${PREFIX}m40.DESC, "M2Z table")
-dbpf(\${PREFIX}m41.DESC, "Slit1V:mXp")
-dbpf(\${PREFIX}m42.DESC, "Slit1V:mXn")
-dbpf(\${PREFIX}m43.DESC, "Slit1H:mXp")
-dbpf(\${PREFIX}m44.DESC, "Slit1H:mXn")
+# m41-m44 unassigned
 dbpf(\${PREFIX}m45.DESC, "THETA monochromator")
 dbpf(\${PREFIX}m46.DESC, "Y monochromator")
 dbpf(\${PREFIX}m47.DESC, "Z monochromator")
+# m48 unassigned
+dbpf(\${PREFIX}m49.DESC, "Slit1V:mXp")
+dbpf(\${PREFIX}m50.DESC, "Slit1V:mXn")
+dbpf(\${PREFIX}m51.DESC, "Slit1H:mXp")
+dbpf(\${PREFIX}m52.DESC, "Slit1H:mXn")
+dbpf(\${PREFIX}m53.DESC, "Slit2V:mXp")
+dbpf(\${PREFIX}m54.DESC, "Slit2V:mXn")
+dbpf(\${PREFIX}m55.DESC, "Slit2H:mXp")
+dbpf(\${PREFIX}m56.DESC, "Slit2H:mXn")
 EOF
 
 cat >> st.cmd.Linux << EOF
@@ -124,20 +131,23 @@ echo ""  >> ./optics.iocsh
 echo "# monochromator"  >> ./optics.iocsh
 echo iocshLoad\(\"\$\(OPTICS\)/iocsh/kohzu_mono.iocsh\", \"PREFIX=\$\(PREFIX\), M_THETA=m45,M_Y=m46,M_Z=m47, YOFF_LO=17.4999,YOFF_HI=17.5001, GEOM=1, LOG=kohzuCtl.log\"\)  >> ./optics.iocsh
 
-# slits (2slit.db): m41 - m44
-sed -i s/'Slit1V,mXp=m3,mXn=m4'/'Slit1V,mXp=m41,mXn=m42'/g   ./optics.iocsh
-sed -i s/'Slit1H,mXp=m5,mXn=m6'/'Slit1H,mXp=m43,mXn=m44'/g   ./optics.iocsh
+# Slit1 (2slit.db): m49-m52
+sed -i s/'Slit1V,mXp=m3,mXn=m4'/'Slit1V,mXp=m49,mXn=m50'/g   ./optics.iocsh
+sed -i s/'Slit1H,mXp=m5,mXn=m6'/'Slit1H,mXp=m51,mXn=m52'/g   ./optics.iocsh
+cat >> ./optics.iocsh << EOF
+
+# add Slit2 (2slit.db): m53-m56
+dbLoadRecords("\$(OPTICS)/opticsApp/Db/2slit.db","P=\$(PREFIX),SLIT=Slit2V,mXp=m53,mXn=m54,RELTOCENTER=0")
+dbLoadRecords("\$(OPTICS)/opticsApp/Db/2slit.db","P=\$(PREFIX),SLIT=Slit2H,mXp=m55,mXn=m56,RELTOCENTER=0")
+EOF
 
 # optical table: m35 - m40
 sed -i s/',T=table1,M0X=m1,M0Y=m2,M1Y=m3,M2X=m4,M2Y=m5,M2Z=m6'/',T=table1,M0X=m35,M0Y=m36,M1Y=m37,M2X=m38,M2Y=m39,M2Z=m40'/g   ./optics.iocsh
 
 # Coarse/Fine stage: m33 - m34
-# append new config: easier than removing the comment characters
-cat >> ./optics.iocsh << EOF
-#
-# Coarse/Fine stage
-dbLoadRecords("\$(OPTICS)/opticsApp/Db/CoarseFineMotor.db","P=\$(PREFIX)cf1:,PM=\$(PREFIX),CM=m33,FM=m34")
-EOF
+# uncomment
+sed -i '/CoarseFineMotor/s/^#//g' "${IOCGP}/optics.iocsh"
+sed -i s/'CM=m7,FM=m8'/'CM=m33,FM=m34'/g  "${IOCGP}/optics.iocsh"
 sed -i s:'CM=m7,FM=m8':'CM=m33,FM=m34':g   "${XXX}/xxxApp/op/ui/xxx.ui"
 
 # 4-circle diffractometer
