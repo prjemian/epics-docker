@@ -48,18 +48,21 @@ make -C "${GP}"
 
 
 echo "# ................................ customize motors" 2>&1 | tee -a "${LOG_FILE}"
-MOTOR="${SUPPORT}/$(ls ${SUPPORT} | grep motor)"
 cd "${IOCGP}"
-cp examples/motors.iocsh ./
 sed -i s:'< common.iocsh':'< common.iocsh\n< motors.iocsh':g    ./st.cmd.Linux
 
 echo "# ................................ customize motors -- motors.iocsh" 2>&1 | tee -a "${LOG_FILE}"
-cat > "${IOCGP}/motors.iocsh"  << EOF
-iocshLoad("${IOCGP}/motorSim.iocsh", "INSTANCE=motorSim, HOME_POS=0, NUM_AXES=56, HIGH_LIM=2100000, LOW_LIM=-2100000, SUB=substitutions/motorSim.substitutions")
+cp "${IOCGP}/examples/motors.iocsh" "${IOCGP}/motors.iocsh"
+sed -i /motor.substitutions/s/^/#/g "${IOCGP}/motors.iocsh"
+sed -i /softMotor.substitutions/s/^#//g "${IOCGP}/motors.iocsh"
+sed -i /motorSim.substitutions/s/^#//g "${IOCGP}/motors.iocsh"
+sed -i s/NUM_AXES=16/NUM_AXES=56/g "${IOCGP}/motors.iocsh"
+sed -i s/HIGH_LIM=32000/HIGH_LIM=2100000/g "${IOCGP}/motors.iocsh"
+sed -i s/LOW_LIM=-32000/LOW_LIM=-2100000/g "${IOCGP}/motors.iocsh"
+sed -i \
+    s+'\$(MOTOR)/iocsh/motorSim.iocsh'+"${IOCGP}/motorSim.iocsh"+g \
+    "${IOCGP}/motors.iocsh"
 
-# Allstop, alldone
-iocshLoad("\$(MOTOR)/iocsh/allstop.iocsh", "P=\$(PREFIX)")
-EOF
 echo "# ................................ customize motors -- motorSim.iocsh" 2>&1 | tee -a "${LOG_FILE}"
 cat > "${IOCGP}/motorSim.iocsh"  << EOF
 motorSimCreate(\$(CONTROLLER=0), 0, \$(LOW_LIM=-32000), \$(HIGH_LIM=32000), \$(HOME_POS=0), 1, \$(NUM_AXES=1))
@@ -150,17 +153,39 @@ EOF
 sed -i s/',T=table1,M0X=m1,M0Y=m2,M1Y=m3,M2X=m4,M2Y=m5,M2Z=m6'/',T=table1,M0X=m35,M0Y=m36,M1Y=m37,M2X=m38,M2Y=m39,M2Z=m40'/g   ./optics.iocsh
 
 # Coarse/Fine stage: m33 - m34
-# uncomment
+# uncomment CoarseFineMotor
 sed -i '/CoarseFineMotor/s/^#//g' "${IOCGP}/optics.iocsh"
 sed -i s/'CM=m7,FM=m8'/'CM=m33,FM=m34'/g  "${IOCGP}/optics.iocsh"
 sed -i s:'CM=m7,FM=m8':'CM=m33,FM=m34':g   "${XXX}/xxxApp/op/ui/xxx.ui"
 
 # 4-circle diffractometer
+cp "${OPTICS}/iocsh/orient.iocsh"  "${IOCGP}/orient.iocsh"
+sed -i s+'\$(OPTICS)/iocsh/orient.iocsh'+"${IOCGP}/orient.iocsh"+g "${IOCGP}/optics.iocsh"
 sed -i '/orient.iocsh/s/^#//g' "${IOCGP}/optics.iocsh"
+# INSTANCE=_0 is used as $(O) in the GUI screens: $(P)orient$(O):H
 sed -i s/'INSTANCE=1, M_TTH=m9'/'INSTANCE=_0, M_TTH=m29'/g  "${IOCGP}/optics.iocsh"
 sed -i s/M_TH=m10/M_TH=m30/g  "${IOCGP}/optics.iocsh"
 sed -i s/M_CHI=m11/M_CHI=m31/g  "${IOCGP}/optics.iocsh"
 sed -i s/'M_PHI=m12'/'M_PHI=m32, PREC=6'/g  "${IOCGP}/optics.iocsh"
+# https://7id.xray.aps.anl.gov/calculators/crystal_lattice_parameters.html
+cat > "${IOCGP}/substitutions/7id-crystals.db" << EOF
+file "\$(OPTICS)/db/orient_xtals.db"
+{
+    pattern
+    {N,  xtal,            a,       b,       c,       alpha, beta,  gamma}
+    {1,  Silicon,         5.43095, 5.43095, 5.43095, 90,    90,    90}
+    {2,  "Beryllium hcp", 2.2858,  2.2858,  3.5843,  90,    90,   120}
+    {3,  VO2,             5.743,   4.517,   5.375,   90,   122.6,  90}
+    {4,  Germanium,       5.64613, 5.64613, 5.64613, 90,    90,    90}
+    {5,  Diamond,         3.56683, 3.56683, 3.56683, 90,    90,    90}
+    {6,  "Boron Nitride", 3.6150,  3.6150,  3.6150,  90,    90,    90}
+    {7,  CdTe,            6.482,   6.482,   6.482,   90,    90,    90}
+    {8,  SiC,             3.086,   3.086,  15.117,   90,    90,    90}
+    {9,  undefined,       1, 1, 1, 90, 90, 90}
+    {10, undefined,       1, 1, 1, 90, 90, 90}
+}
+EOF
+sed -i s+'orient_xtals.substitutions'+'7id-crystals.db'+g  "${IOCGP}/optics.iocsh"
 
 
 echo "# ................................ customize std" 2>&1 | tee -a "${LOG_FILE}"
@@ -175,7 +200,23 @@ iocshLoad("\$(SCALER)/iocsh/softScaler.iocsh", "P=\$(PREFIX), INSTANCE=scaler2")
 iocshLoad("\$(SCALER)/iocsh/softScaler.iocsh", "P=\$(PREFIX), INSTANCE=scaler3")
 EOF
 
-# PID support
+echo "# ................................ pre-assigned scaler channels" 2>&1 | tee -a "${LOG_FILE}"
+cat > ./pre_assigned_scaler_channel_names.iocsh  << EOF
+dbpf(\${PREFIX}scaler1.NM1, "timebase")
+dbpf(\${PREFIX}scaler1.NM2, "I0")
+dbpf(\${PREFIX}scaler1.NM3, "scint")
+dbpf(\${PREFIX}scaler1.NM4, "diode")
+dbpf(\${PREFIX}scaler1.NM5, "I000")
+dbpf(\${PREFIX}scaler1.NM6, "I00")
+EOF
+
+cat >> st.cmd.Linux << EOF
+#
+# pre-assigned scaler channels
+< pre_assigned_scaler_channel_names.iocsh
+EOF
+
+echo "# ................................ fb_epid" 2>&1 | tee -a "${LOG_FILE}"
 echo ""  >> ./std.iocsh
 echo "# feedback: fb_epid"  >> ./std.iocsh
 echo dbLoadTemplate\(\"substitutions/fb_epid.substitutions\",\"PREFIX=\$\(PREFIX\)\"\)  >> ./std.iocsh
