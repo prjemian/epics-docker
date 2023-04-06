@@ -72,7 +72,7 @@ echo "# ................................ customize motors -- substitutions/motor
 # re-write the substitutions file for 56 motors (easier than modifying it)
 sed -i s:'dbLoadTemplate("substitutions/motor.substitutions"':'#dbLoadTemplate("substitutions/motor.substitutions"':g ./motors.iocsh
 export SUBFILE=./substitutions/motorSim.substitutions
-echo file \"\$\(MOTOR\)/db/asyn_motor.db\"  > "${SUBFILE}"
+echo file "${IOCGP}/asyn_motor.db"  > "${SUBFILE}"
 echo {  >> "${SUBFILE}"
 echo pattern  >> "${SUBFILE}"
 echo {N,  M, ADDR, DESC, EGU, DIR, VELO, VBAS, ACCL, BDST, BVEL, BACC, MRES, PREC, DLLM, DHLM, INIT}  >> "${SUBFILE}"
@@ -81,6 +81,11 @@ for n in $(seq 1 56); do
 done
 echo }  >> "${SUBFILE}"
 export SUBFILE=
+
+echo "# ................................ customize motors -- patch asyn_motor.db" 2>&1 | tee -a "${LOG_FILE}"
+# see: https://github.com/prjemian/epics-docker/pull/55#issuecomment-1499219783
+cp "${MOTOR}/db/asyn_motor.db" "${IOCGP}/asyn_motor.db"
+patch  "${IOCGP}/asyn_motor.db"  "${RESOURCES}/gp_asyn_motor.db.patch"
 
 echo "# ................................ customize motors -- pre_assigned_motor_names.iocsh" 2>&1 | tee -a "${LOG_FILE}"
 cat > ./pre_assigned_motor_names.iocsh  << EOF
