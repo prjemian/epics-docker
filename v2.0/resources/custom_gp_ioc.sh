@@ -187,10 +187,7 @@ sed -i s/'PERMIT1=\"gp:epid1:on.VAL\"'/'PERMIT1=\"$(P):on.VAL\"'/g   ./substitut
 
 echo "# ................................ add general purpose PVs" 2>&1 | tee -a "${LOG_FILE}"
 # database for general purpose PVs
-mv /tmp/general_purpose.db "${IOCGP}/substitutions"
-
-# build the iocsh loader
-export SUBFILE="${IOCGP}/general_purpose.iocsh"
+export SUBFILE="${IOCGP}/general_purpose.iocsh"  # build the iocsh loader
 echo dbLoadTemplate\(\"substitutions/general_purpose.substitutions\", \"P=\$\(PREFIX\),R=gp:\"\) > "${SUBFILE}"
 export SUBFILE=
 sed -i s:'< common.iocsh':'< common.iocsh\n< general_purpose.iocsh':g    ./st.cmd.Linux
@@ -222,9 +219,6 @@ sed \
 
 
 echo "# ................................ starter shortcut" 2>&1 | tee -a "${LOG_FILE}"
-mv /tmp/start_MEDM.sh "${RESOURCES}/"
-mv /tmp/start_caQtDM.sh "${RESOURCES}/"
-
 cat > "${HOME}/bin/gp.sh"  << EOF
 #!/bin/bash
 
