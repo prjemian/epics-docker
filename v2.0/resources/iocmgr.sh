@@ -128,11 +128,18 @@ symbols(){
 }
 
 caqtdm(){
-    "${HOST_TMP_SHARE}/start_caQtDM_${PRE}"
+    if [ "gp" == "${IOC}" ]; then
+        custom_screen="ioc${PRE}.ui"
+    fi
+    # echo "custom_screen=${custom_screen}"
+    "${HOST_TMP_SHARE}/start_caQtDM_${PRE}" "${custom_screen}"
 }
 
 medm(){
-    "${HOST_TMP_SHARE}/start_MEDM_${PRE}"
+    if [ "gp" == "${IOC}" ]; then
+        custom_screen="ioc${PRE}.ui"
+    fi
+    "${HOST_TMP_SHARE}/start_MEDM_${PRE}" "${custom_screen}"
 }
 
 usage(){

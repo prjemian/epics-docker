@@ -86,6 +86,7 @@ RUN echo "# -------------------------------- end EPICS synApps" 2>&1 | tee -a "$
 RUN echo "# -------------------------------- start create custom GP IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 COPY ./resources/general_purpose.db "${RESOURCES}/"
 COPY ./resources/gp_asyn_motor.db.patch "${RESOURCES}/"
+COPY ./resources/gp_build_gp_sh.sh "${RESOURCES}/"
 COPY ./resources/gp_screens/ /tmp/gp_screens
 COPY ./resources/start_caQtDM.sh "${RESOURCES}/"
 COPY ./resources/start_MEDM.sh "${RESOURCES}/"

@@ -40,4 +40,5 @@ export APP=caQtDM
 export MACRO="SET_MACRO" 
 export UI_FILE=${1:-${DEFAULT_SCREEN}}
 
+# echo "called with: ${0} ${@}"
 ${APP} -macro ${MACRO} ${UI_FILE} &

@@ -228,6 +228,7 @@ sed -i s/'PERMIT1=\"gp:epid1:on.VAL\"'/'PERMIT1=\"$(P):on.VAL\"'/g   ./substitut
 
 echo "# ................................ add general purpose PVs" 2>&1 | tee -a "${LOG_FILE}"
 # database for general purpose PVs
+cp "${RESOURCES}/general_purpose.db" "${IOCGP}/substitutions/general_purpose.db"
 export SUBFILE="${IOCGP}/general_purpose.iocsh"  # build the iocsh loader
 echo dbLoadTemplate\(\"substitutions/general_purpose.substitutions\", \"P=\$\(PREFIX\),R=gp:\"\) > "${SUBFILE}"
 export SUBFILE=
@@ -247,6 +248,9 @@ for n in $(seq 1 20); do
 done
 echo }  >> "${SUBFILE}"
 
+# patch the caQtDM (.ui) screen
+# TODO:
+
 echo "# ................................ remove ALIVE support" 2>&1 | tee -a "${LOG_FILE}"
 # comment out any line with ALIVE
 sed -i '/ALIVE/s/^/#/g' "${IOCGP}/common.iocsh"
@@ -260,56 +264,7 @@ sed \
 
 
 echo "# ................................ starter shortcut" 2>&1 | tee -a "${LOG_FILE}"
-cat > "${HOME}/bin/gp.sh"  << EOF
-#!/bin/bash
-
-source "${HOME}/.bash_aliases"
-
-export PREFIX=\${PREFIX:-gp:}
-# echo "PREFIX=\${PREFIX}"
-
-PRE="\${PREFIX:0:-1}"  # remove the trailing colon
-# echo "PRE=\${PRE}"
-
-cd "${IOCGP}/softioc"
-bash ./gp.sh "\${1}"
-
-publish_synApps_screens(){
-    pushd "${SUPPORT}"
-    tar cf - screens | (cd /tmp && tar xf -)
-    popd
-}
-
-publish_ioc_custom_screens(){
-    pushd "${IOCGP}"
-    tar cf - screens | (cd /tmp && tar xf -)
-    popd
-}
-
-if [ "\${1}" == "start" ]; then
-    publish_synApps_screens
-    publish_ioc_custom_screens
-    # echo "PREFIX=\${PREFIX}  PRE=\${PRE}"
-
-    sed -i s/'SET_EXT'/"ui"/g   "\${RESOURCES}/start_caQtDM.sh"
-    sed -i s/'SET_MACRO'/"P=\${PREFIX}"/g   "\${RESOURCES}/start_caQtDM.sh"
-    sed -i s/'SET_PREFIX'/"\${PREFIX}"/g   "\${RESOURCES}/start_caQtDM.sh"
-    sed -i s/'SET_SCREEN'/"xxx.ui"/g   "\${RESOURCES}/start_caQtDM.sh"
-    cp  "\${RESOURCES}/start_caQtDM.sh"   "/tmp/start_caQtDM_\${PRE}"
-
-    sed -i s/'SET_EXT'/"adl"/g   "\${RESOURCES}/start_MEDM.sh"
-    sed -i s/'SET_MACRO'/"P=\${PREFIX}"/g   "\${RESOURCES}/start_MEDM.sh"
-    sed -i s/'SET_PREFIX'/"\${PREFIX}"/g   "\${RESOURCES}/start_MEDM.sh"
-    sed -i s/'SET_SCREEN'/"xxx.adl"/g   "\${RESOURCES}/start_MEDM.sh"
-    cp  "\${RESOURCES}/start_MEDM.sh"   "/tmp/start_MEDM_\${PRE}"
-
-    # allow more time for the IOC to start (in screen, possibly)
-    sleep 2
-    bash ./gp.sh status
-fi
-EOF
-chmod +x "${HOME}/bin/gp.sh"
-
+bash "${RESOURCES}/gp_build_gp_sh.sh"
 
 echo "# ................................ install custom screen(s)" 2>&1 | tee -a "${LOG_FILE}"
 cd "${IOCGP}/"
