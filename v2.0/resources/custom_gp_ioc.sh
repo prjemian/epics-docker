@@ -226,30 +226,7 @@ sed -i s/'OUT=gp:epid1:sim.D'/'OUT=\"$(P):sim.D\"'/g   ./substitutions/fb_epid.s
 sed -i s/'PERMIT1=\"gp:epid1:on.VAL\"'/'PERMIT1=\"$(P):on.VAL\"'/g   ./substitutions/fb_epid.substitutions
 
 
-echo "# ................................ add general purpose PVs" 2>&1 | tee -a "${LOG_FILE}"
-# database for general purpose PVs
-cp "${RESOURCES}/general_purpose.db" "${IOCGP}/substitutions/general_purpose.db"
-export SUBFILE="${IOCGP}/general_purpose.iocsh"  # build the iocsh loader
-echo dbLoadTemplate\(\"substitutions/general_purpose.substitutions\", \"P=\$\(PREFIX\),R=gp:\"\) > "${SUBFILE}"
-export SUBFILE=
-sed -i s:'< common.iocsh':'< common.iocsh\n< general_purpose.iocsh':g    ./st.cmd.Linux
-
-# build the substitutions that uses this database
-export SUBFILE="${IOCGP}/substitutions/general_purpose.substitutions"
-echo "# general_purpose.substitutions"  > "${SUBFILE}"
-echo "# PVs for general purposes"  >> "${SUBFILE}"
-echo   >> "${SUBFILE}"
-echo file \"${IOCGP}/substitutions/general_purpose.db\"  >> "${SUBFILE}"
-echo {  >> "${SUBFILE}"
-echo pattern  >> "${SUBFILE}"
-echo {N}  >> "${SUBFILE}"
-for n in $(seq 1 20); do
-    echo {${n}}  >> "${SUBFILE}"
-done
-echo }  >> "${SUBFILE}"
-
-# patch the caQtDM (.ui) screen
-# TODO:
+bash "${RESOURCES}/gp_add_general_purpose.sh" 2>&1 | tee -a "${LOG_FILE}"
 
 echo "# ................................ remove ALIVE support" 2>&1 | tee -a "${LOG_FILE}"
 # comment out any line with ALIVE
@@ -263,18 +240,18 @@ sed \
     "${GP}/gpApp/op/ui/gp.ui"
 
 
-echo "# ................................ starter shortcut" 2>&1 | tee -a "${LOG_FILE}"
-bash "${RESOURCES}/gp_build_gp_sh.sh"
+bash "${RESOURCES}/gp_build_gp_sh.sh" 2>&1 | tee -a "${LOG_FILE}"
 
 echo "# ................................ install custom screen(s)" 2>&1 | tee -a "${LOG_FILE}"
 cd "${IOCGP}/"
 export SCREENS="${IOCGP}/screens"
-${RESOURCES}/tarcopy.sh "${XXX}/xxxApp/op/" "${SCREENS}/"
+${RESOURCES}/tarcopy.sh "${GP}/gpApp/op/" "${SCREENS}/"
 mv /tmp/{gp_,}screens
 ${RESOURCES}/tarcopy.sh /tmp/screens "${SCREENS}/"
 /bin/rm -rf /tmp/screens
 ${RESOURCES}/modify_adl_in_ui_files.sh  "${SCREENS}/ui"
 ${RESOURCES}/modify_adl_in_ui_files.sh  "${SCREENS}/ui/autoconvert"
+# Now, all CUSTOM screens for this IOC are in directory IOCGP/screens
 
 # change "xxx:" to "$(P)" in all screen files
 find "${SCREENS}/" -type f -exec sed -i 's/xxx:/$(P)/g' {} \;

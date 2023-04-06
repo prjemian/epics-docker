@@ -1,7 +1,7 @@
 FROM  debian:stable-slim
 LABEL version="2.0.0" \
       maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2023-04-05" \
+      lastupdate="2023-04-06" \
       Description="source: https://github.com/prjemian/epics-docker/"
 USER  root
 
@@ -86,6 +86,7 @@ RUN echo "# -------------------------------- end EPICS synApps" 2>&1 | tee -a "$
 RUN echo "# -------------------------------- start create custom GP IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 COPY ./resources/general_purpose.db "${RESOURCES}/"
 COPY ./resources/gp_asyn_motor.db.patch "${RESOURCES}/"
+COPY ./resources/gp_add_general_purpose.sh "${RESOURCES}/"
 COPY ./resources/gp_build_gp_sh.sh "${RESOURCES}/"
 COPY ./resources/gp_screens/ /tmp/gp_screens
 COPY ./resources/start_caQtDM.sh "${RESOURCES}/"
@@ -96,7 +97,15 @@ RUN echo "# -------------------------------- end create custom GP IOC" 2>&1 | te
 
 RUN echo "# -------------------------------- start create custom ADSimDetector IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 COPY ./resources/adsim_README /tmp/
-COPY ./resources/adsim_run.sh /tmp/
+COPY ./resources/adsim_autosave.sh "${RESOURCES}/"
+COPY ./resources/adsim_build_adsim_sh.sh "${RESOURCES}/"
+COPY ./resources/adsim_copy_IOC.sh "${RESOURCES}/"
+COPY ./resources/adsim_IOC_run_script.sh "${RESOURCES}/"
+COPY ./resources/adsim_install_screens.sh "${RESOURCES}/"
+COPY ./resources/adsim_plugins.sh "${RESOURCES}/"
+COPY ./resources/adsim_prefix.sh "${RESOURCES}/"
+COPY ./resources/adsim_run.sh "${RESOURCES}/"
+COPY ./resources/adsim_st_base.sh "${RESOURCES}/"
 COPY ./resources/adsim_screens/ /tmp/adsim_screens
 COPY ./resources/custom_adsim_ioc.sh "${RESOURCES}/"
 RUN "${RESOURCES}/custom_adsim_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
