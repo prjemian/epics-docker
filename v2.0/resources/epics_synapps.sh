@@ -58,6 +58,7 @@ cd "${SUPPORT}"
 export AD="${SUPPORT}/$(ls | grep areaDetector)"
 export ASYN="${SUPPORT}/$(ls | grep asyn)"
 export MOTOR="${SUPPORT}/$(ls | grep motor)"
+export OPTICS="${SUPPORT}/$(ls ${SUPPORT} | grep optics)"
 export XXX="${SUPPORT}/$(ls | grep xxx)"
 export IOCXXX=${XXX}/iocBoot/iocxxx
 
@@ -66,6 +67,7 @@ export AD="${AD}"
 export ASYN="${ASYN}"
 export IOCXXX="${IOCXXX}"
 export MOTOR="${MOTOR}"
+export OPTICS="${OPTICS}"
 export XXX="${XXX}"
 EOF
 source "${HOME}/.bash_aliases"
