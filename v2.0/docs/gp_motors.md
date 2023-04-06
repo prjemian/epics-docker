@@ -1,7 +1,8 @@
 # Motors in IOCGP
 
-The first 16 motors are unassigned and made available for users and testing. The
-remaining motors have assignments; some are configured in the IOC.
+There are 10 motor records: m1-m56. The first 16 motors are unassigned and made
+available for users and testing. The remaining motors have assignments; some are
+configured in the IOC.
 
 motor | assignment
 --- | ---
@@ -32,3 +33,6 @@ m53 | Slit2V:mXp
 m54 | Slit2V:mXn
 m55 | Slit2H:mXp
 m56 | Slit2H:mXn
+
+There are 10 SoftMotor records: SM1 - SM10.  The first four of these (SM1-SM4)
+are used by the 4-circle diffractometer support in the IOC.

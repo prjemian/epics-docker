@@ -12,7 +12,7 @@ dbLoadTemplate("substitutions/orient_xtals.substitutions", "P=PREFIX:, O=_0, PRE
 
 - 2D slits Slit1 (2slit.db)
 - 2D slits Slit2 (2slit_soft.vdb)
-- 4-circle diffractometer orientation
+- 4-circle diffractometer orientation with crystal lattice parameter database
 - 4-step database
 - autosave & restore
 - busy record: 2 each
@@ -26,9 +26,9 @@ dbLoadTemplate("substitutions/orient_xtals.substitutions", "P=PREFIX:, O=_0, PRE
 - lua script: 20 channels
 - motor simulation: [m1 - m56](gp_motors.md) with allstop
 - PV history database
-- softScaler: 1, 2 & 3
+- softScaler: [scaler1 - scaler3](gp_scalers.md)
 - sscan: scan1 - scan4, scanH, saveData, and scanProgress
-- sseq: 
+- sseq
 - table database
 - timer database
 - userCalcs, userCalcOuts, userStringCalcs, userArrayCalcs, userAve, userStringSeqs: 20 channels each
