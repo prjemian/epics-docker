@@ -26,7 +26,7 @@ RUN \
     && mkdir ~/bin "${LOG_DIR}"
 
 
-RUN echo "# -------------------------------- start OS update" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+RUN echo "# -------------------------------- update OS" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 # Build EPICS software here
 RUN \
     echo "export APP_ROOT=${APP_ROOT}" >> ~/.bash_aliases \
@@ -72,42 +72,61 @@ RUN echo "# -------------------------------- end EPICS base" 2>&1 | tee -a "${LO
 
 RUN echo "# -------------------------------- start script tools" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 # These scripts will be used by the scripts which create custom IOCs
-COPY ./resources/copy_screens.sh "${RESOURCES}/"
-COPY ./resources/modify_adl_in_ui_files.sh "${RESOURCES}/"
-COPY ./resources/tarcopy.sh "${RESOURCES}/"
+COPY \
+    ./resources/copy_screens.sh \
+    ./resources/modify_adl_in_ui_files.sh \
+    ./resources/tarcopy.sh \
+    ${RESOURCES}/
 RUN echo "# -------------------------------- end script tools" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 
 RUN echo "# -------------------------------- start EPICS synApps" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-COPY ./resources/epics_synapps.sh "${RESOURCES}/"
-COPY ./resources/edit_assemble_synApps.sh "${RESOURCES}/"
+COPY \
+    ./resources/epics_synapps.sh \
+    ./resources/edit_assemble_synApps.sh \
+    ${RESOURCES}/
 RUN "${RESOURCES}/epics_synapps.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 RUN echo "# -------------------------------- end EPICS synApps" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 
 RUN echo "# -------------------------------- start create custom GP IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-COPY ./resources/general_purpose.db "${RESOURCES}/"
-COPY ./resources/gp_asyn_motor.db.patch "${RESOURCES}/"
-COPY ./resources/gp_add_general_purpose.sh "${RESOURCES}/"
-COPY ./resources/gp_build_gp_sh.sh "${RESOURCES}/"
+# TODO: gather all into ./resources/gp/ folder and refactor
 COPY ./resources/gp_screens/ /tmp/gp_screens
-COPY ./resources/start_caQtDM.sh "${RESOURCES}/"
-COPY ./resources/start_MEDM.sh "${RESOURCES}/"
-COPY ./resources/custom_gp_ioc.sh "${RESOURCES}/"
+COPY \
+    ./resources/general_purpose.db \
+    ./resources/gp_asyn_motor.db.patch \
+    ./resources/gp_add_general_purpose.sh \
+    ./resources/gp_alive.sh \
+    ./resources/gp_build_gp_sh.sh \
+    ./resources/gp_copy_IOC.sh \
+    ./resources/gp_iocStats.sh \
+    ./resources/gp_install_screens.sh \
+    ./resources/gp_make.sh \
+    ./resources/gp_motors.sh \
+    ./resources/gp_optics.sh \
+    ./resources/gp_prefix.sh \
+    ./resources/gp_std.sh \
+    ./resources/start_caQtDM.sh \
+    ./resources/start_MEDM.sh \
+    ./resources/custom_gp_ioc.sh \
+    ${RESOURCES}/
 RUN "${RESOURCES}/custom_gp_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 RUN echo "# -------------------------------- end create custom GP IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 
 RUN echo "# -------------------------------- start create custom ADSimDetector IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+# TODO: gather all into ./resources/adsim/ folder and refactor
 COPY ./resources/adsim_README /tmp/
-COPY ./resources/adsim_autosave.sh "${RESOURCES}/"
-COPY ./resources/adsim_build_adsim_sh.sh "${RESOURCES}/"
-COPY ./resources/adsim_copy_IOC.sh "${RESOURCES}/"
-COPY ./resources/adsim_IOC_run_script.sh "${RESOURCES}/"
-COPY ./resources/adsim_install_screens.sh "${RESOURCES}/"
-COPY ./resources/adsim_plugins.sh "${RESOURCES}/"
-COPY ./resources/adsim_prefix.sh "${RESOURCES}/"
-COPY ./resources/adsim_run.sh "${RESOURCES}/"
-COPY ./resources/adsim_st_base.sh "${RESOURCES}/"
 COPY ./resources/adsim_screens/ /tmp/adsim_screens
-COPY ./resources/custom_adsim_ioc.sh "${RESOURCES}/"
+COPY \
+    ./resources/adsim_autosave.sh \
+    ./resources/adsim_build_adsim_sh.sh \
+    ./resources/adsim_copy_IOC.sh \
+    ./resources/adsim_IOC_run_script.sh \
+    ./resources/adsim_install_screens.sh \
+    ./resources/adsim_plugins.sh \
+    ./resources/adsim_prefix.sh \
+    ./resources/adsim_run.sh \
+    ./resources/adsim_st_base.sh \
+    ./resources/custom_adsim_ioc.sh \
+    ${RESOURCES}/
 RUN "${RESOURCES}/custom_adsim_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 RUN echo "# -------------------------------- end create custom ADSimDetector IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 
