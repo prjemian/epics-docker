@@ -3,10 +3,14 @@
 # iocmgr.sh -- Manage IOCs in docker containers
 
 # Usage: ${0} ACTION IOC PRE
+# ACTION    console|restart|run|start|status|stop|caqtdm|medm|usage
+# IOC       "gp", "adsim", (as provided by image)
+# PRE       User's choice.  No trailing colon!
 
-ACTION=${1}  # console|restart|run|start|status|stop|caqtdm|medm|usage
-IOC=${2}  # "gp", "adsim",
-PRE=${3}  # User's choice.  No trailing colon!
+# make all arguments lower case
+ACTION=$(echo "${1}" | tr '[:upper:]' '[:lower:]')
+IOC=$(echo "${2}" | tr '[:upper:]' '[:lower:]')
+PRE=$(echo "${3}" | tr '[:upper:]' '[:lower:]')
 
 # -------------------------------------------
 
