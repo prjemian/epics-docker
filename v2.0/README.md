@@ -115,8 +115,8 @@ export IOCADSIMDETECTOR="/opt/synApps/support/areaDetector-R3-11/ADSimDetector/i
 - ADSimDetector
 - ADURL (TODO)
 - pvaDriver (TODO)
-- GP, a custom XXX with user PREFIX
-- ADSIM, a custom ADSimDetector with user PREFIX
+- [GP](./docs/gp.md), a custom XXX with user PREFIX
+- [ADSIM](./docs/adsim.md), a custom ADSimDetector with user PREFIX
 
 ### Starter Scripts
 

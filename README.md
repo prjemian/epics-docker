@@ -7,8 +7,8 @@ Build EPICS docker images for testing, development, training, and simulation.
 - [epics-docker](#epics-docker)
   - [Contents](#contents)
   - [Quick Reference](#quick-reference)
-    - [custom synApps](#custom-synapps)
-    - [custom Area Detector (ADSimDetector)](#custom-area-detector-adsimdetector)
+    - [custom synApps FIXME](#custom-synapps-fixme)
+    - [custom Area Detector (ADSimDetector) FIXME](#custom-area-detector-adsimdetector-fixme)
     - [Hint](#hint)
   - [Docker Images Available](#docker-images-available)
   - [Authors](#authors)
@@ -16,14 +16,15 @@ Build EPICS docker images for testing, development, training, and simulation.
 
 ## Quick Reference
 
-Install the latest Linux bash shell scripts to start IOCs with custom
-prefixes.  Replace any existing (v1.0) scripts with these new versions.
+Install the latest [`iocmgr.sh`](v2.0/docs/iocmgr.md) (Linux bash shell script
+to manage IOCs with custom prefixes).  Replace any existing (v1.0) scripts with
+this single (new) version.
 
-Suggestion: Place these shell scripts into a directory on the
-executable `$PATH` and give each executable permission
-(`chmod +x script_name`).  I create a `~/bin` directory for such scripts.
+Suggestion: Place `iocmgr.sh` into a directory on the executable `$PATH` and
+give it executable permission (`chmod +x iocmgr.sh`).  I create a `~/bin`
+directory for such scripts.
 
-### custom synApps
+### custom synApps FIXME
 
 Download:
 
@@ -41,7 +42,7 @@ start_xxx.sh gp
 start_xxx.sh sky
 ```
 
-### custom Area Detector (ADSimDetector)
+### custom Area Detector (ADSimDetector) FIXME
 
 ```sh
 cd ~/bin
@@ -79,6 +80,7 @@ All images are available on [DockerHub](https://hub.docker.com/r/prjemian).
 
 release | image | docs | notes
 --- | --- | --- | ---
+**v2.0.0** | [`prjemian/synApps`](https://hub.docker.com/r/prjemian/synApps/tags) | [docs](v1.1/n2_epics_base/README.md) | Ubuntu 22.04, EPICS base 7.0.5, synApps 6.2.1, AD 3.11 (all-in-one)
 **v1.1** | [`prjemian/epics-base-7.0.5`](https://hub.docker.com/r/prjemian/epics-base-7.0.5/tags) | [docs](v1.1/n2_epics_base/README.md) | EPICS base 7.0.5 (built on Ubuntu 20.04.2 LTS)
 **v1.1** | [`prjemian/synapps-6.2`](https://hub.docker.com/r/prjemian/synapps-6.2/tags) | [docs](v1.1/n3_synApps/README.md) | (stock) synApps 6.2
 **v1.1** | [`prjemian/synapps-6.2-ad-3.10`](https://hub.docker.com/r/prjemian/synapps-6.2-ad-3.10/tags) | [docs](v1.1/n4_areaDetector/README.md) | (stock) area detector R3.10 (with updates from master branch)
