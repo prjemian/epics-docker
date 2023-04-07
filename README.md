@@ -3,9 +3,9 @@
 Docker image [`prjemian/synapps`](https://hub.docker.com/r/prjemian/synApps)
 providing [EPICS base](https://epics.anl.gov/base/),
 [synApps](https://www.aps.anl.gov/BCDA/synApps), and [Area
-Detector](https://areadetector.github.io/areaDetector/) packages providing
-[IOCs](#iocs-provided) (servers) for testing, development, training, and
-simulation.
+Detector](https://areadetector.github.io/areaDetector/) software providing
+[IOCs](#iocs-provided) (servers) for development, simulation, testing, and
+training.
 
 Contents
 
