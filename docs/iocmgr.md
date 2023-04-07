@@ -10,6 +10,10 @@ Suggestion: Place `iocmgr.sh` into a directory on the executable `$PATH` and
 give it executable permission (`chmod +x iocmgr.sh`).  I create a `~/bin`
 directory for such scripts.
 
+<!--
+TODO: document the usage, help, ...
+-->
+
 ## Download
 
 *Download* `iocmgr.sh` (if not already installed)

@@ -27,7 +27,9 @@ Contents
 
 Two steps: **_Area detector IOC with simulated camera_**
 
-1. Download and install `iocmgr.sh` bash shell script for Linux.
+1. Download and install
+   [`iocmgr.sh`](https://raw.githubusercontent.com/prjemian/epics-docker/main/resources/iocmgr.sh)
+   (bash shell script for Linux).
 2. Run **`iocmgr.sh start adsim test1`** to start `ioctest1`
 
 **That's it!** You just started a [custom](./docs/adsim.md) version of the
