@@ -12,7 +12,7 @@ cp "${RESOURCES}/general_purpose.db" "${IOCGP}/substitutions/general_purpose.db"
 export SUBFILE="${IOCGP}/general_purpose.iocsh"  # build the iocsh loader
 echo dbLoadTemplate\(\"substitutions/general_purpose.substitutions\", \"P=\$\(PREFIX\),R=gp:\"\) > "${SUBFILE}"
 export SUBFILE=
-sed -i s:'< common.iocsh':'< common.iocsh\n< general_purpose.iocsh':g    ./st.cmd.Linux
+sed -i s:'< common.iocsh':'< common.iocsh\n< general_purpose.iocsh':g  "${IOCGP}/st.cmd.Linux"
 
 # build the substitutions that uses this database
 export SUBFILE="${IOCGP}/substitutions/general_purpose.substitutions"
