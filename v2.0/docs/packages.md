@@ -1,4 +1,4 @@
-## Software versions
+# Software versions
 
 These are the version of various software packages used to build the docker image.
 
