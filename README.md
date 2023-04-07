@@ -13,6 +13,7 @@ Contents
   - [Quick start](#quick-start)
   - [What this repository provides](#what-this-repository-provides)
   - [How to use this image](#how-to-use-this-image)
+    - [Running an IOC in the container](#running-an-ioc-in-the-container)
   - [Details](#details)
     - [custom synApps](#custom-synapps)
     - [custom Area Detector (ADSimDetector)](#custom-area-detector-adsimdetector)
@@ -61,10 +62,11 @@ and make the script executable.
 See the [Quick Start](#quick-start) section and
 [`iocmgr.sh`](./docs/iocmgr.md#examples) for examples.
 
-IOCs are created in docker containers and configured with a mount point that is
-available read-only to the docker host computer.  This table shows the same
-directory from the IOC or the host filesystem.  Any files created in the
-container will be available as long as the container is running.
+IOCs are created in docker containers.  If you wish, the container's `/tmp` is
+available for read-only mount on the docker host computer.  This table shows the
+same directory from the IOC or the host filesystem.  Any files created in the
+container (such as by an area detector IOC) will be available as long as the
+container is running.
 
 system | filesystem
 --- | ---
@@ -75,8 +77,31 @@ Use the same docker image (`prjemian/synapps:latest`) for all IOCs.  The
 `iocmgr.sh` script runs only _one IOC per container_.  Starting containers is
 usually very fast.
 
+### Running an IOC in the container
+
+Running an IOC in a container is usually a two-step process, similar to running
+an IOC in any computer.
+
+1. Start a container with the image (and any additional features such as network and volume provisioning).  Use `docker run ...`
+2. Start the IOC _in the container_ (usually with `screen` or `procServ`, so it runs in the background)  Use `docker exec ...`.
+
 <!--
 TODO: document how to mount container directories: `/tmp` (and `/opt`)
+
+TODO: here's an interactive session as an example
+# Start an interactive session from the docker host workstation:
+docker run -it --rm prjemian/synapps
+
+# Next commands are in the docker container...
+
+# set a PV PREFIX for the new IOC
+export PREFIX=demo:
+
+# run a GP IOC (in a background `screen` session)
+gp.sh start
+
+# check a PV value
+caget demo:UPTIME
 -->
 
 ## Details
