@@ -1,11 +1,15 @@
 # EPICS synApps
 
-Docker image [`prjemian/synapps`](https://hub.docker.com/r/prjemian/synApps)
+Docker image [`prjemian/synapps`](https://hub.docker.com/r/prjemian/synapps)
 providing [EPICS base](https://epics.anl.gov/base/),
 [synApps](https://www.aps.anl.gov/BCDA/synApps), and [Area
 Detector](https://areadetector.github.io/areaDetector/) software providing
 [IOCs](#iocs-provided) (servers) for development, simulation, testing, and
 training.
+
+tag | release | image | downloads
+--- | --- | --- | ---
+[![tag](https://img.shields.io/github/tag/prjemian/epics-docker.svg)](https://github.com/prjemian/epics-docker/tags) | [![release](https://img.shields.io/github/release/prjemian/epics-docker.svg)](https://github.com/prjemian/epics-docker/releases) | [![image](https://img.shields.io/docker/v/prjemian/synapps)](https://hub.docker.com/r/prjemian/synapps) | [![pulls](https://img.shields.io/docker/pulls/prjemian/synapps.svg)](https://hub.docker.com/r/prjemian/synapps)
 
 Contents
 
