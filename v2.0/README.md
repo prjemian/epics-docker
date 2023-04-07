@@ -6,6 +6,7 @@ Contents
 
 - [EPICS synApps](#epics-synapps)
   - [How to use this image](#how-to-use-this-image)
+  - [Details](#details)
   - [Environment Variables](#environment-variables)
   - [IOCs Provided](#iocs-provided)
     - [Starter Scripts](#starter-scripts)
@@ -45,6 +46,10 @@ host | `/tmp/docker_ioc/iocPRE`
 Use the same docker image (`prjemian/synapps:latest`) for all IOCs.  The
 `iocmgr.sh` script runs only *one IOC per container*.  Starting containers is
 usually very fast.
+
+## Details
+
+Additional [documentation](./docs/README.md) is available.
 
 ## Environment Variables
 
