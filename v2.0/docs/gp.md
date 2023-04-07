@@ -1,4 +1,4 @@
-# IOCGP : General purpose XXX IOC with Custom Prefix
+# GP : General purpose XXX IOC with Custom Prefix
 
 ## FIXME
 

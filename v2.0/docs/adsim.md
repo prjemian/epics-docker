@@ -1,4 +1,4 @@
-# IOCADSIM : ADSimDetector IOC with Custom Prefix
+# ADSIM : ADSimDetector IOC with Custom Prefix
 
 ## Major Support Modules Loaded
 
