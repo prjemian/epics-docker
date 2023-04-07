@@ -4,7 +4,7 @@ All images are available on [DockerHub](https://hub.docker.com/r/prjemian).
 
 release | image | docs | notes
 --- | --- | --- | ---
-**v2.0.0** | [`prjemian/synApps`](https://hub.docker.com/r/prjemian/synApps/tags) | [docs](./README.md) | Debian 11 Bullseye, EPICS base 7.0.5, synApps 6.2.1, AD 3.11 (all-in-one)
+**v2.0.0** | [`prjemian/synApps`](https://hub.docker.com/r/prjemian/synapps/tags) | [docs](./README.md) | Debian 11 Bullseye, EPICS base 7.0.5, synApps 6.2.1, AD 3.11 (all-in-one)
 **v1.1** | [`prjemian/epics-base-7.0.5`](https://hub.docker.com/r/prjemian/epics-base-7.0.5/tags) | [docs](v1.1/n2_epics_base/README.md) | EPICS base 7.0.5 (built on Ubuntu 20.04.2 LTS)
 **v1.1** | [`prjemian/synapps-6.2`](https://hub.docker.com/r/prjemian/synapps-6.2/tags) | [docs](v1.1/n3_synApps/README.md) | (stock) synApps 6.2
 **v1.1** | [`prjemian/synapps-6.2-ad-3.10`](https://hub.docker.com/r/prjemian/synapps-6.2-ad-3.10/tags) | [docs](v1.1/n4_areaDetector/README.md) | (stock) area detector R3.10 (with updates from master branch)

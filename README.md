@@ -199,7 +199,7 @@ page](./docs/docker_images.md).
 
 release | image | docs | notes
 --- | --- | --- | ---
-**v2.0.0** | [`prjemian/synApps`](https://hub.docker.com/r/prjemian/synApps/tags) | [docs](./README.md) | Debian 11 Bullseye, EPICS base 7.0.5, synApps 6.2.1, AD 3.11 (all-in-one)
+**v2.0.0** | [`prjemian/synApps`](https://hub.docker.com/r/prjemian/synapps/tags) | [docs](./README.md) | Debian 11 Bullseye, EPICS base 7.0.5, synApps 6.2.1, AD 3.11 (all-in-one)
 
 ## Authors
 
