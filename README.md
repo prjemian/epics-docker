@@ -1,64 +1,71 @@
 # epics-docker
 
-Build EPICS docker images for testing, development, training, and simulation.
+EPICS base, synApps, and Area Detector packages providing IOCs (servers) for
+testing, development, training, and simulation.
 
 ## Contents
 
 - [epics-docker](#epics-docker)
   - [Contents](#contents)
-  - [Quick Reference](#quick-reference)
-    - [custom synApps FIXME](#custom-synapps-fixme)
-    - [custom Area Detector (ADSimDetector) FIXME](#custom-area-detector-adsimdetector-fixme)
-    - [Hint FIXME](#hint-fixme)
-  - [Docker Images Available](#docker-images-available)
+  - [Quick start](#quick-start)
+    - [custom synApps](#custom-synapps)
+    - [custom Area Detector (ADSimDetector)](#custom-area-detector-adsimdetector)
+    - [Hint](#hint)
+  - [Docker Image](#docker-image)
+  - [EPICS Client Software](#epics-client-software)
   - [Authors](#authors)
   - [Acknowledgements](#acknowledgements)
 
-## Quick Reference
+## Quick start 
 
-Install the latest [`iocmgr.sh`](v2.0/docs/iocmgr.md) (Linux bash shell script
-to manage IOCs with custom prefixes).  Replace any existing (v1.0) scripts with
-this single (new) version.
+***Area detector IOC with simulated camera***
 
-Suggestion: Place `iocmgr.sh` into a directory on the executable `$PATH` and
-give it executable permission (`chmod +x iocmgr.sh`).  I create a `~/bin`
-directory for such scripts.
+1. Download and install `iocmgr.sh` bash shell script for Linux.
+2. Run `iocmgr.sh start adsim test1` to start `ioctest1`
+3. You have just started a custom [ADSimDetector](https://areadetector.github.io/master/ADSimDetector/simDetector.html) IOC.
 
-### custom synApps FIXME
+*Next steps*: Get an EPICS client (not part of this docker image) to operate the EPICS
+controls and view the images.
 
-Download:
+### custom synApps
 
-```sh
-cd ~/bin
-wget https://raw.githubusercontent.com/prjemian/epics-docker/main/v1.1/n5_custom_synApps/start_xxx.sh
-wget https://raw.githubusercontent.com/prjemian/epics-docker/main/v1.1/n5_custom_synApps/remove_container.sh
-```
+*Download* [`iocmgr.sh`](./v2.0/docs/iocmgr.md#download) (if not already installed)
 
-Example:  Create (or restart) 2 IOCs with prefixes `gp:` and `sky:`.  (Do
-not specify the trailing `:`.  The script will manage that for you)
-
-```sh
-start_xxx.sh gp
-start_xxx.sh sky
-```
-
-### custom Area Detector (ADSimDetector) FIXME
+These IOCs will use the [`GP`](./v2.0/docs/gp.md) IOC support.
 
 ```sh
 cd ~/bin
-wget https://raw.githubusercontent.com/prjemian/epics-docker/main/v1.1/n6_custom_areaDetector/start_adsim.sh
-wget https://raw.githubusercontent.com/prjemian/epics-docker/main/v1.1/n6_custom_areaDetector/remove_container.sh
+wget https://raw.githubusercontent.com/prjemian/epics-docker/main/v2.0/resources/iocmgr.sh
+chmod +x iocmgr.sh
 ```
 
-Example:  Create (or restart) 2 IOCs with prefixes `ad:` and `adsky:`.  (Do
-not specify the trailing `:`.  The script will manage that for you)
+*Start* two separate [GP](./v2.0/docs/gp.md) IOCs with prefixes `blue:` and
+`sky:`.  (Do not specify the trailing `:`.  The script will manage that for you.)
 
 ```sh
-start_xxx.sh ad
-start_xxx.sh adsky
+iocmgr.sh start GP blue
+iocmgr.sh start GP sky
 ```
 
-### Hint FIXME
+### custom Area Detector (ADSimDetector)
+
+*Download* [`iocmgr.sh`](./v2.0/docs/iocmgr.md#download) (if not already installed)
+
+```sh
+cd ~/bin
+wget https://raw.githubusercontent.com/prjemian/epics-docker/main/v2.0/resources/iocmgr.sh
+chmod +x iocmgr.sh
+```
+
+*Start* two separate [ADSIM](./v2.0/docs/gp.md) IOCs with prefixes `air:` and
+`oxy:`.  (Do not specify the trailing `:`.  The script will manage that for you.)
+
+```sh
+iocmgr.sh start ADSIM air
+iocmgr.sh start ADSIM oxy
+```
+
+### Hint
 
 You _could_ create a new script to start all the IOCs you want.
 Here's an example which starts all four IOCs above:
@@ -66,30 +73,52 @@ Here's an example which starts all four IOCs above:
 ```bash
 #!/bin/bash
 
-start_xxx.sh gp
-start_xxx.sh sky
-start_xxx.sh ad
-start_xxx.sh adsky
+iocmgr.sh restart GP blue
+iocmgr.sh restart GP sky
+iocmgr.sh restart ADSIM air
+iocmgr.sh restart ADSIM oxy
 ```
 
-Save this into `~/bin/start_iocs.sh`, make it executable (`chmod +x ~/bin/start_iocs.sh`), then call it to start/restart the four IOCs:  `start_iocs.sh`
+- Save this into `~/bin/start_iocs.sh`
+- make it executable: `chmod +x ~/bin/start_iocs.sh`
+- then call it to start/restart the four IOCs: `start_iocs.sh`
 
-## Docker Images Available
+## Docker Image
 
-All images are available on [DockerHub](https://hub.docker.com/r/prjemian).
+The current docker image (`prjemian/synapps:latest`) is listed in the next
+table.  A full list of related docker images is [on a separate
+page](./v2.0/docs/docker_images.md).
 
 release | image | docs | notes
 --- | --- | --- | ---
-**v2.0.0** | [`prjemian/synApps`](https://hub.docker.com/r/prjemian/synApps/tags) | [docs](./v2.0/README.md) | Ubuntu 22.04, EPICS base 7.0.5, synApps 6.2.1, AD 3.11 (all-in-one)
-**v1.1** | [`prjemian/epics-base-7.0.5`](https://hub.docker.com/r/prjemian/epics-base-7.0.5/tags) | [docs](v1.1/n2_epics_base/README.md) | EPICS base 7.0.5 (built on Ubuntu 20.04.2 LTS)
-**v1.1** | [`prjemian/synapps-6.2`](https://hub.docker.com/r/prjemian/synapps-6.2/tags) | [docs](v1.1/n3_synApps/README.md) | (stock) synApps 6.2
-**v1.1** | [`prjemian/synapps-6.2-ad-3.10`](https://hub.docker.com/r/prjemian/synapps-6.2-ad-3.10/tags) | [docs](v1.1/n4_areaDetector/README.md) | (stock) area detector R3.10 (with updates from master branch)
-**v1.1** | [`prjemian/custom-synapps-6.2`](https://hub.docker.com/r/prjemian/custom-synapps-6.2/tags) | [docs](v1.1/n5_custom_synApps/README.md) | customized XXX IOC with user-provided prefix
-**v1.1** | [`prjemian/custom-synapps-6.2-ad-3.10`](https://hub.docker.com/r/prjemian/custom-synapps-6.2-ad-3.10/tags) | [docs](v1.1/n6_custom_areaDetector/README.md) | customized SimDetector IOC with user-provided prefix
----- | (_legacy images below_) | ---- | ----
-**v1.0** | [`prjemian/epics-base-7.0.3`](https://hub.docker.com/r/prjemian/epics-base-7.0.3/tags) | [docs](v1.0/n2_epics_base/README.md) | EPICS base 7.0.3 (built on Ubuntu 18.04.3 LTS)
-**v1.0** | [`prjemian/synApps-6.1`](https://hub.docker.com/r/prjemian/synapps-6.1/tags) | [docs](v1.0/n3_synApps/README.md) | synApps 6.1
-**v1.0** | [`prjemian/synapps-6.1-ad-3.7`](https://hub.docker.com/r/prjemian/synapps-6.1-ad-3.7/tags) | [docs](v1.0/n4_areaDetector/README.md) | area detector 3.7
+**v2.0.0** | [`prjemian/synApps`](https://hub.docker.com/r/prjemian/synApps/tags) | [docs](./v2.0/README.md) | Debian 11 Bullseye, EPICS base 7.0.5, synApps 6.2.1, AD 3.11 (all-in-one)
+
+## EPICS Client Software
+
+The EPICS client software packages in the next table each provide control and/or
+image viewer capabilities.
+
+package | command line controls | GUI controls | image viewer
+--- | --- | --- | ---
+bluesky | yes | notebook | notebook
+c2DataViewer | no | no | yes (PVA)
+caQtDM | no | yes | yes (CA)
+CSS BOY | no | yes | yes
+imageJ | no | no | yes
+MEDM | no | yes | no
+p4p | yes | no | no
+phoebus | no | yes | yes
+pvapy | yes (PVA) | ? | no
+PyDM |  | yes | yes (CA)
+pyepics | yes | notebook | no
+SPEC | yes | no | no
+
+- CA: Epics Channel Access protocol
+- PVA: EPICS PV Access protocol
+- notebook: Jupyter notook
+
+**Note**: These EPICS client packages are not part of the `prjemian/synapps` docker
+image.
 
 ## Authors
 
