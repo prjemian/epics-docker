@@ -2,7 +2,7 @@
 
 `iocmgr.sh` is the IOC manager shell script.
 
-Install the latest [`iocmgr.sh`](v2.0/docs/iocmgr.md) (Linux bash shell script
+Install the latest [`iocmgr.sh`](docs/iocmgr.md) (Linux bash shell script
 to manage IOCs with custom prefixes).  Replace any existing (v1.0) scripts with
 this single (new) version.
 
@@ -16,7 +16,7 @@ directory for such scripts.
 
 ```sh
 cd ~/bin
-wget https://raw.githubusercontent.com/prjemian/epics-docker/main/v2.0/resources/iocmgr.sh
+wget https://raw.githubusercontent.com/prjemian/epics-docker/main/resources/iocmgr.sh
 chmod +x iocmgr.sh
 ```
 
