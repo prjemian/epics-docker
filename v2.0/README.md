@@ -34,6 +34,10 @@ IOC.
 _Next steps_: Get an [EPICS client](./docs/epics_clients.md) to operate the
 IOC's controls and view the images it generates.
 
+<!--
+TODO: show example caQtDM screen view
+-->
+
 ## What this repository provides
 
 - [Scripts](./resources/) to install EPICS software to build IOCs (servers)
