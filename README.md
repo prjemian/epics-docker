@@ -1,4 +1,4 @@
-# EPICS synApps
+# EPICS synApps in a Docker Image
 
 Docker image [`prjemian/synapps`](https://hub.docker.com/r/prjemian/synapps)
 providing [EPICS base](https://epics.anl.gov/base/),
