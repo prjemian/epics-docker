@@ -2,7 +2,7 @@ ORG=prjemian
 REPO=synapps
 LOGFILE=build-log.txt
 NET=host-bridge
-TAG=2.0.1
+TAG=2.0.2
 
 FULLNAME=$(ORG)/$(REPO)
 

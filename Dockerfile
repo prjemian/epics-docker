@@ -1,5 +1,5 @@
 FROM  debian:stable-slim
-LABEL version="2.0.1" \
+LABEL version="2.0.2" \
       maintainer="prjemian <prjemian@gmail.com>" \
       lastupdate="2023-04-07" \
       Description="source: https://github.com/prjemian/epics-docker/"
@@ -8,6 +8,8 @@ USER  root
 RUN echo "# -------------------------------- customize command shell"
 CMD ["/bin/bash"]
 WORKDIR /home
+ENV IMAGE_VERSION="2.0.2"
+ENV PREFIX="ioc:"
 ENV APP_ROOT="/opt"
 ENV RESOURCES="${APP_ROOT}/resources"
 ENV LOG_DIR="${APP_ROOT}/logs"
