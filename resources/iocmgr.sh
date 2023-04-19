@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# iocmgr.sh -- Manage IOCs in docker containers
+# iocmgr.sh -- Manage IOCs in containers (docker, podman, ...)
 
 # Usage: ${0} ACTION IOC PRE
 # ACTION    console|restart|run|start|status|stop|caqtdm|medm|usage
@@ -14,8 +14,12 @@ PRE=$(echo "${3}" | tr '[:upper:]' '[:lower:]')
 
 # -------------------------------------------
 
-# docker image
+# image
 IMAGE=prjemian/synapps:latest
+
+# Since we started with docker, expect same features as docker API
+DOCKER=/usr/bin/docker
+# DOCKER=/usr/bin/podman
 
 # IOC prefix
 if [ "${PRE:(-1)}" == ":" ]; then
@@ -24,31 +28,31 @@ if [ "${PRE:(-1)}" == ":" ]; then
 fi
 PREFIX=${PRE}:
 
-# name of docker container
+# name of container
 CONTAINER=ioc${PRE}
 
 # pass the IOC PREFIX to the container at boot time
 ENVIRONMENT="PREFIX=${PREFIX}"
 
 # convenience definitions
-RUN="docker exec ${CONTAINER}"
+RUN="${DOCKER} exec ${CONTAINER}"
 TMP_ROOT=/tmp/docker_ioc
 HOST_IOC_ROOT=${TMP_ROOT}/${CONTAINER}
 HOST_TMP_SHARE="${HOST_IOC_ROOT}/tmp"
 IOC_SCRIPT="/root/bin/${IOC}.sh"
 
-get_docker_container_process() {
-    process=$(docker ps -a | grep ${CONTAINER})
+get_container_process() {
+    process=$(${DOCKER} ps -a | grep ${CONTAINER})
 }
 
-get_docker_container_id() {
-    get_docker_container_process
+get_container_id() {
+    get_container_process
     cid=$(echo ${process} | head -n1 | awk '{print $1;}')
 }
 
 start_container(){
     echo -n "starting container '${CONTAINER}' with PREFIX='${PREFIX}' ... "
-    docker \
+    ${DOCKER} \
         run -it -d --rm \
         --name "${CONTAINER}" \
         -e "${ENVIRONMENT}" \
@@ -59,14 +63,14 @@ start_container(){
 }
 
 start_ioc_in_container(){
-    get_docker_container_process
+    get_container_process
     if [ "" != "${process}" ]; then
-        docker exec "${CONTAINER}" bash "${IOC_SCRIPT}" start
+        ${DOCKER} exec "${CONTAINER}" bash "${IOC_SCRIPT}" start
     fi
 }
 
 restart(){
-    get_docker_container_id
+    get_container_id
     if [ "" != "${cid}" ]; then
         stop
     fi
@@ -74,23 +78,23 @@ restart(){
 }
 
 status(){
-    get_docker_container_process
+    get_container_process
     if [ "" == "${process}" ]; then
         echo "Not found: ${CONTAINER}"
     else
-        echo "docker container status"
+        echo "container status"
         echo "${process}"
         echo ""
-        echo "processes in docker container"
-        docker top "${CONTAINER}"
+        echo "processes in container"
+        ${DOCKER} top "${CONTAINER}"
         echo ""
         echo "IOC status"
-        docker exec "${CONTAINER}" bash "${IOC_SCRIPT}" status
+        ${DOCKER} exec "${CONTAINER}" bash "${IOC_SCRIPT}" status
     fi
 }
 
 start(){
-    get_docker_container_process
+    get_container_process
     if [ "" != "${process}" ]; then
         echo "Found existing ${CONTAINER}, cannot start new one."
         echo "${process}"
@@ -101,21 +105,21 @@ start(){
 }
 
 stop(){
-    get_docker_container_id
+    get_container_id
     if [ "" != "${cid}" ]; then
         echo -n "stopping container '${CONTAINER}' ... "
-        docker stop "${CONTAINER}"
-        get_docker_container_id
+        ${DOCKER} stop "${CONTAINER}"
+        get_container_id
         if [ "" != "${cid}" ]; then
             echo -n "removing container '${CONTAINER}' ... "
-            docker rm ${CONTAINER}
+            ${DOCKER} rm ${CONTAINER}
         fi
     fi
 }
 
 symbols(){
     # for diagnostic purposes
-    get_docker_container_id
+    get_container_id
     echo "cid=${cid}"
     echo "process=${process}"
     echo "ACTION=${ACTION}"
