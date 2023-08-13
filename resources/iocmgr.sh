@@ -145,7 +145,7 @@ caqtdm(){
 
 medm(){
     if [ "gp" == "${IOC}" ]; then
-        custom_screen="ioc${PRE}.ui"
+        custom_screen="${PRE}.adl"
     fi
     "${HOST_TMP_SHARE}/start_MEDM_${PRE}" "${custom_screen}"
 }
