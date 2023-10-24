@@ -39,6 +39,8 @@ if [ "\${1}" == "start" ]; then
     publish_ioc_custom_screens
     # echo "PREFIX=\${PREFIX}  PRE=\${PRE}"
 
+    # FIXME: sed s/gp:/"\$(PREFIX)"/g SCREEN FILE (.adl, .ui)
+
     sed -i s/'SET_EXT'/"ui"/g   "\${RESOURCES}/start_caQtDM.sh"
     sed -i s/'SET_MACRO'/"P=\${PREFIX}"/g   "\${RESOURCES}/start_caQtDM.sh"
     sed -i s/'SET_PREFIX'/"\${PREFIX}"/g   "\${RESOURCES}/start_caQtDM.sh"
