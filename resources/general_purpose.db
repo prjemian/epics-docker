@@ -20,6 +20,12 @@ record(stringout, "$(P)$(R)text$(N)") {
     field(DESC, "GP text $(N)")
 }
 
+# https://epics.anl.gov/base/R7-0/8-docs/lsoRecord.html
+record(lso, "$(P)$(R)lso$(N)") {
+    field(DESC, "GP longstring $(N)")
+    field(SIZV, "1024")
+}
+
 record(waveform, "$(P)$(R)longtext$(N)") {
     field(DESC, "GP longtext (1k) $(N)")
     field(FTVL, "CHAR")
