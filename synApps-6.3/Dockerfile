@@ -90,11 +90,12 @@ COPY \
 RUN echo "# -------------------------------- end script tools" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 
 RUN echo "# -------------------------------- start create custom GP IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+# TODO: working on this now
 COPY ./resources/ioc_gp/ ${RESOURCES}/ioc_gp
 RUN "${RESOURCES}/ioc_gp/custom_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 RUN echo "# -------------------------------- end create custom GP IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 
-# FIXME: naming problem - adsim is custom or stock?
+# FIXME: resolve naming problem - adsim is custom or stock?
 # RUN echo "# -------------------------------- start create custom ADSimDetector IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
 # COPY ./resources/ioc_adsim/ ${RESOURCES}/ioc_adsim
 # RUN "${RESOURCES}/ioc_adsim/custom_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
