@@ -96,6 +96,23 @@ explicitly out of scope (see Non-Goals).
 - **Q6 — Reproducible / auditable builds.** Builds should be reproducible and
   the contained component versions auditable. (Note potential tension with Q2's
   desire to track latest upstream easily — see §6.)
+- **Q7 — Documentation.** Documentation is a first-class deliverable of the
+  rebuild, not an afterthought. It must serve each audience (§3) and cover, at
+  minimum:
+  - **What is provided:** the image(s), the IOC personas, the PVs/contract a
+    consumer can rely on, and the component versions contained.
+  - **How to use it:** quick-start and worked examples for each audience —
+    local workstation, CI, client-software development, and simulation —
+    across the supported runtimes/host OSes (per Q4).
+  - **How to maintain/rebuild it:** how the recipe is structured, how to
+    upgrade component versions (tied to Q3's single source of truth), and how
+    to build locally.
+  - **What changed and why:** a changelog / version history, and migration
+    guidance where the contract changes (ties to C1).
+  Documentation should stay close to and versioned with the code it
+  describes, so it does not drift (a recurring failure mode in v1.x/v2.0,
+  where docs duplicated and outlived the recipes). Keeping it accurate and
+  discoverable is part of "easier to maintain" (Q2).
 
 ## 6. Constraints and known tensions
 
@@ -144,6 +161,8 @@ These are not yet decisions; they are forces the goals must reconcile.
   hardware-free cameras (G4).
 - The image(s) are usable across the agreed set of runtimes, host OSes, and
   architectures (Q4), at the agreed guarantee level.
+- Documentation exists for each audience, is versioned with the code, and a
+  new user can get an IOC running and reach its PVs by following it (Q7).
 
 ## 9. Open questions (to resolve before/while finalizing goals)
 
@@ -165,7 +184,11 @@ These are not yet decisions; they are forces the goals must reconcile.
    version it, or clean break + migration guide?
 9. **"No bash to start":** hard requirement or strong preference?
 10. **Reproducible vs. track-latest:** where to land on the C4 spectrum.
-11. **Confirm non-goals** in §7.
+11. **Documentation scope/format:** what doc set is required (quick-start,
+    per-audience guides, maintainer/upgrade guide, contract reference,
+    changelog/migration), and where it lives so it stays versioned with the
+    code (Q7).
+12. **Confirm non-goals** in §7.
 
 ## 10. Out of scope for *this document*
 
