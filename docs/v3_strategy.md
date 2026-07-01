@@ -1,0 +1,114 @@
+# v3 implementation strategy
+
+Status: **DRAFT strategy.** This document records the implementation approach
+and the decisions made so far for the v3 rebuild. It builds on:
+
+- `docs/v3.md` — the plan/goals as written by the maintainer.
+- `docs/v3_requirements.md` — requirements & goals (audiences, quality goals).
+- `docs/v2_build_phases.md` — reconstructed reference for the prior recipe.
+
+It departs freely from v1 and v2 to adopt current best practices.
+
+## 1. Decisions made
+
+| # | Decision | Rationale |
+|---|----------|-----------|
+| D1 | **Layered hierarchy is a *build* concern; publish few *runtime-selectable* images.** | Serves "easily deployed" + "minimize size" without the v1 image sprawl or the v2 monolith. The {stock/custom} x {8 IOC types} x {arch} matrix is handled by choosing the persona at container start, not by publishing one image per combination. |
+| D2 | **IOC process manager: `procServ`.** `screen` is removed entirely. | `screen` failed under rootless podman (no controlling TTY / pts + setuid-helper assumptions; recorded in `docs/v3.md`). procServ is the EPICS-community standard for containerized IOCs: no TTY needed, auto-restart, `console`/telnet attach, clean logs. |
+| D3 | **Primary run contract: `compose.yaml` (clean break).** No `iocmgr.sh` shim. | Declarative, no host bash required, works on docker + `podman compose`, across Linux/Mac/Windows/Synology. Existing `iocmgr.sh` consumers migrate (documented). |
+| D4 | **v3 recipes live at the repo top level.** v1.0/v1.1/v2.0 remain archived subdirs. | v3 becomes the active project, mirroring how v2 was the active top level. |
+| D5 | **Multi-arch via manifest lists.** amd64 now; arm64 (RPi/Apple Silicon) a stretch goal. | Architecture is invisible to the user — one tag resolves to the right arch. Requires eliminating hard-coded `linux-x86_64` paths. |
+| D6 | **Single source of truth for versions.** One manifest read by all build stages and docs. | Directly serves "easy to upgrade / easy to maintain"; kills the v2 problem of versions scattered across many scripts and duplicated in docs. |
+| D7 | **Customizations as loadable overlays, not in-place `sed` edits.** | The v2 sed-per-tweak model broke on upstream reformatting. Ship our own `.iocsh`/`.substitutions`/plugin config and `iocshLoad` them. "As-supplied vs. customized" becomes "don't load vs. load the overlay." |
+
+## 2. Image architecture
+
+Multi-stage build; the hierarchy below is the *build* dependency chain
+(reusable stages), not necessarily one published image per level:
+
+```
+base-os            debian-slim; split into build-deps and runtime-deps
+  -> base-epics    EPICS base; softIoc IOC available
+    -> base-synapps    synApps support tree + xxx IOC
+      -> base-areadetector   ADCore + selected drivers/plugins
+        -> (final)     runtime-selectable personas + customizations + screens
+```
+
+- **Runtime vs. devel variants.** Publish a small `:runtime` (products only,
+  copied `--from` builder stages) and a `:devel` (toolchain + sources + full
+  build logs) so "minimize size" and "full toolset to recompile / easy local
+  patches / full logs" are both satisfied.
+- **How many final images:** to be finalized. Options on the table: a single
+  `synapps` image hosting all personas, or a weight-class split (lightweight
+  `softIoc`/`xxx` vs. large `areaDetector`). Either way, persona chosen at run
+  time (D1).
+
+## 3. IOC personas (run-time selectable)
+
+From `docs/v3.md`:
+
+- `softIoc` — EPICS base softIoc, with command-line options exposed.
+- `xxx` — synApps IOC, as-supplied and with customizations.
+- area detector drivers (hardware-free): ADSimDetector (as-supplied +
+  customized), ADCSimDetector, ADURL, ADUVC, pvaDriver, ffmpegServer.
+  - plugins: all.
+  - file writers: all **except NeXus** (superseded by HDF; matches v2).
+
+Each persona is started via `compose.yaml` with a user-chosen PV `PREFIX`,
+supervised by procServ.
+
+## 4. Runtime / orchestration
+
+- **procServ** supervises the IOC (auto-restart, console attach).
+- **`compose.yaml`** is the deployment contract; env vars set PREFIX and
+  select the persona; volumes and ports are declared there.
+- **Networking:** provide two profiles —
+  - `host` (Linux/CI fast path; preserves host-visible PVs used by CI),
+  - `ports` (mapped CA `5064-5065` + PVA `5075-5076`; works on Docker
+    Desktop / Synology where host networking is unavailable), with the
+    required `EPICS_CA_*` env vars documented.
+- **Multi-IOC-per-container** (ref issue #65, "one IOC per container is too
+  resource demanding") is enabled naturally by procServ (one instance per
+  IOC, distinct console ports) if/when desired — an option, not the default.
+
+## 5. Display (screen) files
+
+- Collect operator-interface files by format into stable directories
+  (e.g. `/opt/screens/adl` for MEDM, `/opt/screens/ui` for caQtDM), with
+  reference-normalization done once at build (successor to v2's
+  `copy_screens.sh` + `modify_adl_in_ui_files.sh`).
+- Consider publishing screens as a small separate artifact, since clients
+  (not the server image) consume them.
+
+## 6. Documentation (Q7)
+
+- Versioned in-repo, generated from the version manifest where possible so
+  "what versions are inside" never drifts.
+- Per-audience quick-starts (workstation, CI, client-dev, simulation), a
+  maintainer/upgrade guide, a contract reference (personas, PVs, paths,
+  ports), and a changelog + migration guide (compose replaces iocmgr).
+
+## 7. Phased build-out plan
+
+Sequenced to reach a runnable artifact early, then expand:
+
+1. **Foundations:** top-level v3 skeleton, version manifest, BuildKit/`buildx`
+   + manifest-list setup, CI that builds and smoke-tests.
+2. **base-os + base-epics:** softIoc runnable under procServ with prefix
+   override; prove multi-stage size split. *First runnable milestone.*
+3. **base-synapps + xxx IOC:** stock first, then customization overlays
+   (motors/optics/std/general_purpose) as loadable files.
+4. **base-areadetector + ADSim:** ADCore + ADSimDetector; all plugins; all
+   file writers except NeXus; overlay-based customization.
+5. **Additional drivers:** ADCSimDetector, ADURL, ADUVC, pvaDriver,
+   ffmpegServer (the unfinished v2 TODO) — added incrementally via manifest.
+6. **Screens collation + orchestration:** compose, networking profiles.
+7. **Multi-arch (arm64) + documentation + changelog/migration.**
+
+## 8. Still open (to finalize as build-out proceeds)
+
+- Exact number/shape of published final images (single vs. weight-class split).
+- Version manifest format (env file vs. structured).
+- Networking default profile and the documented `EPICS_CA_*` guidance.
+- Whether/where to publish screens as a separate artifact.
+- Registry/tagging scheme (tags, `latest`, per-version, arch manifest lists).
