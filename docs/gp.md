@@ -23,6 +23,7 @@ feature | what you get
 **userCalcs & friends** | 20 channels each of `userCalc`, `userCalcOut`, `userStringCalc`, `userArrayCalc`, `userAve`, `userStringSeq` — general computation/soft-record building blocks.
 **Counting / std** | Three soft scalers (`scaler1..3`, 64 channels each) with named channels — see [scaler channels](#scaler-channels); fb_epid feedback; 4-step database; ramp/tweak; software timer; PV history.
 **Automation** | `caputRecorder` (record/replay caput sequences), `sseq` (string sequence), `busy` records (2), `configMenu`, autosave & restore, interpolation.
+**Soft MCA** | Two simulated multichannel analyzers, `$(PREFIX)mca1` and `$(PREFIX)mca2` (2048 channels each, no hardware) — for spectroscopy/acquisition simulation.
 **lua** | lua interpreter PVs (`$(PREFIX)interp`) and lua-script support from the synApps lua module.
 **IOC admin** | iocStats / iocAdminSoft records (uptime, load, ...); `$(PREFIX)UPTIME` for a quick liveness check.
 
