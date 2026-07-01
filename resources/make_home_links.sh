@@ -56,6 +56,9 @@ if [ -n "${SUPPORT:-}" ] && [ -d "${SUPPORT}" ]; then
         gp_boot="$(ls -d "${SUPPORT}"/iocgp/iocBoot/ioc* 2>/dev/null | head -n1 || true)"
         [ -n "${gp_boot}" ] && link iocgp "${gp_boot}"
     fi
+
+    # adsim (custom ADSimDetector) IOC boot dir, if built.
+    [ -d "${SUPPORT}/iocadsim" ] && link iocadsim "${SUPPORT}/iocadsim"
 fi
 
 echo "# make_home_links: done"

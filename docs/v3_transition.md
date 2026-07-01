@@ -72,8 +72,17 @@ Provide a short guide covering, per consumer type:
   | v2 command | v3 (compose) equivalent |
   | --- | --- |
   | `iocmgr.sh start GP gp` | `GP_PREFIX=gp docker compose --profile host up -d gp-host` |
-  | `iocmgr.sh start ADSIM ad` | (AD persona forthcoming) |
+  | `iocmgr.sh start ADSIM ad` | `ADSIM_PREFIX=ad docker compose --profile host up -d adsim-host` |
   | `docker exec iocgp caget gp:UPTIME` | unchanged (same PV contract) |
+
+- **Naming change for the sim detector (small hurdle):** v2 exposed the
+  detector as persona `ADSIM` (container `iocad`, prefix `ad:`). v3 names the
+  persona **`adsim`** with default prefix `adsim:`. Because the prefix is a
+  run-time choice, a v2-style consumer simply sets `PREFIX=ad:` (or
+  `ADSIM_PREFIX=ad`) to reproduce the old `ad:` names. The **PV suffix
+  contract is preserved**: one camera named `cam1:`, so `ad:cam1:Acquire_RBV`
+  still resolves. Vendored `iocmgr.sh` (pinned to the v2 image) keeps the old
+  `ADSIM`/`iocad`/`ad:` flow unchanged.
 
 - **PV contract preserved:** v3 gp keeps `gp:UPTIME`, `gp:gp:float1`, the
   general-purpose PVs, and runtime prefix -- so client-side test assertions

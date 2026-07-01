@@ -213,7 +213,20 @@ RUN bash -o pipefail -c '\
     bash /usr/local/share/gp/gp_build.sh 2>&1 | tee "${LOG_DIR}/build-gp.log"'
 
 # ----------------------------------------------------------------------
-# base-synapps: runtime image with EPICS base + synApps.
+# adcam-build: build custom areaDetector camera IOC(s) from driver profiles.
+# The adsim (ADSimDetector) profile is built now; others (adurl, adcsim,
+# pvadriver, ffmpeg, aduvc) are added later by enabling the driver + a profile.
+# ----------------------------------------------------------------------
+FROM gp-build AS adcam-build
+
+COPY resources/adcam/ /usr/local/share/adcam/
+RUN bash -o pipefail -c '\
+    bash /usr/local/share/adcam/adcam_build.sh \
+        /usr/local/share/adcam/profiles/adsim.env \
+        2>&1 | tee "${LOG_DIR}/build-adsim.log"'
+
+# ----------------------------------------------------------------------
+# base-synapps: runtime image with EPICS base + synApps + areaDetector.
 # ----------------------------------------------------------------------
 FROM base-epics AS base-synapps
 
@@ -238,19 +251,21 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         libusb-1.0-0 \
  && rm -rf /var/lib/apt/lists/*
 
-# Copy the built support tree from gp-build (a superset of synapps-build:
-# it also contains the customized iocgp). Products only; no toolchain/sources.
-COPY --from=gp-build ${SUPPORT} ${SUPPORT}
+# Copy the built support tree from adcam-build (a superset: it also contains
+# the customized iocgp and iocadsim). Products only; no toolchain/sources.
+COPY --from=adcam-build ${SUPPORT} ${SUPPORT}
 
-# Retain all build logs (base, synApps, xxx, gp) for later diagnostics.
-COPY --from=gp-build ${LOG_DIR} ${LOG_DIR}
+# Retain all build logs (base, synApps, xxx, gp, adsim) for later diagnostics.
+COPY --from=adcam-build ${LOG_DIR} ${LOG_DIR}
 
 # Personas:
-#   xxx : as-supplied synApps template IOC (fixed xxx: prefix). IOC=xxx
-#   gp  : customized synApps IOC (runtime PREFIX, default gp:). IOC=gp
-COPY resources/xxx.sh /usr/local/bin/xxx.sh
-COPY resources/gp.sh  /usr/local/bin/gp.sh
-RUN chmod +x /usr/local/bin/xxx.sh /usr/local/bin/gp.sh
+#   xxx   : as-supplied synApps template IOC (fixed xxx: prefix). IOC=xxx
+#   gp    : customized synApps IOC (runtime PREFIX, default gp:). IOC=gp
+#   adsim : custom ADSimDetector IOC (runtime PREFIX, default adsim:). IOC=adsim
+COPY resources/xxx.sh   /usr/local/bin/xxx.sh
+COPY resources/gp.sh    /usr/local/bin/gp.sh
+COPY resources/adsim.sh /usr/local/bin/adsim.sh
+RUN chmod +x /usr/local/bin/xxx.sh /usr/local/bin/gp.sh /usr/local/bin/adsim.sh
 
 # Gather display files by format (one dir per format) for host-side clients.
 # Screens use the $(P) macro (replaceable prefix, issue #68); a client
@@ -259,7 +274,7 @@ ENV SCREENS_ROOT=${EPICS_ROOT}/screens
 COPY resources/collect_screens.sh /usr/local/bin/collect_screens.sh
 RUN chmod +x /usr/local/bin/collect_screens.sh \
  && /usr/local/bin/collect_screens.sh "${SCREENS_ROOT}" \
-        "${SUPPORT}/iocgp/xxxApp/op" "${SUPPORT}"
+        "${SUPPORT}/iocgp/xxxApp/op" "${SUPPORT}/iocadsim" "${SUPPORT}"
 
 # Refresh convenience symlinks in /home now that synApps (support, xxx, iocxxx,
 # iocgp), the persona scripts, and screens are present.

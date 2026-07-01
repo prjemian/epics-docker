@@ -75,4 +75,13 @@ else
     echo "# (gp persona not in this image; skipping)"
 fi
 
+# --- adsim (only if the image provides it) ---
+# Unique prefix, no host networking. Probe the camera contract PV cam1:.
+if "${ENGINE}" run ${RUN_FLAGS} --rm --entrypoint test "${IMAGE}" \
+        -x /usr/local/bin/adsim.sh >/dev/null 2>&1; then
+    test_persona adsim "smoketestad:" "smoketestad:cam1:Acquire_RBV"
+else
+    echo "# (adsim persona not in this image; skipping)"
+fi
+
 echo "SMOKE TEST PASSED"
