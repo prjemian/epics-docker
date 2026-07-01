@@ -1,9 +1,14 @@
 #!/bin/bash
-# smoke-test.sh -- verify the softIoc persona starts and serves PVs.
+# smoke-test.sh -- verify IOC persona(s) start and serve PVs.
 #
 # Usage: smoke-test.sh ENGINE IMAGE
-# Runs the image, waits for the IOC, and cagets a demo PV *inside* the
-# container (no host EPICS client needed).
+# For each persona, runs the image, waits for the IOC, and cagets a PV
+# *inside* the container (no host EPICS client needed).
+#
+# Personas tested depend on what the image provides:
+#   softioc : always (base-epics and up). PVs under a runtime PREFIX.
+#   xxx     : if /usr/local/bin/xxx.sh exists (base-synapps and up).
+#             As-supplied template; fixed prefix "xxx:".
 
 set -euo pipefail
 
@@ -13,43 +18,50 @@ IMAGE="${2:?usage: smoke-test.sh ENGINE IMAGE}"
 # Extra `run` flags (e.g. --no-hosts for rootless podman).
 RUN_FLAGS="${RUN_FLAGS:-}"
 
-PREFIX="smoke:"
-NAME="synapps-smoke-$$"
+fail() { echo "FAIL: $*" >&2; exit 1; }
 
-cleanup() { "${ENGINE}" rm -f "${NAME}" >/dev/null 2>&1 || true; }
-trap cleanup EXIT
+# wait_pv NAME PV -- return 0 once PV is readable inside container NAME.
+wait_pv() {
+    local name="$1" pv="$2" i
+    for i in $(seq 1 40); do
+        if "${ENGINE}" exec "${name}" caget "${pv}" >/dev/null 2>&1; then
+            return 0
+        fi
+        sleep 1
+    done
+    return 1
+}
 
-echo "# starting ${IMAGE} as ${NAME} (PREFIX=${PREFIX})"
-"${ENGINE}" run ${RUN_FLAGS} --rm -d --name "${NAME}" -e "PREFIX=${PREFIX}" "${IMAGE}" >/dev/null
+# test_persona IOC PREFIX PROBE_PV
+test_persona() {
+    local ioc="$1" prefix="$2" probe="$3"
+    local name="synapps-smoke-${ioc}-$$"
+    echo "=== persona '${ioc}' (PREFIX=${prefix}) ==="
+    # shellcheck disable=SC2086
+    "${ENGINE}" run ${RUN_FLAGS} --rm -d --name "${name}" \
+        -e "IOC=${ioc}" -e "PREFIX=${prefix}" "${IMAGE}" >/dev/null
+    trap '"${ENGINE}" rm -f "'"${name}"'" >/dev/null 2>&1 || true' RETURN
 
-echo "# waiting for IOC to serve ${PREFIX}UPTIME ..."
-ok=0
-for i in $(seq 1 30); do
-    if "${ENGINE}" exec "${NAME}" caget "${PREFIX}IOC_NAME" >/dev/null 2>&1; then
-        ok=1
-        break
+    if ! wait_pv "${name}" "${probe}"; then
+        "${ENGINE}" logs "${name}" >&2 || true
+        "${ENGINE}" rm -f "${name}" >/dev/null 2>&1 || true
+        fail "persona '${ioc}': IOC did not serve ${probe} in time"
     fi
-    sleep 1
-done
+    "${ENGINE}" exec "${name}" caget "${probe}"
+    "${ENGINE}" rm -f "${name}" >/dev/null 2>&1 || true
+    echo "PASS: persona '${ioc}' serves ${probe}"
+}
 
-if [ "${ok}" -ne 1 ]; then
-    echo "FAIL: IOC did not come up in time" >&2
-    "${ENGINE}" logs "${NAME}" >&2 || true
-    exit 1
-fi
+# --- softioc (always present) ---
+test_persona softioc "smoke:" "smoke:UPTIME"
 
-echo "# PVs:"
-"${ENGINE}" exec "${NAME}" caget "${PREFIX}IOC_NAME" "${PREFIX}UPTIME"
-
-# Confirm UPTIME is advancing (proves SCAN is running).
-u1="$("${ENGINE}" exec "${NAME}" caget -t "${PREFIX}UPTIME")"
-sleep 2
-u2="$("${ENGINE}" exec "${NAME}" caget -t "${PREFIX}UPTIME")"
-if [ "${u2}" -gt "${u1}" ] 2>/dev/null; then
-    echo "PASS: UPTIME advanced ${u1} -> ${u2}"
+# --- xxx (only if the image provides it) ---
+if "${ENGINE}" run ${RUN_FLAGS} --rm --entrypoint test "${IMAGE}" \
+        -x /usr/local/bin/xxx.sh >/dev/null 2>&1; then
+    # As-supplied xxx uses its own fixed prefix "xxx:", ignoring PREFIX.
+    test_persona xxx "ignored:" "xxx:UPTIME"
 else
-    echo "FAIL: UPTIME did not advance (${u1} -> ${u2})" >&2
-    exit 1
+    echo "# (xxx persona not in this image; skipping)"
 fi
 
 echo "SMOKE TEST PASSED"

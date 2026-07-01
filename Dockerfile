@@ -129,7 +129,12 @@ ENV PREFIX=ioc: \
 
 COPY resources/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY resources/softioc.sh /usr/local/bin/softioc.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/softioc.sh
+COPY resources/make_home_links.sh /usr/local/bin/make_home_links.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/softioc.sh \
+             /usr/local/bin/make_home_links.sh
+
+# Convenience symlinks in /home (base + softioc persona).
+RUN /usr/local/bin/make_home_links.sh /home
 
 WORKDIR /home
 # Default persona: EPICS base softIoc, supervised by procServ.
@@ -207,6 +212,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update \
  && apt-get install -y --no-install-recommends \
+        libtirpc3 \
         libgraphicsmagick++-q16-12 \
         libtiff6 \
         libjpeg62-turbo \
@@ -226,4 +232,13 @@ COPY --from=synapps-build ${SUPPORT} ${SUPPORT}
 # base-epics) for later diagnostics.
 COPY --from=synapps-build ${LOG_DIR} ${LOG_DIR}
 
+# xxx persona (as-supplied synApps template IOC). Selected with IOC=xxx.
+COPY resources/xxx.sh /usr/local/bin/xxx.sh
+RUN chmod +x /usr/local/bin/xxx.sh
+
+# Refresh convenience symlinks in /home now that synApps (support, xxx, iocxxx)
+# and the xxx persona script are present.
+RUN /usr/local/bin/make_home_links.sh /home
+
+# Default persona remains softioc; select xxx with -e IOC=xxx.
 ENV IOC=softioc
