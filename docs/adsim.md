@@ -10,6 +10,12 @@ suites (e.g. `apstools`, which checks `ad:cam1:Acquire_RBV`).
 Like `gp`, `adsim` uses a **runtime-settable PV prefix** (default `adsim:`) —
 no recompilation to change it.
 
+> **Not to be confused with [`adcsim`](./adcsim.md).** `adsim` (ADSimDetector)
+> is a 2D **image camera** (`cam1:`). `adcsim` (AD**C**SimDetector) is a
+> **waveform/ADC digitizer** (`det1:`) — a completely different detector
+> despite the one-letter name difference. See the
+> [area-detector overview](./area_detector.md).
+
 ## Features
 
 ~7400 PVs under your chosen prefix (`$(PREFIX)`):

@@ -187,6 +187,14 @@ RUN bash -o pipefail -c 'mkdir -p "${SYNAPPS}" \
 # asyn needs TIRPC on modern glibc/Debian.
 RUN echo "TIRPC=YES" > "$(ls -d ${SUPPORT}/asyn-*)/configure/CONFIG_SITE.local"
 
+# Enable + fetch extra areaDetector drivers (beyond ADSimDetector) BEFORE the
+# AD build, so the support `make` builds them too.
+ARG AD_DRIVERS=""
+COPY resources/ad_drivers.sh /usr/local/bin/ad_drivers.sh
+RUN chmod +x /usr/local/bin/ad_drivers.sh \
+ && bash -o pipefail -c 'ad="$(ls -d ${SUPPORT}/areaDetector-*)"; \
+    ad_drivers.sh "${ad}" "${AD_DRIVERS}" 2>&1 | tee "${LOG_DIR}/ad_drivers.log"'
+
 # Build the whole support tree. bash+pipefail so a make failure is not masked
 # by the succeeding `tee`.
 RUN bash -o pipefail -c 'cd "${SUPPORT}" \
@@ -220,10 +228,12 @@ RUN bash -o pipefail -c '\
 FROM gp-build AS adcam-build
 
 COPY resources/adcam/ /usr/local/share/adcam/
-RUN bash -o pipefail -c '\
-    bash /usr/local/share/adcam/adcam_build.sh \
-        /usr/local/share/adcam/profiles/adsim.env \
-        2>&1 | tee "${LOG_DIR}/build-adsim.log"'
+# Build one custom IOC per camera profile whose driver was enabled/built.
+RUN bash -o pipefail -c 'for p in /usr/local/share/adcam/profiles/*.env; do \
+        name="$(basename "${p}" .env)"; \
+        bash /usr/local/share/adcam/adcam_build.sh "${p}" \
+            2>&1 | tee "${LOG_DIR}/build-${name}.log"; \
+    done'
 
 # ----------------------------------------------------------------------
 # base-synapps: runtime image with EPICS base + synApps + areaDetector.
@@ -261,11 +271,16 @@ COPY --from=adcam-build ${LOG_DIR} ${LOG_DIR}
 # Personas:
 #   xxx   : as-supplied synApps template IOC (fixed xxx: prefix). IOC=xxx
 #   gp    : customized synApps IOC (runtime PREFIX, default gp:). IOC=gp
-#   adsim : custom ADSimDetector IOC (runtime PREFIX, default adsim:). IOC=adsim
+#   areaDetector cameras via the generic adcam launcher (IOC=<camera>):
+#     adsim (ADSimDetector), adcsim (ADCSimDetector), adurl (ADURL),
+#     adpva (pvaDriver). All hardware-free (simulation/CI).
 COPY resources/xxx.sh   /usr/local/bin/xxx.sh
 COPY resources/gp.sh    /usr/local/bin/gp.sh
-COPY resources/adsim.sh /usr/local/bin/adsim.sh
-RUN chmod +x /usr/local/bin/xxx.sh /usr/local/bin/gp.sh /usr/local/bin/adsim.sh
+COPY resources/adcam.sh /usr/local/bin/adcam.sh
+RUN chmod +x /usr/local/bin/xxx.sh /usr/local/bin/gp.sh /usr/local/bin/adcam.sh \
+ && for cam in adsim adcsim adurl adpva; do \
+        ln -sf adcam.sh "/usr/local/bin/${cam}.sh"; \
+    done
 
 # Gather display files by format (one dir per format) for host-side clients.
 # Screens use the $(P) macro (replaceable prefix, issue #68); a client

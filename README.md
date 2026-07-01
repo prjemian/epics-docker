@@ -66,7 +66,11 @@ make test  RUN_FLAGS=--no-hosts
 document | contents
 --- | ---
 [GP IOC](./docs/gp.md) | Customized synApps IOC (runtime prefix) — features and how to run it
-[adsim IOC](./docs/adsim.md) | Custom ADSimDetector (simulated area detector) IOC
+[area-detector cameras](./docs/area_detector.md) | The camera personas + the adsim vs adcsim distinction
+[adsim IOC](./docs/adsim.md) | ADSimDetector — simulated 2D image camera
+[adcsim IOC](./docs/adcsim.md) | ADCSimDetector — simulated ADC/waveform digitizer (not a camera)
+[adurl IOC](./docs/adurl.md) | ADURL — area detector fed images from a URL
+[adpva IOC](./docs/adpva.md) | pvaDriver — area detector fed images over pvAccess
 [xxx IOC](./docs/xxx.md) | As-supplied synApps template IOC
 [synApps modules](./docs/synapps_modules.md) | Which synApps modules are included/excluded, and why
 [v3 plan](./docs/v3.md) | The maintainer's plan and goals for v3

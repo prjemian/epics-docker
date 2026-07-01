@@ -75,13 +75,23 @@ else
     echo "# (gp persona not in this image; skipping)"
 fi
 
-# --- adsim (only if the image provides it) ---
-# Unique prefix, no host networking. Probe the camera contract PV cam1:.
-if "${ENGINE}" run ${RUN_FLAGS} --rm --entrypoint test "${IMAGE}" \
-        -x /usr/local/bin/adsim.sh >/dev/null 2>&1; then
-    test_persona adsim "smoketestad:" "smoketestad:cam1:Acquire_RBV"
-else
-    echo "# (adsim persona not in this image; skipping)"
-fi
+# --- areaDetector camera personas (only those the image provides) ---
+# Unique prefixes, no host networking. Each camera has its own probe PV:
+#   adsim/adurl/adpva = area cameras (cam1:), adcsim = ADC/waveform (det1:).
+adcam_probe() {
+    case "$1" in
+        adcsim) echo "det1:TimeStamp_RBV" ;;
+        *)      echo "cam1:Acquire_RBV" ;;
+    esac
+}
+for cam in adsim adcsim adurl adpva; do
+    if "${ENGINE}" run ${RUN_FLAGS} --rm --entrypoint test "${IMAGE}" \
+            -x "/usr/local/bin/${cam}.sh" >/dev/null 2>&1; then
+        pfx="smoketest${cam}:"
+        test_persona "${cam}" "${pfx}" "${pfx}$(adcam_probe "${cam}")"
+    else
+        echo "# (${cam} persona not in this image; skipping)"
+    fi
+done
 
 echo "SMOKE TEST PASSED"
