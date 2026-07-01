@@ -121,6 +121,24 @@ Sequenced to reach a runnable artifact early, then expand:
   the full stack builds, to shave the runtime image further without the musl
   risk.
 
+### Image-size trim (one pass, after all AD content)
+
+Measured the full footprint and pruned non-runtime cruft from the built
+support tree in the BUILDER stage (so the slim result is what the runtime
+image copies; deletions never persist in a shipped layer). See
+`resources/prune_support.sh`.
+
+- Removed (verified all 7 personas still boot): `.git` dirs (177 MB), `*.a`
+  static libs (411 MB), `*.o` objects (203 MB), `O.*` build-output dirs
+  (567 MB, overlaps objects).
+- Support tree: **1.6 GB -> 624 MB**. Full image: **2.16 GB -> 1.18 GB**
+  (~45% smaller).
+- Kept: `bin/`, `lib/*.so`, `dbd/`, `db/` (+ templates/.req/.substitutions),
+  `iocBoot`, `op/` screens, and the customized `ioc*` boot dirs.
+- Further opportunities (not done): the aggregated `/opt/epics/screens`
+  display files (~245 MB, dominated by verbose `.ui`/`.opi`); a distroless
+  runtime base; ADSupport bundled sources.
+
 ## 9. Progress (Phase 1-2 done)
 
 First runnable milestone complete and smoke-tested:

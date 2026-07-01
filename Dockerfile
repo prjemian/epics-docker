@@ -235,6 +235,13 @@ RUN bash -o pipefail -c 'for p in /usr/local/share/adcam/profiles/*.env; do \
             2>&1 | tee "${LOG_DIR}/build-${name}.log"; \
     done'
 
+# Prune non-runtime cruft (.git, *.a, *.o, O.* dirs) from the support tree
+# HERE in the builder, so the runtime image copies only the slim result and
+# the removed files never persist in a shipped layer. (~1.6G -> ~0.6G)
+COPY resources/prune_support.sh /usr/local/bin/prune_support.sh
+RUN chmod +x /usr/local/bin/prune_support.sh \
+ && prune_support.sh "${SUPPORT}" 2>&1 | tee "${LOG_DIR}/prune_support.log"
+
 # ----------------------------------------------------------------------
 # base-synapps: runtime image with EPICS base + synApps + areaDetector.
 # ----------------------------------------------------------------------
