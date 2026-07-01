@@ -71,6 +71,7 @@ document | contents
 [v3 plan](./docs/v3.md) | The maintainer's plan and goals for v3
 [requirements & goals](./docs/v3_requirements.md) | Audiences, functional and quality goals, constraints, non-goals
 [implementation strategy](./docs/v3_strategy.md) | Architecture and decisions for the rebuild
+[v2 -> v3 transition](./docs/v3_transition.md) | How v3 lands without breaking existing tooling (apstools, iocmgr.sh)
 [v2.0 build phases](./docs/v2_build_phases.md) | Reconstructed reference for the prior recipe
 quick-start guides | _(planned)_ per-audience: workstation, CI, client development, simulation
 configuration | _(planned)_ environment variables, ports, volumes, networking profiles
