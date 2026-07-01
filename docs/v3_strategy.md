@@ -105,10 +105,45 @@ Sequenced to reach a runnable artifact early, then expand:
 6. **Screens collation + orchestration:** compose, networking profiles.
 7. **Multi-arch (arm64) + documentation + changelog/migration.**
 
-## 8. Still open (to finalize as build-out proceeds)
+## 8. Base OS choice
+
+- **`debian:12-slim`** for both builder and runtime stages (was full Debian in
+  v2). glibc-based, so areaDetector drivers and prebuilt deps "just work".
+- Not the absolute smallest, but the smaller options cost more than they save
+  for a compiled C++/areaDetector stack: **Alpine (musl)** breaks some AD
+  drivers and changes `EpicsHostArch` to a `-musl` target — a large
+  maintenance/compatibility tax for ~65 MB.
+- Because builds are multi-stage, the *builder* base size is irrelevant to the
+  shipped image; only the **runtime** stage's base and its copied products
+  matter. The dominant size lever is what lands in the runtime stage (we copy
+  products only, no toolchain/sources).
+- **Stretch optimization (later):** a distroless / minimal runtime base once
+  the full stack builds, to shave the runtime image further without the musl
+  risk.
+
+## 9. Progress (Phase 1-2 done)
+
+First runnable milestone complete and smoke-tested:
+
+- `versions.env` — single source of truth (EPICS base `7.0.10`, Debian
+  `12-slim`).
+- Multi-stage `Dockerfile`: `os-runtime` -> `os-build` -> `epics-build` ->
+  `base-epics`. Runtime image ~202 MB; toolchain/sources excluded.
+- Host arch resolved in the builder (perl-free runtime) via a stable
+  `binln -> bin/<arch>` symlink, so consumers need not hard-code
+  `linux-x86_64`.
+- `procServ` supervises the IOC; output to container stdout; console via
+  telnet on `IOC_CONSOLE_PORT`.
+- `softioc` persona with a demo DB (`${PREFIX}UPTIME`, `${PREFIX}IOC_NAME`,
+  `${PREFIX}float1`); prefix overridable at run time.
+- `Makefile` (build/build-devel/run/console/shell/test/clean) + `compose.yaml`
+  (host and ports profiles) + `resources/smoke-test.sh`.
+- Rootless-podman support via `BUILD_FLAGS`/`RUN_FLAGS` (`--no-hosts`).
+
+## 10. Still open (to finalize as build-out proceeds)
 
 - Exact number/shape of published final images (single vs. weight-class split).
-- Version manifest format (env file vs. structured).
 - Networking default profile and the documented `EPICS_CA_*` guidance.
 - Whether/where to publish screens as a separate artifact.
 - Registry/tagging scheme (tags, `latest`, per-version, arch manifest lists).
+- Distroless/minimal runtime base as a size optimization (see §8).

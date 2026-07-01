@@ -1,0 +1,10 @@
+# Keep the build context small: exclude archives, VCS, logs, notes.
+.git
+.vscode
+v1.0/
+v1.1/
+v2.0/
+docs/
+*.log
+build-log.txt
+.nogit_*

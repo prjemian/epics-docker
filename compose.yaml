@@ -1,0 +1,44 @@
+# compose.yaml -- primary run contract for v3 (docker compose / podman compose).
+#
+# Choose a networking profile:
+#   host  : Linux/CI fast path; host clients see PVs directly (like v2).
+#   ports : Docker Desktop / Windows / macOS / Synology; CA/PVA port-mapped.
+#
+# Enable a profile with:  docker compose --profile host up   (or --profile ports)
+#
+# Select the IOC persona and prefix per service via environment.
+
+services:
+
+  # --- softIoc persona, host networking (Linux/CI) ---------------------
+  softioc-host:
+    profiles: ["host"]
+    image: prjemian/synapps:${TAG:-3.0.0-dev}
+    container_name: ioc-softioc
+    network_mode: host
+    environment:
+      IOC: softioc
+      PREFIX: ${PREFIX:-ioc:}
+      IOC_CONSOLE_PORT: ${IOC_CONSOLE_PORT:-2048}
+    restart: unless-stopped
+
+  # --- softIoc persona, port-mapped (Desktop/Win/Mac/Synology) ---------
+  softioc-ports:
+    profiles: ["ports"]
+    image: prjemian/synapps:${TAG:-3.0.0-dev}
+    container_name: ioc-softioc
+    environment:
+      IOC: softioc
+      PREFIX: ${PREFIX:-ioc:}
+      IOC_CONSOLE_PORT: ${IOC_CONSOLE_PORT:-2048}
+    ports:
+      # Channel Access
+      - "5064:5064/tcp"
+      - "5064:5064/udp"
+      - "5065:5065/udp"
+      # pvAccess
+      - "5075:5075/tcp"
+      - "5076:5076/udp"
+      # procServ console
+      - "${IOC_CONSOLE_PORT:-2048}:${IOC_CONSOLE_PORT:-2048}/tcp"
+    restart: unless-stopped
