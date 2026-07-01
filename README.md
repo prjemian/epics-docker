@@ -14,9 +14,9 @@ IOCs (servers) for **development, simulation, testing, and training**.
 > The previous, published implementation is archived under
 > [`v2.0/`](./v2.0/) (and earlier lines under `v1.0/`, `v1.1/`).
 
-tag | release | image | downloads
---- | --- | --- | ---
-[![tag](https://img.shields.io/github/tag/prjemian/epics-docker.svg)](https://github.com/prjemian/epics-docker/tags) | [![release](https://img.shields.io/github/release/prjemian/epics-docker.svg)](https://github.com/prjemian/epics-docker/releases) | [![image](https://img.shields.io/docker/v/prjemian/synapps)](https://hub.docker.com/r/prjemian/synapps) | [![pulls](https://img.shields.io/docker/pulls/prjemian/synapps.svg)](https://hub.docker.com/r/prjemian/synapps)
+tag | release | image | downloads | license
+--- | --- | --- | --- | ---
+[![tag](https://img.shields.io/github/tag/prjemian/epics-docker.svg)](https://github.com/prjemian/epics-docker/tags) | [![release](https://img.shields.io/github/release/prjemian/epics-docker.svg)](https://github.com/prjemian/epics-docker/releases) | [![image](https://img.shields.io/docker/v/prjemian/synapps)](https://hub.docker.com/r/prjemian/synapps) | [![pulls](https://img.shields.io/docker/pulls/prjemian/synapps.svg)](https://hub.docker.com/r/prjemian/synapps) | [![license: EPICS](https://img.shields.io/badge/license-EPICS-blue.svg)](./LICENSE)
 
 ## What this repository provides
 
