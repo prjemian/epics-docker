@@ -46,6 +46,13 @@ if [ -n "${SUPPORT:-}" ] && [ -d "${SUPPORT}" ]; then
         link xxx      "${xxx_mod}"
         link iocxxx   "${xxx_mod}/iocBoot/iocxxx"
     fi
+
+    # gp customized IOC (if built): link module + its boot dir.
+    if [ -d "${SUPPORT}/iocgp" ]; then
+        link iocgp_ioc "${SUPPORT}/iocgp"
+        gp_boot="$(ls -d "${SUPPORT}"/iocgp/iocBoot/ioc* 2>/dev/null | head -n1 || true)"
+        [ -n "${gp_boot}" ] && link iocgp "${gp_boot}"
+    fi
 fi
 
 echo "# make_home_links: done"

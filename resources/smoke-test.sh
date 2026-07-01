@@ -64,4 +64,15 @@ else
     echo "# (xxx persona not in this image; skipping)"
 fi
 
+# --- gp (only if the image provides it) ---
+# Use a UNIQUE prefix (not bare gp:) and no host networking so the test IOC
+# never collides with a gp: IOC already on the subnet. Probe the CI-contract
+# general-purpose PV (<prefix>gp:float1).
+if "${ENGINE}" run ${RUN_FLAGS} --rm --entrypoint test "${IMAGE}" \
+        -x /usr/local/bin/gp.sh >/dev/null 2>&1; then
+    test_persona gp "smoketestgp:" "smoketestgp:gp:float1"
+else
+    echo "# (gp persona not in this image; skipping)"
+fi
+
 echo "SMOKE TEST PASSED"

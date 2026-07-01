@@ -199,6 +199,20 @@ RUN bash -o pipefail -c 'xxx="$(ls -d ${SUPPORT}/xxx-*)" \
  && ln -s "${xxx}" "${SUPPORT}/xxx"'
 
 # ----------------------------------------------------------------------
+# gp-build: build the customized "gp" IOC (copy of xxx + our overlays).
+# ----------------------------------------------------------------------
+FROM synapps-build AS gp-build
+
+# gp customization tunables (single source of truth: versions.env).
+ARG MOTOR_SREV=8000
+ENV MOTOR_SREV=${MOTOR_SREV}
+
+COPY resources/gp/ /usr/local/share/gp/
+RUN bash -o pipefail -c '\
+    MOTOR="$(ls -d ${SUPPORT}/motor-*)"; export MOTOR; \
+    bash /usr/local/share/gp/gp_build.sh 2>&1 | tee "${LOG_DIR}/build-gp.log"'
+
+# ----------------------------------------------------------------------
 # base-synapps: runtime image with EPICS base + synApps.
 # ----------------------------------------------------------------------
 FROM base-epics AS base-synapps
@@ -224,21 +238,23 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         libusb-1.0-0 \
  && rm -rf /var/lib/apt/lists/*
 
-# Copy only the built support tree (products; no VCS metadata excluded here
-# yet -- refined later for size).
-COPY --from=synapps-build ${SUPPORT} ${SUPPORT}
+# Copy the built support tree from gp-build (a superset of synapps-build:
+# it also contains the customized iocgp). Products only; no toolchain/sources.
+COPY --from=gp-build ${SUPPORT} ${SUPPORT}
 
-# Retain synApps build logs alongside the base logs (already present from
-# base-epics) for later diagnostics.
-COPY --from=synapps-build ${LOG_DIR} ${LOG_DIR}
+# Retain all build logs (base, synApps, xxx, gp) for later diagnostics.
+COPY --from=gp-build ${LOG_DIR} ${LOG_DIR}
 
-# xxx persona (as-supplied synApps template IOC). Selected with IOC=xxx.
+# Personas:
+#   xxx : as-supplied synApps template IOC (fixed xxx: prefix). IOC=xxx
+#   gp  : customized synApps IOC (runtime PREFIX, default gp:). IOC=gp
 COPY resources/xxx.sh /usr/local/bin/xxx.sh
-RUN chmod +x /usr/local/bin/xxx.sh
+COPY resources/gp.sh  /usr/local/bin/gp.sh
+RUN chmod +x /usr/local/bin/xxx.sh /usr/local/bin/gp.sh
 
-# Refresh convenience symlinks in /home now that synApps (support, xxx, iocxxx)
-# and the xxx persona script are present.
+# Refresh convenience symlinks in /home now that synApps (support, xxx, iocxxx,
+# iocgp) and the persona scripts are present.
 RUN /usr/local/bin/make_home_links.sh /home
 
-# Default persona remains softioc; select xxx with -e IOC=xxx.
+# Default persona remains softioc; select xxx or gp with -e IOC=xxx|gp.
 ENV IOC=softioc

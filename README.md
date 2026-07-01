@@ -65,12 +65,14 @@ make test  RUN_FLAGS=--no-hosts
 
 document | contents
 --- | ---
+[GP IOC](./docs/gp.md) | Customized synApps IOC (runtime prefix) — features and how to run it
+[xxx IOC](./docs/xxx.md) | As-supplied synApps template IOC
+[synApps modules](./docs/synapps_modules.md) | Which synApps modules are included/excluded, and why
 [v3 plan](./docs/v3.md) | The maintainer's plan and goals for v3
 [requirements & goals](./docs/v3_requirements.md) | Audiences, functional and quality goals, constraints, non-goals
 [implementation strategy](./docs/v3_strategy.md) | Architecture and decisions for the rebuild
 [v2.0 build phases](./docs/v2_build_phases.md) | Reconstructed reference for the prior recipe
 quick-start guides | _(planned)_ per-audience: workstation, CI, client development, simulation
-IOC personas | _(planned)_ the provided IOCs and their PVs
 configuration | _(planned)_ environment variables, ports, volumes, networking profiles
 maintainer guide | _(planned)_ how to upgrade component versions and rebuild locally
 
