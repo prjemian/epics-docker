@@ -61,26 +61,37 @@ make test  RUN_FLAGS=--no-hosts
 
 ## Documentation
 
-> Documentation is being written as part of the v3 rebuild.
+**Getting started**
 
 document | contents
 --- | ---
-[GP IOC](./docs/gp.md) | Customized synApps IOC (runtime prefix) — features and how to run it
+[quick start](./docs/quickstart.md) | Run an IOC; per-audience (workstation, CI, client dev, simulation)
+[configuration](./docs/configuration.md) | Environment variables, networking profiles, console, volumes
+[maintainer guide](./docs/maintainer.md) | Build, upgrade component versions, extend (add features/cameras)
+
+**Personas (the IOCs provided)**
+
+document | contents
+--- | ---
+[softioc](./docs/softioc.md) | EPICS base softIoc (minimal; default persona)
+[xxx](./docs/xxx.md) | As-supplied synApps template IOC
+[gp](./docs/gp.md) | Customized synApps IOC (runtime prefix) — features and how to run it
 [area-detector cameras](./docs/area_detector.md) | The camera personas + the adsim vs adcsim distinction
-[adsim IOC](./docs/adsim.md) | ADSimDetector — simulated 2D image camera
-[adcsim IOC](./docs/adcsim.md) | ADCSimDetector — simulated ADC/waveform digitizer (not a camera)
-[adurl IOC](./docs/adurl.md) | ADURL — area detector fed images from a URL
-[adpva IOC](./docs/adpva.md) | pvaDriver — area detector fed images over pvAccess
-[xxx IOC](./docs/xxx.md) | As-supplied synApps template IOC
+[adsim](./docs/adsim.md) | ADSimDetector — simulated 2D image camera
+[adcsim](./docs/adcsim.md) | ADCSimDetector — simulated ADC/waveform digitizer (not a camera)
+[adurl](./docs/adurl.md) | ADURL — area detector fed images from a URL
+[adpva](./docs/adpva.md) | pvaDriver — area detector fed images over pvAccess
+
+**Design & background**
+
+document | contents
+--- | ---
 [synApps modules](./docs/synapps_modules.md) | Which synApps modules are included/excluded, and why
 [v3 plan](./docs/v3.md) | The maintainer's plan and goals for v3
 [requirements & goals](./docs/v3_requirements.md) | Audiences, functional and quality goals, constraints, non-goals
 [implementation strategy](./docs/v3_strategy.md) | Architecture and decisions for the rebuild
 [v2 -> v3 transition](./docs/v3_transition.md) | How v3 lands without breaking existing tooling (apstools, iocmgr.sh)
 [v2.0 build phases](./docs/v2_build_phases.md) | Reconstructed reference for the prior recipe
-quick-start guides | _(planned)_ per-audience: workstation, CI, client development, simulation
-configuration | _(planned)_ environment variables, ports, volumes, networking profiles
-maintainer guide | _(planned)_ how to upgrade component versions and rebuild locally
 
 ## Authors
 
