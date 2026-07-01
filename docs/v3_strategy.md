@@ -140,6 +140,45 @@ First runnable milestone complete and smoke-tested:
   (host and ports profiles) + `resources/smoke-test.sh`.
 - Rootless-podman support via `BUILD_FLAGS`/`RUN_FLAGS` (`--no-hosts`).
 
+## 9a. Progress (Phase 3: synApps + xxx IOC)
+
+`base-synapps` stage builds synApps and the `xxx` IOC:
+
+- Uses the standard `assemble_synApps.sh` at `SYNAPPS_VERSION=R6-3`.
+- `resources/synapps_prepare.sh` makes two minimal edits (no sourced config,
+  so kept modules keep the release's tags): set `EPICS_BASE`, and empty the
+  excluded hardware modules (see `docs/synapps_modules.md`). It also applies
+  documented per-module version overrides from `SYNAPPS_OVERRIDE_*`.
+- Build logs retained in `/opt/build-logs/` (proved essential for diagnosis).
+- Runtime `base-synapps` image ~1.84 GB (the copied support tree still carries
+  sources/.git/objects -- size trimming is an open task).
+
+### Troubleshooting record (WHAT / WHY / resolution)
+
+- **WHAT:** synApps R6-3 would not compile against modern EPICS base + GCC 12
+  (Debian 12): `motor-R7-2-2` failed with `'epicsShareFunc' does not name a
+  type` in `motorApp/MotorSrc/motordrvCom.h`.
+- **WHY:** that header uses the `epicsShareFunc` macro but does not itself
+  `#include <shareLib.h>`; it relied on a transitive include no longer present
+  in this base/compiler context. motor R7-2-2 (pinned by R6-3) predates the
+  fix.
+- **Resolution:** documented per-module override `SYNAPPS_OVERRIDE_MOTOR=R7-3-1`
+  in `versions.env` (motor R7-3-1 includes the fix). Base stays at 7.0.10. To
+  retire: remove the override when a synApps release ships a fixed motor.
+- **Dead end (recorded):** pinning base down to 7.0.6.1 did NOT fix it (same
+  compiler behavior); the fix had to come from a newer motor, not an older
+  base.
+- **Secondary bug fixed:** piped build steps (`make ... | tee`) were masking
+  `make` failures. The `SHELL ["/bin/bash","-o","pipefail","-c"]` directive is
+  **ignored under podman's default OCI image format** ("SHELL is not supported
+  for OCI image format"). Fixed engine-agnostically by invoking
+  `bash -o pipefail -c '...'` explicitly in the piped RUN steps. Also note
+  `SHELL` does not inherit across `FROM` regardless.
+- **Red herring (recorded):** `epicsShareFunc`/`invertArray` lines in the
+  motor R7-3-1 build were `warning:`/`note:` (`-Wstringop-overflow`), not
+  errors; the build succeeded. Grepping for `epicsShareFunc` matched benign
+  notes -- verify with `grep -E '\] Error [0-9]'` instead.
+
 ## 10. Still open (to finalize as build-out proceeds)
 
 - Exact number/shape of published final images (single vs. weight-class split).

@@ -18,12 +18,18 @@ export
 
 ORG    ?= prjemian
 REPO   ?= synapps
-TARGET ?= base-epics
+TARGET ?= base-synapps
 TAG    ?= $(IMAGE_VERSION)
 IMAGE   = $(ORG)/$(REPO):$(TAG)
 
-# Turn every KEY=VALUE in versions.env into "--build-arg KEY=VALUE".
-BUILD_ARGS = $(foreach line,$(shell grep -vE '^\s*(#|$$)' versions.env),--build-arg $(line))
+# Turn every KEY=VALUE in versions.env into "--build-arg KEY=VALUE",
+# EXCEPT the SYNAPPS_OVERRIDE_* lines, which are collected separately.
+BUILD_ARGS = $(foreach line,$(shell grep -vE '^\s*(#|$$)' versions.env | grep -vE '^SYNAPPS_OVERRIDE_'),--build-arg $(line))
+
+# Collect SYNAPPS_OVERRIDE_<MOD>=<TAG> lines into one space-separated
+# SYNAPPS_OVERRIDES build-arg of "MOD=TAG" pairs.
+OVERRIDE_PAIRS = $(shell grep -E '^SYNAPPS_OVERRIDE_' versions.env | sed -E 's/^SYNAPPS_OVERRIDE_//')
+BUILD_ARGS += --build-arg SYNAPPS_OVERRIDES="$(OVERRIDE_PAIRS)"
 
 # BuildKit gives us cache mounts + `# syntax=` features.
 export DOCKER_BUILDKIT = 1
