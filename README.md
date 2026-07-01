@@ -66,6 +66,7 @@ make test  RUN_FLAGS=--no-hosts
 document | contents
 --- | ---
 [GP IOC](./docs/gp.md) | Customized synApps IOC (runtime prefix) — features and how to run it
+[adsim IOC](./docs/adsim.md) | Custom ADSimDetector (simulated area detector) IOC
 [xxx IOC](./docs/xxx.md) | As-supplied synApps template IOC
 [synApps modules](./docs/synapps_modules.md) | Which synApps modules are included/excluded, and why
 [v3 plan](./docs/v3.md) | The maintainer's plan and goals for v3
