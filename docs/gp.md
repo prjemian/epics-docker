@@ -18,12 +18,14 @@ feature | what you get
 **General-purpose PVs** | 20 each of scratch records under `$(PREFIX)gp:` — `float1..20`, `int1..20`, `bit1..20`, `text1..20`, `longtext1..20`, `array1..20`. Handy signals for tests and demos.
 **Bluesky scan_id** | `$(PREFIX)bluesky_scan_id` — a dedicated `longout` for the Bluesky RunEngine's `scan_id` (so it need not consume a general-purpose integer).
 **56 simulated motors** | `$(PREFIX)m1` .. `$(PREFIX)m56` (soft/sim, no hardware). Wide travel limits; `SREV=8000` (5-digit precision, good for crystallography/mono simulation). Many carry descriptive names — see [motor assignments](#motor-assignments). Includes `allstop`.
-**Optics** | Kohzu monochromator, two slit pairs (`Slit1V/1H` via `2slit.db`, `Slit2V/2H` via `2slit_soft.vdb`), an optical table, a coarse/fine stage, and 4-circle diffractometer orientation-matrix support with a crystal-lattice database.
+**Optics** | Kohzu monochromator, two slit pairs (`Slit1V/1H` via `2slit.db`, `Slit2V/2H` via `2slit_soft.vdb`), four optical tables (`Table1..4`), a coarse/fine stage, a 2-post mirror, user filters (motorized attenuators + interlock), an I0/Io intensity calc, and 4-circle diffractometer orientation-matrix support with a crystal-lattice database.
 **Scanning (sscan)** | `scan1..scan4`, `scanH`, `saveData`, and `scanProgress` — the synApps step-scan engine used by many acquisition/testing workflows (e.g. Bluesky/ophyd tests).
 **userCalcs & friends** | 20 channels each of `userCalc`, `userCalcOut`, `userStringCalc`, `userArrayCalc`, `userAve`, `userStringSeq` — general computation/soft-record building blocks.
-**Counting / std** | Three soft scalers (`scaler1..3`, 64 channels each) with named channels — see [scaler channels](#scaler-channels); fb_epid feedback; 4-step database; ramp/tweak; software timer; PV history.
+**Counting / std** | Three soft scalers (`scaler1..3`, 64 channels each) with named channels — see [scaler channels](#scaler-channels); fb_epid feedback; 4-step database; two ramp/tweak (`rt1`, `rt2`); software timer; count-down timer (`cdt1`); alarm clock (`AClock1`); PV history.
+**Scan support** | sscan engine (below), scan-parameter presets (`scanParms`), and motor trajectory scans (`traj1`).
+**Detectors (sim)** | Two/three soft MCAs and a 3-element detector aggregation (`mca1..3`).
 **Automation** | `caputRecorder` (record/replay caput sequences), `sseq` (string sequence), `busy` records (2), `configMenu`, autosave & restore, interpolation.
-**Soft MCA** | Two simulated multichannel analyzers, `$(PREFIX)mca1` and `$(PREFIX)mca2` (2048 channels each, no hardware) — for spectroscopy/acquisition simulation.
+**Soft MCA** | Three simulated multichannel analyzers, `$(PREFIX)mca1..mca3` (2048 channels each, no hardware) — for spectroscopy/acquisition simulation; also feed the 3-element detector aggregation.
 **lua** | lua interpreter PVs (`$(PREFIX)interp`) and lua-script support from the synApps lua module.
 **IOC admin** | iocStats / iocAdminSoft records (uptime, load, ...); `$(PREFIX)UPTIME` for a quick liveness check.
 

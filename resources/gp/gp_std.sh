@@ -35,9 +35,10 @@ iocshLoad("$(SCALER)/iocsh/softScaler.iocsh", "P=$(PREFIX), INSTANCE=scaler3")
 dbLoadTemplate("substitutions/fb_epid.substitutions","PREFIX=$(PREFIX)")
 EOF
 
-# fb_epid substitutions (prefix-parameterized)
+# fb_epid substitutions (prefix-parameterized). fb_epid.db lives in the
+# OPTICS module (not std).
 cat > "${IOCGP}/substitutions/fb_epid.substitutions" <<'EOF'
-file "$(STD)/stdApp/Db/fb_epid.db"
+file "$(OPTICS)/opticsApp/Db/fb_epid.db"
 {
     pattern {P,            IN,               OUT,            PERMIT1}
     {"$(PREFIX)epid1", "$(P):sim.VAL", "$(P):sim.D", "$(P):on.VAL"}

@@ -29,6 +29,8 @@ MOTOR="$(ls -d "${SUPPORT}"/motor-* | head -n1)"
 OPTICS="$(ls -d "${SUPPORT}"/optics-* | head -n1)"
 SCALER="$(ls -d "${SUPPORT}"/scaler-* | head -n1)"
 MCA="$(ls -d "${SUPPORT}"/mca-* | head -n1)"
+STD="$(ls -d "${SUPPORT}"/std-* | head -n1)"
+SSCAN="$(ls -d "${SUPPORT}"/sscan-* | head -n1)"
 
 GP="${SUPPORT}/iocgp"
 
@@ -63,6 +65,7 @@ bash "${GP_RESOURCES}/gp_motors.sh"          "${IOCGP}" "${GP_RESOURCES}" "${MOT
 bash "${GP_RESOURCES}/gp_optics.sh"          "${IOCGP}" "${GP_RESOURCES}" "${OPTICS}"
 bash "${GP_RESOURCES}/gp_std.sh"             "${IOCGP}" "${GP_RESOURCES}" "${SCALER}"
 bash "${GP_RESOURCES}/gp_mca.sh"             "${IOCGP}" "${GP_RESOURCES}" "${MCA}"
+bash "${GP_RESOURCES}/gp_more.sh"            "${IOCGP}" "${GP_RESOURCES}" "${OPTICS}" "${STD}" "${SSCAN}" "${MCA}" "${MOTOR}"
 
 # Display files are handled at the runtime stage by collect_screens.sh, which
 # copies them to an all-in-one directory and fixes the COPIES only (leaving the
