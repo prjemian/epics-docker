@@ -16,6 +16,7 @@ The `gp` IOC serves ~2000 PVs, all under your chosen prefix (`$(PREFIX)`):
 feature | what you get
 --- | ---
 **General-purpose PVs** | 20 each of scratch records under `$(PREFIX)gp:` — `float1..20`, `int1..20`, `bit1..20`, `text1..20`, `longtext1..20`, `array1..20`. Handy signals for tests and demos.
+**Bluesky scan_id** | `$(PREFIX)bluesky_scan_id` — a dedicated `longout` for the Bluesky RunEngine's `scan_id` (so it need not consume a general-purpose integer).
 **56 simulated motors** | `$(PREFIX)m1` .. `$(PREFIX)m56` (soft/sim, no hardware). Wide travel limits; `SREV=8000` (5-digit precision, good for crystallography/mono simulation). Many carry descriptive names — see [motor assignments](#motor-assignments). Includes `allstop`.
 **Optics** | Kohzu monochromator, two slit pairs (`Slit1V/1H` via `2slit.db`, `Slit2V/2H` via `2slit_soft.vdb`), an optical table, a coarse/fine stage, and 4-circle diffractometer orientation-matrix support with a crystal-lattice database.
 **Scanning (sscan)** | `scan1..scan4`, `scanH`, `saveData`, and `scanProgress` — the synApps step-scan engine used by many acquisition/testing workflows (e.g. Bluesky/ophyd tests).

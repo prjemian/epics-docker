@@ -25,9 +25,20 @@ subs="${IOCGP}/substitutions/general_purpose.substitutions"
     echo "}"
 } > "${subs}"
 
+# Dedicated Bluesky scan_id PV (issue #66): a longout so the Bluesky
+# RunEngine has its own scan_id and need not consume a general-purpose int.
+cat > "${IOCGP}/bluesky.db" <<'EOF'
+record(longout, "$(P)bluesky_scan_id") {
+    field(DESC, "Bluesky RunEngine scan_id")
+    field(VAL,  "0")
+    field(PINI, "YES")
+}
+EOF
+
 # iocsh loader (R=gp: keeps the historic gp:gp:* names)
 cat > "${IOCGP}/general_purpose.iocsh" <<'EOF'
 dbLoadTemplate("substitutions/general_purpose.substitutions", "P=$(PREFIX),R=gp:")
+dbLoadRecords("bluesky.db", "P=$(PREFIX)")
 EOF
 
 # include it from the boot script
