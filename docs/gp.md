@@ -120,6 +120,37 @@ link | points to
 `build-logs` | compilation logs (`build-gp.log`, ...)
 `gp.sh` | the GP persona launcher
 
+## Display screens (MEDM, caQtDM, ...)
+
+Operator-interface files are gathered by format under `/opt/epics/screens`
+(also linked as `/home/screens`), one directory per format, with referenced
+graphics (`.gif`, `.png`, ...) copied alongside:
+
+format | directory | tool
+--- | --- | ---
+MEDM | `/opt/epics/screens/adl` | `medm`
+caQtDM | `/opt/epics/screens/ui` | `caqtdm`
+CSS BOY | `/opt/epics/screens/opi` | CS-Studio
+Phoebus | `/opt/epics/screens/bob` | Phoebus
+EDM | `/opt/epics/screens/edl` | `edm`
+
+Referenced graphics (`.gif`, `.png`, ...) are stored once in
+`/opt/epics/screens/graphics` and symlinked into each format directory (so
+images are not duplicated per format).
+
+The screens use a **replaceable prefix macro `$(P)`** (not a baked-in prefix),
+so the same screen works for any runtime prefix. Display tools are **not**
+included in this server image (clients live elsewhere); copy or mount the
+screens to a host with the tool installed and pass the prefix:
+
+```bash
+# on a host that has MEDM / caQtDM:
+medm   -x -macro "P=gp:" gp.adl
+caqtdm -macro "P=gp:"    gp.ui
+```
+
+The main GP screen is `xxx.adl` / `xxx.ui`.
+
 ## Tuning
 
 env / build-arg | effect

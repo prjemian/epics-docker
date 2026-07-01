@@ -252,8 +252,17 @@ COPY resources/xxx.sh /usr/local/bin/xxx.sh
 COPY resources/gp.sh  /usr/local/bin/gp.sh
 RUN chmod +x /usr/local/bin/xxx.sh /usr/local/bin/gp.sh
 
+# Gather display files by format (one dir per format) for host-side clients.
+# Screens use the $(P) macro (replaceable prefix, issue #68); a client
+# launches them with -macro "P=<prefix>".
+ENV SCREENS_ROOT=${EPICS_ROOT}/screens
+COPY resources/collect_screens.sh /usr/local/bin/collect_screens.sh
+RUN chmod +x /usr/local/bin/collect_screens.sh \
+ && /usr/local/bin/collect_screens.sh "${SCREENS_ROOT}" \
+        "${SUPPORT}/iocgp/xxxApp/op" "${SUPPORT}"
+
 # Refresh convenience symlinks in /home now that synApps (support, xxx, iocxxx,
-# iocgp) and the persona scripts are present.
+# iocgp), the persona scripts, and screens are present.
 RUN /usr/local/bin/make_home_links.sh /home
 
 # Default persona remains softioc; select xxx or gp with -e IOC=xxx|gp.

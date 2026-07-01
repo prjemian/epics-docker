@@ -27,6 +27,9 @@ link() {
 link base       "${EPICS_ROOT}/base"
 link build-logs "${LOG_DIR}"
 
+# --- aggregated display files (if collected) ---
+[ -n "${SCREENS_ROOT:-}" ] && link screens "${SCREENS_ROOT}"
+
 # --- persona launch scripts (whichever the image provides) ---
 for p in /usr/local/bin/*.sh; do
     [ -e "${p}" ] || continue

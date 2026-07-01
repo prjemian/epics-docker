@@ -62,6 +62,10 @@ bash "${GP_RESOURCES}/gp_motors.sh"          "${IOCGP}" "${GP_RESOURCES}" "${MOT
 bash "${GP_RESOURCES}/gp_optics.sh"          "${IOCGP}" "${GP_RESOURCES}" "${OPTICS}"
 bash "${GP_RESOURCES}/gp_std.sh"             "${IOCGP}" "${GP_RESOURCES}" "${SCALER}"
 
+# Display files are handled at the runtime stage by collect_screens.sh, which
+# copies them to an all-in-one directory and fixes the COPIES only (leaving the
+# module screens as-supplied). See the base-synapps stage.
+
 echo "# gp_build: compile gp IOC"
 make -C "${GP}"
 
