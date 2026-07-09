@@ -52,12 +52,10 @@ docker compose --profile host  up     # Linux / CI: host sees PVs directly
 docker compose --profile ports up     # Docker Desktop / Windows / macOS / Synology
 ```
 
-Rootless podman on some hosts needs `--no-hosts`:
-
-```bash
-make build BUILD_FLAGS=--no-hosts
-make test  RUN_FLAGS=--no-hosts
-```
+**Podman:** the Makefile auto-detects podman (including the `podman-docker`
+wrapper) and adds `--no-hosts` automatically, so `make build` works as-is.
+To override, set `BUILD_FLAGS=` / `RUN_FLAGS=` explicitly. Run `make vars` to
+see the detected engine and flags.
 
 ## Documentation
 

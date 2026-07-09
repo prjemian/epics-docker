@@ -6,11 +6,20 @@
 # Container engine: docker or podman (auto-detect, override with ENGINE=).
 ENGINE ?= $(shell command -v docker 2>/dev/null || command -v podman 2>/dev/null)
 
+# Detect podman -- including the podman-docker wrapper, where `docker` is
+# actually podman (its --version prints "podman ...").
+IS_PODMAN := $(shell $(ENGINE) --version 2>/dev/null | grep -qi podman && echo yes)
+
 # Extra flags for `build`/`run`. Rootless podman needs --no-hosts to avoid
-# "failed to create new hosts file: /etc/hosts: permission denied".
-# Harmless-to-omit on docker; set BUILD_FLAGS=--no-hosts for rootless podman.
+# "failed to create new hosts file: /etc/hosts: permission denied". Harmless
+# on docker. Auto-enabled for podman; override by setting BUILD_FLAGS/RUN_FLAGS.
+ifeq ($(IS_PODMAN),yes)
+BUILD_FLAGS ?= --no-hosts
+RUN_FLAGS   ?= --no-hosts
+else
 BUILD_FLAGS ?=
 RUN_FLAGS   ?=
+endif
 
 # Load versions.env into make variables.
 include versions.env
@@ -38,22 +47,28 @@ BUILD_ARGS += --build-arg AD_DRIVERS="$(AD_DRIVERS_VAL)"
 # BuildKit gives us cache mounts + `# syntax=` features.
 export DOCKER_BUILDKIT = 1
 
-.PHONY: help build build-devel run console shell test clean vars
+.PHONY: help build build-devel run stop console shell test clean vars
 
 help ::
 	@echo "targets:"
 	@echo "  build        build the runtime image ($(TARGET)) -> $(IMAGE)"
-	@echo "  run          run softIoc persona (host networking)"
+	@echo "  run          run a persona: make run IOC=<persona> PREFIX=<prefix:>"
+	@echo "               container is named ioc<prefix> (e.g. PREFIX=demo: -> iocdemo)"
+	@echo "  stop         stop the container for PREFIX (make stop PREFIX=demo:)"
 	@echo "  console      attach to the running IOC console (telnet)"
 	@echo "  shell        interactive shell in the image"
-	@echo "  test         build then smoke-test softIoc"
+	@echo "  test         build then smoke-test all personas"
 	@echo "  vars         show resolved versions/vars"
 	@echo "  clean        remove the built image"
 
 vars ::
-	@echo "ENGINE = $(ENGINE)"
+	@echo "ENGINE = $(ENGINE)  (podman: $(if $(IS_PODMAN),yes,no))"
 	@echo "IMAGE  = $(IMAGE)"
 	@echo "TARGET = $(TARGET)"
+	@echo "IOC / PREFIX = $(IOC) / $(PREFIX)"
+	@echo "CONTAINER    = $(CONTAINER)"
+	@echo "BUILD_FLAGS = $(BUILD_FLAGS)"
+	@echo "RUN_FLAGS   = $(RUN_FLAGS)"
 	@echo "BUILD_ARGS = $(BUILD_ARGS)"
 
 build ::
@@ -71,12 +86,29 @@ build-devel ::
 		-t $(ORG)/$(REPO):$(TAG)-devel \
 		.
 
+# Persona + prefix (override on the command line):
+#   make run IOC=gp PREFIX=gp:
+IOC    ?= softioc
+PREFIX ?= ioc:
+# Container name = ioc<prefix-without-trailing-colon>, e.g. PREFIX=demo: -> iocdemo.
+# Unique + recognizable, matching the compose services and the iocgp/iocad style.
+CONTAINER = ioc$(patsubst %:,%,$(PREFIX))
+# procServ console (telnet) port. With --net=host each concurrent IOC needs a
+# DISTINCT port; override per IOC, e.g. make run PREFIX=demo2: IOC_CONSOLE_PORT=2049
+IOC_CONSOLE_PORT ?= 2048
+
 run ::
 	$(ENGINE) run $(RUN_FLAGS) --rm -d \
-		--name $(REPO) \
+		--name $(CONTAINER) \
 		--net=host \
-		-e PREFIX=$${PREFIX:-ioc:} \
+		-e IOC=$(IOC) \
+		-e PREFIX=$(PREFIX) \
+		-e IOC_CONSOLE_PORT=$(IOC_CONSOLE_PORT) \
 		$(IMAGE)
+	@echo "started container '$(CONTAINER)' (IOC=$(IOC), PREFIX=$(PREFIX), console=$(IOC_CONSOLE_PORT))"
+
+stop ::
+	-$(ENGINE) stop $(CONTAINER)
 
 console ::
 	@echo "connecting to IOC console (Ctrl-] then 'quit' to detach)"

@@ -27,12 +27,12 @@ make test                       # build + smoke-test all personas
 make vars                       # show resolved versions / build args
 ```
 
-Rootless podman (e.g. the APS build host) needs `--no-hosts`:
-
-```bash
-make build BUILD_FLAGS=--no-hosts
-make test  RUN_FLAGS=--no-hosts
-```
+Rootless podman (e.g. the APS build host) needs `--no-hosts` to avoid
+`failed to create new hosts file: /etc/hosts: permission denied`. The Makefile
+**auto-detects podman** (including the `podman-docker` wrapper, where `docker`
+is really podman) and adds `--no-hosts` to build/run automatically, so the
+plain commands above work. Override with `BUILD_FLAGS=`/`RUN_FLAGS=` if needed;
+`make vars` shows the detected engine and flags.
 
 Targets: `build`, `build-devel` (keeps toolchain/sources), `run`, `console`,
 `shell`, `test`, `clean`.

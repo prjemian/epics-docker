@@ -21,6 +21,28 @@ Default prefix per persona: `softioc`→`ioc:`, `gp`→`gp:`, `adsim`→`adsim:`
 > **Duplicate PVs:** two IOCs serving the same prefix on the same subnet
 > conflict (Channel Access duplicate PV). Give each IOC a unique prefix.
 
+### Running several IOCs at once
+
+Give each a unique **prefix**, a unique **container name**, and — under
+`--net=host` — a unique **console port** (procServ binds it on the shared host
+network, so `2048` can serve only one IOC at a time):
+
+```bash
+# via make: container is named ioc<prefix>; set a distinct console port each
+make run IOC=gp    PREFIX=ocean: IOC_CONSOLE_PORT=2048
+make run IOC=gp    PREFIX=sky:   IOC_CONSOLE_PORT=2049
+make run IOC=adsim PREFIX=air:   IOC_CONSOLE_PORT=2050
+make stop PREFIX=ocean:
+
+# via docker/podman directly
+docker run -d --rm --name iococean --net=host -e IOC=gp -e PREFIX=ocean: -e IOC_CONSOLE_PORT=2048 prjemian/synapps:latest
+docker run -d --rm --name iocsky   --net=host -e IOC=gp -e PREFIX=sky:   -e IOC_CONSOLE_PORT=2049 prjemian/synapps:latest
+```
+
+The `make run`/`make stop` targets name the container `ioc<prefix>` (trailing
+colon stripped), e.g. `PREFIX=ocean:` -> `iococean` — matching the
+`iocgp`/`iocadsim` style and the compose services.
+
 ## Networking
 
 The image serves EPICS **Channel Access** (CA, ports `5064-5065`) and
