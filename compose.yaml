@@ -19,7 +19,6 @@ services:
     environment:
       IOC: softioc
       PREFIX: ${PREFIX:-ioc:}
-      IOC_CONSOLE_PORT: ${IOC_CONSOLE_PORT:-2048}
     restart: unless-stopped
 
   # --- softIoc persona, port-mapped (Desktop/Win/Mac/Synology) ---------
@@ -30,7 +29,6 @@ services:
     environment:
       IOC: softioc
       PREFIX: ${PREFIX:-ioc:}
-      IOC_CONSOLE_PORT: ${IOC_CONSOLE_PORT:-2048}
     ports:
       # Channel Access
       - "5064:5064/tcp"
@@ -39,8 +37,6 @@ services:
       # pvAccess
       - "5075:5075/tcp"
       - "5076:5076/udp"
-      # procServ console
-      - "${IOC_CONSOLE_PORT:-2048}:${IOC_CONSOLE_PORT:-2048}/tcp"
     restart: unless-stopped
 
   # --- adsim persona (custom ADSimDetector), host networking (Linux/CI) -
@@ -52,7 +48,6 @@ services:
     environment:
       IOC: adsim
       PREFIX: "${ADSIM_PREFIX:-adsim}:"
-      IOC_CONSOLE_PORT: ${IOC_CONSOLE_PORT:-2048}
     restart: unless-stopped
 
   # --- adsim persona (custom ADSimDetector), port-mapped ---------------
@@ -63,7 +58,6 @@ services:
     environment:
       IOC: adsim
       PREFIX: "${ADSIM_PREFIX:-adsim}:"
-      IOC_CONSOLE_PORT: ${IOC_CONSOLE_PORT:-2048}
     ports:
       # Channel Access
       - "5064:5064/tcp"
@@ -72,8 +66,6 @@ services:
       # pvAccess
       - "5075:5075/tcp"
       - "5076:5076/udp"
-      # procServ console
-      - "${IOC_CONSOLE_PORT:-2048}:${IOC_CONSOLE_PORT:-2048}/tcp"
     restart: unless-stopped
 
   # --- gp persona (customized synApps), host networking (Linux/CI) -----
@@ -85,7 +77,6 @@ services:
     environment:
       IOC: gp
       PREFIX: "${GP_PREFIX:-gp}:"
-      IOC_CONSOLE_PORT: ${IOC_CONSOLE_PORT:-2048}
     restart: unless-stopped
 
   # --- gp persona (customized synApps), port-mapped -------------------
@@ -96,7 +87,6 @@ services:
     environment:
       IOC: gp
       PREFIX: "${GP_PREFIX:-gp}:"
-      IOC_CONSOLE_PORT: ${IOC_CONSOLE_PORT:-2048}
     ports:
       # Channel Access
       - "5064:5064/tcp"
@@ -105,8 +95,6 @@ services:
       # pvAccess
       - "5075:5075/tcp"
       - "5076:5076/udp"
-      # procServ console
-      - "${IOC_CONSOLE_PORT:-2048}:${IOC_CONSOLE_PORT:-2048}/tcp"
     restart: unless-stopped
 
   # --- additional areaDetector cameras (hardware-free) -----------------
@@ -118,20 +106,19 @@ services:
     image: prjemian/synapps:${TAG:-3.0.0-dev}
     container_name: ioc${ADCSIM_PREFIX:-adcsim}
     network_mode: host
-    environment: { IOC: adcsim, PREFIX: "${ADCSIM_PREFIX:-adcsim}:", IOC_CONSOLE_PORT: "${IOC_CONSOLE_PORT:-2048}" }
+    environment: { IOC: adcsim, PREFIX: "${ADCSIM_PREFIX:-adcsim}:" }
     restart: unless-stopped
   adcsim-ports:
     profiles: ["ports"]
     image: prjemian/synapps:${TAG:-3.0.0-dev}
     container_name: ioc${ADCSIM_PREFIX:-adcsim}
-    environment: { IOC: adcsim, PREFIX: "${ADCSIM_PREFIX:-adcsim}:", IOC_CONSOLE_PORT: "${IOC_CONSOLE_PORT:-2048}" }
+    environment: { IOC: adcsim, PREFIX: "${ADCSIM_PREFIX:-adcsim}:" }
     ports:
       - "5064:5064/tcp"
       - "5064:5064/udp"
       - "5065:5065/udp"
       - "5075:5075/tcp"
       - "5076:5076/udp"
-      - "${IOC_CONSOLE_PORT:-2048}:${IOC_CONSOLE_PORT:-2048}/tcp"
     restart: unless-stopped
 
   adurl-host:
@@ -139,20 +126,19 @@ services:
     image: prjemian/synapps:${TAG:-3.0.0-dev}
     container_name: ioc${ADURL_PREFIX:-adurl}
     network_mode: host
-    environment: { IOC: adurl, PREFIX: "${ADURL_PREFIX:-adurl}:", IOC_CONSOLE_PORT: "${IOC_CONSOLE_PORT:-2048}" }
+    environment: { IOC: adurl, PREFIX: "${ADURL_PREFIX:-adurl}:" }
     restart: unless-stopped
   adurl-ports:
     profiles: ["ports"]
     image: prjemian/synapps:${TAG:-3.0.0-dev}
     container_name: ioc${ADURL_PREFIX:-adurl}
-    environment: { IOC: adurl, PREFIX: "${ADURL_PREFIX:-adurl}:", IOC_CONSOLE_PORT: "${IOC_CONSOLE_PORT:-2048}" }
+    environment: { IOC: adurl, PREFIX: "${ADURL_PREFIX:-adurl}:" }
     ports:
       - "5064:5064/tcp"
       - "5064:5064/udp"
       - "5065:5065/udp"
       - "5075:5075/tcp"
       - "5076:5076/udp"
-      - "${IOC_CONSOLE_PORT:-2048}:${IOC_CONSOLE_PORT:-2048}/tcp"
     restart: unless-stopped
 
   adpva-host:
@@ -160,18 +146,17 @@ services:
     image: prjemian/synapps:${TAG:-3.0.0-dev}
     container_name: ioc${ADPVA_PREFIX:-adpva}
     network_mode: host
-    environment: { IOC: adpva, PREFIX: "${ADPVA_PREFIX:-adpva}:", IOC_CONSOLE_PORT: "${IOC_CONSOLE_PORT:-2048}" }
+    environment: { IOC: adpva, PREFIX: "${ADPVA_PREFIX:-adpva}:" }
     restart: unless-stopped
   adpva-ports:
     profiles: ["ports"]
     image: prjemian/synapps:${TAG:-3.0.0-dev}
     container_name: ioc${ADPVA_PREFIX:-adpva}
-    environment: { IOC: adpva, PREFIX: "${ADPVA_PREFIX:-adpva}:", IOC_CONSOLE_PORT: "${IOC_CONSOLE_PORT:-2048}" }
+    environment: { IOC: adpva, PREFIX: "${ADPVA_PREFIX:-adpva}:" }
     ports:
       - "5064:5064/tcp"
       - "5064:5064/udp"
       - "5065:5065/udp"
       - "5075:5075/tcp"
       - "5076:5076/udp"
-      - "${IOC_CONSOLE_PORT:-2048}:${IOC_CONSOLE_PORT:-2048}/tcp"
     restart: unless-stopped

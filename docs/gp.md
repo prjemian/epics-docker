@@ -99,11 +99,12 @@ profile | when to use | how clients reach PVs
 
 ## Attach to the IOC console
 
-The IOC runs under [`procServ`](https://github.com/ralphlange/procServ).
-Attach to its shell over the console (telnet) port (default `2048`):
+The IOC runs under [`procServ`](https://github.com/ralphlange/procServ). The
+console is a UNIX socket inside the container; attach by container name:
 
 ```bash
-telnet localhost 2048     # Ctrl-] then 'quit' to detach (do NOT Ctrl-C)
+make console PREFIX=gp:            # attaches to iocgp
+docker exec -it iocgp console      # Ctrl-] then 'quit' to detach (do NOT Ctrl-C)
 ```
 
 Or run an EPICS client tool inside the container:
@@ -160,7 +161,7 @@ The main GP screen is `xxx.adl` / `xxx.ui`.
 env / build-arg | effect
 --- | ---
 `PREFIX` | PV prefix at run time (default `gp:`).
-`IOC_CONSOLE_PORT` | procServ console (telnet) port (default `2048`).
+`IOC_CONSOLE_PORT` | opt-in: expose the console on a host TCP port instead of the default UNIX socket.
 `MOTOR_SREV` | steps/revolution for the 56 sim motors at **build** time (default `8000`).
 
 ## Motor assignments

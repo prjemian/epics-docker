@@ -93,26 +93,25 @@ PREFIX ?= ioc:
 # Container name = ioc<prefix-without-trailing-colon>, e.g. PREFIX=demo: -> iocdemo.
 # Unique + recognizable, matching the compose services and the iocgp/iocad style.
 CONTAINER = ioc$(patsubst %:,%,$(PREFIX))
-# procServ console (telnet) port. With --net=host each concurrent IOC needs a
-# DISTINCT port; override per IOC, e.g. make run PREFIX=demo2: IOC_CONSOLE_PORT=2049
-IOC_CONSOLE_PORT ?= 2048
 
+# No console-port bookkeeping: procServ listens on a UNIX socket inside the
+# container, reached by name via `make console PREFIX=...`. So any number of
+# IOCs run concurrently under --net=host -- pick only IOC and PREFIX.
 run ::
 	$(ENGINE) run $(RUN_FLAGS) --rm -d \
 		--name $(CONTAINER) \
 		--net=host \
 		-e IOC=$(IOC) \
 		-e PREFIX=$(PREFIX) \
-		-e IOC_CONSOLE_PORT=$(IOC_CONSOLE_PORT) \
 		$(IMAGE)
-	@echo "started container '$(CONTAINER)' (IOC=$(IOC), PREFIX=$(PREFIX), console=$(IOC_CONSOLE_PORT))"
+	@echo "started container '$(CONTAINER)' (IOC=$(IOC), PREFIX=$(PREFIX))"
 
 stop ::
 	-$(ENGINE) stop $(CONTAINER)
 
 console ::
-	@echo "connecting to IOC console (Ctrl-] then 'quit' to detach)"
-	telnet localhost $${IOC_CONSOLE_PORT:-2048}
+	@echo "attaching to '$(CONTAINER)' console (Ctrl-] then 'quit' to detach)"
+	$(ENGINE) exec -it $(CONTAINER) console
 
 shell ::
 	$(ENGINE) run --rm -it --entrypoint /bin/bash $(IMAGE)

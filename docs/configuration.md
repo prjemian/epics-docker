@@ -12,7 +12,8 @@ variable | default | meaning
 --- | --- | ---
 `IOC` | `softioc` | which persona to run: `softioc`, `xxx`, `gp`, `adsim`, `adcsim`, `adurl`, `adpva`
 `PREFIX` | persona-specific | PV prefix, **applied at run time (no rebuild)**. Include the trailing colon, e.g. `PREFIX=gp:`. (The as-supplied `xxx` persona ignores this and uses `xxx:`.)
-`IOC_CONSOLE_PORT` | `2048` | procServ console (telnet) port
+`IOC_CONSOLE_SOCK` | `/tmp/ioc.sock` | procServ console UNIX socket (inside the container)
+`IOC_CONSOLE_PORT` | _(unset)_ | opt-in: expose the console on a host TCP port instead of the socket
 `IOC_ARGS` | _(empty)_ | extra args passed to `softIoc` (softioc persona only)
 
 Default prefix per persona: `softioc`→`ioc:`, `gp`→`gp:`, `adsim`→`adsim:`,
@@ -23,20 +24,20 @@ Default prefix per persona: `softioc`→`ioc:`, `gp`→`gp:`, `adsim`→`adsim:`
 
 ### Running several IOCs at once
 
-Give each a unique **prefix**, a unique **container name**, and — under
-`--net=host` — a unique **console port** (procServ binds it on the shared host
-network, so `2048` can serve only one IOC at a time):
+Give each a unique **prefix** (and therefore a unique container name). Nothing
+else to manage — the console is a per-container UNIX socket, so there is **no
+port bookkeeping**, and any number of IOCs coexist under `--net=host`:
 
 ```bash
-# via make: container is named ioc<prefix>; set a distinct console port each
-make run IOC=gp    PREFIX=ocean: IOC_CONSOLE_PORT=2048
-make run IOC=gp    PREFIX=sky:   IOC_CONSOLE_PORT=2049
-make run IOC=adsim PREFIX=air:   IOC_CONSOLE_PORT=2050
+# via make: container is named ioc<prefix>; pick only IOC and PREFIX
+make run IOC=gp    PREFIX=ocean:
+make run IOC=gp    PREFIX=sky:
+make run IOC=adsim PREFIX=air:
 make stop PREFIX=ocean:
 
 # via docker/podman directly
-docker run -d --rm --name iococean --net=host -e IOC=gp -e PREFIX=ocean: -e IOC_CONSOLE_PORT=2048 prjemian/synapps:latest
-docker run -d --rm --name iocsky   --net=host -e IOC=gp -e PREFIX=sky:   -e IOC_CONSOLE_PORT=2049 prjemian/synapps:latest
+docker run -d --rm --name iococean --net=host -e IOC=gp -e PREFIX=ocean: prjemian/synapps:latest
+docker run -d --rm --name iocsky   --net=host -e IOC=gp -e PREFIX=sky:   prjemian/synapps:latest
 ```
 
 The `make run`/`make stop` targets name the container `ioc<prefix>` (trailing
@@ -75,13 +76,21 @@ export EPICS_CA_AUTO_ADDR_LIST=NO
 ## procServ console
 
 IOCs run under [`procServ`](https://github.com/ralphlange/procServ)
-(auto-restart, no TTY needed). Attach to the IOC shell over telnet:
+(auto-restart, no TTY needed). The console is a **UNIX socket inside the
+container** (no host port), so attach by container name:
 
 ```bash
-telnet localhost 2048          # Ctrl-] then 'quit' to detach; do NOT Ctrl-C
+make console PREFIX=demo:               # attaches to iocdemo
+# or directly:
+docker exec -it iocdemo console         # Ctrl-] then 'quit' to detach; NOT Ctrl-C
 ```
 
 Container stdout carries the IOC log (`docker logs <name>`).
+
+> **Opt-in host TCP console:** set `IOC_CONSOLE_PORT` at run time to expose the
+> console on a host port instead (`telnet localhost <port>`). Then each
+> concurrent `--net=host` IOC needs a distinct port — which is why the socket
+> is the default.
 
 ## Volumes
 

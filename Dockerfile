@@ -42,6 +42,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
  && apt-get install -y --no-install-recommends \
         ca-certificates \
         libreadline8 \
+        netcat-openbsd \
         procserv \
         telnet \
  && rm -rf /var/lib/apt/lists/*
@@ -123,15 +124,17 @@ COPY --from=epics-build ${LOG_DIR} ${LOG_DIR}
 # Stable, arch-independent bin dir on PATH (binln -> bin/<arch>).
 ENV PATH=${EPICS_ROOT}/base/binln:${PATH}
 
-# procServ + IOC launch settings (overridable at run time).
-ENV PREFIX=ioc: \
-    IOC_CONSOLE_PORT=2048
+# IOC launch settings (overridable at run time). The procServ console
+# defaults to a UNIX socket inside the container (attach via `console`), so no
+# host port is set here; set IOC_CONSOLE_PORT at run time to opt into host TCP.
+ENV PREFIX=ioc:
 
 COPY resources/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY resources/softioc.sh /usr/local/bin/softioc.sh
+COPY resources/console.sh /usr/local/bin/console
 COPY resources/make_home_links.sh /usr/local/bin/make_home_links.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/softioc.sh \
-             /usr/local/bin/make_home_links.sh
+             /usr/local/bin/console /usr/local/bin/make_home_links.sh
 
 # Convenience symlinks in /home (base + softioc persona).
 RUN /usr/local/bin/make_home_links.sh /home

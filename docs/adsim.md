@@ -98,7 +98,7 @@ the ADSimDetector screens, launched with `-macro "P=<prefix>,R=cam1:"`.
 ## Console & inside the container
 
 ```bash
-telnet localhost 2048          # procServ console (Ctrl-] then quit to detach)
+docker exec -it iocadsim console   # procServ console (Ctrl-] then quit to detach)
 docker exec iocadsim caget adsim:cam1:Acquire_RBV
 ```
 
@@ -110,7 +110,7 @@ directory and `build-logs/build-adsim.log`.
 env / build-arg | effect
 --- | ---
 `PREFIX` | PV prefix at run time (default `adsim:`).
-`IOC_CONSOLE_PORT` | procServ console (telnet) port (default `2048`).
+`IOC_CONSOLE_PORT` | opt-in: expose the console on a host TCP port instead of the default UNIX socket.
 
 ## See also
 
