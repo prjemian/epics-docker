@@ -7,13 +7,19 @@
 # Enable a profile with:  docker compose --profile host up   (or --profile ports)
 #
 # Select the IOC persona and prefix per service via environment.
+#
+# Image reference is parameterized so it works with any registry:
+#   IMAGE  registry/repository (default: prjemian/synapps -- Docker Hub)
+#   TAG    image tag           (default: 3.0.0-dev)
+# For an internal registry (e.g. GitLab), override IMAGE, e.g.:
+#   IMAGE=registry.gitlab.example/group/synapps TAG=3.0.0 docker compose --profile host up -d gp-host
 
 services:
 
   # --- softIoc persona, host networking (Linux/CI) ---------------------
   softioc-host:
     profiles: ["host"]
-    image: prjemian/synapps:${TAG:-3.0.0-dev}
+    image: ${IMAGE:-prjemian/synapps}:${TAG:-3.0.0-dev}
     container_name: ioc-softioc
     network_mode: host
     environment:
@@ -24,7 +30,7 @@ services:
   # --- softIoc persona, port-mapped (Desktop/Win/Mac/Synology) ---------
   softioc-ports:
     profiles: ["ports"]
-    image: prjemian/synapps:${TAG:-3.0.0-dev}
+    image: ${IMAGE:-prjemian/synapps}:${TAG:-3.0.0-dev}
     container_name: ioc-softioc
     environment:
       IOC: softioc
@@ -42,7 +48,7 @@ services:
   # --- adsim persona (custom ADSimDetector), host networking (Linux/CI) -
   adsim-host:
     profiles: ["host"]
-    image: prjemian/synapps:${TAG:-3.0.0-dev}
+    image: ${IMAGE:-prjemian/synapps}:${TAG:-3.0.0-dev}
     container_name: ioc${ADSIM_PREFIX:-adsim}
     network_mode: host
     environment:
@@ -53,7 +59,7 @@ services:
   # --- adsim persona (custom ADSimDetector), port-mapped ---------------
   adsim-ports:
     profiles: ["ports"]
-    image: prjemian/synapps:${TAG:-3.0.0-dev}
+    image: ${IMAGE:-prjemian/synapps}:${TAG:-3.0.0-dev}
     container_name: ioc${ADSIM_PREFIX:-adsim}
     environment:
       IOC: adsim
@@ -71,7 +77,7 @@ services:
   # --- gp persona (customized synApps), host networking (Linux/CI) -----
   gp-host:
     profiles: ["host"]
-    image: prjemian/synapps:${TAG:-3.0.0-dev}
+    image: ${IMAGE:-prjemian/synapps}:${TAG:-3.0.0-dev}
     container_name: ioc${GP_PREFIX:-gp}
     network_mode: host
     environment:
@@ -82,7 +88,7 @@ services:
   # --- gp persona (customized synApps), port-mapped -------------------
   gp-ports:
     profiles: ["ports"]
-    image: prjemian/synapps:${TAG:-3.0.0-dev}
+    image: ${IMAGE:-prjemian/synapps}:${TAG:-3.0.0-dev}
     container_name: ioc${GP_PREFIX:-gp}
     environment:
       IOC: gp
@@ -103,14 +109,14 @@ services:
 
   adcsim-host:
     profiles: ["host"]
-    image: prjemian/synapps:${TAG:-3.0.0-dev}
+    image: ${IMAGE:-prjemian/synapps}:${TAG:-3.0.0-dev}
     container_name: ioc${ADCSIM_PREFIX:-adcsim}
     network_mode: host
     environment: { IOC: adcsim, PREFIX: "${ADCSIM_PREFIX:-adcsim}:" }
     restart: unless-stopped
   adcsim-ports:
     profiles: ["ports"]
-    image: prjemian/synapps:${TAG:-3.0.0-dev}
+    image: ${IMAGE:-prjemian/synapps}:${TAG:-3.0.0-dev}
     container_name: ioc${ADCSIM_PREFIX:-adcsim}
     environment: { IOC: adcsim, PREFIX: "${ADCSIM_PREFIX:-adcsim}:" }
     ports:
@@ -123,14 +129,14 @@ services:
 
   adurl-host:
     profiles: ["host"]
-    image: prjemian/synapps:${TAG:-3.0.0-dev}
+    image: ${IMAGE:-prjemian/synapps}:${TAG:-3.0.0-dev}
     container_name: ioc${ADURL_PREFIX:-adurl}
     network_mode: host
     environment: { IOC: adurl, PREFIX: "${ADURL_PREFIX:-adurl}:" }
     restart: unless-stopped
   adurl-ports:
     profiles: ["ports"]
-    image: prjemian/synapps:${TAG:-3.0.0-dev}
+    image: ${IMAGE:-prjemian/synapps}:${TAG:-3.0.0-dev}
     container_name: ioc${ADURL_PREFIX:-adurl}
     environment: { IOC: adurl, PREFIX: "${ADURL_PREFIX:-adurl}:" }
     ports:
@@ -143,14 +149,14 @@ services:
 
   adpva-host:
     profiles: ["host"]
-    image: prjemian/synapps:${TAG:-3.0.0-dev}
+    image: ${IMAGE:-prjemian/synapps}:${TAG:-3.0.0-dev}
     container_name: ioc${ADPVA_PREFIX:-adpva}
     network_mode: host
     environment: { IOC: adpva, PREFIX: "${ADPVA_PREFIX:-adpva}:" }
     restart: unless-stopped
   adpva-ports:
     profiles: ["ports"]
-    image: prjemian/synapps:${TAG:-3.0.0-dev}
+    image: ${IMAGE:-prjemian/synapps}:${TAG:-3.0.0-dev}
     container_name: ioc${ADPVA_PREFIX:-adpva}
     environment: { IOC: adpva, PREFIX: "${ADPVA_PREFIX:-adpva}:" }
     ports:

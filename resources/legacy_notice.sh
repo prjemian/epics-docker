@@ -8,7 +8,7 @@
 
 cat <<'EOF'
 ############################################################################
-#  prjemian/synapps -- v2 -> v3 BREAKING CHANGE
+#  synApps image (prjemian/synapps) -- v2 -> v3 BREAKING CHANGE
 #
 #  WHAT: This image is v3. The v2 workflow does not work here:
 #        - v2 IOC scripts (/root/bin/gp.sh, /root/bin/adsim.sh) are gone
@@ -17,8 +17,9 @@ cat <<'EOF'
 #        personas are selected with `-e IOC=<persona>`.
 #
 #  HOW:
-#    * Keep the v2 behavior (no changes): pin the old image tag
-#          prjemian/synapps:2.0.1
+#    * Keep the v2 behavior (no changes): pin the v2 image tag `2.0.1`
+#      from whichever registry you pull (e.g. prjemian/synapps:2.0.1 on
+#      Docker Hub, or <your-registry>/synapps:2.0.1 internally).
 #    * Migrate to v3: see
 #          https://github.com/prjemian/epics-docker
 #          (docs/v3_transition.md, docs/quickstart.md)
