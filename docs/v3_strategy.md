@@ -29,7 +29,7 @@ Multi-stage build; the hierarchy below is the *build* dependency chain
 ```
 base-os            debian-slim; split into build-deps and runtime-deps
   -> epics-runtime    EPICS base; softIoc IOC available
-    -> base-synapps    synApps support tree + xxx IOC
+    -> synapps-runtime    synApps support tree + xxx IOC
       -> base-areadetector   ADCore + selected drivers/plugins
         -> (final)     runtime-selectable personas + customizations + screens
 ```
@@ -96,7 +96,7 @@ Sequenced to reach a runnable artifact early, then expand:
    + manifest-list setup, CI that builds and smoke-tests.
 2. **base-os + epics-runtime:** softIoc runnable under procServ with prefix
    override; prove multi-stage size split. *First runnable milestone.*
-3. **base-synapps + xxx IOC:** stock first, then customization overlays
+3. **synapps-runtime + xxx IOC:** stock first, then customization overlays
    (motors/optics/std/general_purpose) as loadable files.
 4. **base-areadetector + ADSim:** ADCore + ADSimDetector; all plugins; all
    file writers except NeXus; overlay-based customization.
@@ -160,7 +160,7 @@ First runnable milestone complete and smoke-tested:
 
 ## 9a. Progress (Phase 3: synApps + xxx IOC)
 
-`base-synapps` stage builds synApps and the `xxx` IOC:
+`synapps-runtime` stage builds synApps and the `xxx` IOC:
 
 - Uses the standard `assemble_synApps.sh` at `SYNAPPS_VERSION=R6-3`.
 - `resources/synapps_prepare.sh` makes two minimal edits (no sourced config,
@@ -168,7 +168,7 @@ First runnable milestone complete and smoke-tested:
   excluded hardware modules (see `docs/synapps_modules.md`). It also applies
   documented per-module version overrides from `SYNAPPS_OVERRIDE_*`.
 - Build logs retained in `/opt/build-logs/` (proved essential for diagnosis).
-- Runtime `base-synapps` image ~1.84 GB (the copied support tree still carries
+- Runtime `synapps-runtime` image ~1.84 GB (the copied support tree still carries
   sources/.git/objects -- size trimming is an open task).
 
 ### Troubleshooting record (WHAT / WHY / resolution)

@@ -5,7 +5,7 @@
 # from the prompt.
 #
 # Links are created only for targets that exist, so this script is safe to run
-# in epics-runtime (base only) or base-synapps (base + synApps) images. It resolves
+# in epics-runtime (base only) or synapps-runtime (base + synApps) images. It resolves
 # real (versioned) paths at build time, so the links survive version bumps.
 
 set -euo pipefail
@@ -39,7 +39,7 @@ for p in /usr/local/bin/*.sh; do
     link "$(basename "${p}")" "${p}"
 done
 
-# --- synApps (only present in base-synapps and up) ---
+# --- synApps (only present in synapps-runtime and up) ---
 if [ -n "${SUPPORT:-}" ] && [ -d "${SUPPORT}" ]; then
     link support "${SUPPORT}"
 

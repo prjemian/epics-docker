@@ -70,7 +70,7 @@ Targets: `build`, `build-devel` (keeps toolchain/sources), `run`, `console`,
 os-runtime  -> os-build -> epics-build -> epics-runtime
                         \-> synapps-build -> gp-build -> adcam-build
                                                               |
-                                          base-synapps <------/  (copies the
+                                          synapps-runtime <------/  (copies the
                                           slim, pruned support tree)
 ```
 

@@ -27,7 +27,7 @@ export
 
 ORG    ?= prjemian
 REPO   ?= synapps
-TARGET ?= base-synapps
+TARGET ?= synapps-runtime
 TAG    ?= $(IMAGE_VERSION)
 IMAGE   = $(ORG)/$(REPO):$(TAG)
 

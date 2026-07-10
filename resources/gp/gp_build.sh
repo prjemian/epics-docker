@@ -69,7 +69,7 @@ bash "${GP_RESOURCES}/gp_more.sh"            "${IOCGP}" "${GP_RESOURCES}" "${OPT
 
 # Display files are handled at the runtime stage by collect_screens.sh, which
 # copies them to an all-in-one directory and fixes the COPIES only (leaving the
-# module screens as-supplied). See the base-synapps stage.
+# module screens as-supplied). See the synapps-runtime stage.
 
 echo "# gp_build: compile gp IOC"
 make -C "${GP}"
