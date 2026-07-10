@@ -1,0 +1,84 @@
+# GitLab publish pipeline for the synApps image (internal registry).
+#
+# Builds the image from source and pushes a MANIFEST LIST to this project's
+# GitLab Container Registry ($CI_REGISTRY_IMAGE) on a version tag.
+#
+# NOT YET VALIDATED on a live GitLab instance -- review + a first tagged run
+# are required. Assumptions (adjust to your GitLab):
+#   * A runner with podman available (rootless is fine) and BUILDAH_ISOLATION
+#     set appropriately for your runner.
+#   * The runner HAS internet access at build time: the build fetches EPICS
+#     base, the synApps assembler, and areaDetector submodules. If your runners
+#     are network-restricted, do NOT build here -- instead mirror a pre-built
+#     image in (skopeo copy) and drop the build step.
+#   * $CI_JOB_TOKEN has write_registry scope (GitLab default).
+#
+# Tag policy (mirrors docs/v3_strategy.md section 10 + docs/v3_transition.md):
+#   * On a git tag X.Y.Z, publish X.Y.Z + X.Y + X.
+#   * NEVER push :latest automatically. The v2 -> v3 :latest flip is a
+#     deliberate, separate, manual action (see docs/v3_transition.md).
+
+stages:
+  - publish
+
+# Publish only on a semantic-version tag: X.Y.Z (optionally X.Y.Z-suffix).
+publish-image:
+  stage: publish
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+/'
+  image: quay.io/podman/stable:latest
+  variables:
+    # podman-in-container settings; adjust to your runner if needed.
+    STORAGE_DRIVER: vfs
+    BUILDAH_ISOLATION: chroot
+  script:
+    - |
+      set -euo pipefail
+
+      # --- derive the tag ladder from the git tag (X.Y.Z -> X.Y.Z, X.Y, X) ---
+      VER="${CI_COMMIT_TAG}"
+      case "${VER}" in
+        [0-9]*.[0-9]*.[0-9]*) : ;;
+        *) echo "ERROR: tag '${VER}' is not X.Y.Z"; exit 2 ;;
+      esac
+      XYZ="${VER}"
+      XY="${VER%.*}"
+      X="${XY%.*}"
+      echo "publishing tags: ${XYZ} ${XY} ${X}  (NOT :latest, by policy)"
+
+      # --- platforms (single source of truth: versions.env) ---
+      PLATFORMS="$(grep -E '^PLATFORMS=' versions.env | sed -E 's/^PLATFORMS=//')"
+      PLATFORMS="${PLATFORMS:-linux/amd64}"
+
+      # --- build args from versions.env (mirror the Makefile) ---
+      BUILD_ARGS=()
+      while IFS= read -r line; do
+        case "${line}" in
+          ''|\#*|SYNAPPS_OVERRIDE_*|AD_DRIVERS=*|PLATFORMS=*) continue ;;
+        esac
+        BUILD_ARGS+=(--build-arg "${line}")
+      done < versions.env
+      # multi-word args, quoted as single values
+      OVERRIDES="$(grep -E '^SYNAPPS_OVERRIDE_' versions.env | sed -E 's/^SYNAPPS_OVERRIDE_//' | tr '\n' ' ')"
+      ADDRV="$(grep -E '^AD_DRIVERS=' versions.env | sed -E 's/^AD_DRIVERS=//')"
+      BUILD_ARGS+=(--build-arg "SYNAPPS_OVERRIDES=${OVERRIDES}")
+      BUILD_ARGS+=(--build-arg "AD_DRIVERS=${ADDRV}")
+
+      # --- login to the GitLab registry (job token, write_registry scope) ---
+      echo "${CI_JOB_TOKEN}" | podman login -u "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
+
+      IMG="${CI_REGISTRY_IMAGE}"
+
+      # --- build a manifest list for the target platform(s) ---
+      podman manifest create "${IMG}:${XYZ}" || true
+      podman build \
+        --platform "${PLATFORMS}" \
+        --manifest "${IMG}:${XYZ}" \
+        "${BUILD_ARGS[@]}" \
+        .
+
+      # --- push the tag ladder (X.Y.Z, X.Y, X); never :latest ---
+      for t in "${XYZ}" "${XY}" "${X}"; do
+        echo "pushing ${IMG}:${t}"
+        podman manifest push --all "${IMG}:${XYZ}" "docker://${IMG}:${t}"
+      done
