@@ -1,0 +1,45 @@
+# Build the v3 image and smoke-test all IOC personas -- in a clean room.
+#
+# Runs on RELEASE TAGS and on demand only (not on every push): local
+# `make test` already covers routine development, so a per-push full build
+# (which compiles EPICS base + synApps + areaDetector from source) would be
+# redundant and slow. CI's non-redundant value is a clean-checkout build on
+# the docker engine that consumers use (this repo is developed on podman),
+# validated exactly when it matters -- at a release, or on demand.
+#
+# Build + test only: this workflow does NOT push to any registry (no
+# credentials/secrets). Publishing is a separate, later step, gated on tags,
+# and must not push :latest during the v2->v3 opt-in window
+# (see docs/v3_transition.md).
+#
+# On GitHub runners the engine is docker (not podman), so the Makefile's
+# podman auto-detection correctly omits --no-hosts. `make test` builds the
+# full synapps-runtime image and runs resources/smoke-test.sh (all personas).
+
+name: build-test
+
+on:
+  push:
+    tags: ["*"]
+  workflow_dispatch:
+
+concurrency:
+  group: build-test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    name: clean-room build + smoke-test (all personas)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Show resolved build vars
+        run: make vars
+
+      - name: Build image + smoke-test all personas
+        run: make test
