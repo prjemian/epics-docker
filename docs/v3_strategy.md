@@ -28,7 +28,7 @@ Multi-stage build; the hierarchy below is the *build* dependency chain
 
 ```
 base-os            debian-slim; split into build-deps and runtime-deps
-  -> base-epics    EPICS base; softIoc IOC available
+  -> epics-runtime    EPICS base; softIoc IOC available
     -> base-synapps    synApps support tree + xxx IOC
       -> base-areadetector   ADCore + selected drivers/plugins
         -> (final)     runtime-selectable personas + customizations + screens
@@ -94,7 +94,7 @@ Sequenced to reach a runnable artifact early, then expand:
 
 1. **Foundations:** top-level v3 skeleton, version manifest, BuildKit/`buildx`
    + manifest-list setup, CI that builds and smoke-tests.
-2. **base-os + base-epics:** softIoc runnable under procServ with prefix
+2. **base-os + epics-runtime:** softIoc runnable under procServ with prefix
    override; prove multi-stage size split. *First runnable milestone.*
 3. **base-synapps + xxx IOC:** stock first, then customization overlays
    (motors/optics/std/general_purpose) as loadable files.
@@ -146,7 +146,7 @@ First runnable milestone complete and smoke-tested:
 - `versions.env` — single source of truth (EPICS base `7.0.10`, Debian
   `12-slim`).
 - Multi-stage `Dockerfile`: `os-runtime` -> `os-build` -> `epics-build` ->
-  `base-epics`. Runtime image ~202 MB; toolchain/sources excluded.
+  `epics-runtime`. Runtime image ~202 MB; toolchain/sources excluded.
 - Host arch resolved in the builder (perl-free runtime) via a stable
   `binln -> bin/<arch>` symlink, so consumers need not hard-code
   `linux-x86_64`.

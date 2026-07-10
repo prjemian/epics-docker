@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:1
 #
-# v3 multi-stage build: base-os -> base-epics -> base-synapps
+# v3 multi-stage build: base-os -> epics-runtime -> base-synapps
 #
 # Stages:
 #   os-runtime   : Debian + runtime-only deps (procServ, libs). Small.
 #   os-build     : os-runtime + toolchain (compilers, headers). Build only.
 #   epics-build  : builds EPICS base from source in os-build.
-#   base-epics   : runtime image with EPICS base only (softIoc persona).
+#   epics-runtime   : runtime image with EPICS base only (softIoc persona).
 #   synapps-build: builds synApps support tree + xxx IOC on top of base.
 #   base-synapps : runtime image with EPICS base + synApps.
 #
@@ -105,9 +105,9 @@ RUN set -eu; \
     echo "EPICS_HOST_ARCH=${arch}" > "${EPICS_BASE}/host-arch.env"
 
 # ----------------------------------------------------------------------
-# base-epics: final runtime image. Copies only the built products.
+# epics-runtime: final runtime image. Copies only the built products.
 # ----------------------------------------------------------------------
-FROM os-runtime AS base-epics
+FROM os-runtime AS epics-runtime
 
 ARG EPICS_BASE_VERSION
 ENV EPICS_BASE=${EPICS_ROOT}/base
@@ -248,7 +248,7 @@ RUN chmod +x /usr/local/bin/prune_support.sh \
 # ----------------------------------------------------------------------
 # base-synapps: runtime image with EPICS base + synApps + areaDetector.
 # ----------------------------------------------------------------------
-FROM base-epics AS base-synapps
+FROM epics-runtime AS base-synapps
 
 ARG SYNAPPS_VERSION
 ENV SYNAPPS=${EPICS_ROOT}/synApps \

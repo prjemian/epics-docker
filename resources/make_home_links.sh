@@ -5,7 +5,7 @@
 # from the prompt.
 #
 # Links are created only for targets that exist, so this script is safe to run
-# in base-epics (base only) or base-synapps (base + synApps) images. It resolves
+# in epics-runtime (base only) or base-synapps (base + synApps) images. It resolves
 # real (versioned) paths at build time, so the links survive version bumps.
 
 set -euo pipefail

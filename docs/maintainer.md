@@ -67,7 +67,7 @@ Targets: `build`, `build-devel` (keeps toolchain/sources), `run`, `console`,
 ## Build architecture (multi-stage)
 
 ```
-os-runtime  -> os-build -> epics-build -> base-epics
+os-runtime  -> os-build -> epics-build -> epics-runtime
                         \-> synapps-build -> gp-build -> adcam-build
                                                               |
                                           base-synapps <------/  (copies the

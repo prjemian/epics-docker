@@ -3,7 +3,7 @@
 The **`softioc`** persona is the simplest IOC — EPICS base
 [`softIoc`](https://epics.controls.anl.gov/) with a tiny demo database. It is
 the **default persona** and needs only EPICS base (it runs from the
-`base-epics` image layer as well as the full image).
+`epics-runtime` image layer as well as the full image).
 
 Use it for a minimal, fast EPICS server: a quick connectivity/liveness target
 for client development and CI, with no synApps or areaDetector overhead.
