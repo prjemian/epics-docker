@@ -173,10 +173,10 @@ motor | assignment
 --- | ---
 m1-m16 | general purpose (free for users/tests)
 m17-m28 | reserved
-m29 | TTH 4-circle *(free; for client software, e.g. SPEC, hklpy2, ...)*
-m30 | TH 4-circle *(free; for client software)*
-m31 | CHI 4-circle *(free; for client software)*
-m32 | PHI 4-circle *(free; for client software)*
+m29 | TTH 4-circle
+m30 | TH 4-circle
+m31 | CHI 4-circle
+m32 | PHI 4-circle
 m33 | CM coarse/fine
 m34 | FM coarse/fine
 m35 | M0X table
@@ -201,21 +201,9 @@ m56 | Slit2H:mXn
 
 ### 4-circle diffractometer motors
 
-The IOC's built-in 4-circle orientation support (`$(PREFIX)orient_0:H/K/L`,
-...) runs on **SoftMotor records `SM1`-`SM4`** (descriptions prefixed `SM_`).
-
-This deliberately leaves the real sim motors **`m29`-`m32` free** to be driven
-by client software (for example, Bluesky's `hklpy2` diffractometer package).
-Their descriptions still read `TTH/TH/CHI/PHI 4-circle` as a hint of their
-intended client use.
-
-SoftMotor | role
---- | ---
-SM1 | SM_TTH 4-circle (IOC orient support)
-SM2 | SM_TH 4-circle
-SM3 | SM_CHI 4-circle
-SM4 | SM_PHI 4-circle
-SM5-SM10 | spare SoftMotor records
+The 4-circle orientation-matrix support (`$(PREFIX)orient_0:H/K/L`, ...) is
+wired to motors **m29-m32** (`M_TTH=m29, M_TH=m30, M_CHI=m31, M_PHI=m32`), as
+in v2.0.1.
 
 ## Scaler channels
 

@@ -39,14 +39,10 @@ subs="${IOCGP}/substitutions/motorSim.substitutions"
 } > "${subs}"
 
 # Our motors.iocsh overlay: load the sim controller + 56-axis substitutions,
-# plus the SoftMotor records SM1..SM10. The 4-circle diffractometer is wired
-# to SM1-SM4 (see gp_optics.sh), which keeps m29-m32 free for clients.
 cat > "${IOCGP}/motors.iocsh" <<EOF
 # gp motors: ${NUM_AXES} simulated soft motors
 iocshLoad("\$(MOTOR)/iocsh/motorSim.iocsh", "INSTANCE=motorSim, CONTROLLER=0, HOME_POS=0, NUM_AXES=${NUM_AXES}, HIGH_LIM=${HIGH_LIM}, LOW_LIM=${LOW_LIM}, SUB=substitutions/motorSim.substitutions")
 iocshLoad("\$(MOTOR)/iocsh/allstop.iocsh", "P=\$(PREFIX)")
-# SoftMotor records SM1..SM10 (used by the 4-circle: SM1-SM4)
-dbLoadTemplate("substitutions/softMotor.substitutions", "P=\$(PREFIX)")
 EOF
 
 # per-axis field overrides + descriptive names (applied after iocInit)
@@ -59,9 +55,8 @@ motor_names="${IOCGP}/pre_assigned_motor_names.iocsh"
     echo "# descriptive axis names"
 } > "${motor_names}"
 
-# Note: the 4-circle diffractometer IOC support is driven by SoftMotor records
-# SM1-SM4 (see gp_optics.sh), leaving m29-m32 free for Bluesky/ophyd clients.
-# m29-m32 keep suggestive "4-circle" descriptions to hint their intended use.
+# 4-circle diffractometer motors are m29-m32 (as in v2.0.1; gp_optics.sh
+# wires the orient support to them).
 cat >> "${IOCGP}/pre_assigned_motor_names.iocsh" <<'EOF'
 dbpf(${PREFIX}m29.DESC, "TTH 4-circle")
 dbpf(${PREFIX}m30.DESC, "TH 4-circle")
@@ -86,13 +81,6 @@ dbpf(${PREFIX}m53.DESC, "Slit2V:mXp")
 dbpf(${PREFIX}m54.DESC, "Slit2V:mXn")
 dbpf(${PREFIX}m55.DESC, "Slit2H:mXp")
 dbpf(${PREFIX}m56.DESC, "Slit2H:mXn")
-# 4-circle diffractometer motors used by the IOC's orient support (SoftMotor
-# records). SM_-prefixed DESC distinguishes them from the client-facing
-# m29-m32 motors (which client software such as hklpy2 manages).
-dbpf(${PREFIX}SM1.DESC, "SM_TTH 4-circle")
-dbpf(${PREFIX}SM2.DESC, "SM_TH 4-circle")
-dbpf(${PREFIX}SM3.DESC, "SM_CHI 4-circle")
-dbpf(${PREFIX}SM4.DESC, "SM_PHI 4-circle")
 EOF
 
 # wire both into the boot script

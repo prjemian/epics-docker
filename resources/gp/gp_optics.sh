@@ -53,11 +53,9 @@ iocshLoad("$(OPTICS)/iocsh/kohzu_mono.iocsh", "PREFIX=$(PREFIX), M_THETA=m45,M_Y
 ### Coarse/Fine stage
 dbLoadRecords("$(OPTICS)/opticsApp/Db/CoarseFineMotor.db","P=$(PREFIX)cf1:,PM=$(PREFIX),CM=m33,FM=m34")
 
-### 4-circle orientation matrix. The IOC's orient support runs on SoftMotor
-### records SM1-SM4 (DESC "SM_..."). The real sim motors m29-m32 (DESC
-### "..._4-circle") are left free to be managed by client software such as
-### Bluesky's hklpy2.
-iocshLoad("$(OPTICS)/iocsh/orient.iocsh", "PREFIX=$(PREFIX), INSTANCE=_0, M_TTH=SM1, M_TH=SM2, M_CHI=SM3, M_PHI=SM4, PREC=6, SUB=substitutions/gp-crystals.db")
+### 4-circle orientation matrix, wired to m29-m32 (as in v2.0.1).
+### INSTANCE=_0 is used as $(O) by the GUI screens: $(P)orient$(O):H
+iocshLoad("$(OPTICS)/iocsh/orient.iocsh", "PREFIX=$(PREFIX), INSTANCE=_0, M_TTH=m29, M_TH=m30, M_CHI=m31, M_PHI=m32, PREC=6, SUB=substitutions/gp-crystals.db")
 EOF
 
 # wire into boot script
