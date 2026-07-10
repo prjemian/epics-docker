@@ -136,6 +136,22 @@ COPY resources/make_home_links.sh /usr/local/bin/make_home_links.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/softioc.sh \
              /usr/local/bin/console /usr/local/bin/make_home_links.sh
 
+# --- v2 -> v3 legacy interception (deprecation notice) -------------------
+# Intercept v2-era usage of this image and print WHAT failed + HOW to proceed:
+#   1. /root/bin/gp.sh, /root/bin/adsim.sh  -- v2 iocmgr.sh calls these
+#   2. shell-login banner                   -- v2 `docker run ... bash` case
+#   3. breadcrumb at the old /opt/synApps   -- v2 direct-path invocations
+COPY resources/legacy_notice.sh /usr/local/bin/legacy_notice.sh
+COPY resources/legacy_stub.sh /usr/local/bin/legacy_stub.sh
+RUN chmod +x /usr/local/bin/legacy_notice.sh /usr/local/bin/legacy_stub.sh \
+ && mkdir -p /root/bin \
+ && ln -s /usr/local/bin/legacy_stub.sh /root/bin/gp.sh \
+ && ln -s /usr/local/bin/legacy_stub.sh /root/bin/adsim.sh \
+ && printf '#!/bin/sh\n/usr/local/bin/legacy_notice.sh\n' > /etc/profile.d/00-synapps-v3.sh \
+ && chmod +x /etc/profile.d/00-synapps-v3.sh \
+ && mkdir -p /opt/synApps \
+ && /usr/local/bin/legacy_notice.sh > /opt/synApps/DEPRECATED.txt
+
 # Convenience symlinks in /home (base + softioc persona).
 RUN /usr/local/bin/make_home_links.sh /home
 
