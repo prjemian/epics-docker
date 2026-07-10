@@ -22,9 +22,9 @@ tag | release | image | downloads | license
 
 - A multi-stage recipe ([`Dockerfile`](./Dockerfile)) that builds a small
   runtime image containing a full EPICS stack.
-- Ready-to-run IOC **personas** (e.g. `softioc`; synApps and area-detector
-  personas to follow), selected at container start with a user-chosen PV
-  prefix.
+- Ready-to-run IOC **personas** — `softioc` (EPICS base), `xxx` and `gp`
+  (synApps), and the area-detector cameras `adsim`, `adcsim`, `adurl`, and
+  `adpva` — selected at container start with a user-chosen PV prefix.
 - A declarative run contract ([`compose.yaml`](./compose.yaml)) that works
   with both **docker** and **podman**, on Linux, macOS, Windows, and Synology.
 - IOCs supervised by [`procServ`](https://github.com/ralphlange/procServ)
