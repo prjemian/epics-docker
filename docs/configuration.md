@@ -73,6 +73,20 @@ export EPICS_CA_AUTO_ADDR_LIST=NO
 > `ports` profile; use host networking (Linux) to run several at once, each
 > with a distinct prefix.
 
+### macOS
+
+On macOS, containers run inside a Linux VM (Docker/Podman Desktop), so
+`--net=host` does not expose PVs to the Mac -- use the **`ports` profile**.
+
+Architecture: the image is pulled for your Mac's CPU automatically (one tag
+resolves to the right variant):
+
+- **Intel Macs** use `linux/amd64` -- supported today.
+- **Apple Silicon (M1/M2/M3/...)** use `linux/arm64`. Until a verified arm64
+  image is published, Docker Desktop runs the `linux/amd64` variant under
+  emulation (works, slower). See the multi-arch status in
+  [`docs/v3_strategy.md`](./v3_strategy.md).
+
 ## procServ console
 
 IOCs run under [`procServ`](https://github.com/ralphlange/procServ)

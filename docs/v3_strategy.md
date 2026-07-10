@@ -222,10 +222,38 @@ legacy notice names tags without a fixed registry).
 - The **`-devel`** variant (toolchain + sources) is **not published** for now;
   build it locally with `make build-devel`.
 
-**Multi-arch.** Every published tag is a **manifest list** so the architecture
-is invisible to the user (one tag resolves to the right arch). `linux/amd64`
-now; `linux/arm64` when ready (D5). Push manifest lists with
-`buildx --push` / `skopeo copy --all` (not `docker save`/`load`).
+**Multi-arch (prepare-only for now).** Every published tag is a **manifest
+list** so the architecture is invisible to the user (one tag resolves to the
+right arch). Push manifest lists with `buildx --push` / `skopeo copy --all`
+(not `docker save`/`load`).
+
+- The recipe is **architecture-agnostic** already (no hard-coded arch; the
+  `binln -> bin/<arch>` symlink and `EpicsHostArch` handle it).
+- **`linux/amd64` is the only platform currently BUILT and VERIFIED.**
+- **`linux/arm64` is designed-for but UNVERIFIED.** Building the full
+  base + synApps + areaDetector stack for aarch64 may surface real issues and
+  **must be verified** on arm64 hardware or a runner with working qemu
+  emulation before it is published. Do not claim arm64 support until an arm64
+  image has actually built and passed the smoke test.
+- **Single switch:** the target platform(s) live in `versions.env`
+  (`PLATFORMS`, default `linux/amd64`). Adding arm64 is a one-line change
+  (`linux/amd64,linux/arm64`) *in an environment that can build and test it* --
+  the build/publish pipelines read `PLATFORMS`, so no other edits are needed.
+- **Build mechanism:** for the podman environment, build/push manifest lists
+  with `podman build --platform ${PLATFORMS} --manifest <img>` +
+  `podman manifest push` (the podman-native equivalent of `buildx --push`).
+- **Why arm64 is unverified on the current host:** cross-building aarch64 needs
+  qemu-user-static binfmt handlers. On the maintainer's rootless-podman host
+  these are absent (no `qemu-user-static` package/binary) and cannot be
+  registered from a container (`/proc/sys/fs/binfmt_misc` mount is denied to
+  rootless). Enabling arm64 verification requires host admin action
+  (`sudo dnf install qemu-user-static`, which registers the handlers) or a
+  native-arm64 / emulation-capable CI runner.
+- **Apple Silicon = native arm64.** An Apple Silicon Mac (M1/M2/M3/...) is
+  itself a native `linux/arm64` build+test environment (via Docker/Podman
+  Desktop, no qemu needed) -- a concrete, low-friction path to move arm64 from
+  prepare-only to verified. Apple Silicon is also a common developer laptop in
+  our audience, which strengthens the case for shipping a verified arm64.
 
 **The `:latest` flip** (v2 -> v3) is a deliberate, dated event shipped as a
 **post-`3.0.0` patch release**, after the opt-in window -- see

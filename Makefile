@@ -31,9 +31,13 @@ TARGET ?= synapps-runtime
 TAG    ?= $(IMAGE_VERSION)
 IMAGE   = $(ORG)/$(REPO):$(TAG)
 
+# PLATFORMS is a buildx target-platform selector, not a Dockerfile ARG.
+PLATFORMS := $(shell grep -E '^PLATFORMS=' versions.env | sed -E 's/^PLATFORMS=//')
+
 # Turn every KEY=VALUE in versions.env into "--build-arg KEY=VALUE", EXCEPT
-# multi-word values handled specially below (SYNAPPS_OVERRIDE_*, AD_DRIVERS).
-BUILD_ARGS = $(foreach line,$(shell grep -vE '^\s*(#|$$)' versions.env | grep -vE '^SYNAPPS_OVERRIDE_|^AD_DRIVERS='),--build-arg $(line))
+# multi-word values handled specially below (SYNAPPS_OVERRIDE_*, AD_DRIVERS)
+# and PLATFORMS (a buildx flag, not a build-arg).
+BUILD_ARGS = $(foreach line,$(shell grep -vE '^\s*(#|$$)' versions.env | grep -vE '^SYNAPPS_OVERRIDE_|^AD_DRIVERS=|^PLATFORMS='),--build-arg $(line))
 
 # Collect SYNAPPS_OVERRIDE_<MOD>=<TAG> lines into one space-separated
 # SYNAPPS_OVERRIDES build-arg of "MOD=TAG" pairs.
@@ -67,6 +71,7 @@ vars ::
 	@echo "TARGET = $(TARGET)"
 	@echo "IOC / PREFIX = $(IOC) / $(PREFIX)"
 	@echo "CONTAINER    = $(CONTAINER)"
+	@echo "PLATFORMS    = $(PLATFORMS)"
 	@echo "BUILD_FLAGS = $(BUILD_FLAGS)"
 	@echo "RUN_FLAGS   = $(RUN_FLAGS)"
 	@echo "BUILD_ARGS = $(BUILD_ARGS)"
