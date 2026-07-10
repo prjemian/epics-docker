@@ -14,6 +14,25 @@ IOCs (servers) for **development, simulation, testing, and training**.
 > The previous, published implementation is archived under
 > [`v2.0/`](./v2.0/) (and earlier lines under `v1.0/`, `v1.1/`).
 
+> [!IMPORTANT]
+> **v3 is a new major version and breaks v2 usage.** Per semantic versioning,
+> v3 changed the interface: the v2 workflow (`iocmgr.sh`, `gp.sh`/`adsim.sh`,
+> and the old in-image paths) does **not** work against a v3 image. v3
+> supervises IOCs with `procServ` and is driven by [`compose.yaml`](./compose.yaml);
+> personas are selected with `-e IOC=<persona>`. (A *persona* is a name for one
+> of the ready-to-run IOC configurations this image provides. v2 already
+> offered GP and ADSIM; v3 names these configurations "personas" and expands
+> the set.)
+>
+> **If you are a v2 user:**
+> - **Stay on v2** — pin the immutable v2 tag `prjemian/synapps:2.0.1`
+>   (do not rely on `:latest`, which tracks the newest major version).
+> - **Move to v3** — see [`docs/v3_transition.md`](./docs/v3_transition.md)
+>   and [`docs/quickstart.md`](./docs/quickstart.md).
+>
+> A vendored v2 `iocmgr.sh` hard-codes `:latest`; pin it to a v2 tag or
+> migrate. A v3 image prints these instructions if a v2 workflow reaches it.
+
 tag | release | image | downloads | license
 --- | --- | --- | --- | ---
 [![tag](https://img.shields.io/github/tag/prjemian/epics-docker.svg)](https://github.com/prjemian/epics-docker/tags) | [![release](https://img.shields.io/github/release/prjemian/epics-docker.svg)](https://github.com/prjemian/epics-docker/releases) | [![image](https://img.shields.io/docker/v/prjemian/synapps)](https://hub.docker.com/r/prjemian/synapps) | [![pulls](https://img.shields.io/docker/pulls/prjemian/synapps.svg)](https://hub.docker.com/r/prjemian/synapps) | [![license: EPICS](https://img.shields.io/badge/license-EPICS-blue.svg)](./LICENSE)
