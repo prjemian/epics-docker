@@ -43,6 +43,9 @@ cat > "${IOCGP}/motors.iocsh" <<EOF
 # gp motors: ${NUM_AXES} simulated soft motors
 iocshLoad("\$(MOTOR)/iocsh/motorSim.iocsh", "INSTANCE=motorSim, CONTROLLER=0, HOME_POS=0, NUM_AXES=${NUM_AXES}, HIGH_LIM=${HIGH_LIM}, LOW_LIM=${LOW_LIM}, SUB=substitutions/motorSim.substitutions")
 iocshLoad("\$(MOTOR)/iocsh/allstop.iocsh", "P=\$(PREFIX)")
+# SoftMotor records SM1..SM10 (as in v2.0.1; the ioc_motors/xxx .adl screens
+# reference SM1..SM10).
+dbLoadTemplate("substitutions/softMotor.substitutions", "P=\$(PREFIX)")
 EOF
 
 # per-axis field overrides + descriptive names (applied after iocInit)
