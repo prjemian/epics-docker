@@ -60,8 +60,9 @@ v3 is a new **major version** (SemVer): its interface breaks v2 invocations.
 breaking act -- not a routine update.
 
 - **`:2.0.1` is the immutable v2 anchor.** Never overwrite it. Any consumer can
-  pin `prjemian/synapps:2.0.1` (optionally also publish `:2`) to keep exactly
-  today's behavior forever. This is the one-line fix for any break.
+  pin `prjemian/synapps:2.0.1` to keep exactly today's behavior forever. This
+  is the one-line fix for any break. (There is a single v2.x release, so no
+  `:2` major-line alias is published; pin the exact `:2.0.1`.)
 - **Publish v3 under explicit, opt-in tags** (`:3.0.0`, `:v3`); `:latest`
   **stays v2**. Adoption is always a deliberate tag change by the consumer.
 - **Opt-in / deprecation window: 3-6 months.** During this period v3 is
@@ -159,8 +160,8 @@ Already in place (this branch):
 
 Cutover steps (in order):
 1. Publish v3 under opt-in tags (`:3.0.0`, `:v3`); `:latest` stays v2.
-2. Ensure `:2.0.1` (and optionally `:2`) is documented as the v2 anchor
-   (already on Docker Hub, same digest as today's `:latest`).
+2. Ensure `:2.0.1` is documented as the immutable v2 anchor (already on
+   Docker Hub, same digest as today's `:latest`; never overwrite it).
 3. Announce the deprecation + opt-in window (README, GitHub release notes,
    Docker Hub, BCDA/tech-talk).
 4. Pin/migrate the controlled consumers (apstools, bluesky_training) to a v2
