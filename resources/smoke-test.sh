@@ -5,10 +5,9 @@
 # For each persona, runs the image, waits for the IOC, and cagets a PV
 # *inside* the container (no host EPICS client needed).
 #
-# Personas tested depend on what the image provides:
-#   softioc : always (base-epics and up). PVs under a runtime PREFIX.
-#   xxx     : if /usr/local/bin/xxx.sh exists (base-synapps and up).
-#             As-supplied template; fixed prefix "xxx:".
+# The softioc persona is base-only and defines NO records of its own, so the
+# test supplies its own database (resources/smoke.db) via IOC_ARGS. The other
+# personas serve records from their standard/customized sources.
 
 set -euo pipefail
 
@@ -17,6 +16,9 @@ IMAGE="${2:?usage: smoke-test.sh ENGINE IMAGE}"
 
 # Extra `run` flags (e.g. --no-hosts for rootless podman).
 RUN_FLAGS="${RUN_FLAGS:-}"
+
+# Location of this script (to find the test database).
+HERE="$(cd "$(dirname "$0")" && pwd)"
 
 fail() { echo "FAIL: $*" >&2; exit 1; }
 
@@ -52,8 +54,38 @@ test_persona() {
     echo "PASS: persona '${ioc}' serves ${probe}"
 }
 
-# --- softioc (always present) ---
-test_persona softioc "smoke:" "smoke:UPTIME"
+# --- softioc (always present): base-only, so the TEST supplies its own db ---
+# Mount resources/smoke.db and load it via IOC_ARGS with prefix P=smoke:.
+# Verify the self-incrementing $(P)test_heartbeat advances (proves the IOC is
+# up and scanning). The softioc persona itself defines no records.
+test_softioc() {
+    local name="synapps-smoke-softioc-$$" pv="smoke:test_heartbeat"
+    echo "=== persona 'softioc' (test supplies smoke.db, PREFIX=smoke:) ==="
+    # shellcheck disable=SC2086
+    "${ENGINE}" run ${RUN_FLAGS} --rm -d --name "${name}" \
+        -v "${HERE}/smoke.db:/tmp/smoke.db:ro" \
+        -e IOC=softioc \
+        -e IOC_ARGS="-m P=smoke: -d /tmp/smoke.db" \
+        "${IMAGE}" >/dev/null
+    trap '"${ENGINE}" rm -f "'"${name}"'" >/dev/null 2>&1 || true' RETURN
+
+    if ! wait_pv "${name}" "${pv}"; then
+        "${ENGINE}" logs "${name}" >&2 || true
+        "${ENGINE}" rm -f "${name}" >/dev/null 2>&1 || true
+        fail "persona 'softioc': IOC did not serve ${pv} in time"
+    fi
+    local v1 v2
+    v1="$("${ENGINE}" exec "${name}" caget -t "${pv}")"
+    sleep 2
+    v2="$("${ENGINE}" exec "${name}" caget -t "${pv}")"
+    "${ENGINE}" rm -f "${name}" >/dev/null 2>&1 || true
+    if [ "${v2}" -gt "${v1}" ] 2>/dev/null; then
+        echo "PASS: persona 'softioc' ${pv} advanced ${v1} -> ${v2}"
+    else
+        fail "persona 'softioc': ${pv} did not advance (${v1} -> ${v2})"
+    fi
+}
+test_softioc
 
 # --- xxx (only if the image provides it) ---
 if "${ENGINE}" run ${RUN_FLAGS} --rm --entrypoint test "${IMAGE}" \
