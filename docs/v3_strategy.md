@@ -197,10 +197,43 @@ First runnable milestone complete and smoke-tested:
   errors; the build succeeded. Grepping for `epicsShareFunc` matched benign
   notes -- verify with `grep -E '\] Error [0-9]'` instead.
 
-## 10. Still open (to finalize as build-out proceeds)
+## 10. Tag & registry scheme
+
+**Registries.** Docker Hub `prjemian/synapps` is primary; an internal registry
+(e.g. GitLab) mirrors the same tags for network-restricted users. The recipes
+are registry-agnostic (`compose.yaml` uses `${IMAGE:-prjemian/synapps}`; the
+legacy notice names tags without a fixed registry).
+
+**Tags published for a release `X.Y.Z`** (SemVer; `IMAGE_VERSION` in
+`versions.env` is the single source of truth):
+
+| tag | meaning | mutable |
+| --- | --- | --- |
+| `X.Y.Z` (e.g. `3.0.0`) | exact release | no |
+| `X.Y` (e.g. `3.0`) | newest patch of that minor | moves within minor |
+| `X` (e.g. `3`) | newest release of that major | moves within major |
+| `latest` | newest **major** (v2 today; v3 after the flip) | moves |
+
+- The full ladder `X.Y.Z` + `X.Y` + `X` (+ `latest`) is published so consumers
+  choose their pin granularity.
+- The **major alias is `:3`** (not `:v3`).
+- **`:2.0.1`** is the immutable v2 anchor (never overwritten; no `:2` alias --
+  there is a single v2.x release). See `docs/v3_transition.md`.
+- The **`-devel`** variant (toolchain + sources) is **not published** for now;
+  build it locally with `make build-devel`.
+
+**Multi-arch.** Every published tag is a **manifest list** so the architecture
+is invisible to the user (one tag resolves to the right arch). `linux/amd64`
+now; `linux/arm64` when ready (D5). Push manifest lists with
+`buildx --push` / `skopeo copy --all` (not `docker save`/`load`).
+
+**The `:latest` flip** (v2 -> v3) is a deliberate, dated event shipped as a
+**post-`3.0.0` patch release**, after the opt-in window -- see
+`docs/v3_transition.md`.
+
+## 11. Still open (to finalize as build-out proceeds)
 
 - Exact number/shape of published final images (single vs. weight-class split).
 - Networking default profile and the documented `EPICS_CA_*` guidance.
 - Whether/where to publish screens as a separate artifact.
-- Registry/tagging scheme (tags, `latest`, per-version, arch manifest lists).
 - Distroless/minimal runtime base as a size optimization (see §8).

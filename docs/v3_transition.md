@@ -63,9 +63,10 @@ breaking act -- not a routine update.
   pin `prjemian/synapps:2.0.1` to keep exactly today's behavior forever. This
   is the one-line fix for any break. (There is a single v2.x release, so no
   `:2` major-line alias is published; pin the exact `:2.0.1`.)
-- **Publish v3 under explicit, opt-in tags** (`:3.0.0`, `:v3`); `:latest`
+- **Publish v3 under explicit, opt-in tags** (`:3.0.0`, `:3`); `:latest`
   **stays v2**. Adoption is always a deliberate tag change by the consumer.
-- **Opt-in / deprecation window: 3-6 months.** During this period v3 is
+- **Opt-in / deprecation window: through 2026-11-30 (nominal flip date).**
+  During this period v3 is
   available by tag, the deprecation is announced (README, release notes,
   Docker Hub, BCDA/tech-talk), and controlled consumers (tiers 1-2) are pinned
   or migrated.
@@ -159,14 +160,15 @@ Already in place (this branch):
       this doc).
 
 Cutover steps (in order):
-1. Publish v3 under opt-in tags (`:3.0.0`, `:v3`); `:latest` stays v2.
+1. Publish v3 under opt-in tags (`:3.0.0`, `:3`); `:latest` stays v2.
 2. Ensure `:2.0.1` is documented as the immutable v2 anchor (already on
    Docker Hub, same digest as today's `:latest`; never overwrite it).
 3. Announce the deprecation + opt-in window (README, GitHub release notes,
    Docker Hub, BCDA/tech-talk).
 4. Pin/migrate the controlled consumers (apstools, bluesky_training) to a v2
    tag or to v3.
-5. After the 3-6 month window: cut a **post-`3.0.0` patch release** that
+5. On/after the nominal flip date (**2026-11-30**): cut a **post-`3.0.0` patch
+   release** that
    repoints `:latest` -> v3 (dated, discoverable; accepted tier-3 breakage).
 6. Keep legacy `iocmgr.sh` and the in-image notice indefinitely; they cost
    little and help stragglers.

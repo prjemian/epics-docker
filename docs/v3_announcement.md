@@ -32,10 +32,11 @@ a v3 image**:
 
 ## Timeline
 
-- **Now -> for the next 3-6 months:** `prjemian/synapps:latest` continues to
-  point at **v2**. Nothing breaks yet. v3 is available under opt-in tags
-  (`:3.0.0`, `:v3`) so you can try and adopt it on your own schedule.
-- **After that window:** a patch release will repoint `:latest` to **v3**.
+- **Now -> 2026-11-30 (nominal flip date):** `prjemian/synapps:latest`
+  continues to point at **v2**. Nothing breaks yet. v3 is available under
+  opt-in tags (`:3.0.0`, `:3`) so you can try and adopt it on your own
+  schedule.
+- **On/after 2026-11-30:** a patch release will repoint `:latest` to **v3**.
   From that point, anything still using the v2 workflow via `:latest` will
   break.
 
@@ -58,7 +59,7 @@ overwritten. If you pull from an internal registry, pin the `2.0.1` tag there
 
 ### To migrate to v3
 
-1. Switch your image reference to a v3 tag (`:3.0.0` or `:v3`).
+1. Switch your image reference to a v3 tag (`:3.0.0` or `:3`).
 2. Replace the `iocmgr.sh` workflow with `compose.yaml` or `docker run`:
 
    | v2 | v3 |
