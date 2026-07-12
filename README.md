@@ -56,25 +56,37 @@ of scope.
 
 ## Quick start
 
-Build the image and run the `softioc` persona:
+**_Area detector IOC with a simulated camera (`adsim`)_** -- three steps:
 
-```bash
-make build                      # build the runtime image
-make run PREFIX=demo:           # start softIoc under procServ (host networking)
-caget demo:UPTIME               # (with an EPICS client) read a PV
-```
+1. Start the IOC (needs docker or podman; on rootless podman add `--no-hosts`):
 
-Or with compose (choose a networking profile):
+   ```bash
+   docker run -d --rm --name iocadsim --net=host \
+       -e IOC=adsim -e PREFIX=adsim: \
+       prjemian/synapps:3
+   ```
 
-```bash
-docker compose --profile host  up     # Linux / CI: host sees PVs directly
-docker compose --profile ports up     # Docker Desktop / Windows / macOS / Synology
-```
+2. Check it with any EPICS client:
 
-**Podman:** the Makefile auto-detects podman (including the `podman-docker`
-wrapper) and adds `--no-hosts` automatically, so `make build` works as-is.
-To override, set `BUILD_FLAGS=` / `RUN_FLAGS=` explicitly. Run `make vars` to
-see the detected engine and flags.
+   ```bash
+   caget adsim:cam1:Acquire_RBV
+   ```
+
+3. Acquire an image:
+
+   ```bash
+   caput adsim:cam1:Acquire 1
+   ```
+
+**Boom! Done!** You are running a [custom ADSimDetector](./docs/adsim.md) IOC,
+generating simulated images over EPICS.
+
+See the [quick start guide](./docs/quickstart.md) for the other personas
+(e.g. [`gp`](./docs/gp.md)), networking profiles, `compose.yaml`, and building
+the image locally.
+
+> On **macOS / Windows / Docker Desktop / Synology**, use the `ports` profile
+> instead of `--net=host` -- see [configuration](./docs/configuration.md#networking).
 
 ## Documentation
 
