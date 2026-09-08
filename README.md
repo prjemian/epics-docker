@@ -1,205 +1,133 @@
-# EPICS synApps in a Docker Image
+# EPICS in a container (v3)
 
-Docker image [`prjemian/synapps`](https://hub.docker.com/r/prjemian/synapps)
+Container image [`prjemian/synapps`](https://hub.docker.com/r/prjemian/synapps)
 providing [EPICS base](https://epics.anl.gov/base/),
 [synApps](https://www.aps.anl.gov/BCDA/synApps), and [Area
-Detector](https://areadetector.github.io/areaDetector/) software providing
-[IOCs](#iocs-provided) (servers) for development, simulation, testing, and
-training.
+Detector](https://areadetector.github.io/areaDetector/) software as ready-to-run
+IOCs (servers) for **development, simulation, testing, and training**.
 
-tag | release | image | downloads
---- | --- | --- | ---
-[![tag](https://img.shields.io/github/tag/prjemian/epics-docker.svg)](https://github.com/prjemian/epics-docker/tags) | [![release](https://img.shields.io/github/release/prjemian/epics-docker.svg)](https://github.com/prjemian/epics-docker/releases) | [![image](https://img.shields.io/docker/v/prjemian/synapps)](https://hub.docker.com/r/prjemian/synapps) | [![pulls](https://img.shields.io/docker/pulls/prjemian/synapps.svg)](https://hub.docker.com/r/prjemian/synapps)
+> **v3 is under active redevelopment.** The recipes are being rebuilt from
+> scratch to be smaller, easier to maintain, portable across container
+> runtimes and host architectures, and driven by a declarative
+> [`compose.yaml`](./compose.yaml). See [`docs/v3.md`](./docs/v3.md) for the
+> plan and [`docs/v3_strategy.md`](./docs/v3_strategy.md) for the approach.
+> The previous, published implementation is archived under
+> [`v2.0/`](./v2.0/) (and earlier lines under `v1.0/`, `v1.1/`).
 
-Contents
+> [!IMPORTANT]
+> **v3 is a new major version and breaks v2 usage.** Per semantic versioning,
+> v3 changed the interface: the v2 workflow (`iocmgr.sh`, `gp.sh`/`adsim.sh`,
+> and the old in-image paths) does **not** work against a v3 image. v3
+> supervises IOCs with `procServ` and is driven by [`compose.yaml`](./compose.yaml);
+> personas are selected with `-e IOC=<persona>`. (A *persona* is a name for one
+> of the ready-to-run IOC configurations this image provides. v2 already
+> offered GP and ADSIM; v3 names these configurations "personas" and expands
+> the set.)
+>
+> **If you are a v2 user:**
+> - **Stay on v2** — pin the immutable v2 tag `prjemian/synapps:2.0.1`
+>   (do not rely on `:latest`, which tracks the newest major version).
+> - **Move to v3** — see [`docs/v3_transition.md`](./docs/v3_transition.md)
+>   and [`docs/quickstart.md`](./docs/quickstart.md).
+>
+> A vendored v2 `iocmgr.sh` hard-codes `:latest`; pin it to a v2 tag or
+> migrate. A v3 image prints these instructions if a v2 workflow reaches it.
 
-- [EPICS synApps](#epics-synapps)
-  - [Quick start](#quick-start)
-  - [What this repository provides](#what-this-repository-provides)
-  - [How to use this image](#how-to-use-this-image)
-    - [Running an IOC in the container](#running-an-ioc-in-the-container)
-  - [Details](#details)
-    - [custom synApps](#custom-synapps)
-    - [custom Area Detector (ADSimDetector)](#custom-area-detector-adsimdetector)
-    - [Hint](#hint)
-  - [IOCs Provided](#iocs-provided)
-    - [Starter Scripts](#starter-scripts)
-  - [Docker Image](#docker-image)
-  - [Authors](#authors)
-  - [Acknowledgements](#acknowledgements)
-
-## Quick start
-
-Two steps: **_Area detector IOC with simulated camera_**
-
-1. Download and install
-   [`iocmgr.sh`](https://raw.githubusercontent.com/prjemian/epics-docker/main/resources/iocmgr.sh)
-   (bash shell script for Linux).
-2. Run **`iocmgr.sh start adsim test1`** to start `ioctest1`
-
-**That's it!** You just started a [custom](./docs/adsim.md) version of the
-[ADSimDetector](https://areadetector.github.io/master/ADSimDetector/simDetector.html)
-IOC.
-
-_Next steps_: Get an [EPICS client](./docs/epics_clients.md) to operate the
-IOC's controls and view the images it generates.
-
-<!--
-TODO: show example caQtDM screen view
--->
+tag | release | image | downloads | license
+--- | --- | --- | --- | ---
+[![tag](https://img.shields.io/github/tag/prjemian/epics-docker.svg)](https://github.com/prjemian/epics-docker/tags) | [![release](https://img.shields.io/github/release/prjemian/epics-docker.svg)](https://github.com/prjemian/epics-docker/releases) | [![image](https://img.shields.io/docker/v/prjemian/synapps)](https://hub.docker.com/r/prjemian/synapps) | [![pulls](https://img.shields.io/docker/pulls/prjemian/synapps.svg)](https://hub.docker.com/r/prjemian/synapps) | [![license: EPICS](https://img.shields.io/badge/license-EPICS-blue.svg)](./LICENSE)
 
 ## What this repository provides
 
-- [Scripts](./resources/) to install EPICS software to build IOCs (servers)
-- [Documentation](./docs/README.md) for the EPICS IOCs
-- [Steps](./Dockerfile) to build the [docker image](#docker-image)
+- A multi-stage recipe ([`Dockerfile`](./Dockerfile)) that builds a small
+  runtime image containing a full EPICS stack.
+- Ready-to-run IOC **personas**, selected at container start with a user-chosen
+  PV prefix. Feature selection follows a simple model, where `softioc` (a bare
+  EPICS base IOC) is unfeatured, branching into two feature sets:
+  - **synApps** branch: `xxx` (as-supplied) and `gp` (customized).
+  - **areaDetector** branch: software-defined cameras `adsim`, `adcsim`,
+    `adurl`, and `adpva`.
 
-**Note**:  This repository does not provide EPICS
-[client](./docs/epics_clients.md) software.
+  A single image provides them all; pick the persona at container start. See
+  [persona architecture](./docs/persona_architecture.md).
+- A declarative run contract ([`compose.yaml`](./compose.yaml)) that works
+  with both **docker** and **podman**, on Linux, macOS, Windows, and Synology.
+- IOCs supervised by [`procServ`](https://github.com/ralphlange/procServ)
+  (no `screen`), so they behave well under rootless podman and in CI.
+- A single source of truth for component versions
+  ([`versions.env`](./versions.env)).
 
-## How to use this image
+This repository provides EPICS **servers**. EPICS **client** software is out
+of scope.
 
-Run custom [XXX](./docs/gp.md) or [ADSimDetector](./docs/adsim.md) IOCs.  Copy
-(download) the `iocmgr.sh` shell script to a directory on your executable path
-and make the script executable.
+## Quick start
 
-See the [Quick Start](#quick-start) section and
-[`iocmgr.sh`](./docs/iocmgr.md#examples) for examples.
+**_Area detector IOC with a simulated camera (`adsim`)_** -- three steps:
 
-IOCs are created in docker containers.  If you wish, the container's `/tmp` is
-available for read-only mount on the docker host computer.  This table shows the
-same directory from the IOC or the host filesystem.  Any files created in the
-container (such as by an area detector IOC) will be available as long as the
-container is running.
+1. Start the IOC (needs docker or podman; on rootless podman add `--no-hosts`):
 
-system | filesystem
+   ```bash
+   docker run -d --rm --name iocadsim --net=host \
+       -e IOC=adsim -e PREFIX=adsim: \
+       prjemian/synapps:3
+   ```
+
+2. Check it with any EPICS client:
+
+   ```bash
+   caget adsim:cam1:Acquire_RBV
+   ```
+
+3. Acquire an image:
+
+   ```bash
+   caput adsim:cam1:Acquire 1
+   ```
+
+**Boom! Done!** You are running a [custom ADSimDetector](./docs/adsim.md) IOC,
+generating simulated images over EPICS.
+
+See the [quick start guide](./docs/quickstart.md) for the other personas
+(e.g. [`gp`](./docs/gp.md)), networking profiles, `compose.yaml`, and building
+the image locally.
+
+> On **macOS / Windows / Docker Desktop / Synology**, use the `ports` profile
+> instead of `--net=host` -- see [configuration](./docs/configuration.md#networking).
+
+## Documentation
+
+**Getting started**
+
+document | contents
 --- | ---
-IOC | `/tmp`
-host | `/tmp/docker_ioc/iocPRE`
+[quick start](./docs/quickstart.md) | Run an IOC; per-audience (workstation, CI, client dev, simulation)
+[configuration](./docs/configuration.md) | Environment variables, networking profiles, console, volumes
+[maintainer guide](./docs/maintainer.md) | Build, upgrade component versions, extend (add features/cameras)
 
-Use the same docker image (`prjemian/synapps:latest`) for all IOCs.  The
-`iocmgr.sh` script runs only _one IOC per container_.  Starting containers is
-usually very fast.
+**Personas (the IOCs provided)**
 
-### Running an IOC in the container
+document | contents
+--- | ---
+[softioc](./docs/softioc.md) | EPICS base softIoc (minimal; default persona)
+[xxx](./docs/xxx.md) | As-supplied synApps template IOC
+[gp](./docs/gp.md) | Customized synApps IOC (runtime prefix) — features and how to run it
+[area-detector cameras](./docs/area_detector.md) | The camera personas + the adsim vs adcsim distinction
+[adsim](./docs/adsim.md) | ADSimDetector — simulated 2D image camera
+[adcsim](./docs/adcsim.md) | ADCSimDetector — simulated ADC/waveform digitizer (not a camera)
+[adurl](./docs/adurl.md) | ADURL — area detector fed images from a URL
+[adpva](./docs/adpva.md) | pvaDriver — area detector fed images over pvAccess
 
-Running an IOC in a container is usually a two-step process, similar to running
-an IOC in any computer.
+**Design & background**
 
-1. Start a container with the image (and any additional features such as network and volume provisioning).  Use `docker run ...`
-2. Start the IOC _in the container_ (usually with `screen` or `procServ`, so it runs in the background)  Use `docker exec ...`.
-
-<!--
-TODO: document how to mount container directories: `/tmp` (and `/opt`)
-
-TODO: here's an interactive session as an example
-# Start an interactive session from the docker host workstation:
-docker run -it --rm prjemian/synapps
-
-# Next commands are in the docker container...
-
-# set a PV PREFIX for the new IOC
-export PREFIX=demo:
-
-# run a GP IOC (in a background `screen` session)
-gp.sh start
-
-# check a PV value
-caget demo:UPTIME
--->
-
-## Details
-
-Additional [documentation](./docs/README.md) is available.
-
-### custom synApps
-
-_Download_ [`iocmgr.sh`](./docs/iocmgr.md#download) (if not already installed)
-
-These IOCs will use the [`GP`](./docs/gp.md) IOC support.
-
-```sh
-cd ~/bin
-wget https://raw.githubusercontent.com/prjemian/epics-docker/main/resources/iocmgr.sh
-chmod +x iocmgr.sh
-```
-
-_Run_ two separate [GP](./docs/gp.md) IOCs with prefixes `ocean:` and
-`sky:`.  (Do not specify the trailing `:`.  The script will manage that for you.)
-
-```sh
-iocmgr.sh start GP ocean
-iocmgr.sh start GP sky
-```
-
-### custom Area Detector (ADSimDetector)
-
-_Download_ [`iocmgr.sh`](./docs/iocmgr.md#download) (if not already installed)
-
-```sh
-cd ~/bin
-wget https://raw.githubusercontent.com/prjemian/epics-docker/main/resources/iocmgr.sh
-chmod +x iocmgr.sh
-```
-
-_Run_ two separate [ADSIM](./docs/gp.md) IOCs with prefixes `air:` and
-`land:`.  (Do not specify the trailing `:`.  The script will manage that for you.)
-
-```sh
-iocmgr.sh start ADSIM air
-iocmgr.sh start ADSIM land
-```
-
-### Hint
-
-You _could_ create a new script to start all the IOCs you want.
-Here's an example which starts all four IOCs above:
-
-```bash
-#!/bin/bash
-
-iocmgr.sh restart GP ocean
-iocmgr.sh restart GP sky
-iocmgr.sh restart ADSIM air
-iocmgr.sh restart ADSIM oxy
-```
-
-- Save this into `~/bin/start_iocs.sh`
-- make it executable: **`chmod +x ~/bin/start_iocs.sh`**
-- then call it to start/restart the four IOCs: **`start_iocs.sh`**
-
-## IOCs Provided
-
-<!--
-TODO: add docs for XXX, ADSimDetector, ADURL, and pvaDriver IOCs
--->
-
-- XXX
-- ADSimDetector
-- ADURL (TODO)
-- pvaDriver (TODO)
-- [GP](./docs/gp.md), a custom XXX with user PREFIX
-- [ADSIM](./docs/adsim.md), a custom ADSimDetector with user PREFIX
-
-### Starter Scripts
-
-script | location | comments
---- | --- | ---
-`iocmgr.sh` | docker host | User script to manage IOCs and GUIs
-`start_MEDM_PRE` | container `/tmp` | Called by `iocmgr.sh` (start the MEDM GUI for `PRE` IOC)
-`start_caQtDM_PRE` | container `/tmp` | Called by `iocmgr.sh` (start the caQtDM GUI for `PRE` IOC)
-`adsim.sh` | container `/root/bin` | Starts the custom ADSimDetector IOC in the container.
-`gp.sh` | container `/root/bin` | Starts the custom XXX IOC in the container.
-
-## Docker Image
-
-The current docker image (`prjemian/synapps:latest`) is listed in the next
-table.  A full list of related docker images is [on a separate
-page](./docs/docker_images.md).
-
-release | image | docs | notes
---- | --- | --- | ---
-**v2.0.0** | [`prjemian/synApps`](https://hub.docker.com/r/prjemian/synapps/tags) | [docs](./README.md) | Debian 11 Bullseye, EPICS base 7.0.5, synApps 6.2.1, AD 3.11 (all-in-one)
+document | contents
+--- | ---
+[synApps modules](./docs/synapps_modules.md) | Which synApps modules are included/excluded, and why
+[v3 plan](./docs/v3.md) | The maintainer's plan and goals for v3
+[persona architecture](./docs/persona_architecture.md) | What a persona is; how each is built, launched, and prefixed (+ unified-contract target)
+[requirements & goals](./docs/v3_requirements.md) | Audiences, functional and quality goals, constraints, non-goals
+[implementation strategy](./docs/v3_strategy.md) | Architecture and decisions for the rebuild
+[v2 -> v3 transition](./docs/v3_transition.md) | How v3 lands without breaking existing tooling (apstools, iocmgr.sh)
+[v2.0 build phases](./docs/v2_build_phases.md) | Reconstructed reference for the prior recipe
 
 ## Authors
 

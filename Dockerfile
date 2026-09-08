@@ -1,145 +1,325 @@
-FROM  debian:stable-slim
-LABEL version="2.0.2" \
-      maintainer="prjemian <prjemian@gmail.com>" \
-      lastupdate="2023-04-07" \
-      Description="source: https://github.com/prjemian/epics-docker/"
-USER  root
+# syntax=docker/dockerfile:1
+#
+# v3 multi-stage build: base-os -> epics-runtime -> synapps-runtime
+#
+# Stages:
+#   os-runtime   : Debian + runtime-only deps (procServ, libs). Small.
+#   os-build     : os-runtime + toolchain (compilers, headers). Build only.
+#   epics-build  : builds EPICS base from source in os-build.
+#   epics-runtime   : runtime image with EPICS base only (softIoc persona).
+#   synapps-build: builds synApps support tree + xxx IOC on top of base.
+#   synapps-runtime : runtime image with EPICS base + synApps.
+#
+# All versions come from build ARGs, fed by versions.env via the Makefile.
+# Do not hard-code versions here; edit versions.env instead.
 
-RUN echo "# -------------------------------- customize command shell"
-CMD ["/bin/bash"]
-WORKDIR /home
-ENV IMAGE_VERSION="2.0.2"
-ENV PREFIX="ioc:"
-ENV APP_ROOT="/opt"
-ENV RESOURCES="${APP_ROOT}/resources"
-ENV LOG_DIR="${APP_ROOT}/logs"
-RUN \
-    touch ~/.bashrc ~/.bash_aliases \
-    && echo "if [ -f ~/.bash_aliases ]; then" >> ~/.bashrc \
-    && echo "    . ~/.bash_aliases" >> ~/.bashrc \
-    && echo "fi" >> ~/.bashrc \
-    && echo "# file: ~/.bash_aliases" >> ~/.bash_aliases \
-    && echo "export LS_OPTIONS='--color=auto'" >> ~/.bash_aliases \
-    && echo "export EDITOR=nano" >> ~/.bash_aliases \
-    && echo "export PATH=${PATH}:${HOME}/bin" >> ~/.bash_aliases \
-    && echo "export PROMPT_DIRTRIM=3" >> ~/.bash_aliases \
-    && echo "alias ls='ls --color=auto'" >> ~/.bash_aliases \
-    && echo "alias ll='ls -lAFgh'" >> ~/.bash_aliases \
-    && mkdir ~/bin "${LOG_DIR}"
+ARG DEBIAN_TAG=12-slim
 
+# ----------------------------------------------------------------------
+# os-runtime: minimal runtime layer (no compilers). Basis of final image.
+# ----------------------------------------------------------------------
+FROM debian:${DEBIAN_TAG} AS os-runtime
 
-RUN echo "# -------------------------------- update OS" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-# Build EPICS software here
-RUN \
-    echo "export APP_ROOT=${APP_ROOT}" >> ~/.bash_aliases \
-    && echo "export RESOURCES=${RESOURCES}" >> ~/.bash_aliases \
-    && echo "export LOG_DIR=${LOG_DIR}" >> ~/.bash_aliases
+ARG IMAGE_VERSION=dev
+LABEL org.opencontainers.image.title="prjemian/synapps" \
+      org.opencontainers.image.description="EPICS base (+ synApps, areaDetector) IOCs for development, simulation, testing, training" \
+      org.opencontainers.image.source="https://github.com/prjemian/epics-docker" \
+      org.opencontainers.image.version="${IMAGE_VERSION}"
 
-# sysAdmin work: Install necessary libraries from offical repo
-RUN echo "# update OS" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-RUN DEBIAN_FRONTEND=noninteractive apt-get update  -y \
-    && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y  \
-        apt-utils \
+ENV DEBIAN_FRONTEND=noninteractive \
+    APP_ROOT=/opt \
+    EPICS_ROOT=/opt/epics \
+    LOG_DIR=/opt/build-logs \
+    LANG=C.UTF-8
+
+# Retained build logs (valuable later diagnostics) live here in every stage.
+RUN mkdir -p "${LOG_DIR}"
+
+# Runtime-only packages. procServ supervises the IOC (replaces `screen`).
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update \
+ && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        libreadline8 \
+        netcat-openbsd \
+        procserv \
+        telnet \
+ && rm -rf /var/lib/apt/lists/*
+
+# ----------------------------------------------------------------------
+# os-build: add the toolchain needed to compile EPICS from source.
+# ----------------------------------------------------------------------
+FROM os-runtime AS os-build
+
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update \
+ && apt-get install -y --no-install-recommends \
         build-essential \
         git \
-        less \
-        libnet-dev \
-        libpcap-dev \
         libreadline-dev \
-        libusb-1.0-0-dev \
-        libusb-dev \
+        perl \
+        re2c \
+        wget \
+        # areaDetector / synApps build dependencies:
+        libgraphicsmagick++1-dev \
+        libtiff-dev \
+        libjpeg-dev \
+        libnetcdf-dev \
+        libxml2-dev \
         libx11-dev \
         libxext-dev \
-        nano \
-        procps \
-        re2c \
-        screen \
-        vim \
-        wget \
-        2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-RUN rm -rf /var/lib/apt/lists/*
+        zlib1g-dev \
+        libusb-1.0-0-dev \
+ && rm -rf /var/lib/apt/lists/*
 
-# for use with `crontab -e`
-ENV EDITOR="nano"
+# ----------------------------------------------------------------------
+# epics-build: download and build EPICS base.
+# ----------------------------------------------------------------------
+FROM os-build AS epics-build
 
-# only show last few subdirs before console prompt
-ENV PROMPT_DIRTRIM=3
-RUN echo "# -------------------------------- end OS install" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+ARG EPICS_BASE_VERSION
+ENV EPICS_BASE=${EPICS_ROOT}/base
 
-RUN echo "# -------------------------------- start EPICS base" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-COPY ./resources/epics_base.sh "${RESOURCES}/"
-RUN "${RESOURCES}/epics_base.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-RUN echo "# -------------------------------- end EPICS base" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+RUN mkdir -p "${EPICS_ROOT}" \
+ && cd "${EPICS_ROOT}" \
+ && wget -q "https://epics.anl.gov/download/base/base-${EPICS_BASE_VERSION}.tar.gz" \
+ && tar xzf "base-${EPICS_BASE_VERSION}.tar.gz" \
+ && rm "base-${EPICS_BASE_VERSION}.tar.gz" \
+ && ln -s "base-${EPICS_BASE_VERSION}" base
 
-RUN echo "# -------------------------------- start script tools" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-# These scripts will be used by the scripts which create custom IOCs
-COPY \
-    ./resources/copy_screens.sh \
-    ./resources/modify_adl_in_ui_files.sh \
-    ./resources/tarcopy.sh \
-    ${RESOURCES}/
-RUN echo "# -------------------------------- end script tools" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+# Build; retain full log in ${LOG_DIR} for later diagnostics.
+# Use bash+pipefail explicitly: podman's default OCI image format ignores the
+# `SHELL` directive, so a piped `make | tee` would otherwise mask make failures.
+RUN bash -o pipefail -c 'cd "${EPICS_BASE}" \
+ && make -j"$(nproc)" CFLAGS=-fPIC CXXFLAGS=-fPIC all 2>&1 | tee "${LOG_DIR}/build-base.log" \
+ && make clean'
 
-RUN echo "# -------------------------------- start EPICS synApps" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-COPY \
-    ./resources/epics_synapps.sh \
-    ./resources/edit_assemble_synApps.sh \
-    ${RESOURCES}/
-RUN "${RESOURCES}/epics_synapps.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-RUN echo "# -------------------------------- end EPICS synApps" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+# Determine host arch HERE (perl is available in the builder) and create a
+# stable, arch-independent symlink `binln` -> bin/<arch>. Record the arch so
+# the runtime stage need not run perl. Both travel with the copied tree.
+RUN set -eu; \
+    arch="$("${EPICS_BASE}/startup/EpicsHostArch")"; \
+    ln -s "bin/${arch}" "${EPICS_BASE}/binln"; \
+    echo "EPICS_HOST_ARCH=${arch}" > "${EPICS_BASE}/host-arch.env"
 
-RUN echo "# -------------------------------- start create custom GP IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-# TODO: gather all into ./resources/gp/ folder and refactor
-COPY ./resources/gp_screens/ /tmp/gp_screens
-COPY \
-    ./resources/general_purpose.db \
-    ./resources/gp_asyn_motor.db.patch \
-    ./resources/gp_add_general_purpose.sh \
-    ./resources/gp_alive.sh \
-    ./resources/gp_build_gp_sh.sh \
-    ./resources/gp_copy_IOC.sh \
-    ./resources/gp_iocStats.sh \
-    ./resources/gp_install_screens.sh \
-    ./resources/gp_make.sh \
-    ./resources/gp_motors.sh \
-    ./resources/gp_optics.sh \
-    ./resources/gp_prefix.sh \
-    ./resources/gp_std.sh \
-    ./resources/start_caQtDM.sh \
-    ./resources/start_MEDM.sh \
-    ./resources/custom_gp_ioc.sh \
-    ${RESOURCES}/
-RUN "${RESOURCES}/custom_gp_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-RUN echo "# -------------------------------- end create custom GP IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+# ----------------------------------------------------------------------
+# epics-runtime: final runtime image. Copies only the built products.
+# ----------------------------------------------------------------------
+FROM os-runtime AS epics-runtime
 
-RUN echo "# -------------------------------- start create custom ADSimDetector IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-# TODO: gather all into ./resources/adsim/ folder and refactor
-COPY ./resources/adsim_README /tmp/
-COPY ./resources/adsim_screens/ /tmp/adsim_screens
-COPY \
-    ./resources/adsim_autosave.sh \
-    ./resources/adsim_build_adsim_sh.sh \
-    ./resources/adsim_copy_IOC.sh \
-    ./resources/adsim_IOC_run_script.sh \
-    ./resources/adsim_install_screens.sh \
-    ./resources/adsim_plugins.sh \
-    ./resources/adsim_prefix.sh \
-    ./resources/adsim_run.sh \
-    ./resources/adsim_st_base.sh \
-    ./resources/custom_adsim_ioc.sh \
-    ${RESOURCES}/
-RUN "${RESOURCES}/custom_adsim_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-RUN echo "# -------------------------------- end create custom ADSimDetector IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+ARG EPICS_BASE_VERSION
+ENV EPICS_BASE=${EPICS_ROOT}/base
 
-# RUN echo "# -------------------------------- start create custom pvaDriver IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-# # COPY ./resources/custom_adpva_ioc.sh "${RESOURCES}/"
-# # RUN "${RESOURCES}/custom_adpva_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-# RUN echo "# -------------------------------- end create custom pvaDriver IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+# Products only (no toolchain, no sources) -> small runtime image.
+# The copied tree already contains the `binln` symlink and host-arch.env
+# created in the builder, so no perl/toolchain is needed at runtime.
+COPY --from=epics-build ${EPICS_ROOT}/base-${EPICS_BASE_VERSION} ${EPICS_ROOT}/base-${EPICS_BASE_VERSION}
+RUN ln -s "base-${EPICS_BASE_VERSION}" "${EPICS_ROOT}/base"
 
-# RUN echo "# -------------------------------- start create custom ADURL IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-# # COPY ./resources/custom_adurl_ioc.sh "${RESOURCES}/"
-# # RUN "${RESOURCES}/custom_adurl_ioc.sh" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
-# RUN echo "# -------------------------------- end create custom ADURL IOC" 2>&1 | tee -a "${LOG_DIR}/dockerfile.log"
+# Retain build logs in the image for later diagnostics.
+COPY --from=epics-build ${LOG_DIR} ${LOG_DIR}
 
-# TODO: add support to start/stop IOCs in containers
+# Stable, arch-independent bin dir on PATH (binln -> bin/<arch>).
+ENV PATH=${EPICS_ROOT}/base/binln:${PATH}
+
+# IOC launch settings (overridable at run time). The procServ console
+# defaults to a UNIX socket inside the container (attach via `console`), so no
+# host port is set here; set IOC_CONSOLE_PORT at run time to opt into host TCP.
+ENV PREFIX=ioc:
+
+COPY resources/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY resources/softioc.sh /usr/local/bin/softioc.sh
+COPY resources/console.sh /usr/local/bin/console
+COPY resources/make_home_links.sh /usr/local/bin/make_home_links.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/softioc.sh \
+             /usr/local/bin/console /usr/local/bin/make_home_links.sh
+
+# --- v2 -> v3 legacy interception (deprecation notice) -------------------
+# Intercept v2-era usage of this image and print WHAT failed + HOW to proceed:
+#   1. /root/bin/gp.sh, /root/bin/adsim.sh  -- v2 iocmgr.sh calls these
+#   2. shell-login banner                   -- v2 `docker run ... bash` case
+#   3. breadcrumb at the old /opt/synApps   -- v2 direct-path invocations
+COPY resources/legacy_notice.sh /usr/local/bin/legacy_notice.sh
+COPY resources/legacy_stub.sh /usr/local/bin/legacy_stub.sh
+RUN chmod +x /usr/local/bin/legacy_notice.sh /usr/local/bin/legacy_stub.sh \
+ && mkdir -p /root/bin \
+ && ln -s /usr/local/bin/legacy_stub.sh /root/bin/gp.sh \
+ && ln -s /usr/local/bin/legacy_stub.sh /root/bin/adsim.sh \
+ && printf '#!/bin/sh\n/usr/local/bin/legacy_notice.sh\n' > /etc/profile.d/00-synapps-v3.sh \
+ && chmod +x /etc/profile.d/00-synapps-v3.sh \
+ && mkdir -p /opt/synApps \
+ && /usr/local/bin/legacy_notice.sh > /opt/synApps/DEPRECATED.txt
+
+# Convenience symlinks in /home (base + softioc persona).
+RUN /usr/local/bin/make_home_links.sh /home
+
+WORKDIR /home
+# Default persona: EPICS base softIoc, supervised by procServ.
+ENV IOC=softioc
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# ----------------------------------------------------------------------
+# synapps-build: assemble + build the synApps support tree and xxx IOC.
+# Builds on os-build (toolchain) with the already-built EPICS base copied
+# from epics-build.
+# ----------------------------------------------------------------------
+FROM os-build AS synapps-build
+
+ARG EPICS_BASE_VERSION
+ARG SYNAPPS_VERSION
+# Documented per-module version overrides, space-separated "MODULE=TAG"
+# (see versions.env / SYNAPPS_OVERRIDES). Exported as SYNAPPS_OVERRIDE_<MODULE>
+# for synapps_prepare.sh.
+ARG SYNAPPS_OVERRIDES=""
+ENV EPICS_BASE=${EPICS_ROOT}/base \
+    SYNAPPS=${EPICS_ROOT}/synApps
+# The assembler creates ${SYNAPPS_DIR}/support -- so with SYNAPPS_DIR=${SYNAPPS}
+# the support tree lands at ${SYNAPPS}/support.
+ENV SUPPORT=${EPICS_ROOT}/synApps/support
+
+# Bring in the built EPICS base.
+COPY --from=epics-build ${EPICS_ROOT}/base-${EPICS_BASE_VERSION} ${EPICS_ROOT}/base-${EPICS_BASE_VERSION}
+RUN ln -s "base-${EPICS_BASE_VERSION}" "${EPICS_ROOT}/base"
+ENV PATH=${EPICS_ROOT}/base/binln:${PATH}
+
+# Our prepare script: keeps the release's module tags, sets EPICS_BASE,
+# and excludes the hardware modules (see resources/synapps_prepare.sh).
+COPY resources/synapps_prepare.sh /usr/local/bin/synapps_prepare.sh
+RUN chmod +x /usr/local/bin/synapps_prepare.sh
+
+# Download the release's assembler, prepare it, assemble the support tree.
+# The assembler does `mkdir ${SYNAPPS_DIR}; cd; get_support support`, so
+# passing SYNAPPS_DIR=${SYNAPPS} yields the support tree at ${SUPPORT}.
+# Download the release's assembler, prepare it, assemble the support tree.
+# bash+pipefail so the piped `tee` cannot mask a failure (podman's OCI image
+# format ignores the `SHELL` directive, so we set pipefail explicitly).
+RUN bash -o pipefail -c 'mkdir -p "${SYNAPPS}" \
+ && cd "${SYNAPPS}" \
+ && wget -q "https://raw.githubusercontent.com/EPICS-synApps/support/${SYNAPPS_VERSION}/assemble_synApps.sh" \
+ && for kv in ${SYNAPPS_OVERRIDES}; do export "SYNAPPS_OVERRIDE_${kv%%=*}=${kv#*=}"; done \
+ && synapps_prepare.sh assemble_synApps.sh "${EPICS_BASE}" \
+ && cp assemble_synApps.sh "${LOG_DIR}/assemble_synApps.prepared.sh" \
+ && SYNAPPS_DIR="${SYNAPPS}" bash assemble_synApps.sh 2>&1 | tee "${LOG_DIR}/assemble_synApps.log"'
+
+# asyn needs TIRPC on modern glibc/Debian.
+RUN echo "TIRPC=YES" > "$(ls -d ${SUPPORT}/asyn-*)/configure/CONFIG_SITE.local"
+
+# Enable + fetch extra areaDetector drivers (beyond ADSimDetector) BEFORE the
+# AD build, so the support `make` builds them too.
+ARG AD_DRIVERS=""
+COPY resources/ad_drivers.sh /usr/local/bin/ad_drivers.sh
+RUN chmod +x /usr/local/bin/ad_drivers.sh \
+ && bash -o pipefail -c 'ad="$(ls -d ${SUPPORT}/areaDetector-*)"; \
+    ad_drivers.sh "${ad}" "${AD_DRIVERS}" 2>&1 | tee "${LOG_DIR}/ad_drivers.log"'
+
+# Build the whole support tree. bash+pipefail so a make failure is not masked
+# by the succeeding `tee`.
+RUN bash -o pipefail -c 'cd "${SUPPORT}" \
+ && make -j"$(nproc)" release 2>&1 | tee "${LOG_DIR}/build-synApps.log" \
+ && make -j"$(nproc)" 2>&1 | tee -a "${LOG_DIR}/build-synApps.log"'
+
+# Build the xxx template IOC.
+RUN bash -o pipefail -c 'xxx="$(ls -d ${SUPPORT}/xxx-*)" \
+ && make -C "${xxx}" 2>&1 | tee "${LOG_DIR}/build-xxx.log" \
+ && ln -s "${xxx}" "${SUPPORT}/xxx"'
+
+# ----------------------------------------------------------------------
+# gp-build: build the customized "gp" IOC (copy of xxx + our overlays).
+# ----------------------------------------------------------------------
+FROM synapps-build AS gp-build
+
+# gp customization tunables (single source of truth: versions.env).
+ARG MOTOR_SREV=8000
+ENV MOTOR_SREV=${MOTOR_SREV}
+
+COPY resources/gp/ /usr/local/share/gp/
+RUN bash -o pipefail -c '\
+    MOTOR="$(ls -d ${SUPPORT}/motor-*)"; export MOTOR; \
+    bash /usr/local/share/gp/gp_build.sh 2>&1 | tee "${LOG_DIR}/build-gp.log"'
+
+# ----------------------------------------------------------------------
+# adcam-build: build custom areaDetector camera IOC(s) from driver profiles.
+# The adsim (ADSimDetector) profile is built now; others (adurl, adcsim,
+# pvadriver, ffmpeg, aduvc) are added later by enabling the driver + a profile.
+# ----------------------------------------------------------------------
+FROM gp-build AS adcam-build
+
+COPY resources/adcam/ /usr/local/share/adcam/
+# Build one custom IOC per camera profile whose driver was enabled/built.
+RUN bash -o pipefail -c 'for p in /usr/local/share/adcam/profiles/*.env; do \
+        name="$(basename "${p}" .env)"; \
+        bash /usr/local/share/adcam/adcam_build.sh "${p}" \
+            2>&1 | tee "${LOG_DIR}/build-${name}.log"; \
+    done'
+
+# Prune non-runtime cruft (.git, *.a, *.o, O.* dirs) from the support tree
+# HERE in the builder, so the runtime image copies only the slim result and
+# the removed files never persist in a shipped layer. (~1.6G -> ~0.6G)
+COPY resources/prune_support.sh /usr/local/bin/prune_support.sh
+RUN chmod +x /usr/local/bin/prune_support.sh \
+ && prune_support.sh "${SUPPORT}" 2>&1 | tee "${LOG_DIR}/prune_support.log"
+
+# ----------------------------------------------------------------------
+# synapps-runtime: runtime image with EPICS base + synApps + areaDetector.
+# ----------------------------------------------------------------------
+FROM epics-runtime AS synapps-runtime
+
+ARG SYNAPPS_VERSION
+ENV SYNAPPS=${EPICS_ROOT}/synApps \
+    SUPPORT=${EPICS_ROOT}/synApps/support
+
+# Runtime libraries needed by synApps / areaDetector products.
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update \
+ && apt-get install -y --no-install-recommends \
+        libtirpc3 \
+        libgraphicsmagick++-q16-12 \
+        libtiff6 \
+        libjpeg62-turbo \
+        libnetcdf19 \
+        libxml2 \
+        libx11-6 \
+        libxext6 \
+        zlib1g \
+        libusb-1.0-0 \
+ && rm -rf /var/lib/apt/lists/*
+
+# Copy the built support tree from adcam-build (a superset: it also contains
+# the customized iocgp and iocadsim). Products only; no toolchain/sources.
+COPY --from=adcam-build ${SUPPORT} ${SUPPORT}
+
+# Retain all build logs (base, synApps, xxx, gp, adsim) for later diagnostics.
+COPY --from=adcam-build ${LOG_DIR} ${LOG_DIR}
+
+# Personas:
+#   xxx   : as-supplied synApps template IOC (fixed xxx: prefix). IOC=xxx
+#   gp    : customized synApps IOC (runtime PREFIX, default gp:). IOC=gp
+#   areaDetector cameras via the generic adcam launcher (IOC=<camera>):
+#     adsim (ADSimDetector), adcsim (ADCSimDetector), adurl (ADURL),
+#     adpva (pvaDriver). All hardware-free (simulation/CI).
+COPY resources/xxx.sh   /usr/local/bin/xxx.sh
+COPY resources/gp.sh    /usr/local/bin/gp.sh
+COPY resources/adcam.sh /usr/local/bin/adcam.sh
+RUN chmod +x /usr/local/bin/xxx.sh /usr/local/bin/gp.sh /usr/local/bin/adcam.sh \
+ && for cam in adsim adcsim adurl adpva; do \
+        ln -sf adcam.sh "/usr/local/bin/${cam}.sh"; \
+    done
+
+# Gather display files by format (one dir per format) for host-side clients.
+# Screens use the $(P) macro (replaceable prefix, issue #68); a client
+# launches them with -macro "P=<prefix>".
+ENV SCREENS_ROOT=${EPICS_ROOT}/screens
+COPY resources/collect_screens.sh /usr/local/bin/collect_screens.sh
+RUN chmod +x /usr/local/bin/collect_screens.sh \
+ && /usr/local/bin/collect_screens.sh "${SCREENS_ROOT}" \
+        "${SUPPORT}/iocgp/xxxApp/op" "${SUPPORT}/iocadsim" "${SUPPORT}"
+
+# Refresh convenience symlinks in /home now that synApps (support, xxx, iocxxx,
+# iocgp), the persona scripts, and screens are present.
+RUN /usr/local/bin/make_home_links.sh /home
+
+# Default persona remains softioc; select xxx or gp with -e IOC=xxx|gp.
+ENV IOC=softioc

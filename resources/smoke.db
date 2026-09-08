@@ -1,0 +1,12 @@
+# smoke.db -- test-only database for the smoke test.
+#
+# NOT part of any persona. Loaded by resources/smoke-test.sh into a base
+# softIoc to verify the IOC is up: test_heartbeat self-increments once per
+# second, so the test confirms it advances.
+
+record(calc, "$(P)test_heartbeat") {
+    field(DESC, "smoke test: self-incrementing counter")
+    field(SCAN, "1 second")
+    field(INPA, "$(P)test_heartbeat.VAL")
+    field(CALC, "A+1")
+}

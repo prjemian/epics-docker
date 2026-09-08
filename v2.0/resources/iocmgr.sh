@@ -1,23 +1,11 @@
 #!/bin/bash
 
 # iocmgr.sh -- Manage IOCs in containers (docker, podman, ...)
-#
-# DEPRECATED (v2 compatibility). This script drives the v2 image and is kept
-# at the old download path so existing tooling does not break during the v3
-# transition. It is pinned to the v2 image tag (prjemian/synapps:2.0.1).
-#
-# New users: prefer the v3 declarative compose workflow instead. See
-# https://github.com/prjemian/epics-docker/blob/main/docs/v3_transition.md
-#
-# See docs/v3_transition.md for the migration guide (compose equivalents).
 
 # Usage: ${0} ACTION IOC PRE
 # ACTION    console|restart|run|start|status|stop|caqtdm|medm|usage
 # IOC       "gp", "adsim", (as provided by image)
 # PRE       User's choice.  No trailing colon!
-
-echo "WARNING: iocmgr.sh is deprecated (v2 compatibility)." \
-     "See docs/v3_transition.md for the v3 compose migration." >&2
 
 # make all arguments lower case
 ACTION=$(echo "${1}" | tr '[:upper:]' '[:lower:]')
@@ -26,8 +14,8 @@ PRE=$(echo "${3}" | tr '[:upper:]' '[:lower:]')
 
 # -------------------------------------------
 
-# image (pinned to the v2 tag; do NOT use :latest, which moves to v3)
-IMAGE=${IMAGE:-prjemian/synapps:2.0.1}
+# image
+IMAGE=prjemian/synapps:latest
 
 # Since we started with docker, expect same features as docker API
 DOCKER=/usr/bin/docker
