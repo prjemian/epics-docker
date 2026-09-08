@@ -9,6 +9,11 @@ Bluesky/ophyd test suites (e.g. `apstools`).
 Unlike the [as-supplied `xxx`](./xxx.md) persona, `gp` uses a **runtime-settable
 PV prefix** (default `gp:`) — no recompilation needed to change it.
 
+`gp` is the customized leaf of the **synApps branch** in the persona
+[feature-selection model](./persona_architecture.md): it started as a custom
+extension of the as-supplied [`xxx`](./xxx.md) IOC, adding ready-to-use,
+hardware-free features on top of that template.
+
 ## Features
 
 The `gp` IOC serves ~2000 PVs, all under your chosen prefix (`$(PREFIX)`):

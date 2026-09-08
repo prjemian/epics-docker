@@ -6,6 +6,10 @@ customizations. It exists to provide the "stock EPICS" reference; for a
 ready-to-use simulation IOC with customizations, use the [`gp`](./gp.md)
 persona instead.
 
+`xxx` is the as-supplied leaf of the **synApps branch** in the persona
+[branch-point model](./persona_architecture.md): it progresses from the base
+`softioc` IOC along the synApps build path, alongside the customized `gp`.
+
 ## Features
 
 - The unmodified synApps `xxx` template IOC (motors, optics, scalers, scan

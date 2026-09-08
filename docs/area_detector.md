@@ -7,6 +7,11 @@ All are built from a shared `adcam` framework and share the same plugin chain
 (image, ROI, statistics, HDF5/TIFF/JPEG/netCDF writers, PVA server; NeXus
 omitted) and autosave.
 
+These are the **areaDetector branch** of the persona branch-point model: they
+progress from the base `softioc` IOC (EPICS base, no features) along the
+areaDetector build path, in parallel with the synApps branch (`xxx`, `gp`). See
+[persona architecture](./persona_architecture.md).
+
 ## Which detector? (read this first)
 
 Two of the personas have **subtly similar names but are completely different

@@ -1,9 +1,15 @@
 # softioc: EPICS base softIoc
 
 The **`softioc`** persona is the simplest IOC — EPICS base
-[`softIoc`](https://epics.controls.anl.gov/) with a tiny demo database. It is
-the **default persona** and needs only EPICS base (it runs from the
-`epics-runtime` image layer as well as the full image).
+[`softIoc`](https://epics.controls.anl.gov/) with **no features provided**. It
+is "batteries not included": the IOC starts from an empty startup file with no
+records, and the caller supplies any database, records, macros, and prefix (via
+`IOC_ARGS`) for additional customization. It is the **default persona** and
+runs from the `epics-runtime` image layer as well as the full image.
+
+In the persona [feature-selection model](./persona_architecture.md), `softioc`
+is the **branch point** itself: a bare EPICS-base IOC, upstream of the fork into
+the synApps (`xxx`, `gp`) and areaDetector (`adsim`, …) branches.
 
 Use it for a minimal, fast EPICS server: a quick connectivity/liveness target
 for client development and CI, with no synApps or areaDetector overhead.

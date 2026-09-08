@@ -41,9 +41,15 @@ tag | release | image | downloads | license
 
 - A multi-stage recipe ([`Dockerfile`](./Dockerfile)) that builds a small
   runtime image containing a full EPICS stack.
-- Ready-to-run IOC **personas** — `softioc` (EPICS base), `xxx` and `gp`
-  (synApps), and the area-detector cameras `adsim`, `adcsim`, `adurl`, and
-  `adpva` — selected at container start with a user-chosen PV prefix.
+- Ready-to-run IOC **personas**, selected at container start with a user-chosen
+  PV prefix. Feature selection follows a simple model, where `softioc` (a bare
+  EPICS base IOC) is unfeatured, branching into two feature sets:
+  - **synApps** branch: `xxx` (as-supplied) and `gp` (customized).
+  - **areaDetector** branch: software-defined cameras `adsim`, `adcsim`,
+    `adurl`, and `adpva`.
+
+  A single image provides them all; pick the persona at container start. See
+  [persona architecture](./docs/persona_architecture.md).
 - A declarative run contract ([`compose.yaml`](./compose.yaml)) that works
   with both **docker** and **podman**, on Linux, macOS, Windows, and Synology.
 - IOCs supervised by [`procServ`](https://github.com/ralphlange/procServ)
@@ -117,6 +123,7 @@ document | contents
 --- | ---
 [synApps modules](./docs/synapps_modules.md) | Which synApps modules are included/excluded, and why
 [v3 plan](./docs/v3.md) | The maintainer's plan and goals for v3
+[persona architecture](./docs/persona_architecture.md) | What a persona is; how each is built, launched, and prefixed (+ unified-contract target)
 [requirements & goals](./docs/v3_requirements.md) | Audiences, functional and quality goals, constraints, non-goals
 [implementation strategy](./docs/v3_strategy.md) | Architecture and decisions for the rebuild
 [v2 -> v3 transition](./docs/v3_transition.md) | How v3 lands without breaking existing tooling (apstools, iocmgr.sh)

@@ -45,17 +45,38 @@ base-os            debian-slim; split into build-deps and runtime-deps
 
 ## 3. IOC personas (run-time selectable)
 
+Personas follow a **branch-point model** (see `docs/persona_architecture.md`
+for the full treatment): `softioc` is a bare EPICS-base IOC with no features
+provided, sitting at the branch point (it exists in `epics-runtime`, upstream
+of the fork). From there two build branches progress — a **synApps** branch and
+an **areaDetector** branch — and all products land in one image.
+
 From `docs/v3.md`:
 
-- `softIoc` — EPICS base softIoc, with command-line options exposed.
-- `xxx` — synApps IOC, as-supplied and with customizations.
-- area detector drivers (hardware-free): ADSimDetector (as-supplied +
-  customized), ADCSimDetector, ADURL, ADUVC, pvaDriver, ffmpegServer.
+- `softIoc` — EPICS base softIoc, with command-line options exposed. *(Branch
+  point: base only, no features.)*
+- **synApps branch:** `xxx` — synApps IOC, as-supplied and with customizations
+  (`gp`).
+- **areaDetector branch** — area detector drivers (hardware-free):
+  ADSimDetector (as-supplied + customized), ADCSimDetector, ADURL, ADUVC,
+  pvaDriver, ffmpegServer.
   - plugins: all.
   - file writers: all **except NeXus** (superseded by HDF; matches v2).
 
-Each persona is started via `compose.yaml` with a user-chosen PV `PREFIX`,
-supervised by procServ.
+Each persona is started via `compose.yaml` and supervised by procServ. Most
+personas take a user-chosen PV `PREFIX` at run time (no rebuild), with two
+exceptions: the as-supplied `xxx` keeps its baked-in `xxx:` prefix (ignoring
+`PREFIX`, to stay faithful to upstream), and `softioc` has no prefix of its own
+(the caller supplies one via `IOC_ARGS`). See `docs/persona_architecture.md`
+for the per-persona prefix policy.
+
+The two branches fork legitimately after EPICS base; their overlap is only the
+common EPICS modules and the *persona* feature (a runtime selection, mainly `PREFIX`).
+That boundary matters for any "unify the personas" work: unify *along* the
+branch (the runtime contract + inventory, which the single image already
+merges), not *across* the fork (one build abstraction spanning both branches),
+which carries inherent scope-creep risk. See §11 and
+`docs/persona_architecture.md`.
 
 ## 4. Runtime / orchestration
 
@@ -265,3 +286,11 @@ right arch). Push manifest lists with `buildx --push` / `skopeo copy --all`
 - Networking default profile and the documented `EPICS_CA_*` guidance.
 - Whether/where to publish screens as a separate artifact.
 - Distroless/minimal runtime base as a size optimization (see §8).
+- **Unified persona contract** (legibility repair; proposed, not yet built).
+  Motivation and scope in `docs/persona_architecture.md`. Constrained by the
+  branch-point model: unify *along* the branch (the *persona* feature, a runtime
+  selection — chiefly `PREFIX` — plus a committed persona manifest readable at rest), not
+  *across* the synApps/areaDetector fork. The single image already merges the
+  branch products; the branch *builds* are legitimately two (plus the pre-fork
+  `softioc` base), so a build abstraction spanning the fork carries inherent
+  scope-creep risk and is out of scope unless separately justified.

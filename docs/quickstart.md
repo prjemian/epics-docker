@@ -13,6 +13,12 @@ caget gp:gp:float1
 Personas: `softioc`, `xxx`, `gp`, `adsim`, `adcsim`, `adurl`, `adpva`
 (see each persona's doc, and the [area-detector overview](./area_detector.md)).
 
+They follow a simple branch-point model: `softioc` is a bare EPICS-base IOC
+with no features (the branch point); from there a **synApps** branch (`xxx`,
+`gp`) and an **areaDetector** camera branch (`adsim`, `adcsim`, `adurl`,
+`adpva`) add features. One image; pick the persona at start. See
+[persona architecture](./persona_architecture.md).
+
 ## By audience
 
 ### Local workstation
